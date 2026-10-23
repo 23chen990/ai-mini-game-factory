@@ -1,6 +1,6 @@
 import { RunReadinessSchema, type ExecutionStatus, type RunReadiness, type StageName } from '../schemas/index.js';
 
-type StageStatus = { status?: string };
+type StageStatus = { status?: string; evidence?: string[] };
 
 export type RunReadinessInput = {
   stage: StageName;
@@ -41,8 +41,9 @@ export function deriveRunReadiness(input: RunReadinessInput): RunReadiness {
     return current === 'RELEASE_READY' ? 'RELEASE_READY' : 'CANDIDATE_READY';
   }
   if (input.stage === 'COMPLETED') {
+    if (stageRecord?.evidence?.includes('pipeline:replica-preview-complete')) return 'PREVIEW_ACCEPTED';
     if (current === 'RELEASE_READY' || current === 'CANDIDATE_READY') return current;
-    return 'CANDIDATE_READY';
+    return input.stages?.RELEASE_CANDIDATE?.status === 'completed' ? 'CANDIDATE_READY' : 'IMPLEMENTATION_READY';
   }
   if (input.status === 'waiting') return 'WAITING';
   return 'IN_PROGRESS';

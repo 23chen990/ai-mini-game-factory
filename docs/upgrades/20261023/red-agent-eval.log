@@ -1,0 +1,122 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市
+
+ ❯ tests/unit/factory-agent-eval.test.ts (16 tests | 10 failed) 9ms
+     × reports exact QA confusion denominators and attribution, including misses 3ms
+     × keeps absent and blocked observations unverified rather than perfect or false negatives 0ms
+     × does not combine deterministic regressions with actual Agent observations 0ms
+     × keeps Research unmeasured denominators null 0ms
+     × keeps Builder unmeasured denominators null 0ms
+     × keeps Fixer unmeasured denominators null 0ms
+     × keeps Pipeline unmeasured denominators null 0ms
+     × rejects holdout family leakage and exposed holdout labels 1ms
+     × binds the result to content, not just case ids 0ms
+     × verifies every evidence file and rejects tampering or traversal before scoring 0ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 10 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/factory-agent-eval.test.ts > Agent evidence within Factory Eval, never route-only capability claims > reports exact QA confusion denominators and attribution, including misses
+AssertionError: expected { …(11), …(1) } to have property "scoreFactoryAgentEval"
+ ❯ score tests/unit/factory-agent-eval.test.ts:35:23
+     33| }
+     34| function score(input = fixture()) {
+     35|   expect(factoryEval).toHaveProperty('scoreFactoryAgentEval');
+       |                       ^
+     36|   return factoryEval.scoreFactoryAgentEval(input.corpus, input.observa…
+     37| }
+ ❯ tests/unit/factory-agent-eval.test.ts:43:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/10]⎯
+
+ FAIL  tests/unit/factory-agent-eval.test.ts > Agent evidence within Factory Eval, never route-only capability claims > keeps absent and blocked observations unverified rather than perfect or false negatives
+AssertionError: expected { …(11), …(1) } to have property "scoreFactoryAgentEval"
+ ❯ score tests/unit/factory-agent-eval.test.ts:35:23
+     33| }
+     34| function score(input = fixture()) {
+     35|   expect(factoryEval).toHaveProperty('scoreFactoryAgentEval');
+       |                       ^
+     36|   return factoryEval.scoreFactoryAgentEval(input.corpus, input.observa…
+     37| }
+ ❯ tests/unit/factory-agent-eval.test.ts:59:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/10]⎯
+
+ FAIL  tests/unit/factory-agent-eval.test.ts > Agent evidence within Factory Eval, never route-only capability claims > does not combine deterministic regressions with actual Agent observations
+AssertionError: expected { …(11), …(1) } to have property "scoreFactoryAgentEval"
+ ❯ score tests/unit/factory-agent-eval.test.ts:35:23
+     33| }
+     34| function score(input = fixture()) {
+     35|   expect(factoryEval).toHaveProperty('scoreFactoryAgentEval');
+       |                       ^
+     36|   return factoryEval.scoreFactoryAgentEval(input.corpus, input.observa…
+     37| }
+ ❯ tests/unit/factory-agent-eval.test.ts:69:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/10]⎯
+
+ FAIL  tests/unit/factory-agent-eval.test.ts > Agent evidence within Factory Eval, never route-only capability claims > keeps Research unmeasured denominators null
+ FAIL  tests/unit/factory-agent-eval.test.ts > Agent evidence within Factory Eval, never route-only capability claims > keeps Builder unmeasured denominators null
+ FAIL  tests/unit/factory-agent-eval.test.ts > Agent evidence within Factory Eval, never route-only capability claims > keeps Fixer unmeasured denominators null
+ FAIL  tests/unit/factory-agent-eval.test.ts > Agent evidence within Factory Eval, never route-only capability claims > keeps Pipeline unmeasured denominators null
+AssertionError: expected { …(11), …(1) } to have property "scoreFactoryAgentEval"
+ ❯ score tests/unit/factory-agent-eval.test.ts:35:23
+     33| }
+     34| function score(input = fixture()) {
+     35|   expect(factoryEval).toHaveProperty('scoreFactoryAgentEval');
+       |                       ^
+     36|   return factoryEval.scoreFactoryAgentEval(input.corpus, input.observa…
+     37| }
+ ❯ tests/unit/factory-agent-eval.test.ts:74:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/10]⎯
+
+ FAIL  tests/unit/factory-agent-eval.test.ts > Agent evidence within Factory Eval, never route-only capability claims > rejects holdout family leakage and exposed holdout labels
+AssertionError: expected [Function] to throw error matching /family/ but got 'expected { …(11), …(1) } to have prop…'
+
+- Expected:
+/family/
+
++ Received:
+"expected { …(11), …(1) } to have property \"scoreFactoryAgentEval\""
+
+ ❯ tests/unit/factory-agent-eval.test.ts:94:32
+     92|     const input = fixture();
+     93|     input.corpus.cases.push({ ...input.corpus.cases[0]!, caseId: 'leak…
+     94|     expect(() => score(input)).toThrow(/family/);
+       |                                ^
+     95|     const exposed = fixture(); exposed.corpus.cases[0]!.dataset = 'hol…
+     96|     expect(() => score(exposed)).toThrow(/holdout/);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/10]⎯
+
+ FAIL  tests/unit/factory-agent-eval.test.ts > Agent evidence within Factory Eval, never route-only capability claims > binds the result to content, not just case ids
+AssertionError: expected { …(11), …(1) } to have property "scoreFactoryAgentEval"
+ ❯ score tests/unit/factory-agent-eval.test.ts:35:23
+     33| }
+     34| function score(input = fixture()) {
+     35|   expect(factoryEval).toHaveProperty('scoreFactoryAgentEval');
+       |                       ^
+     36|   return factoryEval.scoreFactoryAgentEval(input.corpus, input.observa…
+     37| }
+ ❯ tests/unit/factory-agent-eval.test.ts:100:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/10]⎯
+
+ FAIL  tests/unit/factory-agent-eval.test.ts > Agent evidence within Factory Eval, never route-only capability claims > verifies every evidence file and rejects tampering or traversal before scoring
+AssertionError: expected { …(11), …(1) } to have property "verifyFactoryAgentEvalEvidence"
+ ❯ tests/unit/factory-agent-eval.test.ts:107:25
+    105|
+    106|   it('verifies every evidence file and rejects tampering or traversal …
+    107|     expect(factoryEval).toHaveProperty('verifyFactoryAgentEvalEvidence…
+       |                         ^
+    108|     const root = await mkdtemp(path.join(tmpdir(), 'agent-eval-')); ro…
+    109|     await writeFile(path.join(root, file.path), 'evidence');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/10]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  10 failed | 6 passed (16)
+   Start at  17:30:53
+   Duration  215ms (transform 50ms, setup 0ms, import 106ms, tests 9ms, environment 0ms)
+

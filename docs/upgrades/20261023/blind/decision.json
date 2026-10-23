@@ -1,0 +1,53 @@
+{
+  "status": "AUTONOMY_TARGET_NOT_DEMONSTRATED",
+  "initialHumanHints": 0,
+  "controllerFollowups": 1,
+  "followupPurpose": "补齐原中性任务要求的重玩观察，无缺陷/根因提示；原始结果未更改",
+  "initialElapsedMs": 276795,
+  "supplementElapsedMs": 114261,
+  "overallWallClockMs": 473261,
+  "modelTokens": null,
+  "modelCostUsd": null,
+  "externalPaidProviderCalls": 0,
+  "newCoreDefectsDetected": 0,
+  "presentationObservationsNotCountedAsDefects": 1,
+  "falsePositives": null,
+  "falseNegatives": null,
+  "attributionAccuracy": null,
+  "reasonsMetricsUnscored": [
+    "缺少经独立审查且绑定当前构建的完整标签集",
+    "未完成可比较核心片段，不能把未观察分支按通过或确定漏检计分"
+  ],
+  "comparisonWithHistory": {
+    "source": "docs/upgrades/20261019/slice-layout-pilot.md; historical GAP-LEVEL-GRAMMAR",
+    "matchedCoreThemes": 0,
+    "status": "NO_AUTONOMOUS_REDISCOVERY_ESTABLISHED",
+    "limitation": "历史试验有人工提示；部分原始证据不可用，不能将文档主题当当前金标准。"
+  },
+  "causeAssessment": {
+    "observed": [
+      "评测者实际读取画面、用普通输入；未覆盖完整核心链",
+      "录屏仅有像素序列，没有输入轨迹/可观测状态",
+      "只识别呈现差异且正确未判为实现缺陷"
+    ],
+    "hypotheses": [
+      "有限操作策略/时间预算导致关键对象分支未观察",
+      "没有已确认行为契约，评测者无法把关系差异分类为缺陷",
+      "判断模型可能遗漏可见关系；本实验不能将该原因与覆盖不足分离"
+    ],
+    "notEstablished": [
+      "工具没有能力观察",
+      "模型能力必然不足",
+      "换模型/加Agent/逆向能解决"
+    ]
+  },
+  "nextDiscriminatingExperiment": "使用同一构建、预先冻结的中性玩家意图与完整关卡观察预算，给QA原始视频与已批准核心契约但不透露缺陷标签；完整覆盖后再独立标注TP/FP/FN。用户要求任何必要逆向先暂停并给外部Agent提示词；当前无逆向调用。",
+  "releaseBlocked": true,
+  "sessions": {
+    "initial": 2,
+    "supplemental": 1,
+    "originalSessionLimit": 2,
+    "deviation": "Supplemental acceptance task explicitly requested one additional recovery attempt; its fresh session is outside the initial two-session protocol. Do not count it as initial zero-followup completion."
+  },
+  "taskSealLimitation": "neutral-task-copy.json was saved by the evaluator; it is not a pre-execution cryptographic seal of the exact original dispatch. The original neutral tool dispatch remains in this chat."
+}

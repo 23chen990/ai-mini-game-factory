@@ -1,6 +1,8 @@
 import { createHash } from 'node:crypto';
 import { copyFile, lstat, mkdir, readFile, realpath, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import type { ZodType } from 'zod';
+import YAML from 'yaml';
 import { ContextPacketSchema } from './context-budget.js';
 import { assertSafeContextInputPath } from './execution-boundary.js';
 import { executionPolicyForStage } from './model-policy.js';
@@ -8,8 +10,19 @@ import { sanitizeUntrustedText } from './security-boundary.js';
 import { sha256Text } from './files.js';
 import type { AgentExecutionContext } from '../providers/interfaces.js';
 import { ResearchSandboxManifestSchema } from '../schemas/research-sandbox.js';
+import { ReferenceFrameManifestSchema } from '../schemas/reference-recording.js';
+import { EvidenceProvenanceManifestSchema } from '../schemas/evidence-provenance.js';
+import { ReferenceEvidencePackSchema } from '../schemas/reference-evidence.js';
+import { SeedSchema } from '../schemas/index.js';
+import { safeRunFile } from './reference-evidence.js';
 
 const RESEARCH_STAGES = new Set(['REFERENCE_DEEP_RESEARCH', 'COMPETITOR_RESEARCH', 'OPEN_SOURCE_RESEARCH']);
+const STRUCTURAL_INPUTS = new Map<string, ZodType>([
+  ['input/seed.yaml', SeedSchema],
+  ['artifacts/reference-evidence-pack.json', ReferenceEvidencePackSchema],
+  ['artifacts/reference-frame-manifest.json', ReferenceFrameManifestSchema],
+  ['reference-evidence/manifest.json', EvidenceProvenanceManifestSchema],
+]);
 
 export type ResearchIsolationDescriptor = {
   mode: 'sanitized-read-only';
@@ -37,7 +50,8 @@ function safeSandboxFile(inputPath: string, index: number): string {
 
 /**
  * Create the only filesystem view a research Codex process is allowed to
- * inspect.  We deliberately materialize sanitized context excerpts instead
+ * inspect. We materialize bounded sanitized text and validated, complete
+ * reference prerequisites instead
  * of exposing the run root: read-only OS sandboxes still permit a process to
  * read sibling files, dotfiles, credentials, or stale artifacts when its cwd
  * is the full run.  The returned descriptor is passed to the last provider
@@ -68,7 +82,22 @@ export async function prepareResearchSandbox(context: AgentExecutionContext): Pr
     const relative = safeSandboxFile(inputPath, index);
     const target = path.resolve(root, relative);
     if (!isWithin(root, target)) throw new Error(`research sandbox input escapes root: ${inputPath}`);
-    const content = sanitizeUntrustedText(excerptByPath.get(inputPath) ?? `[artifact pointer only: ${inputPath}]`, 12_000);
+    let content: string;
+    const schema = stage === 'REFERENCE_DEEP_RESEARCH' ? STRUCTURAL_INPUTS.get(inputPath) : undefined;
+    if (schema) {
+      // These indexes are file inputs, not prompt excerpts: truncating them
+      // destroys JSON and source hashes. Reject unsafe external input rather
+      // than silently substituting a partial or instruction-bearing file.
+      content = await readFile(await safeRunFile(runRoot, inputPath), 'utf8');
+      const parsed = inputPath === 'input/seed.yaml' ? YAML.parse(content) : JSON.parse(content);
+      schema.parse(parsed);
+      const normalized = JSON.stringify(parsed);
+      if (sanitizeUntrustedText(normalized, normalized.length) !== normalized) throw new Error(`research structural input contains instruction-shaped text: ${inputPath}`);
+    } else if (stage === 'REFERENCE_DEEP_RESEARCH' && inputPath.startsWith('reference-evidence/') && inputPath.endsWith('.analysis.txt')) {
+      // Explicitly requested document extractions may be omitted from the
+      // prompt budget. Read their run-bound text, never a pointer placeholder.
+      content = sanitizeUntrustedText(await readFile(await safeRunFile(runRoot, inputPath), 'utf8'), 12_000);
+    } else content = sanitizeUntrustedText(excerptByPath.get(inputPath) ?? `[artifact pointer only: ${inputPath}]`, 12_000);
     await mkdir(path.dirname(target), { recursive: true, mode: 0o700 });
     await writeFile(target, content, { encoding: 'utf8', mode: 0o600 });
     allowedFiles.push(relative.replaceAll(path.sep, '/'));

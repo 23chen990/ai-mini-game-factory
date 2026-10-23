@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "mobile-slice-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+  "axes": {
+    "objectTypes": [
+      "reference cuttable groups",
+      "candidate cuttable groups",
+      "candidate blade and HUD"
+    ],
+    "lifecycleStateBranches": [
+      "traversal",
+      "failure",
+      "replay",
+      "mobile-unobserved"
+    ],
+    "rendererPaths": [
+      "reference recording frames",
+      "candidate packaged browser"
+    ],
+    "viewports": [
+      {
+        "label": "desktop-reference-size",
+        "width": 1100,
+        "height": 720
+      },
+      {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "reference-recording-traversal",
+      "objectType": "reference cuttable groups",
+      "lifecycleStateBranch": "traversal",
+      "rendererPath": "reference recording frames",
+      "viewport": {
+        "label": "desktop-reference-size",
+        "width": 1100,
+        "height": 720
+      },
+      "status": "PASS",
+      "expected": "观察真实录屏所显示的连续玩法。",
+      "observed": "已查看精确源录屏的 contact sheet；这是录屏观察，不是参考自然输入回放。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa/reference-contact-sheet.jpg",
+          "sha256": "2b93e121718f63fdac76fe38dffb7732503c9fd11c47dc14f005bdcb16d95c6e",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "candidate-traversal",
+      "objectType": "candidate cuttable groups",
+      "lifecycleStateBranch": "traversal",
+      "rendererPath": "candidate packaged browser",
+      "viewport": {
+        "label": "desktop-reference-size",
+        "width": 1100,
+        "height": 720
+      },
+      "status": "BLOCKED",
+      "expected": "用正常操作观察足够完整的可比较核心片段。",
+      "observed": "两次新会话和普通输入，仅切中一个目标并进入阶段2；没有证据覆盖历史诊断指定的全部对象/状态分支。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa/candidate-session2-8taps.png",
+          "sha256": "a5f4457e6e2627ed25c52a8e1e6c918ebb803e7d21e6f77fd54489f2c2fc399b",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa/candidate-session2-20taps.png",
+          "sha256": "ec84e78f9bc5bb69bed89b6c963e6d822bfff22f3a45be9584824d61c274487b",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "candidate-failure",
+      "objectType": "candidate blade and HUD",
+      "lifecycleStateBranch": "failure",
+      "rendererPath": "candidate packaged browser",
+      "viewport": {
+        "label": "desktop-reference-size",
+        "width": 1100,
+        "height": 720
+      },
+      "status": "PASS",
+      "expected": "自然失败有可见终局。",
+      "observed": "自然闲置后出现失败界面；不代表成功终局或体验对标。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa/candidate-session2-idle8s.png",
+          "sha256": "2f3e033e1fe9062ae7b18486a9446dd54f57327abb1ad06f7f8fabb77f422b5a",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "candidate-replay",
+      "objectType": "candidate blade and HUD",
+      "lifecycleStateBranch": "replay",
+      "rendererPath": "candidate packaged browser",
+      "viewport": {
+        "label": "desktop-reference-size",
+        "width": 1100,
+        "height": 720
+      },
+      "status": "PASS",
+      "expected": "可见重玩操作恢复可交互起点。",
+      "observed": "一次补充任务后正常点击重玩，分数归零并回到起飞教程。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa/candidate-replay-before.png",
+          "sha256": "97fa36641a079e533125151d3da38be450da9eeb3245b5daf342733cf75f3fdf",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa/candidate-replay-after.png",
+          "sha256": "bf10eebcf31a7cb8570a4c18aa3a186517e42947f8e5e590b38341b227791f7c",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "mobile-unobserved",
+      "objectType": "candidate cuttable groups",
+      "lifecycleStateBranch": "mobile-unobserved",
+      "rendererPath": "candidate packaged browser",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "目标移动端分支可见且可操作。",
+      "observed": "本次8分钟盲评未覆盖；不能由桌面分支代替。",
+      "evidence": []
+    }
+  ],
+  "confirmedFindings": [
+    "首次盲评没有识别出可确认的核心机制缺陷；仅报告不构成bug的呈现差异。",
+    "自然失败和补充任务后的重玩实际可见。"
+  ],
+  "remainingGaps": [
+    "成功结算、完整交互链和移动端未观察",
+    "录屏没有实际输入轨迹，不能产生双端normal-input通过记录",
+    "历史诊断并非当前构建独立标定的完整标签集；不能捏造召回率或误报率"
+  ],
+  "createdAt": "2026-10-23T09:47:11.563239Z"
+}

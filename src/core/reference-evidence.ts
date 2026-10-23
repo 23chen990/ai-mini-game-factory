@@ -10,6 +10,8 @@ import { NaturalFlowEvidenceSchema } from '../schemas/natural-flow.js';
 import { evaluateQaEvidence } from './qa-evidence.js';
 import { ReferenceMechanicSpecSchema, type ReferenceMechanicSpec } from '../schemas/reference-mechanic.js';
 import { buildEvidenceClaimSet } from './evidence-claims.js';
+import { ReferenceComparisonCaptureSchema, type ReferenceDifference } from '../schemas/reference-comparison.js';
+import { compareReferenceCaptures, referenceComparisonContractDifferences } from './reference-comparison.js';
 
 /**
  * Resolve a research source without following a symlink.  Research inputs are
@@ -18,7 +20,7 @@ import { buildEvidenceClaimSet } from './evidence-claims.js';
  * We walk every component, reject links/non-regular files, and verify the
  * final real path remains below the real run root before the caller reads it.
  */
-async function safeRunFile(runRoot: string, relative: string): Promise<string> {
+export async function safeRunFile(runRoot: string, relative: string): Promise<string> {
   const normalized = String(relative).replaceAll('\\', '/').trim();
   const root = path.resolve(runRoot);
   const resolved = path.resolve(root, normalized);
@@ -298,6 +300,8 @@ export function evaluateReplicaPreviewEvidence(value: unknown) {
   for (const dimension of REFERENCE_BEHAVIOR_DIMENSIONS) {
     if (!pack.behaviorChecks.some((check) => check.dimension === dimension)) blockers.push(`preview:behavior-dimension-missing:${dimension}`);
   }
+  blockers.push(...referenceComparisonContractDifferences({ behaviorChecks: pack.behaviorChecks, provenance: pack.sourceFiles })
+    .map(({ checkId, reason }) => `preview:behavior-comparison:${checkId}:${reason}`));
   if (pack.mechanicMap.mustPreserveMechanics.length === 0) blockers.push('preview:preserved-mechanics-missing');
   const fidelity = ReferenceFidelityContractSchema.parse({
     schemaVersion: 1,
@@ -327,15 +331,19 @@ export async function verifyReferenceFidelityReview(input: {
   const contract = ReferenceFidelityContractSchema.safeParse(input.contract);
   const blockers: string[] = [];
   const checkedIds: string[] = [];
+  const differences: ReferenceDifference[] = [];
   const checks = contract.success ? contract.data.behaviorChecks : [];
   const contractHash = contract.success ? sha256Text(JSON.stringify(contract.data)) : null;
   const finish = () => ReferenceFidelityGateSchema.parse({
     schemaVersion: 1, targetRunId: input.targetRunId, contractHash, buildHash: input.buildHash,
-    passed: blockers.length === 0, blockers: [...new Set(blockers)], requiredCheckIds: checks.map((check) => check.id), checkedIds,
+    passed: blockers.length === 0, blockers: [...new Set(blockers)], requiredCheckIds: checks.map((check) => check.id), checkedIds, differences,
   });
   if (!contract.success) { blockers.push('fidelity:contract-invalid'); return finish(); }
   if (contract.data.targetRunId !== input.targetRunId) blockers.push('fidelity:contract-run-mismatch');
-  if (contract.data.status !== 'READY') blockers.push('fidelity:contract-blocked');
+  if (contract.data.status !== 'READY') {
+    blockers.push('fidelity:contract-blocked');
+    differences.push(...contract.data.blockers.map((reason) => ({ checkId: '*', route: 'RESEARCH' as const, reason: `contract-blocked:${reason}` })));
+  }
   if (new Set(checks.map((check) => check.id)).size !== checks.length) blockers.push('fidelity:contract-duplicate-checks');
   for (const dimension of REFERENCE_BEHAVIOR_DIMENSIONS) {
     if (!checks.some((check) => check.dimension === dimension)) blockers.push(`fidelity:dimension-missing:${dimension}`);
@@ -360,9 +368,24 @@ export async function verifyReferenceFidelityReview(input: {
     const file = await safeRunFile(input.runRoot, ref.path);
     const bytes = await readFile(file);
     const { createHash } = await import('node:crypto');
-    if (createHash('sha256').update(bytes).digest('hex') !== ref.sha256) throw new Error('hash-mismatch');
+    if (createHash('sha256').update(bytes).digest('hex') !== ref.sha256) throw new Error(`hash mismatch: ${ref.path}`);
     return bytes;
   };
+  // These files come from external QA adapters. Validate schema, run identity,
+  // current bytes and authority; propagate corrupt/missing evidence, never hide it.
+  if (!review.data.comparison) {
+    blockers.push('fidelity:reference-comparison-missing');
+    differences.push({ checkId: '*', route: 'QA', reason: 'paired-reference-candidate-captures-required' });
+  } else {
+    const reference = ReferenceComparisonCaptureSchema.parse(JSON.parse((await readBoundFile(review.data.comparison.reference)).toString('utf8')));
+    const candidate = ReferenceComparisonCaptureSchema.parse(JSON.parse((await readBoundFile(review.data.comparison.candidate)).toString('utf8')));
+    for (const capture of [reference, candidate]) for (const observation of capture.observations) {
+      for (const screenshot of observation.screenshots) await readBoundFile(screenshot);
+    }
+    for (const source of contract.data.provenance) await readBoundFile(source);
+    differences.push(...compareReferenceCaptures({ contract: contract.data, contractHash: sha256Text(JSON.stringify(contract.data)), buildHash: input.buildHash, reference, candidate }));
+    blockers.push(...differences.map((difference) => `fidelity:comparison:${difference.checkId}:${difference.reason}`));
+  }
   for (const check of checks) {
     const row = review.data.cases.find((candidate) => candidate.checkId === check.id);
     if (!row) { blockers.push(`fidelity:check-missing:${check.id}`); continue; }

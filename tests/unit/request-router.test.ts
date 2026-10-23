@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { buildPipelinePlan } from '../../src/core/pipeline-plan.js';
 import { createFactory } from '../../src/factory.js';
 import { RequestRouteSchema } from '../../src/schemas/index.js';
 
@@ -21,6 +22,11 @@ function router() {
 }
 
 describe('RequestRouter', () => {
+  it('uses the executable preview plan including product QA and human playtest', () => {
+    const route = router().routeRequest({ request: '创建一个参考 H5 小游戏' });
+    const plan = buildPipelinePlan({ designMode: 'reference_reskin', productionLine: 'pending-review' });
+    expect(route.stages).toEqual(plan.mandatoryStages);
+  });
   it('routes orphan-interactive-object audits through profile and perceptual gates', () => {
     const route = router().routeRequest({ request: '检查一个关卡：每个危险、目标、平台、奖励、触发器、敌人或资源节点都必须可触碰、可绕行或用于恢复；孤立交互对象必须阻断构建', targetRunId: 'eval-existing' });
     expect(route.experienceProfile.primary).toBe('ACTION_FEEL');
@@ -75,7 +81,7 @@ describe('RequestRouter', () => {
     expect(route).toMatchObject({ requestType: 'NEW_GAME', targetRunId: null, fullGreenlight: true, reviewEscalations: [] });
     expect(route.stages.slice(0, 3)).toEqual(['REFERENCE_DEEP_RESEARCH', 'REFERENCE_MECHANIC_LOCK', 'WAITING_FOR_REFERENCE_APPROVAL']);
     expect(route.stages).not.toEqual(expect.arrayContaining(['COMPETITOR_RESEARCH', 'IDEA_GENERATION', 'BUILD_3_PROTOTYPES', 'PLAYTEST_TOURNAMENT']));
-    expect(route.stages).toEqual(['REFERENCE_DEEP_RESEARCH', 'REFERENCE_MECHANIC_LOCK', 'WAITING_FOR_REFERENCE_APPROVAL', 'BLUEPRINT', 'CORE_SPEC_FROZEN', 'FULL_BUILD', 'QA', 'COMPLETED']);
+    expect(route.stages).toEqual(['REFERENCE_DEEP_RESEARCH', 'REFERENCE_MECHANIC_LOCK', 'WAITING_FOR_REFERENCE_APPROVAL', 'BLUEPRINT', 'PRODUCT_EXPERIENCE_CONTRACT', 'CORE_SPEC_FROZEN', 'FULL_BUILD', 'QA', 'WAITING_FOR_HUMAN_PLAYTEST', 'COMPLETED']);
     expect(route.stages).not.toEqual(expect.arrayContaining(['IAA_REVIEW', 'ART_DIRECTIONS', 'RELEASE']));
   });
 

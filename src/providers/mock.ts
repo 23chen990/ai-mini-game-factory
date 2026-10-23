@@ -1,3 +1,4 @@
+import { blockedReferenceIntakeDraft } from '../core/reference-intake.js';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { sha256File, sha256Text } from '../core/files.js';
@@ -7,6 +8,9 @@ import { ReferenceFrameManifestSchema, ReferenceLevelReconstructionSchema, type 
 import type { GameplayIdea, IdeaGeneration, LowCostFilter, PlaytestTournament } from '../schemas/gameplay-experiment.js';
 
 export class MockAgentProvider implements AgentProvider {
+  async draftReference(input: import('../schemas/reference-intake.js').ReferenceIntakeEvidence): Promise<import('./interfaces.js').AgentProviderResult> {
+    return { value: blockedReferenceIntakeDraft(input, 'Mock provider cannot observe a reference game; use codex-account or supply a validated fixture provider.'), metrics: { provider: 'mock', model: 'mock', calls: 0 } };
+  }
   async analyzeReferenceEvidence(pack: ReferenceEvidencePack, context?: AgentExecutionContext): Promise<AgentProviderResult> {
     const source = pack.sourceFiles[0];
     if (!source) return { value: { schemaVersion: 1, targetRunId: pack.targetRunId, behaviorChecks: [], observations: [], inferences: [], unknowns: ['No bound reference source is available for behavior analysis.'], levelReconstruction: null, status: 'BLOCKED' }, metrics: { provider: 'mock', model: 'deterministic', calls: 0 } };

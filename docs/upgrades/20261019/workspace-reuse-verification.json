@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-19T11:01:47.581Z",
+  "scope": "Shared factory Builder continuation; no existing game redevelopment or cross-game component release",
+  "baseCommit": "9c2828c78d4acdff65bdbe59f050bc56ec984166",
+  "pullRequest": "https://github.com/23chen990/ai-mini-game-factory/pull/72",
+  "route": "shared-factory",
+  "generatedUserGamesModified": false,
+  "newGameDevelopment": false,
+  "dependenciesAdded": 0,
+  "productionStagesAdded": 0,
+  "productionSchemasAdded": 0,
+  "newModelCallsRequiredByChange": 0,
+  "checks": {
+    "command": "pnpm_config_verify_deps_before_run=false pnpm verify",
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "testFiles": 184,
+    "testsPassed": 1128,
+    "testsFailed": 0,
+    "durationSeconds": 141,
+    "focused": {
+      "files": 4,
+      "tests": 54
+    },
+    "pathHelperMovedUnchanged": true
+  },
+  "regressions": [
+    "Nonempty workspace preserves authored source/configuration/assets/tests before provider invocation",
+    "Missing or empty workspace initializes once over two Builder executions",
+    "Interrupted model leaves partial implementation on the default path for the next attempt",
+    "Verification failure is still an error; existing files never imply success",
+    "Workspace and parent symlinks remain rejected before writers",
+    "Authored reference layout survives Mock continuation",
+    "Provider prompt preserves implementation and receives selective asset source"
+  ],
+  "measuredScope": {
+    "temporaryMarkerFiles": true,
+    "providersControlledInRegression": true,
+    "initializationCallsAcrossTwoBuilds": 1,
+    "actualModelContinuation": "NOT_RUN",
+    "realAssetDeltaIntegration": "NOT_VERIFIED",
+    "endToEndCycleSavings": "NOT_MEASURED",
+    "gameplayFidelity": "NOT_RETESTED",
+    "physicalDevice": "NOT_RUN",
+    "liveIaa": "NOT_RUN",
+    "commercialReadiness": false
+  },
+  "staticReview": {
+    "status": "COMPLETE",
+    "findings": 0,
+    "gaps": [
+      "Static review only; tests, builds, browser, model, and live provider runs were explicitly out of scope.",
+      "The continuation tests exercise orchestration with mocked runtime/provider boundaries. They establish preservation and call ordering, not gameplay correctness or real provider asset application.",
+      "Both provider prompts receive assetSource in the serialized build input and request selective integration, but actual model compliance and generated asset changes remain unverified."
+    ],
+    "evidence": {
+      "path": "artifacts/reference-first-audit/builder-continuation-review.json",
+      "sha256": "ae1f25952e9e4a18ececb989c865245d990f979c6eb297f85ecb33fcf51f209c"
+    }
+  },
+  "inventory": {
+    "report": "docs/upgrades/20261019/existing-game-reuse-sources.json",
+    "sourceFilesHashVerified": 18,
+    "findings": 5,
+    "rightsApproval": false,
+    "componentExtractionPerformed": false
+  },
+  "logs": [
+    {
+      "path": "artifacts/reference-first-audit/workspace-reuse-red.log",
+      "sha256": "97ff374c9913c6297a1177ab68dc06841a665580055b9934560cbb3c1504f533"
+    },
+    {
+      "path": "artifacts/reference-first-audit/workspace-reuse-red-prompt.log",
+      "sha256": "8e8a4e8a8b77149f6d7b4c4d652a7ec574a0830ccbe5b9e5edce2e97e0e2addf"
+    },
+    {
+      "path": "artifacts/reference-first-audit/workspace-reuse-red-authored-layout.log",
+      "sha256": "9c683b0a695ed93e715ea6223f910b5c4809c20a27afb2d82ddd35c76f3b3247"
+    },
+    {
+      "path": "artifacts/reference-first-audit/workspace-reuse-green-targeted-final.log",
+      "sha256": "2e895010b3c80f269062b4baa153d514999cebc34d8c8b0b72ba07a15c508f95"
+    },
+    {
+      "path": "artifacts/reference-first-audit/workspace-reuse-full-verify-initial.log",
+      "sha256": "9220ea45092d98959400fcc720a9cb4e4d3dbf5284178b13fffa99453859eb2e"
+    },
+    {
+      "path": "artifacts/reference-first-audit/workspace-reuse-full-verify.log",
+      "sha256": "e677c608d6f2361e8145b2f34c9b719d7278b574cf161a3b6d381357b9049e69"
+    },
+    {
+      "path": "artifacts/reference-first-audit/workspace-reuse-final-format-check.log",
+      "sha256": "65bbc5502a770636799b16afc3bdc40c6220a99e3b1e7529b7c192349d90f9e7"
+    }
+  ],
+  "codeFiles": [
+    {
+      "path": "src/adapters/web-lite.ts",
+      "sha256": "e04a482f16ccf7acf64b08871fd58d1bffac9aded0b468a7142a706e0e46236e"
+    },
+    {
+      "path": "src/agents/index.ts",
+      "sha256": "2b9575d6ab16698c9e4893cabb94f6cc25592a1b5e231406725a3a5e7a24fe6e"
+    },
+    {
+      "path": "src/core/workspace-path.ts",
+      "sha256": "b1f6d6834ec5ed129ae5055473596b31f32b7b2b83bd5ade27355ba7b7e3ee5e"
+    },
+    {
+      "path": "src/core/builder-continuation.ts",
+      "sha256": "0d7a3e5bf12fa6032b7a4109b0a1640d28b6af87707bb7873ab6a013f3409b11"
+    },
+    {
+      "path": "src/providers/interfaces.ts",
+      "sha256": "69bab586bfca0c72c3e1c7aed27779918a1f944efb89bb874ced6297720ef808"
+    },
+    {
+      "path": "src/providers/codex-account.ts",
+      "sha256": "d5d21ec82cfd7ac9ef87834762b6f3ac86b49809ac2277db841f414fcb4f9f5b"
+    },
+    {
+      "path": "src/providers/real.ts",
+      "sha256": "ffb6197bf58ed2467135e068ef91ed6c7e0ce7ba5e3bc24a1a9c58775782e154"
+    },
+    {
+      "path": "tests/unit/builder-workspace-reuse.test.ts",
+      "sha256": "9c8f2cbd49022ab847a41b17e2c6ce267b62475cc871d700f11775555c9dfffa"
+    },
+    {
+      "path": "tests/unit/reference-level-builder.test.ts",
+      "sha256": "6752e4c7cb27dbfc41307a49c971cd1a61c3e1669ce522e53eb88c3973db788d"
+    },
+    {
+      "path": "tests/unit/codex-account-provider.test.ts",
+      "sha256": "0011d1c653d06e6aecd934e12f2e450dfdf5788d2dbebe06d1c071357c4ba3a3"
+    }
+  ],
+  "notes": [
+    "Initial full run read one obsolete legacy-fixture expectation; preserved failed log. Corrected fixture distinguishes initial creation from continuation; final full run is green.",
+    "Explicit low-level createProject still archives when deliberately called; Builder now avoids it for existing workspaces.",
+    "The broader automatic research/repair, cross-game component integration, platform and commercial goals remain incomplete.",
+    "After full verify, removed an extra EOF blank line from the moved helper; reran helper lint, full typecheck and 54 focused tests. No behavior changed."
+  ]
+}

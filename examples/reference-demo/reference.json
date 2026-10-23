@@ -1,0 +1,161 @@
+{
+  "fixtureId": "mooncut-explicit-requirements-v1",
+  "notice": "Factory-authored engineering requirements. These are declarations, not observations of a third-party game, market evidence, or human playtest results.",
+  "mechanics": {
+    "schemaVersion": 1,
+    "coreLoop": [
+      "Start in a ready state on a fixed course",
+      "Tap to flip and move forward",
+      "Cut a soft target and let its pieces drop",
+      "Avoid the visible hard hazard or fail with an attributable cause",
+      "Reach the finish, settle, and replay"
+    ],
+    "playerActions": [
+      "Tap the primary flip control",
+      "Tap the visible retry/replay control"
+    ],
+    "progressionSystems": [
+      "Advance through an authored target, hazard and finish sequence"
+    ],
+    "unlockRules": [
+      "Replay becomes available after failure or finish"
+    ],
+    "feedbackCadence": {
+      "immediateSeconds": 0.12,
+      "microGoalMinSeconds": 1,
+      "microGoalMaxSeconds": 12
+    },
+    "mustPreserveMechanics": [
+      "Tap changes blade trajectory",
+      "Soft cut and hard obstacle contact are different branches",
+      "Visible contact failure and one-action retry",
+      "Terminal settlement and replay reset"
+    ],
+    "adaptableMechanics": [
+      "Original name, geometry, course content, colors, UI, audio and tuning"
+    ],
+    "expressionIsolation": {
+      "originalCode": true,
+      "originalAssets": true,
+      "originalNamesAndText": true,
+      "originalUiLayout": true,
+      "originalAudio": true,
+      "originalTuningValues": true
+    }
+  },
+  "checks": [
+    {
+      "id": "fixture-input_state",
+      "dimension": "input_state",
+      "objectType": "blade",
+      "stateBranch": "ready-to-flip",
+      "playerInput": "Tap the visible primary control",
+      "expectedStateChange": "Blade leaves ready and changes trajectory",
+      "spatialRelationship": "Blade moves along the visible course",
+      "visibleFeedback": {
+        "anchor": "blade",
+        "eventOrder": [
+          "tap",
+          "flip"
+        ]
+      },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "fixture-spatial_relation",
+      "dimension": "spatial_relation",
+      "objectType": "soft target and blade",
+      "stateBranch": "contact-to-cut-to-drop",
+      "playerInput": "Tap to intersect the soft target",
+      "expectedStateChange": "Target separates and falls away from its source",
+      "spatialRelationship": "Contact must occur at the target rather than a sibling object",
+      "visibleFeedback": {
+        "anchor": "cut target",
+        "eventOrder": [
+          "contact",
+          "cut",
+          "drop"
+        ]
+      },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "fixture-failure_recovery",
+      "dimension": "failure_recovery",
+      "objectType": "blade and hard hazard",
+      "stateBranch": "approach-contact-failure-retry",
+      "playerInput": "Allow hazard contact, then tap retry",
+      "expectedStateChange": "Attributable failure is followed by a clean ready state",
+      "spatialRelationship": "Hazard is visible on the upcoming course before contact",
+      "visibleFeedback": {
+        "anchor": "hazard contact",
+        "eventOrder": [
+          "approach",
+          "impact",
+          "failure",
+          "retry"
+        ]
+      },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "fixture-feedback_sequence",
+      "dimension": "feedback_sequence",
+      "objectType": "soft target",
+      "stateBranch": "cut-resolution",
+      "playerInput": "Tap into a soft target",
+      "expectedStateChange": "Contact precedes cut and falling pieces",
+      "spatialRelationship": "Feedback remains local to the cut object",
+      "visibleFeedback": {
+        "anchor": "cut object",
+        "eventOrder": [
+          "contact",
+          "cut",
+          "drop"
+        ]
+      },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "fixture-terminal_replay",
+      "dimension": "terminal_replay",
+      "objectType": "finish and replay",
+      "stateBranch": "finish-settlement-replay",
+      "playerInput": "Tap through the course, then tap replay",
+      "expectedStateChange": "Finish enters settlement and replay resets",
+      "spatialRelationship": "Finish remains distinct from hazards and targets",
+      "visibleFeedback": {
+        "anchor": "finish control",
+        "eventOrder": [
+          "finish",
+          "settlement",
+          "replay"
+        ]
+      },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    }
+  ],
+  "pressure": {
+    "trigger": "Blade contacts a visible hard hazard",
+    "playerSignal": "Distinct visible hazard silhouette before impact",
+    "escalation": "Forward motion reduces the safe timing window",
+    "failureOutcome": "Attempt stops with a visible contact cause",
+    "attribution": "Failure feedback identifies the contacted hazard",
+    "recovery": "A visible retry control resets the initial course"
+  }
+}

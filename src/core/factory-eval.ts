@@ -1,9 +1,10 @@
 import { lstat, readFile, realpath } from 'node:fs/promises';
 import path from 'node:path';
-import { FactoryEvalCaseSchema, FactoryEvalCasesFileSchema, FactoryEvalReportSchema, type FactoryEvalCase, type FactoryEvalReport } from '../schemas/factory-operating.js';
+import { FactoryEvalCaseSchema, FactoryEvalCasesFileSchema, FactoryEvalReportSchema, type FactoryEvalCase, type FactoryEvalReport, FactoryAgentEvalCasesSchema, FactoryAgentEvalObservationsSchema, FactoryAgentEvaluationSchema, type FactoryAgentEvalObservation, type FactoryAgentEvaluation } from '../schemas/factory-operating.js';
 import { FeedbackRegressionCasesSchema, type FeedbackRegressionCase } from '../schemas/feedback.js';
 import type { RequestRoute } from '../schemas/index.js';
-import { sha256Text } from './files.js';
+import { sha256File, sha256Text } from './files.js';
+import { safeRunFile } from './reference-evidence.js';
 
 export const FACTORY_EVAL_SUITE_VERSION = 'factory-eval-v3';
 
@@ -160,6 +161,18 @@ export const FACTORY_EVAL_SOURCE_PATHS = [
   'src/schemas/variation-coverage.ts',
   'src/schemas/research-evidence.ts',
   'factory-eval/cases.json',
+  'factory-eval/agent-cases.json',
+  'src/core/reference-comparison.ts',
+  'src/schemas/reference-comparison.ts',
+  'src/core/product-readiness.ts',
+  'src/schemas/product-readiness.ts',
+  'src/core/preview-infrastructure.ts',
+  'src/core/builder-continuation.ts',
+  'src/core/workspace-path.ts',
+  'src/core/repair-policy.ts',
+  'src/schemas/repair-policy.ts',
+  'src/core/reference-intake.ts',
+  'src/schemas/reference-intake.ts',
   'src/schemas/production-line.ts',
   'src/schemas/production-line-qa.ts',
   'src/schemas/index.ts',
@@ -358,4 +371,111 @@ export function runFactoryEvalSuite(cases: FactoryEvalCase[], route: (input: { r
     } catch (error) { failures.push(`route-error:${error instanceof Error ? error.message : String(error)}`); return { caseId: testCase.caseId, dataset: testCase.dataset, inputHash: sha256Text(testCase.input), passed: false, failures }; }
   });
   return FactoryEvalReportSchema.parse({ schemaVersion: 1, suiteVersion: FACTORY_EVAL_SUITE_VERSION, modelSignature: signatures.modelSignature.trim() || 'unknown', promptSignature: signatures.promptSignature.trim() || 'unknown', ...(signatures.factorySignature ? { factorySignature: signatures.factorySignature } : {}), feedbackRegressionIds: signatures.feedbackRegressionIds ?? [], ...(signatures.feedbackRegressionSignature ? { feedbackRegressionSignature: signatures.feedbackRegressionSignature } : {}), ...(signatures.feedbackRegressionCoverage ? { feedbackRegressionCoverage: signatures.feedbackRegressionCoverage } : {}), cases: results, passed: results.every((item) => item.passed), runAt: new Date().toISOString() });
+}
+
+/** Score only independently adjudicated outputs, stratified by evidence mode.
+ * This function does not call an Agent and makes no product-acceptance decision. */
+export function scoreFactoryAgentEval(corpusValue: unknown, observationsValue: unknown): FactoryAgentEvaluation {
+  const corpus = FactoryAgentEvalCasesSchema.parse(corpusValue);
+  const observations = FactoryAgentEvalObservationsSchema.parse(observationsValue);
+  if (corpus.suiteVersion !== FACTORY_EVAL_SUITE_VERSION) throw new Error('Agent eval suite version mismatch');
+  const byId = new Map(observations.map(item => [item.caseId, item]));
+  if (byId.size !== observations.length) throw new Error('duplicate Agent observation');
+  for (const observation of observations) {
+    const item = corpus.cases.find(item => item.caseId === observation.caseId);
+    if (item === undefined) throw new Error(`unknown Agent case: ${observation.caseId}`);
+    if (JSON.stringify(item.binding) !== JSON.stringify(observation.binding)) throw new Error(`Agent case binding mismatch: ${item.caseId}`);
+    if (item.dataset === 'holdout' && observation.exposedToLabels) throw new Error(`holdout labels exposed: ${item.caseId}`);
+    if (observation.status === 'COMPLETED') {
+      const ids = observation.judgments.map(item => item.labelId);
+      if (new Set(ids).size !== ids.length || ids.length !== item.labels.length || item.labels.some(label => !ids.includes(label.id))) throw new Error(`missing, duplicate or unknown judgment: ${item.caseId}`);
+    }
+  }
+  const groups = new Map<string, { cases: typeof corpus.cases; observations: FactoryAgentEvalObservation[] }>();
+  for (const item of corpus.cases) {
+    const observation = byId.get(item.caseId);
+    if (observation === undefined) continue;
+    const key = `${item.agent}:${item.dataset}:${observation.evidenceMode}`;
+    let group = groups.get(key);
+    if (group === undefined) { group = { cases: [], observations: [] }; groups.set(key, group); }
+    group.cases.push(item); group.observations.push(observation);
+  }
+  const rate = (numerator: number, denominator: number) => ({ numerator, denominator, value: denominator === 0 ? null : numerator / denominator });
+  const cohorts = [...groups.values()].map(group => {
+    let truePositive = 0, falsePositive = 0, trueNegative = 0, falseNegative = 0, attributed = 0, attributable = 0;
+    for (const [index, item] of group.cases.entries()) {
+      const observation = group.observations[index]!;
+      if (observation.status === 'BLOCKED') continue;
+      const judgments = new Map(observation.judgments.map(row => [row.labelId, row]));
+      for (const label of item.labels) {
+        const judgment = judgments.get(label.id)!; // completeness was validated above
+        if (label.expected) { if (judgment.observed) truePositive++; else falseNegative++; }
+        else { if (judgment.observed) falsePositive++; else trueNegative++; }
+        if (label.expected && label.route !== undefined) {
+          attributable++;
+          if (judgment.observed && judgment.route === label.route) attributed++;
+        }
+      }
+    }
+    const { agent, dataset } = group.cases[0]!;
+    const metrics: FactoryAgentEvaluation['cohorts'][number]['metrics'] = {};
+    const positives = truePositive + falseNegative;
+    const completedObservations = group.observations.filter(item => item.status === 'COMPLETED');
+    if (agent === 'Research') {
+      metrics.keyMechanismPrecision = rate(truePositive, truePositive + falsePositive);
+      metrics.importantOmissionRate = rate(falseNegative, positives);
+      const claims = completedObservations.flatMap(item => item.measurements.claimEvidence == null ? [] : [item.measurements.claimEvidence]);
+      metrics.evidenceValidity = rate(claims.reduce((sum, item) => sum + item.valid, 0), claims.reduce((sum, item) => sum + item.total, 0));
+    }
+    if (agent === 'Builder') {
+      metrics.requirementCorrectness = rate(truePositive + trueNegative, positives + falsePositive + trueNegative);
+      const firstPass = completedObservations.flatMap(item => item.measurements.firstPass == null ? [] : [item.measurements.firstPass]);
+      metrics.firstSlicePassRate = rate(firstPass.filter(Boolean).length, firstPass.length);
+    }
+    if (agent === 'QA') {
+      metrics.defectDetectionRate = rate(truePositive, positives);
+      metrics.falsePositiveRate = rate(falsePositive, falsePositive + trueNegative);
+      metrics.missedDefectRate = rate(falseNegative, positives);
+      metrics.attributionAccuracy = rate(attributed, attributable);
+    }
+    if (agent === 'Fixer') {
+      metrics.repairSuccessRate = rate(truePositive, positives);
+      const regressions = completedObservations.flatMap(item => item.measurements.regressions == null ? [] : [item.measurements.regressions]);
+      metrics.regressionOccurrenceRate = rate(regressions.filter(value => value > 0).length, regressions.length);
+      const attempts = completedObservations.flatMap(item => item.measurements.repairAttempts == null ? [] : [item.measurements.repairAttempts]);
+      metrics.averageRepairAttempts = rate(attempts.reduce((sum, value) => sum + value, 0), attempts.length);
+    }
+    if (agent === 'Pipeline') metrics.qualifiedDeliveryRate = rate(truePositive, positives);
+    const totals: FactoryAgentEvaluation['cohorts'][number]['totals'] = {};
+    for (const name of ['durationMs', 'totalTokens', 'costUsd', 'humanInterventions', 'rework', 'repairAttempts'] as const) {
+      const measured = group.observations.flatMap(item => item.measurements[name] == null ? [] : [item.measurements[name]]);
+      totals[name] = { total: measured.length === 0 ? null : measured.reduce((sum, value) => sum + value, 0), measuredCases: measured.length };
+    }
+    return { agent, dataset, evidenceMode: group.observations[0]!.evidenceMode, caseIds: group.cases.map(item => item.caseId), confusion: { truePositive, falsePositive, trueNegative, falseNegative }, metrics, totals };
+  });
+  const completed = observations.filter(item => item.status === 'COMPLETED').length;
+  const completedByMode = (mode: FactoryAgentEvalObservation['evidenceMode']) => observations.filter(item => item.status === 'COMPLETED' && item.evidenceMode === mode).length;
+  const executionCoverage = { liveCompleted: completedByMode('live-agent'), historicalCompleted: completedByMode('historical-agent'), deterministicCompleted: completedByMode('deterministic-regression') };
+  return FactoryAgentEvaluationSchema.parse({
+    evaluationScope: 'AGENT_EVIDENCE', productQuality: 'NOT_ASSESSED',
+    status: completed > 0 && completed === executionCoverage.deterministicCompleted ? 'CONTROL_ONLY' : completed === corpus.cases.length ? 'SCORED' : observations.length > 0 ? 'PARTIAL' : 'UNVERIFIED',
+    executionCoverage,
+    corpusHash: sha256Text(JSON.stringify(corpus)), observationsHash: sha256Text(JSON.stringify(observations)),
+    coverage: { total: corpus.cases.length, completed, blocked: observations.length - completed, unobserved: corpus.cases.length - observations.length },
+    cases: corpus.cases.map(item => ({ caseId: item.caseId, agent: item.agent, dataset: item.dataset, status: byId.get(item.caseId)?.status ?? 'UNVERIFIED' })), cohorts,
+  });
+}
+
+/** Evidence is external input: require run/repository-local regular files and exact bytes.
+ * Missing, corrupt, changed or symlinked evidence is an error, never a cache miss. */
+export async function verifyFactoryAgentEvalEvidence(root: string, corpusValue: unknown, observationsValue: unknown): Promise<void> {
+  const corpus = FactoryAgentEvalCasesSchema.parse(corpusValue);
+  const observations = FactoryAgentEvalObservationsSchema.parse(observationsValue);
+  const files = [...corpus.cases.flatMap(item => item.sourceEvidence), ...observations.flatMap(item => [...item.inputEvidence, item.outputEvidence, item.reviewEvidence, item.protocolEvidence])];
+  const realRoot = await realpath(root);
+  for (const file of files) {
+    const relative = safeRelativeSourcePath(file.path);
+    const realFile = await safeRunFile(realRoot, relative);
+    if (await sha256File(realFile) !== file.sha256) throw new Error(`Agent evidence hash mismatch: ${relative}`);
+  }
 }

@@ -406,8 +406,71 @@ export const FactoryEvalCasesFileSchema = z.object({
 });
 export type FactoryEvalCasesFile = z.infer<typeof FactoryEvalCasesFileSchema>;
 
+/** Independently adjudicated Agent evidence extends the existing eval, not its route gate.
+ * Labels are scorer-only inputs. A missing/blocked run is never a successful Agent sample. */
+const EvalEvidenceFileSchema = z.object({ path: Text, sha256: Sha256 }).strict();
+const EvalBindingSchema = z.object({ targetRunId: Text, workspace: Text, contractHash: Sha256.nullable(), buildHash: Sha256.nullable() }).strict();
+const EvalAgentSchema = z.enum(['Research', 'Builder', 'QA', 'Fixer', 'Pipeline']);
+const EvalRouteSchema = z.enum(['RESEARCH', 'CONTRACT', 'BUILDER', 'QA']);
+const EvalEvidenceModeSchema = z.enum(['live-agent', 'historical-agent', 'deterministic-regression']);
+export const FactoryAgentEvalCasesSchema = z.object({
+  schemaVersion: z.literal(1), suiteVersion: Text,
+  cases: z.array(z.object({
+    caseId: Text, familyId: Text, agent: EvalAgentSchema, dataset: FactoryEvalDatasetSchema,
+    category: z.enum(['normal', 'historical-failure', 'boundary-unknown', 'injected-defect']),
+    binding: EvalBindingSchema, sourceEvidence: z.array(EvalEvidenceFileSchema).min(1),
+    labels: z.array(z.object({ id: Text, expected: z.boolean(), route: EvalRouteSchema.optional() }).strict()).min(1),
+  }).strict()).min(1),
+}).strict().superRefine((value, context) => {
+  if (new Set(value.cases.map(item => item.caseId)).size !== value.cases.length) context.addIssue({ code: 'custom', message: 'duplicate Agent eval case' });
+  for (const item of value.cases) {
+    if (new Set(item.labels.map(label => label.id)).size !== item.labels.length) context.addIssue({ code: 'custom', message: `duplicate labels: ${item.caseId}` });
+    if (item.dataset === 'holdout' && value.cases.some(other => other.familyId === item.familyId && other.dataset !== 'holdout')) context.addIssue({ code: 'custom', message: `holdout family leakage: ${item.familyId}` });
+  }
+});
+export const FactoryAgentEvalObservationsSchema = z.array(z.object({
+  caseId: Text, binding: EvalBindingSchema, sourceRevision: z.string().regex(/^[a-f0-9]{40}$/u).nullable(),
+  status: z.enum(['COMPLETED', 'BLOCKED']), blocker: Text.nullable(),
+  evidenceMode: EvalEvidenceModeSchema, subject: Text, reviewer: Text, exposedToLabels: z.boolean(),
+  inputEvidence: z.array(EvalEvidenceFileSchema).min(1), outputEvidence: EvalEvidenceFileSchema,
+  reviewEvidence: EvalEvidenceFileSchema, protocolEvidence: EvalEvidenceFileSchema,
+  judgments: z.array(z.object({ labelId: Text, observed: z.boolean(), route: EvalRouteSchema.optional() }).strict()),
+  measurements: z.object({
+    claimEvidence: z.object({ valid: z.number().int().nonnegative(), total: z.number().int().nonnegative() }).strict()
+      .refine(value => value.valid <= value.total, 'valid claims exceed assessed claims').nullable().optional(),
+    firstPass: z.boolean().nullable().optional(), regressions: z.number().int().nonnegative().nullable().optional(),
+    repairAttempts: z.number().int().positive().nullable().optional(), rework: z.number().int().nonnegative().nullable().optional(),
+    humanInterventions: z.number().int().nonnegative().nullable().optional(), durationMs: z.number().finite().nonnegative().nullable().optional(),
+    totalTokens: z.number().int().nonnegative().nullable().optional(), costUsd: z.number().finite().nonnegative().nullable().optional(),
+  }).strict(),
+}).strict().superRefine((value, context) => {
+  if (value.status === 'COMPLETED' && value.sourceRevision === null) context.addIssue({ code: 'custom', message: 'completed Agent observation requires source revision' });
+  if (value.subject === value.reviewer) context.addIssue({ code: 'custom', message: 'Agent cannot self-review' });
+  if (value.status === 'BLOCKED' && value.blocker === null) context.addIssue({ code: 'custom', message: 'blocked observation requires reason' });
+  if (value.status === 'COMPLETED' && value.blocker !== null) context.addIssue({ code: 'custom', message: 'completed observation retains blocker' });
+}));
+export type FactoryAgentEvalObservation = z.infer<typeof FactoryAgentEvalObservationsSchema>[number];
+const EvalRateSchema = z.object({ numerator: z.number().finite().nonnegative(), denominator: z.number().int().nonnegative(), value: z.number().finite().nonnegative().nullable() }).strict();
+const EvalTotalSchema = z.object({ total: z.number().finite().nonnegative().nullable(), measuredCases: z.number().int().nonnegative() }).strict();
+export const FactoryAgentEvaluationSchema = z.object({
+  evaluationScope: z.literal('AGENT_EVIDENCE'), productQuality: z.literal('NOT_ASSESSED'),
+  status: z.enum(['SCORED', 'CONTROL_ONLY', 'PARTIAL', 'UNVERIFIED']),
+  executionCoverage: z.object({ liveCompleted: z.number().int().nonnegative(), historicalCompleted: z.number().int().nonnegative(), deterministicCompleted: z.number().int().nonnegative() }).strict(), corpusHash: Sha256, observationsHash: Sha256,
+  coverage: z.object({ total: z.number().int().nonnegative(), completed: z.number().int().nonnegative(), blocked: z.number().int().nonnegative(), unobserved: z.number().int().nonnegative() }).strict(),
+  cases: z.array(z.object({ caseId: Text, agent: EvalAgentSchema, dataset: FactoryEvalDatasetSchema, status: z.enum(['COMPLETED', 'BLOCKED', 'UNVERIFIED']) }).strict()),
+  cohorts: z.array(z.object({
+    agent: EvalAgentSchema, dataset: FactoryEvalDatasetSchema, evidenceMode: EvalEvidenceModeSchema, caseIds: z.array(Text).min(1),
+    confusion: z.object({ truePositive: z.number().int().nonnegative(), falsePositive: z.number().int().nonnegative(), trueNegative: z.number().int().nonnegative(), falseNegative: z.number().int().nonnegative() }).strict(),
+    metrics: z.record(Text, EvalRateSchema), totals: z.record(Text, EvalTotalSchema),
+  }).strict()),
+}).strict();
+export type FactoryAgentEvaluation = z.infer<typeof FactoryAgentEvaluationSchema>;
+
 export const FactoryEvalReportSchema = z.object({
   schemaVersion: z.literal(1),
+  evaluationScope: z.literal('CONTROL_PLANE').default('CONTROL_PLANE'),
+  productQuality: z.literal('NOT_ASSESSED').default('NOT_ASSESSED'),
+  agentEvaluation: FactoryAgentEvaluationSchema.optional(),
   suiteVersion: Text,
   modelSignature: Text,
   promptSignature: Text,

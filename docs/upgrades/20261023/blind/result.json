@@ -1,0 +1,124 @@
+{
+  "status": "PARTIAL",
+  "targetRunId": "mobile-slice-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+  "referenceHash": "3781e4dcd3d21094f186cf442b3ee30cddfbb2fbe68d87c5c7470a2c742bf75a",
+  "candidateHash": "c4cc3c427fc52c9f91f6229c9aea0ae7cfe8220341be521df6c807626d101aae",
+  "startedAt": "2026-10-23T09:28:35Z",
+  "finishedAt": "2026-10-23T09:33:11.795Z",
+  "humanHints": 0,
+  "actions": [
+    "Verified supplied reference video SHA-256 3781e4dcd3d21094f186cf442b3ee30cddfbb2fbe68d87c5c7470a2c742bf75a and candidate dist/index.html SHA-256 c4cc3c427fc52c9f91f6229c9aea0ae7cfe8220341be521df6c807626d101aae before inspection.",
+    "Extracted and visually inspected selected frames from the exact reference video (1100x720, 14.49646 fps, 36.49s); inspected source-video frame samples at 0s, 10s, 25s, and 30s plus a contact sheet.",
+    "Served candidate dist read-only on temporary localhost and stopped the server after testing. Used Playwright with fresh headless Chromium at 1100x720; normal mouse input only, no game/debug/state APIs.",
+    "Session 1: opened candidate, waited 1.5s, clicked viewport center once, waited 1.2s, held mouse 0.9s, moved 30px right over 0.5s, released, and waited 1s; saved observed screenshots.",
+    "Session 2: opened fresh candidate, waited 1s, clicked center once, clicked center 20 times at 300ms intervals, then waited 8s without input; saved screenshots after start, loop tap 8, loop tap 20, and idle 8s. Visible state reached stage 2 at distance 18 after loop taps; after idle it showed failure/score 38.",
+    "Observed a reference-vs-candidate visual presentation difference only; input traces are not paired and no requirement document was provided to classify it as a defect."
+  ],
+  "findings": [
+    {
+      "id": "OBS-001",
+      "severity": "minor",
+      "observation": "The sampled reference and observed candidate use visibly different course framing and HUD scale. In the recording, the knife appears small over a narrow elevated white route in an open green landscape; the candidate uses a much larger foreground cleaver, a broad route against large faceted hills, and prominent stage/score overlays.",
+      "expectedVsObserved": "Reference samples at 0s, 10s, 25s, and 30s show the narrow-route/distant-knife presentation and fruit/hazard progression; candidate fresh-start and ordinary-tap screenshots show the large-cleaver/broad-route/stage-HUD presentation. This documents a presentation difference, not a requirement violation or gameplay defect.",
+      "referenceEvidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa/ref-000s.png",
+          "sha256": "20741e7f020e9ac1dd53c31c0428b9d34650ae64d3a52383eb13ad12e40aa6cb"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa/ref-010s.png",
+          "sha256": "34b08cefc2c7b6bcb5bd6298c0d46e5ff65be7ea0afcb5081b15fcd2a6c8f999"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa/ref-025s.png",
+          "sha256": "adb51c87f11dd9768d1b7cb1e10b1fb1fb34a5f8dc11b2f19030c2a75b94f093"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa/ref-030s.png",
+          "sha256": "21469eb440f1d459b03745d7cfeb3b3e61b4334b5b47d31709cfe17bc86ae807"
+        }
+      ],
+      "candidateEvidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa/candidate-start.png",
+          "sha256": "380adb9086ab19bb36b636badd15922bdc1642d37279ae7d39ce4b28623079a1"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa/candidate-session2-20taps.png",
+          "sha256": "ec84e78f9bc5bb69bed89b6c963e6d822bfff22f3a45be9584824d61c274487b"
+        }
+      ],
+      "attribution": "UNKNOWN",
+      "uncertainty": "The reference is recording-only with no input trace or synchronized timebase. No visual specification or approved adaptation target was supplied, so it is unknown whether this difference is intended; gameplay non-equivalence cannot be inferred from these screens."
+    }
+  ],
+  "gaps": [
+    "The supplied reference has no input trace; click/tap cadence and actions cannot be paired with candidate inputs, so progression timing, obstacle avoidance, and terminal outcome are not comparable.",
+    "Reference playback samples show course progression to a checkered multiplier structure around 30s; the candidate normal-input sequence reached stage 2 at distance 18, then failed after 8s with no input. A candidate successful terminal/settlement was not observed.",
+    "Replay was not exercised. Only the specified 1100x720 viewport and two fresh candidate sessions were used; no mobile-size/orientation run was performed.",
+    "No user-facing requirements or verified expected behavior were supplied; this is a bounded qualitative observation, not release approval."
+  ],
+  "evidence": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/incoming/_2026-09-06-135548-3781e4dcd3d2.mp4",
+      "sha256": "3781e4dcd3d21094f186cf442b3ee30cddfbb2fbe68d87c5c7470a2c742bf75a"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/dist/index.html",
+      "sha256": "c4cc3c427fc52c9f91f6229c9aea0ae7cfe8220341be521df6c807626d101aae"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa/input-log.json",
+      "sha256": "c3c5240dd012d9fb98b2e8d2339abb12ae305ff2e08d30a6dd679446809d0c00"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa/reference-contact-sheet.jpg",
+      "sha256": "2b93e121718f63fdac76fe38dffb7732503c9fd11c47dc14f005bdcb16d95c6e"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa/ref-000s.png",
+      "sha256": "20741e7f020e9ac1dd53c31c0428b9d34650ae64d3a52383eb13ad12e40aa6cb"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa/ref-010s.png",
+      "sha256": "34b08cefc2c7b6bcb5bd6298c0d46e5ff65be7ea0afcb5081b15fcd2a6c8f999"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa/ref-025s.png",
+      "sha256": "adb51c87f11dd9768d1b7cb1e10b1fb1fb34a5f8dc11b2f19030c2a75b94f093"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa/ref-030s.png",
+      "sha256": "21469eb440f1d459b03745d7cfeb3b3e61b4334b5b47d31709cfe17bc86ae807"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa/candidate-start.png",
+      "sha256": "380adb9086ab19bb36b636badd15922bdc1642d37279ae7d39ce4b28623079a1"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa/candidate-after-click.png",
+      "sha256": "22e6ab2f9cd1278350ee723623cead7fea69d1b5cca2a638dcebce9de0437199"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa/candidate-after-hold.png",
+      "sha256": "7f5c9a4cfb158784b336aeacfb722540662a35701305c3e46d67b8aa1aa31e67"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa/candidate-session2-start.png",
+      "sha256": "d8204b3adc57b993fe35d51887a0f6d26a60fc8fbe682d2a47e78729a072499a"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa/candidate-session2-8taps.png",
+      "sha256": "a5f4457e6e2627ed25c52a8e1e6c918ebb803e7d21e6f77fd54489f2c2fc399b"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa/candidate-session2-20taps.png",
+      "sha256": "ec84e78f9bc5bb69bed89b6c963e6d822bfff22f3a45be9584824d61c274487b"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa/candidate-session2-idle8s.png",
+      "sha256": "2f3e033e1fe9062ae7b18486a9446dd54f57327abb1ad06f7f8fabb77f422b5a"
+    }
+  ]
+}

@@ -139,6 +139,7 @@ export const RunReadinessSchema = z.enum([
   'IN_PROGRESS',
   'WAITING',
   'IMPLEMENTATION_READY',
+  'PREVIEW_ACCEPTED',
   'CANDIDATE_READY',
   'RELEASE_READY',
   'LIVE_MONITORING',
@@ -517,7 +518,7 @@ export type ReleaseManifest = z.infer<typeof ReleaseManifestSchema>;
 const TokenUsageSchema = z.object({ inputTokens: z.number().int().nonnegative(), outputTokens: z.number().int().nonnegative(), totalTokens: z.number().int().nonnegative() });
 export const StageRecordSchema = z.object({ stage: StageNameSchema, status: ExecutionStatusSchema, startedAt: z.string().nullable(), finishedAt: z.string().nullable(), attempts: z.number().int().nonnegative(), inputArtifacts: z.array(z.string()), outputArtifacts: z.array(z.string()), errors: z.array(z.string()), evidence: z.array(z.string()), failureReason: z.string().optional(), providerCalls: z.object({ agent: z.number().int().nonnegative(), image: z.number().int().nonnegative() }).default({ agent: 0, image: 0 }), tokenUsage: TokenUsageSchema.default({ inputTokens: 0, outputTokens: 0, totalTokens: 0 }) });
 export type StageRecord = z.infer<typeof StageRecordSchema>;
-export const RunStateSchema = z.object({ schemaVersion: z.literal(1), runId: z.string(), runKind: z.enum(['game', 'action-experiment']).default('game'), stage: StageNameSchema, status: ExecutionStatusSchema, readiness: RunReadinessSchema.default('IN_PROGRESS'), createdAt: z.string(), updatedAt: z.string(), fixAttempts: z.number().int().nonnegative(), prototypeBatch: z.number().int().min(1).max(2).default(1), providerMode: z.enum(['mock', 'live-art', 'codex-account']), codexThreadId: z.string().optional(), failureReason: z.string().optional(), canonicalGameId: z.string().trim().min(1).optional(), variantId: z.string().trim().min(1).optional(), identityManifestHash: z.string().regex(/^[a-f0-9]{64}$/iu).optional(), stages: z.record(z.string(), StageRecordSchema), transitionHistory: z.array(z.object({ from: StageNameSchema, to: StageNameSchema, reason: z.string().trim().min(1), at: z.string().datetime(), runId: z.string().trim().min(1).optional() }).strict()).default([]) });
+export const RunStateSchema = z.object({ schemaVersion: z.literal(1), runId: z.string(), runKind: z.enum(['game', 'action-experiment', 'reference-intake']).default('game'), stage: StageNameSchema, status: ExecutionStatusSchema, readiness: RunReadinessSchema.default('IN_PROGRESS'), createdAt: z.string(), updatedAt: z.string(), fixAttempts: z.number().int().nonnegative(), prototypeBatch: z.number().int().min(1).max(2).default(1), providerMode: z.enum(['mock', 'live-art', 'codex-account']), codexThreadId: z.string().optional(), failureReason: z.string().optional(), canonicalGameId: z.string().trim().min(1).optional(), variantId: z.string().trim().min(1).optional(), identityManifestHash: z.string().regex(/^[a-f0-9]{64}$/iu).optional(), stages: z.record(z.string(), StageRecordSchema), transitionHistory: z.array(z.object({ from: StageNameSchema, to: StageNameSchema, reason: z.string().trim().min(1), at: z.string().datetime(), runId: z.string().trim().min(1).optional() }).strict()).default([]) });
 export type RunState = z.infer<typeof RunStateSchema>;
 
 export * from './open-source-research.js';

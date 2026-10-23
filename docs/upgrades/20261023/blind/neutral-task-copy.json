@@ -1,0 +1,36 @@
+{
+  "role": "QAAgent independent read-only experiment, NOT Builder/Fixer",
+  "task": "Compare the supplied reference recording and existing candidate through actual visual observation and normal player input. Discover material differences, if any, without reading any historical diagnoses or implementation. Do not assume the candidate is defective. This is bounded qualitative QA, not a release approval.",
+  "targetRunId": "mobile-slice-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+  "reference": {
+    "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/incoming/_2026-09-06-135548-3781e4dcd3d2.mp4",
+    "sha256": "3781e4dcd3d21094f186cf442b3ee30cddfbb2fbe68d87c5c7470a2c742bf75a",
+    "mode": "recording-only; no reference input trace is provided; do not fabricate inputs or make live-reference claims"
+  },
+  "candidate": {
+    "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/dist/index.html",
+    "sha256": "c4cc3c427fc52c9f91f6229c9aea0ae7cfe8220341be521df6c807626d101aae"
+  },
+  "allowedReads": [
+    "Only reference video bytes and candidate dist/ browser assets",
+    "/Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市/node_modules for Playwright/tsx/zod tooling",
+    "generic game-playtest skill if needed"
+  ],
+  "prohibitedReads": [
+    "game source",
+    "other artifacts, diagnoses, research, QA logs, tests, other agents or chats",
+    "ground-truth labels or repository docs"
+  ],
+  "writeScope": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa/",
+  "protocol": [
+    "Check both provided SHA256 before evaluation; mismatch stops immediately",
+    "Keep a neutral task copy/hash and start/end times",
+    "Extract selected frames or contact sheets from this exact video and inspect using view_image; actual pixels required",
+    "Use Playwright installed at the supplied tooling directory; fresh Chromium 1100x720, normal mouse/keyboard/touch only; no __GAME_TEST__, debug API, evaluate script for state/game controls, fixture/RNG injection",
+    "Observe candidate with normal input including startup, core play, terminal/recovery/replay where reachable; screenshot actual observations and inspect them",
+    "Reference is recording-only: do not claim a production paired normal-input comparison gate passed",
+    "Timebox to 8 minutes, at most 2 fresh browser sessions; no external paid CLI/model calls or added agents"
+  ],
+  "output": "Save result.json under writeScope, return ONLY JSON. Validate with Zod using the exact supplied schema. Every finding must cite inspected reference and candidate evidence. Raw screen evidence must remain preserved. No hidden expected answer or known issue list has been supplied."
+}

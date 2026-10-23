@@ -1,0 +1,3776 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市
+
+ ❯ tests/unit/reference-comparison-mode.test.ts (12 tests | 6 failed) 15ms
+     × rejects Q ordinal permutations with equal counts, means and ranges 9ms
+     × rejects a different ordered sequence length: 1 1ms
+     × applies ordered maxDelta to each corresponding sample, not the mean 1ms
+     × keeps legacy artifacts readable but refuses to guess missing comparison semantics 1ms
+     × persists the declared mean mode 1ms
+     × persists the declared ordered mode 0ms
+ ❯ tests/unit/research-sandbox.test.ts (15 tests | 12 failed) 106ms
+     × delivers declared seed, evidence pack and document text even when context omits them 27ms
+     × rejects missing-document instead of delivering a placeholder 9ms
+     × rejects linked-document instead of delivering a placeholder 5ms
+     × rejects invalid-seed instead of delivering a placeholder 6ms
+     × rejects invalid-pack instead of delivering a placeholder 5ms
+     × checks seed source fields before schema parsing strips unknown fields 4ms
+     × preserves complete schema-validated structural inputs despite empty or truncated context excerpts 9ms
+     × rejects missing structural prerequisites rather than silently falling back to excerpts 5ms
+     × rejects invalid-json structural prerequisites rather than silently falling back to excerpts 5ms
+     × rejects invalid-schema structural prerequisites rather than silently falling back to excerpts 5ms
+     × rejects symlink structural prerequisites rather than silently falling back to excerpts 5ms
+     × rejects embedded-instruction structural prerequisites rather than silently falling back to excerpts 4ms
+ ❯ tests/unit/qa-agent-continuity.test.ts (10 tests | 8 failed) 52ms
+     × blocks a stored contract that the provider omits instead of skipping it 16ms
+     × evaluates an independent observation against the stored contract without needing an echo 5ms
+     × does not allow a provider echo to weaken the stored repetition obligation 5ms
+     × accepts nested legacy observation fields against the run-owned contract 4ms
+     × does not replace an invalid stored contract with a valid provider contract 6ms
+     × propagates malformed stored JSON instead of treating it as no contract 3ms
+     × propagates a filesystem read error instead of treating it as no contract 3ms
+     × retains a stored contract identity when provider observation is invalid 4ms
+ ❯ tests/unit/qa-agent-aggregation.test.ts (7 tests | 4 failed) 34ms
+     × rejects provider success with 'a failed check' and retains the failure details 13ms
+     × rejects provider success with 'an error issue' and retains the failure details 4ms
+     × rejects evidence-normalization errors (also contains a valid row: false) 4ms
+     × rejects evidence-normalization errors (also contains a valid row: true) 3ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 30 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/qa-agent-aggregation.test.ts > QAAgent aggregate verdict > rejects provider success with 'a failed check' and retains the failure details
+AssertionError: expected { Object (schemaVersion, passed, ...) } to match object { schemaVersion: 1, …(7) }
+
+- Expected
++ Received
+
+@@ -21,10 +21,10 @@
+        "mode": "STATE_COVERAGE",
+        "schemaVersion": 1,
+      },
+    ],
+    "issues": [],
+-   "passed": false,
++   "passed": true,
+    "schemaVersion": 1,
+    "screenshots": [],
+    "testedAt": "1970-01-01T00:00:00.000Z",
+  }
+
+ ❯ tests/unit/qa-agent-aggregation.test.ts:56:20
+     54|     const report = await runQa(input);
+     55|
+     56|     expect(report).toMatchObject({ ...input, passed: false });
+       |                    ^
+     57|     await expectNormalFlowVerdict(false);
+     58|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/30]⎯
+
+ FAIL  tests/unit/qa-agent-aggregation.test.ts > QAAgent aggregate verdict > rejects provider success with 'an error issue' and retains the failure details
+AssertionError: expected { Object (schemaVersion, passed, ...) } to match object { schemaVersion: 1, …(7) }
+
+- Expected
++ Received
+
+@@ -28,10 +28,10 @@
+        "id": "collision",
+        "message": "collision observation failed",
+        "severity": "error",
+      },
+    ],
+-   "passed": false,
++   "passed": true,
+    "schemaVersion": 1,
+    "screenshots": [],
+    "testedAt": "1970-01-01T00:00:00.000Z",
+  }
+
+ ❯ tests/unit/qa-agent-aggregation.test.ts:56:20
+     54|     const report = await runQa(input);
+     55|
+     56|     expect(report).toMatchObject({ ...input, passed: false });
+       |                    ^
+     57|     await expectNormalFlowVerdict(false);
+     58|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/30]⎯
+
+ FAIL  tests/unit/qa-agent-aggregation.test.ts > QAAgent aggregate verdict > rejects evidence-normalization errors (also contains a valid row: false)
+ FAIL  tests/unit/qa-agent-aggregation.test.ts > QAAgent aggregate verdict > rejects evidence-normalization errors (also contains a valid row: true)
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/unit/qa-agent-aggregation.test.ts:66:27
+     64|     });
+     65|
+     66|     expect(report.passed).toBe(false);
+       |                           ^
+     67|     expect(report.issues).toContainEqual(expect.objectContaining({ id:…
+     68|     expect(report.evidence).toHaveLength(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/30]⎯
+
+ FAIL  tests/unit/qa-agent-continuity.test.ts > QAAgent run-owned continuity contract > blocks a stored contract that the provider omits instead of skipping it
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/unit/qa-agent-continuity.test.ts:42:27
+     40|     const report = await runQa();
+     41|
+     42|     expect(report.passed).toBe(false);
+       |                           ^
+     43|     expect(report.interactionContinuity).toMatchObject({
+     44|       contractId: contract.contractId, passed: false, blockers: ['obse…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/30]⎯
+
+ FAIL  tests/unit/qa-agent-continuity.test.ts > QAAgent run-owned continuity contract > evaluates an independent observation against the stored contract without needing an echo
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/unit/qa-agent-continuity.test.ts:57:27
+     55|     const report = await runQa({ interactionContinuityObservation: obs…
+     56|
+     57|     expect(report.passed).toBe(true);
+       |                           ^
+     58|     expect(report.interactionContinuity).toMatchObject({
+     59|       contractId: contract.contractId, passed: true, checkedScenarios:…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/30]⎯
+
+ FAIL  tests/unit/qa-agent-continuity.test.ts > QAAgent run-owned continuity contract > does not allow a provider echo to weaken the stored repetition obligation
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/unit/qa-agent-continuity.test.ts:75:27
+     73|     });
+     74|
+     75|     expect(report.passed).toBe(false);
+       |                           ^
+     76|     expect(report.interactionContinuity?.contractId).toBe(contract.con…
+     77|     expect(report.interactionContinuity?.blockers).toEqual(expect.arra…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/30]⎯
+
+ FAIL  tests/unit/qa-agent-continuity.test.ts > QAAgent run-owned continuity contract > accepts nested legacy observation fields against the run-owned contract
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/unit/qa-agent-continuity.test.ts:94:27
+     92|     await declareContract(contract);
+     93|     const report = await runQa({ interactionContinuity: { observation …
+     94|     expect(report.passed).toBe(true);
+       |                           ^
+     95|     expect(report.interactionContinuity?.contractId).toBe(contract.con…
+     96|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/30]⎯
+
+ FAIL  tests/unit/qa-agent-continuity.test.ts > QAAgent run-owned continuity contract > does not replace an invalid stored contract with a valid provider contract
+AssertionError: promise resolved "{ schemaVersion: 1, passed: true, …(7) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "checks": [],
++   "consoleLog": "logs/console.log",
++   "evidence": [
++     {
++       "actions": [
++         "provider-playtest",
++       ],
++       "artifacts": [
++         "artifacts/qa-report.json",
++       ],
++       "forbiddenOperations": [
++         "provider-test-api-oracle",
++       ],
++       "mode": "STATE_COVERAGE",
++       "schemaVersion": 1,
++     },
++   ],
++   "interactionContinuity": {
++     "actionEvidenceMap": {
++       "primary": {
++         "edge": [
++           "trace:edge",
++           "trace:normal",
++           "trace:state",
++           "shot:feedback",
++         ],
++         "normal": [
++           "trace:normal",
++           "trace:state",
++           "shot:feedback",
++         ],
++         "rescue": [
++           "trace:rescue",
++           "trace:normal",
++           "trace:state",
++           "shot:feedback",
++         ],
++       },
++     },
++     "blockers": [],
++     "checkedNodes": 1,
++     "checkedRepetitions": 1,
++     "checkedScenarios": 3,
++     "contractId": "run-owned-continuity",
++     "evaluatedAt": "2026-10-23T09:26:02.587Z",
++     "evidence": [
++       "trace:normal",
++       "trace:edge",
++       "trace:rescue",
++       "trace:state",
++       "shot:feedback",
++     ],
++     "failureKinds": [],
++     "passed": true,
++     "schemaVersion": 1,
++   },
++   "issues": [],
++   "passed": true,
++   "schemaVersion": 1,
++   "screenshots": [],
++   "testedAt": "1970-01-01T00:00:00.000Z",
+  }
+
+ ❯ tests/unit/qa-agent-continuity.test.ts:107:116
+    105|     const { contract, observation } = continuityFixture();
+    106|     await declareContract({ ...contract, actions: [] });
+    107|     await expect(runQa({ interactionContinuityContract: contract, inte…
+       |                                                                                                                    ^
+    108|   });
+    109|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/30]⎯
+
+ FAIL  tests/unit/qa-agent-continuity.test.ts > QAAgent run-owned continuity contract > propagates malformed stored JSON instead of treating it as no contract
+AssertionError: promise resolved "{ schemaVersion: 1, passed: true, …(6) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "checks": [],
++   "consoleLog": "logs/console.log",
++   "evidence": [
++     {
++       "actions": [
++         "provider-playtest",
++       ],
++       "artifacts": [
++         "artifacts/qa-report.json",
++       ],
++       "forbiddenOperations": [
++         "provider-test-api-oracle",
++       ],
++       "mode": "STATE_COVERAGE",
++       "schemaVersion": 1,
++     },
++   ],
++   "issues": [],
++   "passed": true,
++   "schemaVersion": 1,
++   "screenshots": [],
++   "testedAt": "1970-01-01T00:00:00.000Z",
+  }
+
+ ❯ tests/unit/qa-agent-continuity.test.ts:112:26
+    110|   it('propagates malformed stored JSON instead of treating it as no co…
+    111|     await writeFile(path.join(runRoot, 'artifacts/interaction-continui…
+    112|     await expect(runQa()).rejects.toThrow(SyntaxError);
+       |                          ^
+    113|   });
+    114|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/30]⎯
+
+ FAIL  tests/unit/qa-agent-continuity.test.ts > QAAgent run-owned continuity contract > propagates a filesystem read error instead of treating it as no contract
+AssertionError: promise resolved "{ schemaVersion: 1, passed: true, …(6) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "checks": [],
++   "consoleLog": "logs/console.log",
++   "evidence": [
++     {
++       "actions": [
++         "provider-playtest",
++       ],
++       "artifacts": [
++         "artifacts/qa-report.json",
++       ],
++       "forbiddenOperations": [
++         "provider-test-api-oracle",
++       ],
++       "mode": "STATE_COVERAGE",
++       "schemaVersion": 1,
++     },
++   ],
++   "issues": [],
++   "passed": true,
++   "schemaVersion": 1,
++   "screenshots": [],
++   "testedAt": "1970-01-01T00:00:00.000Z",
+  }
+
+ ❯ tests/unit/qa-agent-continuity.test.ts:117:26
+    115|   it('propagates a filesystem read error instead of treating it as no …
+    116|     await mkdir(path.join(runRoot, 'artifacts/interaction-continuity-c…
+    117|     await expect(runQa()).rejects.toMatchObject({ code: 'EISDIR' });
+       |                          ^
+    118|   });
+    119|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/30]⎯
+
+ FAIL  tests/unit/qa-agent-continuity.test.ts > QAAgent run-owned continuity contract > retains a stored contract identity when provider observation is invalid
+AssertionError: expected 'invalid-interaction-continuity' to be 'run-owned-continuity' // Object.is equality
+
+Expected: "run-owned-continuity"
+Received: "invalid-interaction-continuity"
+
+ ❯ tests/unit/qa-agent-continuity.test.ts:125:54
+    123|     const report = await runQa({ interactionContinuityObservation: { n…
+    124|     expect(report.passed).toBe(false);
+    125|     expect(report.interactionContinuity?.contractId).toBe(contract.con…
+       |                                                      ^
+    126|     expect(report.interactionContinuity?.blockers[0]).toMatch(/^observ…
+    127|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/30]⎯
+
+ FAIL  tests/unit/reference-comparison-mode.test.ts > explicit reference comparison semantics > rejects Q ordinal permutations with equal counts, means and ranges
+AssertionError: expected [] to deep equally contain { …(3) }
+
+- Expected:
+{
+  "checkId": "spatial-route-order-01",
+  "reason": "candidate-behavior-diverges",
+  "route": "BUILDER",
+}
+
++ Received:
+[]
+
+ ❯ tests/unit/reference-comparison-mode.test.ts:50:45
+     48|     const input = fixture('ordered');
+     49|     for (const observation of input.candidate.observations) observatio…
+     50|     expect(compareReferenceCaptures(input)).toContainEqual({
+       |                                             ^
+     51|       checkId: 'spatial-route-order-01', route: 'BUILDER', reason: 'ca…
+     52|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/30]⎯
+
+ FAIL  tests/unit/reference-comparison-mode.test.ts > explicit reference comparison semantics > rejects a different ordered sequence length: 1
+AssertionError: expected [] to deep equally contain { …(3) }
+
+- Expected:
+{
+  "checkId": "spatial-route-order-01",
+  "reason": "candidate-behavior-diverges",
+  "route": "BUILDER",
+}
+
++ Received:
+[]
+
+ ❯ tests/unit/reference-comparison-mode.test.ts:66:45
+     64|     input.contract.behaviorChecks[0]!.comparison.minimumSamples = 1;
+     65|     input.candidate.observations[0]!.samples = samples;
+     66|     expect(compareReferenceCaptures(input)).toContainEqual({
+       |                                             ^
+     67|       checkId: 'spatial-route-order-01', route: 'BUILDER', reason: 'ca…
+     68|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/30]⎯
+
+ FAIL  tests/unit/reference-comparison-mode.test.ts > explicit reference comparison semantics > applies ordered maxDelta to each corresponding sample, not the mean
+AssertionError: expected [] to deep equally contain { …(3) }
+
+- Expected:
+{
+  "checkId": "spatial-route-order-01",
+  "reason": "candidate-behavior-diverges",
+  "route": "BUILDER",
+}
+
++ Received:
+[]
+
+ ❯ tests/unit/reference-comparison-mode.test.ts:77:45
+     75|     expect(compareReferenceCaptures(input)).toEqual([]);
+     76|     input.candidate.observations[0]!.samples = [1.5, 1.5, 3, 4, 5, 6, …
+     77|     expect(compareReferenceCaptures(input)).toContainEqual({
+       |                                             ^
+     78|       checkId: 'spatial-route-order-01', route: 'BUILDER', reason: 'ca…
+     79|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/30]⎯
+
+ FAIL  tests/unit/reference-comparison-mode.test.ts > explicit reference comparison semantics > keeps legacy artifacts readable but refuses to guess missing comparison semantics
+AssertionError: expected [] to deep equally contain { …(3) }
+
+- Expected:
+{
+  "checkId": "spatial-route-order-01",
+  "reason": "comparison-mode-missing",
+  "route": "CONTRACT",
+}
+
++ Received:
+[]
+
+ ❯ tests/unit/reference-comparison-mode.test.ts:91:68
+     89|     const input = fixture(undefined);
+     90|     expect(ReferenceFidelityContractSchema.safeParse(input.contract).s…
+     91|     expect(referenceComparisonContractDifferences(input.contract)).toC…
+       |                                                                    ^
+     92|       checkId: 'spatial-route-order-01', route: 'CONTRACT', reason: 'c…
+     93|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/30]⎯
+
+ FAIL  tests/unit/reference-comparison-mode.test.ts > explicit reference comparison semantics > persists the declared mean mode
+ FAIL  tests/unit/reference-comparison-mode.test.ts > explicit reference comparison semantics > persists the declared ordered mode
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "comparisonMode"
+    ],
+    "path": [],
+    "message": "Unrecognized key: \"comparisonMode\""
+  }
+]
+ ❯ tests/unit/reference-comparison-mode.test.ts:97:42
+     95|
+     96|   it.each(['mean', 'ordered'] as const)('persists the declared %s mode…
+     97|     expect(ReferenceComparisonSpecSchema.parse(fixture(mode).contract.…
+       |                                          ^
+     98|       .toMatchObject({ comparisonMode: mode });
+     99|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/30]⎯
+
+ FAIL  tests/unit/research-sandbox.test.ts > research execution sandbox > delivers declared seed, evidence pack and document text even when context omits them
+AssertionError: expected '[artifact pointer only: input/seed.ya…' to be 'title: Test\ntheme: Original\nruntime…' // Object.is equality
+
+- Expected
++ Received
+
+- title: Test
+- theme: Original
+- runtime: web-lite
+- template: idle-shop-v1
+- designMode: prototype_tournament
+- preferences:
+-   nested:
+-     cadence: continuous
+-
++ [artifact pointer only: input/seed.yaml]
+
+ ❯ tests/unit/research-sandbox.test.ts:32:79
+     30|     const files = await writeResearchReferenceInputs(runRoot);
+     31|     const result = await prepareResearchSandbox({ ...referenceContext(…
+     32|     expect(await readFile(path.join(result.root, 'input/seed.yaml'), '…
+       |                                                                               ^
+     33|     expect(await readFile(path.join(result.root, 'artifacts/reference-…
+     34|     const analysis = await readFile(path.join(result.root, 'reference-…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/30]⎯
+
+ FAIL  tests/unit/research-sandbox.test.ts > research execution sandbox > rejects missing-document instead of delivering a placeholder
+AssertionError: promise resolved "{ mode: 'sanitized-read-only', …(3) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "allowedFiles": [
++     "input/seed.yaml",
++     "artifacts/reference-evidence-pack.json",
++     "reference-evidence/incoming/design.docx.analysis.txt",
++   ],
++   "manifestPath": "/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/research-reference-invalid-VB1CDg/research-sandbox/reference_deep_research/SANDBOX_MANIFEST.json",
++   "mode": "sanitized-read-only",
++   "root": "/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/research-reference-invalid-VB1CDg/research-sandbox/reference_deep_research",
+  }
+
+ ❯ tests/unit/research-sandbox.test.ts:49:107
+     47|     if (failure === 'invalid-seed') await writeFile(path.join(runRoot,…
+     48|     if (failure === 'invalid-pack') await writeFile(path.join(runRoot,…
+     49|     await expect(prepareResearchSandbox({ ...referenceContext(runRoot)…
+       |                                                                                                           ^
+     50|   });
+     51|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/30]⎯
+
+ FAIL  tests/unit/research-sandbox.test.ts > research execution sandbox > rejects linked-document instead of delivering a placeholder
+AssertionError: promise resolved "{ mode: 'sanitized-read-only', …(3) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "allowedFiles": [
++     "input/seed.yaml",
++     "artifacts/reference-evidence-pack.json",
++     "reference-evidence/incoming/design.docx.analysis.txt",
++   ],
++   "manifestPath": "/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/research-reference-invalid-iOAtov/research-sandbox/reference_deep_research/SANDBOX_MANIFEST.json",
++   "mode": "sanitized-read-only",
++   "root": "/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/research-reference-invalid-iOAtov/research-sandbox/reference_deep_research",
+  }
+
+ ❯ tests/unit/research-sandbox.test.ts:49:107
+     47|     if (failure === 'invalid-seed') await writeFile(path.join(runRoot,…
+     48|     if (failure === 'invalid-pack') await writeFile(path.join(runRoot,…
+     49|     await expect(prepareResearchSandbox({ ...referenceContext(runRoot)…
+       |                                                                                                           ^
+     50|   });
+     51|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/30]⎯
+
+ FAIL  tests/unit/research-sandbox.test.ts > research execution sandbox > rejects invalid-seed instead of delivering a placeholder
+AssertionError: promise resolved "{ mode: 'sanitized-read-only', …(3) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "allowedFiles": [
++     "input/seed.yaml",
++     "artifacts/reference-evidence-pack.json",
++     "reference-evidence/incoming/design.docx.analysis.txt",
++   ],
++   "manifestPath": "/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/research-reference-invalid-8VDsIe/research-sandbox/reference_deep_research/SANDBOX_MANIFEST.json",
++   "mode": "sanitized-read-only",
++   "root": "/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/research-reference-invalid-8VDsIe/research-sandbox/reference_deep_research",
+  }
+
+ ❯ tests/unit/research-sandbox.test.ts:49:107
+     47|     if (failure === 'invalid-seed') await writeFile(path.join(runRoot,…
+     48|     if (failure === 'invalid-pack') await writeFile(path.join(runRoot,…
+     49|     await expect(prepareResearchSandbox({ ...referenceContext(runRoot)…
+       |                                                                                                           ^
+     50|   });
+     51|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/30]⎯
+
+ FAIL  tests/unit/research-sandbox.test.ts > research execution sandbox > rejects invalid-pack instead of delivering a placeholder
+AssertionError: promise resolved "{ mode: 'sanitized-read-only', …(3) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "allowedFiles": [
++     "input/seed.yaml",
++     "artifacts/reference-evidence-pack.json",
++     "reference-evidence/incoming/design.docx.analysis.txt",
++   ],
++   "manifestPath": "/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/research-reference-invalid-ZQQ5w9/research-sandbox/reference_deep_research/SANDBOX_MANIFEST.json",
++   "mode": "sanitized-read-only",
++   "root": "/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/research-reference-invalid-ZQQ5w9/research-sandbox/reference_deep_research",
+  }
+
+ ❯ tests/unit/research-sandbox.test.ts:49:107
+     47|     if (failure === 'invalid-seed') await writeFile(path.join(runRoot,…
+     48|     if (failure === 'invalid-pack') await writeFile(path.join(runRoot,…
+     49|     await expect(prepareResearchSandbox({ ...referenceContext(runRoot)…
+       |                                                                                                           ^
+     50|   });
+     51|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/30]⎯
+
+ FAIL  tests/unit/research-sandbox.test.ts > research execution sandbox > checks seed source fields before schema parsing strips unknown fields
+AssertionError: promise resolved "{ mode: 'sanitized-read-only', …(3) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "allowedFiles": [
++     "input/seed.yaml",
++   ],
++   "manifestPath": "/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/research-seed-source-SKS0kG/research-sandbox/reference_deep_research/SANDBOX_MANIFEST.json",
++   "mode": "sanitized-read-only",
++   "root": "/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/research-seed-source-SKS0kG/research-sandbox/reference_deep_research",
+  }
+
+ ❯ tests/unit/research-sandbox.test.ts:57:108
+     55|     const files = await writeResearchReferenceInputs(runRoot);
+     56|     await writeFile(path.join(runRoot, 'input/seed.yaml'), files['inpu…
+     57|     await expect(prepareResearchSandbox({ ...referenceContext(runRoot)…
+       |                                                                                                            ^
+     58|   });
+     59|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[22/30]⎯
+
+ FAIL  tests/unit/research-sandbox.test.ts > research execution sandbox > preserves complete schema-validated structural inputs despite empty or truncated context excerpts
+AssertionError: expected '' to be '{\n  "schemaVersion": 1,\n  "artifact…' // Object.is equality
+
+- Expected
++ Received
+
+- {
+-   "schemaVersion": 1,
+-   "artifactType": "reference-frame-manifest",
+-   "targetRunId": "research-complete-riAZEC",
+-   "targetGame": "test-game",
+-   "workspace": "/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/research-complete-riAZEC/workspace/game",
+-   "source": {
+-     "evidenceId": "recording",
+-     "path": "reference-evidence/verified/recording.mp4",
+-     "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+-     "mediaType": "video/mp4",
+-     "durationMs": 36500,
+-     "width": 1100,
+-     "height": 720
+-   },
+-   "extraction": {
+-     "version": 2,
+-     "engine": "injected-test-extractor",
+-     "samplingFps": 8,
+-     "maxFrames": 292,
+-     "requestedFrameCount": 292,
+-     "extractedFrameCount": 292
+-   },
+-   "frames": [
+-     {
+-       "id": "frame-0",
+-       "index": 0,
+-       "requestedMs": 0,
+-       "actualMs": 0,
+-       "path": "reference-evidence/derived/recording/frame-0.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-1",
+-       "index": 1,
+-       "requestedMs": 125,
+-       "actualMs": 125,
+-       "path": "reference-evidence/derived/recording/frame-1.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-2",
+-       "index": 2,
+-       "requestedMs": 250,
+-       "actualMs": 250,
+-       "path": "reference-evidence/derived/recording/frame-2.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-3",
+-       "index": 3,
+-       "requestedMs": 375,
+-       "actualMs": 375,
+-       "path": "reference-evidence/derived/recording/frame-3.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-4",
+-       "index": 4,
+-       "requestedMs": 500,
+-       "actualMs": 500,
+-       "path": "reference-evidence/derived/recording/frame-4.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-5",
+-       "index": 5,
+-       "requestedMs": 625,
+-       "actualMs": 625,
+-       "path": "reference-evidence/derived/recording/frame-5.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-6",
+-       "index": 6,
+-       "requestedMs": 750,
+-       "actualMs": 750,
+-       "path": "reference-evidence/derived/recording/frame-6.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-7",
+-       "index": 7,
+-       "requestedMs": 875,
+-       "actualMs": 875,
+-       "path": "reference-evidence/derived/recording/frame-7.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-8",
+-       "index": 8,
+-       "requestedMs": 1000,
+-       "actualMs": 1000,
+-       "path": "reference-evidence/derived/recording/frame-8.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-9",
+-       "index": 9,
+-       "requestedMs": 1125,
+-       "actualMs": 1125,
+-       "path": "reference-evidence/derived/recording/frame-9.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-10",
+-       "index": 10,
+-       "requestedMs": 1250,
+-       "actualMs": 1250,
+-       "path": "reference-evidence/derived/recording/frame-10.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-11",
+-       "index": 11,
+-       "requestedMs": 1375,
+-       "actualMs": 1375,
+-       "path": "reference-evidence/derived/recording/frame-11.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-12",
+-       "index": 12,
+-       "requestedMs": 1500,
+-       "actualMs": 1500,
+-       "path": "reference-evidence/derived/recording/frame-12.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-13",
+-       "index": 13,
+-       "requestedMs": 1625,
+-       "actualMs": 1625,
+-       "path": "reference-evidence/derived/recording/frame-13.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-14",
+-       "index": 14,
+-       "requestedMs": 1750,
+-       "actualMs": 1750,
+-       "path": "reference-evidence/derived/recording/frame-14.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-15",
+-       "index": 15,
+-       "requestedMs": 1875,
+-       "actualMs": 1875,
+-       "path": "reference-evidence/derived/recording/frame-15.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-16",
+-       "index": 16,
+-       "requestedMs": 2000,
+-       "actualMs": 2000,
+-       "path": "reference-evidence/derived/recording/frame-16.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-17",
+-       "index": 17,
+-       "requestedMs": 2125,
+-       "actualMs": 2125,
+-       "path": "reference-evidence/derived/recording/frame-17.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-18",
+-       "index": 18,
+-       "requestedMs": 2250,
+-       "actualMs": 2250,
+-       "path": "reference-evidence/derived/recording/frame-18.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-19",
+-       "index": 19,
+-       "requestedMs": 2375,
+-       "actualMs": 2375,
+-       "path": "reference-evidence/derived/recording/frame-19.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-20",
+-       "index": 20,
+-       "requestedMs": 2500,
+-       "actualMs": 2500,
+-       "path": "reference-evidence/derived/recording/frame-20.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-21",
+-       "index": 21,
+-       "requestedMs": 2625,
+-       "actualMs": 2625,
+-       "path": "reference-evidence/derived/recording/frame-21.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-22",
+-       "index": 22,
+-       "requestedMs": 2750,
+-       "actualMs": 2750,
+-       "path": "reference-evidence/derived/recording/frame-22.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-23",
+-       "index": 23,
+-       "requestedMs": 2875,
+-       "actualMs": 2875,
+-       "path": "reference-evidence/derived/recording/frame-23.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-24",
+-       "index": 24,
+-       "requestedMs": 3000,
+-       "actualMs": 3000,
+-       "path": "reference-evidence/derived/recording/frame-24.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-25",
+-       "index": 25,
+-       "requestedMs": 3125,
+-       "actualMs": 3125,
+-       "path": "reference-evidence/derived/recording/frame-25.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-26",
+-       "index": 26,
+-       "requestedMs": 3250,
+-       "actualMs": 3250,
+-       "path": "reference-evidence/derived/recording/frame-26.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-27",
+-       "index": 27,
+-       "requestedMs": 3375,
+-       "actualMs": 3375,
+-       "path": "reference-evidence/derived/recording/frame-27.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-28",
+-       "index": 28,
+-       "requestedMs": 3500,
+-       "actualMs": 3500,
+-       "path": "reference-evidence/derived/recording/frame-28.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-29",
+-       "index": 29,
+-       "requestedMs": 3625,
+-       "actualMs": 3625,
+-       "path": "reference-evidence/derived/recording/frame-29.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-30",
+-       "index": 30,
+-       "requestedMs": 3750,
+-       "actualMs": 3750,
+-       "path": "reference-evidence/derived/recording/frame-30.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-31",
+-       "index": 31,
+-       "requestedMs": 3875,
+-       "actualMs": 3875,
+-       "path": "reference-evidence/derived/recording/frame-31.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-32",
+-       "index": 32,
+-       "requestedMs": 4000,
+-       "actualMs": 4000,
+-       "path": "reference-evidence/derived/recording/frame-32.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-33",
+-       "index": 33,
+-       "requestedMs": 4125,
+-       "actualMs": 4125,
+-       "path": "reference-evidence/derived/recording/frame-33.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-34",
+-       "index": 34,
+-       "requestedMs": 4250,
+-       "actualMs": 4250,
+-       "path": "reference-evidence/derived/recording/frame-34.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-35",
+-       "index": 35,
+-       "requestedMs": 4375,
+-       "actualMs": 4375,
+-       "path": "reference-evidence/derived/recording/frame-35.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-36",
+-       "index": 36,
+-       "requestedMs": 4500,
+-       "actualMs": 4500,
+-       "path": "reference-evidence/derived/recording/frame-36.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-37",
+-       "index": 37,
+-       "requestedMs": 4625,
+-       "actualMs": 4625,
+-       "path": "reference-evidence/derived/recording/frame-37.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-38",
+-       "index": 38,
+-       "requestedMs": 4750,
+-       "actualMs": 4750,
+-       "path": "reference-evidence/derived/recording/frame-38.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-39",
+-       "index": 39,
+-       "requestedMs": 4875,
+-       "actualMs": 4875,
+-       "path": "reference-evidence/derived/recording/frame-39.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-40",
+-       "index": 40,
+-       "requestedMs": 5000,
+-       "actualMs": 5000,
+-       "path": "reference-evidence/derived/recording/frame-40.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-41",
+-       "index": 41,
+-       "requestedMs": 5125,
+-       "actualMs": 5125,
+-       "path": "reference-evidence/derived/recording/frame-41.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-42",
+-       "index": 42,
+-       "requestedMs": 5250,
+-       "actualMs": 5250,
+-       "path": "reference-evidence/derived/recording/frame-42.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-43",
+-       "index": 43,
+-       "requestedMs": 5375,
+-       "actualMs": 5375,
+-       "path": "reference-evidence/derived/recording/frame-43.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-44",
+-       "index": 44,
+-       "requestedMs": 5500,
+-       "actualMs": 5500,
+-       "path": "reference-evidence/derived/recording/frame-44.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-45",
+-       "index": 45,
+-       "requestedMs": 5625,
+-       "actualMs": 5625,
+-       "path": "reference-evidence/derived/recording/frame-45.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-46",
+-       "index": 46,
+-       "requestedMs": 5750,
+-       "actualMs": 5750,
+-       "path": "reference-evidence/derived/recording/frame-46.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-47",
+-       "index": 47,
+-       "requestedMs": 5875,
+-       "actualMs": 5875,
+-       "path": "reference-evidence/derived/recording/frame-47.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-48",
+-       "index": 48,
+-       "requestedMs": 6000,
+-       "actualMs": 6000,
+-       "path": "reference-evidence/derived/recording/frame-48.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-49",
+-       "index": 49,
+-       "requestedMs": 6125,
+-       "actualMs": 6125,
+-       "path": "reference-evidence/derived/recording/frame-49.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-50",
+-       "index": 50,
+-       "requestedMs": 6250,
+-       "actualMs": 6250,
+-       "path": "reference-evidence/derived/recording/frame-50.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-51",
+-       "index": 51,
+-       "requestedMs": 6375,
+-       "actualMs": 6375,
+-       "path": "reference-evidence/derived/recording/frame-51.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-52",
+-       "index": 52,
+-       "requestedMs": 6500,
+-       "actualMs": 6500,
+-       "path": "reference-evidence/derived/recording/frame-52.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-53",
+-       "index": 53,
+-       "requestedMs": 6625,
+-       "actualMs": 6625,
+-       "path": "reference-evidence/derived/recording/frame-53.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-54",
+-       "index": 54,
+-       "requestedMs": 6750,
+-       "actualMs": 6750,
+-       "path": "reference-evidence/derived/recording/frame-54.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-55",
+-       "index": 55,
+-       "requestedMs": 6875,
+-       "actualMs": 6875,
+-       "path": "reference-evidence/derived/recording/frame-55.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-56",
+-       "index": 56,
+-       "requestedMs": 7000,
+-       "actualMs": 7000,
+-       "path": "reference-evidence/derived/recording/frame-56.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-57",
+-       "index": 57,
+-       "requestedMs": 7125,
+-       "actualMs": 7125,
+-       "path": "reference-evidence/derived/recording/frame-57.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-58",
+-       "index": 58,
+-       "requestedMs": 7250,
+-       "actualMs": 7250,
+-       "path": "reference-evidence/derived/recording/frame-58.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-59",
+-       "index": 59,
+-       "requestedMs": 7375,
+-       "actualMs": 7375,
+-       "path": "reference-evidence/derived/recording/frame-59.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-60",
+-       "index": 60,
+-       "requestedMs": 7500,
+-       "actualMs": 7500,
+-       "path": "reference-evidence/derived/recording/frame-60.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-61",
+-       "index": 61,
+-       "requestedMs": 7625,
+-       "actualMs": 7625,
+-       "path": "reference-evidence/derived/recording/frame-61.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-62",
+-       "index": 62,
+-       "requestedMs": 7750,
+-       "actualMs": 7750,
+-       "path": "reference-evidence/derived/recording/frame-62.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-63",
+-       "index": 63,
+-       "requestedMs": 7875,
+-       "actualMs": 7875,
+-       "path": "reference-evidence/derived/recording/frame-63.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-64",
+-       "index": 64,
+-       "requestedMs": 8000,
+-       "actualMs": 8000,
+-       "path": "reference-evidence/derived/recording/frame-64.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-65",
+-       "index": 65,
+-       "requestedMs": 8125,
+-       "actualMs": 8125,
+-       "path": "reference-evidence/derived/recording/frame-65.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-66",
+-       "index": 66,
+-       "requestedMs": 8250,
+-       "actualMs": 8250,
+-       "path": "reference-evidence/derived/recording/frame-66.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-67",
+-       "index": 67,
+-       "requestedMs": 8375,
+-       "actualMs": 8375,
+-       "path": "reference-evidence/derived/recording/frame-67.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-68",
+-       "index": 68,
+-       "requestedMs": 8500,
+-       "actualMs": 8500,
+-       "path": "reference-evidence/derived/recording/frame-68.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-69",
+-       "index": 69,
+-       "requestedMs": 8625,
+-       "actualMs": 8625,
+-       "path": "reference-evidence/derived/recording/frame-69.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-70",
+-       "index": 70,
+-       "requestedMs": 8750,
+-       "actualMs": 8750,
+-       "path": "reference-evidence/derived/recording/frame-70.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-71",
+-       "index": 71,
+-       "requestedMs": 8875,
+-       "actualMs": 8875,
+-       "path": "reference-evidence/derived/recording/frame-71.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-72",
+-       "index": 72,
+-       "requestedMs": 9000,
+-       "actualMs": 9000,
+-       "path": "reference-evidence/derived/recording/frame-72.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-73",
+-       "index": 73,
+-       "requestedMs": 9125,
+-       "actualMs": 9125,
+-       "path": "reference-evidence/derived/recording/frame-73.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-74",
+-       "index": 74,
+-       "requestedMs": 9250,
+-       "actualMs": 9250,
+-       "path": "reference-evidence/derived/recording/frame-74.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-75",
+-       "index": 75,
+-       "requestedMs": 9375,
+-       "actualMs": 9375,
+-       "path": "reference-evidence/derived/recording/frame-75.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-76",
+-       "index": 76,
+-       "requestedMs": 9500,
+-       "actualMs": 9500,
+-       "path": "reference-evidence/derived/recording/frame-76.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-77",
+-       "index": 77,
+-       "requestedMs": 9625,
+-       "actualMs": 9625,
+-       "path": "reference-evidence/derived/recording/frame-77.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-78",
+-       "index": 78,
+-       "requestedMs": 9750,
+-       "actualMs": 9750,
+-       "path": "reference-evidence/derived/recording/frame-78.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-79",
+-       "index": 79,
+-       "requestedMs": 9875,
+-       "actualMs": 9875,
+-       "path": "reference-evidence/derived/recording/frame-79.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-80",
+-       "index": 80,
+-       "requestedMs": 10000,
+-       "actualMs": 10000,
+-       "path": "reference-evidence/derived/recording/frame-80.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-81",
+-       "index": 81,
+-       "requestedMs": 10125,
+-       "actualMs": 10125,
+-       "path": "reference-evidence/derived/recording/frame-81.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-82",
+-       "index": 82,
+-       "requestedMs": 10250,
+-       "actualMs": 10250,
+-       "path": "reference-evidence/derived/recording/frame-82.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-83",
+-       "index": 83,
+-       "requestedMs": 10375,
+-       "actualMs": 10375,
+-       "path": "reference-evidence/derived/recording/frame-83.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-84",
+-       "index": 84,
+-       "requestedMs": 10500,
+-       "actualMs": 10500,
+-       "path": "reference-evidence/derived/recording/frame-84.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-85",
+-       "index": 85,
+-       "requestedMs": 10625,
+-       "actualMs": 10625,
+-       "path": "reference-evidence/derived/recording/frame-85.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-86",
+-       "index": 86,
+-       "requestedMs": 10750,
+-       "actualMs": 10750,
+-       "path": "reference-evidence/derived/recording/frame-86.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-87",
+-       "index": 87,
+-       "requestedMs": 10875,
+-       "actualMs": 10875,
+-       "path": "reference-evidence/derived/recording/frame-87.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-88",
+-       "index": 88,
+-       "requestedMs": 11000,
+-       "actualMs": 11000,
+-       "path": "reference-evidence/derived/recording/frame-88.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-89",
+-       "index": 89,
+-       "requestedMs": 11125,
+-       "actualMs": 11125,
+-       "path": "reference-evidence/derived/recording/frame-89.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-90",
+-       "index": 90,
+-       "requestedMs": 11250,
+-       "actualMs": 11250,
+-       "path": "reference-evidence/derived/recording/frame-90.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-91",
+-       "index": 91,
+-       "requestedMs": 11375,
+-       "actualMs": 11375,
+-       "path": "reference-evidence/derived/recording/frame-91.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-92",
+-       "index": 92,
+-       "requestedMs": 11500,
+-       "actualMs": 11500,
+-       "path": "reference-evidence/derived/recording/frame-92.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-93",
+-       "index": 93,
+-       "requestedMs": 11625,
+-       "actualMs": 11625,
+-       "path": "reference-evidence/derived/recording/frame-93.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-94",
+-       "index": 94,
+-       "requestedMs": 11750,
+-       "actualMs": 11750,
+-       "path": "reference-evidence/derived/recording/frame-94.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-95",
+-       "index": 95,
+-       "requestedMs": 11875,
+-       "actualMs": 11875,
+-       "path": "reference-evidence/derived/recording/frame-95.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-96",
+-       "index": 96,
+-       "requestedMs": 12000,
+-       "actualMs": 12000,
+-       "path": "reference-evidence/derived/recording/frame-96.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-97",
+-       "index": 97,
+-       "requestedMs": 12125,
+-       "actualMs": 12125,
+-       "path": "reference-evidence/derived/recording/frame-97.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-98",
+-       "index": 98,
+-       "requestedMs": 12250,
+-       "actualMs": 12250,
+-       "path": "reference-evidence/derived/recording/frame-98.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-99",
+-       "index": 99,
+-       "requestedMs": 12375,
+-       "actualMs": 12375,
+-       "path": "reference-evidence/derived/recording/frame-99.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-100",
+-       "index": 100,
+-       "requestedMs": 12500,
+-       "actualMs": 12500,
+-       "path": "reference-evidence/derived/recording/frame-100.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-101",
+-       "index": 101,
+-       "requestedMs": 12625,
+-       "actualMs": 12625,
+-       "path": "reference-evidence/derived/recording/frame-101.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-102",
+-       "index": 102,
+-       "requestedMs": 12750,
+-       "actualMs": 12750,
+-       "path": "reference-evidence/derived/recording/frame-102.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-103",
+-       "index": 103,
+-       "requestedMs": 12875,
+-       "actualMs": 12875,
+-       "path": "reference-evidence/derived/recording/frame-103.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-104",
+-       "index": 104,
+-       "requestedMs": 13000,
+-       "actualMs": 13000,
+-       "path": "reference-evidence/derived/recording/frame-104.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-105",
+-       "index": 105,
+-       "requestedMs": 13125,
+-       "actualMs": 13125,
+-       "path": "reference-evidence/derived/recording/frame-105.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-106",
+-       "index": 106,
+-       "requestedMs": 13250,
+-       "actualMs": 13250,
+-       "path": "reference-evidence/derived/recording/frame-106.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-107",
+-       "index": 107,
+-       "requestedMs": 13375,
+-       "actualMs": 13375,
+-       "path": "reference-evidence/derived/recording/frame-107.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-108",
+-       "index": 108,
+-       "requestedMs": 13500,
+-       "actualMs": 13500,
+-       "path": "reference-evidence/derived/recording/frame-108.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-109",
+-       "index": 109,
+-       "requestedMs": 13625,
+-       "actualMs": 13625,
+-       "path": "reference-evidence/derived/recording/frame-109.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-110",
+-       "index": 110,
+-       "requestedMs": 13750,
+-       "actualMs": 13750,
+-       "path": "reference-evidence/derived/recording/frame-110.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-111",
+-       "index": 111,
+-       "requestedMs": 13875,
+-       "actualMs": 13875,
+-       "path": "reference-evidence/derived/recording/frame-111.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-112",
+-       "index": 112,
+-       "requestedMs": 14000,
+-       "actualMs": 14000,
+-       "path": "reference-evidence/derived/recording/frame-112.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-113",
+-       "index": 113,
+-       "requestedMs": 14125,
+-       "actualMs": 14125,
+-       "path": "reference-evidence/derived/recording/frame-113.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-114",
+-       "index": 114,
+-       "requestedMs": 14250,
+-       "actualMs": 14250,
+-       "path": "reference-evidence/derived/recording/frame-114.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-115",
+-       "index": 115,
+-       "requestedMs": 14375,
+-       "actualMs": 14375,
+-       "path": "reference-evidence/derived/recording/frame-115.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-116",
+-       "index": 116,
+-       "requestedMs": 14500,
+-       "actualMs": 14500,
+-       "path": "reference-evidence/derived/recording/frame-116.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-117",
+-       "index": 117,
+-       "requestedMs": 14625,
+-       "actualMs": 14625,
+-       "path": "reference-evidence/derived/recording/frame-117.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-118",
+-       "index": 118,
+-       "requestedMs": 14750,
+-       "actualMs": 14750,
+-       "path": "reference-evidence/derived/recording/frame-118.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-119",
+-       "index": 119,
+-       "requestedMs": 14875,
+-       "actualMs": 14875,
+-       "path": "reference-evidence/derived/recording/frame-119.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-120",
+-       "index": 120,
+-       "requestedMs": 15000,
+-       "actualMs": 15000,
+-       "path": "reference-evidence/derived/recording/frame-120.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-121",
+-       "index": 121,
+-       "requestedMs": 15125,
+-       "actualMs": 15125,
+-       "path": "reference-evidence/derived/recording/frame-121.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-122",
+-       "index": 122,
+-       "requestedMs": 15250,
+-       "actualMs": 15250,
+-       "path": "reference-evidence/derived/recording/frame-122.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-123",
+-       "index": 123,
+-       "requestedMs": 15375,
+-       "actualMs": 15375,
+-       "path": "reference-evidence/derived/recording/frame-123.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-124",
+-       "index": 124,
+-       "requestedMs": 15500,
+-       "actualMs": 15500,
+-       "path": "reference-evidence/derived/recording/frame-124.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-125",
+-       "index": 125,
+-       "requestedMs": 15625,
+-       "actualMs": 15625,
+-       "path": "reference-evidence/derived/recording/frame-125.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-126",
+-       "index": 126,
+-       "requestedMs": 15750,
+-       "actualMs": 15750,
+-       "path": "reference-evidence/derived/recording/frame-126.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-127",
+-       "index": 127,
+-       "requestedMs": 15875,
+-       "actualMs": 15875,
+-       "path": "reference-evidence/derived/recording/frame-127.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-128",
+-       "index": 128,
+-       "requestedMs": 16000,
+-       "actualMs": 16000,
+-       "path": "reference-evidence/derived/recording/frame-128.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-129",
+-       "index": 129,
+-       "requestedMs": 16125,
+-       "actualMs": 16125,
+-       "path": "reference-evidence/derived/recording/frame-129.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-130",
+-       "index": 130,
+-       "requestedMs": 16250,
+-       "actualMs": 16250,
+-       "path": "reference-evidence/derived/recording/frame-130.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-131",
+-       "index": 131,
+-       "requestedMs": 16375,
+-       "actualMs": 16375,
+-       "path": "reference-evidence/derived/recording/frame-131.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-132",
+-       "index": 132,
+-       "requestedMs": 16500,
+-       "actualMs": 16500,
+-       "path": "reference-evidence/derived/recording/frame-132.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-133",
+-       "index": 133,
+-       "requestedMs": 16625,
+-       "actualMs": 16625,
+-       "path": "reference-evidence/derived/recording/frame-133.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-134",
+-       "index": 134,
+-       "requestedMs": 16750,
+-       "actualMs": 16750,
+-       "path": "reference-evidence/derived/recording/frame-134.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-135",
+-       "index": 135,
+-       "requestedMs": 16875,
+-       "actualMs": 16875,
+-       "path": "reference-evidence/derived/recording/frame-135.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-136",
+-       "index": 136,
+-       "requestedMs": 17000,
+-       "actualMs": 17000,
+-       "path": "reference-evidence/derived/recording/frame-136.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-137",
+-       "index": 137,
+-       "requestedMs": 17125,
+-       "actualMs": 17125,
+-       "path": "reference-evidence/derived/recording/frame-137.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-138",
+-       "index": 138,
+-       "requestedMs": 17250,
+-       "actualMs": 17250,
+-       "path": "reference-evidence/derived/recording/frame-138.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-139",
+-       "index": 139,
+-       "requestedMs": 17375,
+-       "actualMs": 17375,
+-       "path": "reference-evidence/derived/recording/frame-139.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-140",
+-       "index": 140,
+-       "requestedMs": 17500,
+-       "actualMs": 17500,
+-       "path": "reference-evidence/derived/recording/frame-140.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-141",
+-       "index": 141,
+-       "requestedMs": 17625,
+-       "actualMs": 17625,
+-       "path": "reference-evidence/derived/recording/frame-141.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-142",
+-       "index": 142,
+-       "requestedMs": 17750,
+-       "actualMs": 17750,
+-       "path": "reference-evidence/derived/recording/frame-142.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-143",
+-       "index": 143,
+-       "requestedMs": 17875,
+-       "actualMs": 17875,
+-       "path": "reference-evidence/derived/recording/frame-143.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-144",
+-       "index": 144,
+-       "requestedMs": 18000,
+-       "actualMs": 18000,
+-       "path": "reference-evidence/derived/recording/frame-144.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-145",
+-       "index": 145,
+-       "requestedMs": 18125,
+-       "actualMs": 18125,
+-       "path": "reference-evidence/derived/recording/frame-145.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-146",
+-       "index": 146,
+-       "requestedMs": 18250,
+-       "actualMs": 18250,
+-       "path": "reference-evidence/derived/recording/frame-146.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-147",
+-       "index": 147,
+-       "requestedMs": 18375,
+-       "actualMs": 18375,
+-       "path": "reference-evidence/derived/recording/frame-147.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-148",
+-       "index": 148,
+-       "requestedMs": 18500,
+-       "actualMs": 18500,
+-       "path": "reference-evidence/derived/recording/frame-148.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-149",
+-       "index": 149,
+-       "requestedMs": 18625,
+-       "actualMs": 18625,
+-       "path": "reference-evidence/derived/recording/frame-149.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-150",
+-       "index": 150,
+-       "requestedMs": 18750,
+-       "actualMs": 18750,
+-       "path": "reference-evidence/derived/recording/frame-150.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-151",
+-       "index": 151,
+-       "requestedMs": 18875,
+-       "actualMs": 18875,
+-       "path": "reference-evidence/derived/recording/frame-151.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-152",
+-       "index": 152,
+-       "requestedMs": 19000,
+-       "actualMs": 19000,
+-       "path": "reference-evidence/derived/recording/frame-152.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-153",
+-       "index": 153,
+-       "requestedMs": 19125,
+-       "actualMs": 19125,
+-       "path": "reference-evidence/derived/recording/frame-153.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-154",
+-       "index": 154,
+-       "requestedMs": 19250,
+-       "actualMs": 19250,
+-       "path": "reference-evidence/derived/recording/frame-154.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-155",
+-       "index": 155,
+-       "requestedMs": 19375,
+-       "actualMs": 19375,
+-       "path": "reference-evidence/derived/recording/frame-155.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-156",
+-       "index": 156,
+-       "requestedMs": 19500,
+-       "actualMs": 19500,
+-       "path": "reference-evidence/derived/recording/frame-156.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-157",
+-       "index": 157,
+-       "requestedMs": 19625,
+-       "actualMs": 19625,
+-       "path": "reference-evidence/derived/recording/frame-157.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-158",
+-       "index": 158,
+-       "requestedMs": 19750,
+-       "actualMs": 19750,
+-       "path": "reference-evidence/derived/recording/frame-158.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-159",
+-       "index": 159,
+-       "requestedMs": 19875,
+-       "actualMs": 19875,
+-       "path": "reference-evidence/derived/recording/frame-159.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-160",
+-       "index": 160,
+-       "requestedMs": 20000,
+-       "actualMs": 20000,
+-       "path": "reference-evidence/derived/recording/frame-160.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-161",
+-       "index": 161,
+-       "requestedMs": 20125,
+-       "actualMs": 20125,
+-       "path": "reference-evidence/derived/recording/frame-161.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-162",
+-       "index": 162,
+-       "requestedMs": 20250,
+-       "actualMs": 20250,
+-       "path": "reference-evidence/derived/recording/frame-162.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-163",
+-       "index": 163,
+-       "requestedMs": 20375,
+-       "actualMs": 20375,
+-       "path": "reference-evidence/derived/recording/frame-163.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-164",
+-       "index": 164,
+-       "requestedMs": 20500,
+-       "actualMs": 20500,
+-       "path": "reference-evidence/derived/recording/frame-164.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-165",
+-       "index": 165,
+-       "requestedMs": 20625,
+-       "actualMs": 20625,
+-       "path": "reference-evidence/derived/recording/frame-165.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-166",
+-       "index": 166,
+-       "requestedMs": 20750,
+-       "actualMs": 20750,
+-       "path": "reference-evidence/derived/recording/frame-166.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-167",
+-       "index": 167,
+-       "requestedMs": 20875,
+-       "actualMs": 20875,
+-       "path": "reference-evidence/derived/recording/frame-167.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-168",
+-       "index": 168,
+-       "requestedMs": 21000,
+-       "actualMs": 21000,
+-       "path": "reference-evidence/derived/recording/frame-168.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-169",
+-       "index": 169,
+-       "requestedMs": 21125,
+-       "actualMs": 21125,
+-       "path": "reference-evidence/derived/recording/frame-169.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-170",
+-       "index": 170,
+-       "requestedMs": 21250,
+-       "actualMs": 21250,
+-       "path": "reference-evidence/derived/recording/frame-170.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-171",
+-       "index": 171,
+-       "requestedMs": 21375,
+-       "actualMs": 21375,
+-       "path": "reference-evidence/derived/recording/frame-171.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-172",
+-       "index": 172,
+-       "requestedMs": 21500,
+-       "actualMs": 21500,
+-       "path": "reference-evidence/derived/recording/frame-172.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-173",
+-       "index": 173,
+-       "requestedMs": 21625,
+-       "actualMs": 21625,
+-       "path": "reference-evidence/derived/recording/frame-173.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-174",
+-       "index": 174,
+-       "requestedMs": 21750,
+-       "actualMs": 21750,
+-       "path": "reference-evidence/derived/recording/frame-174.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-175",
+-       "index": 175,
+-       "requestedMs": 21875,
+-       "actualMs": 21875,
+-       "path": "reference-evidence/derived/recording/frame-175.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-176",
+-       "index": 176,
+-       "requestedMs": 22000,
+-       "actualMs": 22000,
+-       "path": "reference-evidence/derived/recording/frame-176.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-177",
+-       "index": 177,
+-       "requestedMs": 22125,
+-       "actualMs": 22125,
+-       "path": "reference-evidence/derived/recording/frame-177.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-178",
+-       "index": 178,
+-       "requestedMs": 22250,
+-       "actualMs": 22250,
+-       "path": "reference-evidence/derived/recording/frame-178.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-179",
+-       "index": 179,
+-       "requestedMs": 22375,
+-       "actualMs": 22375,
+-       "path": "reference-evidence/derived/recording/frame-179.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-180",
+-       "index": 180,
+-       "requestedMs": 22500,
+-       "actualMs": 22500,
+-       "path": "reference-evidence/derived/recording/frame-180.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-181",
+-       "index": 181,
+-       "requestedMs": 22625,
+-       "actualMs": 22625,
+-       "path": "reference-evidence/derived/recording/frame-181.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-182",
+-       "index": 182,
+-       "requestedMs": 22750,
+-       "actualMs": 22750,
+-       "path": "reference-evidence/derived/recording/frame-182.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-183",
+-       "index": 183,
+-       "requestedMs": 22875,
+-       "actualMs": 22875,
+-       "path": "reference-evidence/derived/recording/frame-183.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-184",
+-       "index": 184,
+-       "requestedMs": 23000,
+-       "actualMs": 23000,
+-       "path": "reference-evidence/derived/recording/frame-184.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-185",
+-       "index": 185,
+-       "requestedMs": 23125,
+-       "actualMs": 23125,
+-       "path": "reference-evidence/derived/recording/frame-185.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-186",
+-       "index": 186,
+-       "requestedMs": 23250,
+-       "actualMs": 23250,
+-       "path": "reference-evidence/derived/recording/frame-186.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-187",
+-       "index": 187,
+-       "requestedMs": 23375,
+-       "actualMs": 23375,
+-       "path": "reference-evidence/derived/recording/frame-187.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-188",
+-       "index": 188,
+-       "requestedMs": 23500,
+-       "actualMs": 23500,
+-       "path": "reference-evidence/derived/recording/frame-188.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-189",
+-       "index": 189,
+-       "requestedMs": 23625,
+-       "actualMs": 23625,
+-       "path": "reference-evidence/derived/recording/frame-189.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-190",
+-       "index": 190,
+-       "requestedMs": 23750,
+-       "actualMs": 23750,
+-       "path": "reference-evidence/derived/recording/frame-190.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-191",
+-       "index": 191,
+-       "requestedMs": 23875,
+-       "actualMs": 23875,
+-       "path": "reference-evidence/derived/recording/frame-191.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-192",
+-       "index": 192,
+-       "requestedMs": 24000,
+-       "actualMs": 24000,
+-       "path": "reference-evidence/derived/recording/frame-192.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-193",
+-       "index": 193,
+-       "requestedMs": 24125,
+-       "actualMs": 24125,
+-       "path": "reference-evidence/derived/recording/frame-193.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-194",
+-       "index": 194,
+-       "requestedMs": 24250,
+-       "actualMs": 24250,
+-       "path": "reference-evidence/derived/recording/frame-194.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-195",
+-       "index": 195,
+-       "requestedMs": 24375,
+-       "actualMs": 24375,
+-       "path": "reference-evidence/derived/recording/frame-195.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-196",
+-       "index": 196,
+-       "requestedMs": 24500,
+-       "actualMs": 24500,
+-       "path": "reference-evidence/derived/recording/frame-196.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-197",
+-       "index": 197,
+-       "requestedMs": 24625,
+-       "actualMs": 24625,
+-       "path": "reference-evidence/derived/recording/frame-197.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-198",
+-       "index": 198,
+-       "requestedMs": 24750,
+-       "actualMs": 24750,
+-       "path": "reference-evidence/derived/recording/frame-198.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-199",
+-       "index": 199,
+-       "requestedMs": 24875,
+-       "actualMs": 24875,
+-       "path": "reference-evidence/derived/recording/frame-199.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-200",
+-       "index": 200,
+-       "requestedMs": 25000,
+-       "actualMs": 25000,
+-       "path": "reference-evidence/derived/recording/frame-200.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-201",
+-       "index": 201,
+-       "requestedMs": 25125,
+-       "actualMs": 25125,
+-       "path": "reference-evidence/derived/recording/frame-201.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-202",
+-       "index": 202,
+-       "requestedMs": 25250,
+-       "actualMs": 25250,
+-       "path": "reference-evidence/derived/recording/frame-202.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-203",
+-       "index": 203,
+-       "requestedMs": 25375,
+-       "actualMs": 25375,
+-       "path": "reference-evidence/derived/recording/frame-203.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-204",
+-       "index": 204,
+-       "requestedMs": 25500,
+-       "actualMs": 25500,
+-       "path": "reference-evidence/derived/recording/frame-204.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-205",
+-       "index": 205,
+-       "requestedMs": 25625,
+-       "actualMs": 25625,
+-       "path": "reference-evidence/derived/recording/frame-205.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-206",
+-       "index": 206,
+-       "requestedMs": 25750,
+-       "actualMs": 25750,
+-       "path": "reference-evidence/derived/recording/frame-206.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-207",
+-       "index": 207,
+-       "requestedMs": 25875,
+-       "actualMs": 25875,
+-       "path": "reference-evidence/derived/recording/frame-207.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-208",
+-       "index": 208,
+-       "requestedMs": 26000,
+-       "actualMs": 26000,
+-       "path": "reference-evidence/derived/recording/frame-208.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-209",
+-       "index": 209,
+-       "requestedMs": 26125,
+-       "actualMs": 26125,
+-       "path": "reference-evidence/derived/recording/frame-209.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-210",
+-       "index": 210,
+-       "requestedMs": 26250,
+-       "actualMs": 26250,
+-       "path": "reference-evidence/derived/recording/frame-210.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-211",
+-       "index": 211,
+-       "requestedMs": 26375,
+-       "actualMs": 26375,
+-       "path": "reference-evidence/derived/recording/frame-211.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-212",
+-       "index": 212,
+-       "requestedMs": 26500,
+-       "actualMs": 26500,
+-       "path": "reference-evidence/derived/recording/frame-212.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-213",
+-       "index": 213,
+-       "requestedMs": 26625,
+-       "actualMs": 26625,
+-       "path": "reference-evidence/derived/recording/frame-213.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-214",
+-       "index": 214,
+-       "requestedMs": 26750,
+-       "actualMs": 26750,
+-       "path": "reference-evidence/derived/recording/frame-214.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-215",
+-       "index": 215,
+-       "requestedMs": 26875,
+-       "actualMs": 26875,
+-       "path": "reference-evidence/derived/recording/frame-215.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-216",
+-       "index": 216,
+-       "requestedMs": 27000,
+-       "actualMs": 27000,
+-       "path": "reference-evidence/derived/recording/frame-216.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-217",
+-       "index": 217,
+-       "requestedMs": 27125,
+-       "actualMs": 27125,
+-       "path": "reference-evidence/derived/recording/frame-217.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-218",
+-       "index": 218,
+-       "requestedMs": 27250,
+-       "actualMs": 27250,
+-       "path": "reference-evidence/derived/recording/frame-218.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-219",
+-       "index": 219,
+-       "requestedMs": 27375,
+-       "actualMs": 27375,
+-       "path": "reference-evidence/derived/recording/frame-219.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-220",
+-       "index": 220,
+-       "requestedMs": 27500,
+-       "actualMs": 27500,
+-       "path": "reference-evidence/derived/recording/frame-220.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-221",
+-       "index": 221,
+-       "requestedMs": 27625,
+-       "actualMs": 27625,
+-       "path": "reference-evidence/derived/recording/frame-221.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-222",
+-       "index": 222,
+-       "requestedMs": 27750,
+-       "actualMs": 27750,
+-       "path": "reference-evidence/derived/recording/frame-222.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-223",
+-       "index": 223,
+-       "requestedMs": 27875,
+-       "actualMs": 27875,
+-       "path": "reference-evidence/derived/recording/frame-223.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-224",
+-       "index": 224,
+-       "requestedMs": 28000,
+-       "actualMs": 28000,
+-       "path": "reference-evidence/derived/recording/frame-224.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-225",
+-       "index": 225,
+-       "requestedMs": 28125,
+-       "actualMs": 28125,
+-       "path": "reference-evidence/derived/recording/frame-225.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-226",
+-       "index": 226,
+-       "requestedMs": 28250,
+-       "actualMs": 28250,
+-       "path": "reference-evidence/derived/recording/frame-226.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-227",
+-       "index": 227,
+-       "requestedMs": 28375,
+-       "actualMs": 28375,
+-       "path": "reference-evidence/derived/recording/frame-227.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-228",
+-       "index": 228,
+-       "requestedMs": 28500,
+-       "actualMs": 28500,
+-       "path": "reference-evidence/derived/recording/frame-228.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-229",
+-       "index": 229,
+-       "requestedMs": 28625,
+-       "actualMs": 28625,
+-       "path": "reference-evidence/derived/recording/frame-229.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-230",
+-       "index": 230,
+-       "requestedMs": 28750,
+-       "actualMs": 28750,
+-       "path": "reference-evidence/derived/recording/frame-230.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-231",
+-       "index": 231,
+-       "requestedMs": 28875,
+-       "actualMs": 28875,
+-       "path": "reference-evidence/derived/recording/frame-231.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-232",
+-       "index": 232,
+-       "requestedMs": 29000,
+-       "actualMs": 29000,
+-       "path": "reference-evidence/derived/recording/frame-232.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-233",
+-       "index": 233,
+-       "requestedMs": 29125,
+-       "actualMs": 29125,
+-       "path": "reference-evidence/derived/recording/frame-233.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-234",
+-       "index": 234,
+-       "requestedMs": 29250,
+-       "actualMs": 29250,
+-       "path": "reference-evidence/derived/recording/frame-234.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-235",
+-       "index": 235,
+-       "requestedMs": 29375,
+-       "actualMs": 29375,
+-       "path": "reference-evidence/derived/recording/frame-235.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-236",
+-       "index": 236,
+-       "requestedMs": 29500,
+-       "actualMs": 29500,
+-       "path": "reference-evidence/derived/recording/frame-236.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-237",
+-       "index": 237,
+-       "requestedMs": 29625,
+-       "actualMs": 29625,
+-       "path": "reference-evidence/derived/recording/frame-237.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-238",
+-       "index": 238,
+-       "requestedMs": 29750,
+-       "actualMs": 29750,
+-       "path": "reference-evidence/derived/recording/frame-238.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-239",
+-       "index": 239,
+-       "requestedMs": 29875,
+-       "actualMs": 29875,
+-       "path": "reference-evidence/derived/recording/frame-239.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-240",
+-       "index": 240,
+-       "requestedMs": 30000,
+-       "actualMs": 30000,
+-       "path": "reference-evidence/derived/recording/frame-240.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-241",
+-       "index": 241,
+-       "requestedMs": 30125,
+-       "actualMs": 30125,
+-       "path": "reference-evidence/derived/recording/frame-241.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-242",
+-       "index": 242,
+-       "requestedMs": 30250,
+-       "actualMs": 30250,
+-       "path": "reference-evidence/derived/recording/frame-242.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-243",
+-       "index": 243,
+-       "requestedMs": 30375,
+-       "actualMs": 30375,
+-       "path": "reference-evidence/derived/recording/frame-243.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-244",
+-       "index": 244,
+-       "requestedMs": 30500,
+-       "actualMs": 30500,
+-       "path": "reference-evidence/derived/recording/frame-244.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-245",
+-       "index": 245,
+-       "requestedMs": 30625,
+-       "actualMs": 30625,
+-       "path": "reference-evidence/derived/recording/frame-245.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-246",
+-       "index": 246,
+-       "requestedMs": 30750,
+-       "actualMs": 30750,
+-       "path": "reference-evidence/derived/recording/frame-246.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-247",
+-       "index": 247,
+-       "requestedMs": 30875,
+-       "actualMs": 30875,
+-       "path": "reference-evidence/derived/recording/frame-247.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-248",
+-       "index": 248,
+-       "requestedMs": 31000,
+-       "actualMs": 31000,
+-       "path": "reference-evidence/derived/recording/frame-248.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-249",
+-       "index": 249,
+-       "requestedMs": 31125,
+-       "actualMs": 31125,
+-       "path": "reference-evidence/derived/recording/frame-249.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-250",
+-       "index": 250,
+-       "requestedMs": 31250,
+-       "actualMs": 31250,
+-       "path": "reference-evidence/derived/recording/frame-250.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-251",
+-       "index": 251,
+-       "requestedMs": 31375,
+-       "actualMs": 31375,
+-       "path": "reference-evidence/derived/recording/frame-251.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-252",
+-       "index": 252,
+-       "requestedMs": 31500,
+-       "actualMs": 31500,
+-       "path": "reference-evidence/derived/recording/frame-252.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-253",
+-       "index": 253,
+-       "requestedMs": 31625,
+-       "actualMs": 31625,
+-       "path": "reference-evidence/derived/recording/frame-253.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-254",
+-       "index": 254,
+-       "requestedMs": 31750,
+-       "actualMs": 31750,
+-       "path": "reference-evidence/derived/recording/frame-254.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-255",
+-       "index": 255,
+-       "requestedMs": 31875,
+-       "actualMs": 31875,
+-       "path": "reference-evidence/derived/recording/frame-255.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-256",
+-       "index": 256,
+-       "requestedMs": 32000,
+-       "actualMs": 32000,
+-       "path": "reference-evidence/derived/recording/frame-256.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-257",
+-       "index": 257,
+-       "requestedMs": 32125,
+-       "actualMs": 32125,
+-       "path": "reference-evidence/derived/recording/frame-257.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-258",
+-       "index": 258,
+-       "requestedMs": 32250,
+-       "actualMs": 32250,
+-       "path": "reference-evidence/derived/recording/frame-258.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-259",
+-       "index": 259,
+-       "requestedMs": 32375,
+-       "actualMs": 32375,
+-       "path": "reference-evidence/derived/recording/frame-259.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-260",
+-       "index": 260,
+-       "requestedMs": 32500,
+-       "actualMs": 32500,
+-       "path": "reference-evidence/derived/recording/frame-260.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-261",
+-       "index": 261,
+-       "requestedMs": 32625,
+-       "actualMs": 32625,
+-       "path": "reference-evidence/derived/recording/frame-261.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-262",
+-       "index": 262,
+-       "requestedMs": 32750,
+-       "actualMs": 32750,
+-       "path": "reference-evidence/derived/recording/frame-262.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-263",
+-       "index": 263,
+-       "requestedMs": 32875,
+-       "actualMs": 32875,
+-       "path": "reference-evidence/derived/recording/frame-263.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-264",
+-       "index": 264,
+-       "requestedMs": 33000,
+-       "actualMs": 33000,
+-       "path": "reference-evidence/derived/recording/frame-264.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-265",
+-       "index": 265,
+-       "requestedMs": 33125,
+-       "actualMs": 33125,
+-       "path": "reference-evidence/derived/recording/frame-265.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-266",
+-       "index": 266,
+-       "requestedMs": 33250,
+-       "actualMs": 33250,
+-       "path": "reference-evidence/derived/recording/frame-266.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-267",
+-       "index": 267,
+-       "requestedMs": 33375,
+-       "actualMs": 33375,
+-       "path": "reference-evidence/derived/recording/frame-267.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-268",
+-       "index": 268,
+-       "requestedMs": 33500,
+-       "actualMs": 33500,
+-       "path": "reference-evidence/derived/recording/frame-268.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-269",
+-       "index": 269,
+-       "requestedMs": 33625,
+-       "actualMs": 33625,
+-       "path": "reference-evidence/derived/recording/frame-269.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-270",
+-       "index": 270,
+-       "requestedMs": 33750,
+-       "actualMs": 33750,
+-       "path": "reference-evidence/derived/recording/frame-270.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-271",
+-       "index": 271,
+-       "requestedMs": 33875,
+-       "actualMs": 33875,
+-       "path": "reference-evidence/derived/recording/frame-271.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-272",
+-       "index": 272,
+-       "requestedMs": 34000,
+-       "actualMs": 34000,
+-       "path": "reference-evidence/derived/recording/frame-272.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-273",
+-       "index": 273,
+-       "requestedMs": 34125,
+-       "actualMs": 34125,
+-       "path": "reference-evidence/derived/recording/frame-273.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-274",
+-       "index": 274,
+-       "requestedMs": 34250,
+-       "actualMs": 34250,
+-       "path": "reference-evidence/derived/recording/frame-274.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-275",
+-       "index": 275,
+-       "requestedMs": 34375,
+-       "actualMs": 34375,
+-       "path": "reference-evidence/derived/recording/frame-275.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-276",
+-       "index": 276,
+-       "requestedMs": 34500,
+-       "actualMs": 34500,
+-       "path": "reference-evidence/derived/recording/frame-276.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-277",
+-       "index": 277,
+-       "requestedMs": 34625,
+-       "actualMs": 34625,
+-       "path": "reference-evidence/derived/recording/frame-277.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-278",
+-       "index": 278,
+-       "requestedMs": 34750,
+-       "actualMs": 34750,
+-       "path": "reference-evidence/derived/recording/frame-278.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-279",
+-       "index": 279,
+-       "requestedMs": 34875,
+-       "actualMs": 34875,
+-       "path": "reference-evidence/derived/recording/frame-279.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-280",
+-       "index": 280,
+-       "requestedMs": 35000,
+-       "actualMs": 35000,
+-       "path": "reference-evidence/derived/recording/frame-280.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-281",
+-       "index": 281,
+-       "requestedMs": 35125,
+-       "actualMs": 35125,
+-       "path": "reference-evidence/derived/recording/frame-281.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-282",
+-       "index": 282,
+-       "requestedMs": 35250,
+-       "actualMs": 35250,
+-       "path": "reference-evidence/derived/recording/frame-282.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-283",
+-       "index": 283,
+-       "requestedMs": 35375,
+-       "actualMs": 35375,
+-       "path": "reference-evidence/derived/recording/frame-283.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-284",
+-       "index": 284,
+-       "requestedMs": 35500,
+-       "actualMs": 35500,
+-       "path": "reference-evidence/derived/recording/frame-284.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-285",
+-       "index": 285,
+-       "requestedMs": 35625,
+-       "actualMs": 35625,
+-       "path": "reference-evidence/derived/recording/frame-285.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-286",
+-       "index": 286,
+-       "requestedMs": 35750,
+-       "actualMs": 35750,
+-       "path": "reference-evidence/derived/recording/frame-286.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-287",
+-       "index": 287,
+-       "requestedMs": 35875,
+-       "actualMs": 35875,
+-       "path": "reference-evidence/derived/recording/frame-287.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-288",
+-       "index": 288,
+-       "requestedMs": 36000,
+-       "actualMs": 36000,
+-       "path": "reference-evidence/derived/recording/frame-288.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-289",
+-       "index": 289,
+-       "requestedMs": 36125,
+-       "actualMs": 36125,
+-       "path": "reference-evidence/derived/recording/frame-289.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-290",
+-       "index": 290,
+-       "requestedMs": 36250,
+-       "actualMs": 36250,
+-       "path": "reference-evidence/derived/recording/frame-290.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     },
+-     {
+-       "id": "frame-291",
+-       "index": 291,
+-       "requestedMs": 36375,
+-       "actualMs": 36375,
+-       "path": "reference-evidence/derived/recording/frame-291.png",
+-       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-       "width": 1100,
+-       "height": 720
+-     }
+-   ],
+-   "contactSheets": [],
+-   "status": "READY",
+-   "blockers": [],
+-   "extractedAt": "2026-10-20T00:00:00.000Z"
+- }
+-
+
+ ❯ tests/unit/research-sandbox.test.ts:68:72
+     66|     for (const [relative, source] of Object.entries(files)) {
+     67|       expect(source.length).toBeGreaterThan(12_000);
+     68|       expect(await readFile(path.join(result.root, relative), 'utf8'))…
+       |                                                                        ^
+     69|       expect(manifest.inputHashes[relative]).toBe(createHash('sha256')…
+     70|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[23/30]⎯
+
+ FAIL  tests/unit/research-sandbox.test.ts > research execution sandbox > rejects missing structural prerequisites rather than silently falling back to excerpts
+AssertionError: promise resolved "{ mode: 'sanitized-read-only', …(3) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "allowedFiles": [
++     "artifacts/reference-frame-manifest.json",
++     "reference-evidence/manifest.json",
++   ],
++   "manifestPath": "/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/research-reject-yZAHdD/research-sandbox/reference_deep_research/SANDBOX_MANIFEST.json",
++   "mode": "sanitized-read-only",
++   "root": "/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/research-reject-yZAHdD/research-sandbox/reference_deep_research",
+  }
+
+ ❯ tests/unit/research-sandbox.test.ts:92:68
+     90|       await writeFile(source, JSON.stringify(value));
+     91|     }
+     92|     await expect(prepareResearchSandbox(referenceContext(runRoot))).re…
+       |                                                                    ^
+     93|   });
+     94|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[24/30]⎯
+
+ FAIL  tests/unit/research-sandbox.test.ts > research execution sandbox > rejects invalid-json structural prerequisites rather than silently falling back to excerpts
+AssertionError: promise resolved "{ mode: 'sanitized-read-only', …(3) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "allowedFiles": [
++     "artifacts/reference-frame-manifest.json",
++     "reference-evidence/manifest.json",
++   ],
++   "manifestPath": "/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/research-reject-gDS5sg/research-sandbox/reference_deep_research/SANDBOX_MANIFEST.json",
++   "mode": "sanitized-read-only",
++   "root": "/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/research-reject-gDS5sg/research-sandbox/reference_deep_research",
+  }
+
+ ❯ tests/unit/research-sandbox.test.ts:92:68
+     90|       await writeFile(source, JSON.stringify(value));
+     91|     }
+     92|     await expect(prepareResearchSandbox(referenceContext(runRoot))).re…
+       |                                                                    ^
+     93|   });
+     94|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[25/30]⎯
+
+ FAIL  tests/unit/research-sandbox.test.ts > research execution sandbox > rejects invalid-schema structural prerequisites rather than silently falling back to excerpts
+AssertionError: promise resolved "{ mode: 'sanitized-read-only', …(3) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "allowedFiles": [
++     "artifacts/reference-frame-manifest.json",
++     "reference-evidence/manifest.json",
++   ],
++   "manifestPath": "/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/research-reject-F2Jxn8/research-sandbox/reference_deep_research/SANDBOX_MANIFEST.json",
++   "mode": "sanitized-read-only",
++   "root": "/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/research-reject-F2Jxn8/research-sandbox/reference_deep_research",
+  }
+
+ ❯ tests/unit/research-sandbox.test.ts:92:68
+     90|       await writeFile(source, JSON.stringify(value));
+     91|     }
+     92|     await expect(prepareResearchSandbox(referenceContext(runRoot))).re…
+       |                                                                    ^
+     93|   });
+     94|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[26/30]⎯
+
+ FAIL  tests/unit/research-sandbox.test.ts > research execution sandbox > rejects symlink structural prerequisites rather than silently falling back to excerpts
+AssertionError: promise resolved "{ mode: 'sanitized-read-only', …(3) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "allowedFiles": [
++     "artifacts/reference-frame-manifest.json",
++     "reference-evidence/manifest.json",
++   ],
++   "manifestPath": "/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/research-reject-knOYWT/research-sandbox/reference_deep_research/SANDBOX_MANIFEST.json",
++   "mode": "sanitized-read-only",
++   "root": "/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/research-reject-knOYWT/research-sandbox/reference_deep_research",
+  }
+
+ ❯ tests/unit/research-sandbox.test.ts:92:68
+     90|       await writeFile(source, JSON.stringify(value));
+     91|     }
+     92|     await expect(prepareResearchSandbox(referenceContext(runRoot))).re…
+       |                                                                    ^
+     93|   });
+     94|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[27/30]⎯
+
+ FAIL  tests/unit/research-sandbox.test.ts > research execution sandbox > rejects embedded-instruction structural prerequisites rather than silently falling back to excerpts
+AssertionError: promise resolved "{ mode: 'sanitized-read-only', …(3) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "allowedFiles": [
++     "artifacts/reference-frame-manifest.json",
++     "reference-evidence/manifest.json",
++   ],
++   "manifestPath": "/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/research-reject-7g9zND/research-sandbox/reference_deep_research/SANDBOX_MANIFEST.json",
++   "mode": "sanitized-read-only",
++   "root": "/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/research-reject-7g9zND/research-sandbox/reference_deep_research",
+  }
+
+ ❯ tests/unit/research-sandbox.test.ts:92:68
+     90|       await writeFile(source, JSON.stringify(value));
+     91|     }
+     92|     await expect(prepareResearchSandbox(referenceContext(runRoot))).re…
+       |                                                                    ^
+     93|   });
+     94|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[28/30]⎯
+
+
+ Test Files  4 failed (4)
+      Tests  30 failed | 14 passed (44)
+   Start at  17:26:01
+   Duration  1.16s (transform 772ms, setup 0ms, import 1.48s, tests 207ms, environment 0ms)
+

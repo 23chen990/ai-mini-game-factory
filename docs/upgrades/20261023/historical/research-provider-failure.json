@@ -1,0 +1,253 @@
+{
+  "schemaVersion": 1,
+  "kind": "agent-evaluation-decision",
+  "status": "STOPPED_BUDGET_BREACH",
+  "reportedAt": "2026-10-19T16:15:06.162Z",
+  "targetRunId": "mobile-slice-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+  "baselineRevision": "3cd613dc509a24f818353cc7abd13075e7fb9199",
+  "summary": "Confirmed a real Research input-delivery defect. Diagnostic treatment restores complete structural file bytes, but no completed A/B behavior analysis, held-out improvement, cost saving, or cross-game transfer was established. Stop and retain evidence; do not land a production optimization.",
+  "observations": [
+    "Actual ReferenceResearchAgent → CodexAccountProvider → CodexCliProvider calls used the frozen production component, not a main-chat substitute. Input assembly replayed the existing factory context compiler from a historical migration seed; this was not a full factory.run/resume execution.",
+    "The source frame index contains 111916 characters / 111924 bytes; the A sandbox file is empty. The provenance manifest is truncated to invalid JSON.",
+    "A2 actual Research issued repeated reads and its item_6 command failed parsing the truncated provenance manifest. This establishes an execution consequence of delivery loss, not the historical gameplay root cause.",
+    "B1 only materialized the same two schema-valid prerequisite JSON files in the existing sandbox and updated their existing hash records. Prompt, output schema, model and the 76 selected media files were unchanged. Both files then preserved original hashes and parsed successfully in local verification; B read their content, but did not complete Research.",
+    "Both A1/A2 reached the 180-second timeout. Network reconnects occurred before tool execution. B1 was manually terminated after budget overrun was discovered, so timing/quality comparisons are censored.",
+    "Declared reasoning was max; actual CLI session context was ultra for all three runs. No model or reasoning change was made in A/B. This is a frozen-configuration discrepancy, not a proven performance cause."
+  ],
+  "notEstablished": [
+    "No completed Research artifact from the live calls.",
+    "No evidence of improved autonomous layout discovery or priority selection.",
+    "No Builder/Fixer coding, full-chain completion, natural-player QA, platform acceptance or release approval.",
+    "No validated monetary saving or 7–14-day delivery capability."
+  ],
+  "coverage": [
+    {
+      "responsibility": "Research",
+      "status": "PARTIALLY_EXERCISED_REAL_PROVIDER",
+      "scope": "Input delivery and actual tool behavior observed; output correctness not scored."
+    },
+    {
+      "responsibility": "Contract and Builder handoff",
+      "status": "NOT_EXERCISED",
+      "scope": "No completed Research output; do not synthesize a passing handoff."
+    },
+    {
+      "responsibility": "QA",
+      "status": "NOT_EXERCISED",
+      "scope": "Existing evidence was reused; no new independent player/perceptual evaluation."
+    },
+    {
+      "responsibility": "Fixer",
+      "status": "NOT_EXERCISED",
+      "scope": "No workspace writing or coding capability evaluation."
+    },
+    {
+      "responsibility": "Controller",
+      "status": "STATIC_ENTRYPOINT_REVIEW_ONLY",
+      "scope": "No production run/resume; no claim of an automatically executed whole chain."
+    }
+  ],
+  "cases": [
+    {
+      "label": "A1",
+      "providerResult": "failed",
+      "endedAt": "2026-10-19T16:04:41.810Z",
+      "elapsedMs": 180263,
+      "reason": "Error: codex exec timed out after 180000ms",
+      "completedAnalysis": false,
+      "recordedTokenLowerBound": 528131,
+      "completedUsageSamples": 10,
+      "effectiveModel": "gpt-5.6-luna",
+      "effectiveReasoning": "ultra"
+    },
+    {
+      "label": "A2",
+      "providerResult": "failed",
+      "endedAt": "2026-10-19T16:09:13.357Z",
+      "elapsedMs": 180068,
+      "reason": "Error: codex exec timed out after 180000ms",
+      "completedAnalysis": false,
+      "recordedTokenLowerBound": 428916,
+      "completedUsageSamples": 9,
+      "effectiveModel": "gpt-5.6-luna",
+      "effectiveReasoning": "ultra"
+    },
+    {
+      "label": "B1",
+      "providerResult": "failed",
+      "endedAt": "2026-10-19T16:11:19.267Z",
+      "elapsedMs": 100044,
+      "reason": "Controller terminated both experiment CLI children after discovering the budget overrun. The provider surfaced an earlier reconnect error; it is not the stop cause.",
+      "completedAnalysis": false,
+      "recordedTokenLowerBound": 272546,
+      "completedUsageSamples": 7,
+      "effectiveModel": "gpt-5.6-luna",
+      "effectiveReasoning": "ultra"
+    }
+  ],
+  "cost": {
+    "plannedTokenCap": 200000,
+    "recordedCliTokenLowerBound": 1229593,
+    "cachedInputTokens": 1020160,
+    "uncachedInputPlusOutputTokens": 209433,
+    "cliTaskInvocations": 3,
+    "completedUsageSamples": 26,
+    "underlyingRequestCount": "CLI tasks are multi-round; observed usage updates are not a guaranteed exact count of all backend requests/reconnects.",
+    "money": null,
+    "mainThreadAndWorkerUsage": "Not included in the CLI lower bound; not measured here.",
+    "budgetEnforced": false,
+    "action": "Stopped all live experiment CLI children and the still-running diagnostic worker. No further paid evaluation calls."
+  },
+  "verification": {
+    "schemaChecks": [
+      "A1:context-integrity-and-sandbox-schema:PASS",
+      "A2:context-integrity-and-sandbox-schema:PASS",
+      "B1:context-integrity-and-sandbox-schema:PASS"
+    ],
+    "structuredDelivery": [
+      {
+        "file": "artifacts/reference-frame-manifest.json",
+        "baselineJsonParse": "FAIL",
+        "treatmentJsonAndSchema": "PASS",
+        "exactSourceBytesPreserved": true
+      },
+      {
+        "file": "reference-evidence/manifest.json",
+        "baselineJsonParse": "FAIL",
+        "treatmentJsonAndSchema": "PASS",
+        "exactSourceBytesPreserved": true
+      }
+    ],
+    "samePrompt": true,
+    "sameOutputSchema": true,
+    "sameModel": true,
+    "sameSelectedMedia": true,
+    "selectedMediaCount": 76,
+    "completedAnalysisComparison": false,
+    "reason": "A timed out and B was budget-terminated; no quality, latency, or cost win can be inferred from partial trajectories.",
+    "repositoryChecks": [
+      {
+        "check": "lint",
+        "status": "PASS",
+        "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261019/logs/lint.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "check": "typecheck",
+        "status": "PASS",
+        "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261019/logs/typecheck.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "check": "targeted-tests:3-files/27-tests",
+        "status": "PASS",
+        "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261019/logs/targeted-tests.log",
+        "sha256": "fed5b736ef9c7fc88150c0219a43208754aad9f5aedc34968937727dc6e381c0"
+      }
+    ],
+    "repositoryChecksScope": "Existing factory checks only; not successful live A/B behavior analysis or game acceptance."
+  },
+  "holdout": {
+    "sufficient": false,
+    "reason": "Only the known reference recording and its derivatives are verified in this bounded inventory; nearby clips and outdated candidate copies cannot become independent held-out labels.",
+    "migrationInput": "migration/seed-luna-work-20260909.yaml referenceMechanics passed ReferenceMechanicSpecSchema; legacy input replay only.",
+    "currentCandidateApprovalProven": false
+  },
+  "decision": {
+    "keep": [
+      "Reproducible input-delivery failure record and exact source/context/sandbox hashes.",
+      "All A/B traces, censored outcomes, usage evidence and the negative result."
+    ],
+    "rejectOrDefer": [
+      "No prompt expansion, model change, extra production Agent/Gate/Schema.",
+      "No production source patch based solely on incomplete B.",
+      "No whole-chain or cross-game improvement claim; no second-game expansion."
+    ],
+    "nextExperimentPrerequisites": [
+      "Resolve live budget accounting before another model trial: count per-request cumulative usage, cached input and timeout/abort usage; validate stopping with a local stub before spending again.",
+      "Pin effective CLI settings and tool availability, rather than treating the declared model-policy file as proof.",
+      "First use a local failing regression for complete schema-validated prerequisite delivery; any production patch must retain research isolation and pass lint/typecheck/tests.",
+      "Before another paid validation, define a bounded evidence task and establish an eligible held-out sample; do not ask the user to become daily QA."
+    ],
+    "ownerAccountability": "The main agent chose and ran this experiment. Usage was checked too late; timeout-null provider metrics were insufficient. The budget overrun is an execution/control failure for which the main agent is responsible, not evidence of model incapability."
+  },
+  "game": {
+    "writes": 0,
+    "builds": 0,
+    "buildHashUnchanged": true,
+    "sourcePatchFiles": [],
+    "committed": false,
+    "pushed": false
+  },
+  "evidence": [
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261019/experiment.json",
+      "sha256": "188a2c64c8036235853417969c66d349f7645851163c0b8ccdf088ed8f18f087"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261019/triage.json",
+      "sha256": "67bde0040f76ac86e5ce8d4807b4e5fe6cb629013ce173a882df4ed310c03070"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261019/B-treatment.json",
+      "sha256": "5bfb2d0fe8910c97e52531903ccfc57ada7fdaa3074be47b769a1de4f901a5e1"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261019/A1/receipt.json",
+      "sha256": "55a29afeb1f7680dc759652322af1b27026ca724d1aa763bd0fa0b4d8e049b46"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261019/A2/receipt.json",
+      "sha256": "0cdee46110daf8a111ac4a6a5d525100e63f558ee889e671d79abbc3ebae5b4e"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261019/B1/receipt.json",
+      "sha256": "6f1011f33e3a5a5a8fc121b6783daca8127e9c3f9c0b65038ade538ec62566f0"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261019/A1/results/input-delivery.json",
+      "sha256": "ff3678cd8af5e7a812f39c6aecc5689053850825c1b2ef26ad5da15e96bc1fa2"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261019/A2/logs/observed.stdout.jsonl",
+      "sha256": "e7dfbfec2a02055188f233787cc3c6c90bcffa55029540e2ff0b0ebce3d13d63"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261019/B1/logs/observed.stdout.jsonl",
+      "sha256": "427ceca259c2ad0b9c4bcae92d1e4fe8779dddb009859628e4b78abdf91ba468"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261019/A1/session-usage.json",
+      "sha256": "9bc2115c1ec710a76b6470c38bb65cd2a9923af0940690f60e2aa21098ac84f4"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261019/A2/session-usage.json",
+      "sha256": "35fcb438317b2d743cded0957db6f43faa1440bc8acc169a571718f7b12ca97d"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261019/B1/session-usage.json",
+      "sha256": "c74e558f83215e1c32b1be6b823e36df3514af243d70a251b789a859af0c4636"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261019/results/usage-summary.json",
+      "sha256": "32374d7a0e7c93a43164f5fe5cb6332c7b0fa08c10f989ca438ab7dc46aec258"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261019/results/verification.json",
+      "sha256": "e1e0830486d0af82d839c7bace7b8f489265439542473878a1a0ea052f255f32"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261019/logs/lint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261019/logs/typecheck.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261019/logs/targeted-tests.log",
+      "sha256": "fed5b736ef9c7fc88150c0219a43208754aad9f5aedc34968937727dc6e381c0"
+    }
+  ]
+}

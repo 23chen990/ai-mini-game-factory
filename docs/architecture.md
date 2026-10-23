@@ -8,7 +8,15 @@ UI 约束、自动试玩策略和性能预算。默认面向一人团队的微�
 短局单机和 IAA 边界。`codex-account` 复用 Codex CLI 已有的登录会话，不读取认证文件；没有数据库、
 队列、容器或自建支付后台。
 
-## 确定性状态机
+## 默认入口与确定性状态机
+
+默认入口为 `new-reference`：brief → 绑定证据 → 一次机制/行为分析 → 人类确认 →
+`replica-preview` 单一核心切片。以 [README](../README.md) 为当前入口规范；以下完整生产状态机
+用于显式 `full-validation`，不是每个参考预览的必经路径。新增模块只组合现有适配器和验收器：
+`reference-intake`（证据/草案缓存）、`reference-web-capture`（采集）、`repair-policy`（修复账本）、
+`product-readiness`（五维投影）。不增加常驻服务或每阶段子 Agent。
+
+## 完整验证状态机
 
 ```text
 CREATED → 产线/业务/研究 → 蓝图与体验假设 → CORE_SPEC_FROZEN

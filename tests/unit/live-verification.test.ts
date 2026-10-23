@@ -25,4 +25,21 @@ describe('live verification gate', () => {
     expect(evaluateLiveVerification(report).passed).toBe(false);
     expect(evaluateLiveVerification(report).blockers).toEqual(expect.arrayContaining(['core-loop', 'evidence-missing']));
   });
+
+  it('accepts a native package hash distinct from the browser release hash', () => {
+    const packageHash = 'c'.repeat(64);
+    const report = buildLiveVerification({
+      gameId: 'g',
+      platform: 'wechat-minigame',
+      releaseHash: hash,
+      packageHash,
+      checks: { startup: true, coreLoop: true, terminalState: true, replay: true, adFallback: true, rewardIdempotency: true, saveRestore: true, telemetry: true, packageHashMatch: true },
+      evidence: ['device://capture/native-package'],
+    });
+
+    expect(report.status).toBe('LIVE_VERIFIED');
+    expect(report.releaseHash).toBe(hash);
+    expect(report.packageHash).toBe(packageHash);
+    expect(evaluateLiveVerification(report)).toMatchObject({ passed: true, blockers: [] });
+  });
 });

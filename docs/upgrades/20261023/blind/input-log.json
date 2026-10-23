@@ -1,0 +1,32 @@
+{
+  "referenceMode": "recording-only; no reference input trace supplied",
+  "candidateSessions": [
+    {
+      "id": 1,
+      "viewport": "1100x720, Chromium fresh context",
+      "actions": [
+        {"type":"wait","durationMs":1500,"note":"after navigation"},
+        {"type":"mouse.click","x":550,"y":360},
+        {"type":"wait","durationMs":1200},
+        {"type":"mouse.down","x":550,"y":360},
+        {"type":"wait","durationMs":900},
+        {"type":"mouse.move","from":[550,360],"to":[580,360],"steps":8,"durationMs":500},
+        {"type":"mouse.up","x":580,"y":360},
+        {"type":"wait","durationMs":1000}
+      ],
+      "screenshots": ["candidate-start.png","candidate-after-click.png","candidate-after-hold.png"]
+    },
+    {
+      "id": 2,
+      "viewport": "1100x720, Chromium fresh context",
+      "actions": [
+        {"type":"wait","durationMs":1000,"note":"after navigation"},
+        {"type":"mouse.click","x":550,"y":360,"note":"initial click"},
+        {"type":"mouse.click","x":550,"y":360,"repeat":20,"intervalMs":300},
+        {"type":"wait","durationMs":8000,"note":"no input"}
+      ],
+      "screenshots": ["candidate-session2-start.png","candidate-session2-8taps.png","candidate-session2-20taps.png","candidate-session2-idle8s.png"],
+      "note":"Script captured screenshots after loop click 8 and loop click 20. No event-level timestamps were logged; intervals are the scripted waits."
+    }
+  ]
+}

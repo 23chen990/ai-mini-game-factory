@@ -30,8 +30,8 @@ const MaximumCoreMechanicFidelitySchema = z.object({
 }).default(maximumCoreMechanicFidelity);
 
 /**
- * A human-authored lock on generic gameplay relationships from one designated
- * benchmark. This artifact is intentionally not produced by an ideation agent.
+ * A human-approved lock on generic gameplay relationships from one designated
+ * benchmark. It may be discovered from evidence, but only explicit human approval locks it.
  */
 export const ReferenceMechanicSpecSchema = z.object({
   schemaVersion: z.literal(1),

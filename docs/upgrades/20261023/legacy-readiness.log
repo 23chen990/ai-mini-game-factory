@@ -1,0 +1,3 @@
+$ tsx src/cli/factory.ts readiness mobile-slice-adaptation-20260830
+ENOENT: no such file or directory, open '/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/state.json'
+[ELIFECYCLE] Command failed with exit code 1.

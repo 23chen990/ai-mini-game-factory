@@ -1,8 +1,16 @@
 import { describe, expect, it } from 'vitest';
-import { defaultFactoryEvalCases, mergeFactoryEvalCases, parseFactoryEvalCasesFile, runFactoryEvalSuite } from '../../src/core/factory-eval.js';
+import { FACTORY_EVAL_SOURCE_PATHS, defaultFactoryEvalCases, mergeFactoryEvalCases, parseFactoryEvalCasesFile, runFactoryEvalSuite } from '../../src/core/factory-eval.js';
 import { RequestRouter } from '../../src/core/request-router.js';
 
 describe('factory eval suite', () => {
+  it('invalidates cached eval when reference readiness and handoff implementation changes', () => {
+    expect(FACTORY_EVAL_SOURCE_PATHS).toEqual(expect.arrayContaining([
+      'src/core/reference-comparison.ts', 'src/schemas/reference-comparison.ts',
+      'src/core/preview-infrastructure.ts', 'src/core/builder-continuation.ts',
+      'src/core/workspace-path.ts', 'src/schemas/product-readiness.ts',
+    ]));
+  });
+
   it('parses a versioned corpus and rejects duplicate or mismatched cases', () => {
     const corpus = parseFactoryEvalCasesFile({
       schemaVersion: 1,

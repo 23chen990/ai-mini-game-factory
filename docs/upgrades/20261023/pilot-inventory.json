@@ -1,0 +1,201 @@
+{
+  "targetGame": "mobile-slice-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+  "generatedWorkspaceModified": false,
+  "sourceRevision": null,
+  "bootstrap": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/state.json",
+      "exists": false,
+      "sha256": null
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/input/seed.yaml",
+      "exists": false,
+      "sha256": null
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/artifacts/pipeline-plan.json",
+      "exists": false,
+      "sha256": null
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/artifacts/permission-manifest.json",
+      "exists": false,
+      "sha256": null
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/artifacts/reference-quality-audit.json",
+      "exists": true,
+      "sha256": "5671f814d96394ceeed213f6397e3e2731e54b9b29b1261ed42a05c5e0932995"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/manifest.json",
+      "exists": true,
+      "sha256": "b826775ab76f3d782c2b594c35d79441950d76ae7416f43b6032ae7269a36d7a"
+    }
+  ],
+  "candidateIndex": {
+    "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/dist/index.html",
+    "sha256": "c4cc3c427fc52c9f91f6229c9aea0ae7cfe8220341be521df6c807626d101aae"
+  },
+  "verifiedReference": {
+    "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/incoming/_2026-09-06-135548-3781e4dcd3d2.mp4",
+    "sha256": "3781e4dcd3d21094f186cf442b3ee30cddfbb2fbe68d87c5c7470a2c742bf75a"
+  },
+  "sourceSnapshot": [
+    {
+      "path": "src/a-style-basecolor.ts",
+      "sha256": "00b11b79d832603d375c0c731d40e502acaefce426033009be66b45f05445aec"
+    },
+    {
+      "path": "src/a-style-texture-runtime.ts",
+      "sha256": "89d844a6741b218d2f7be9912e07be4c2797834159e2476530ead6121fdcae40"
+    },
+    {
+      "path": "src/assets/a-style/crate-basecolor.png",
+      "sha256": "36284f8d5c5092dbb73c08877ea22855cc844614514a036736c86e985d2788da"
+    },
+    {
+      "path": "src/assets/a-style/crystal-basecolor.png",
+      "sha256": "02c811c9de4601b24b59deee3fcbcaf2ea3f190f3c88bf3b8572a25416490603"
+    },
+    {
+      "path": "src/assets/a-style/knife-basecolor.png",
+      "sha256": "c85a3f77a9e7c40eee3c5530788261bcd86baca4adf9125e56f4d0a73fef7287"
+    },
+    {
+      "path": "src/assets/a-style/log-basecolor.png",
+      "sha256": "bca83ae3309698385d0e79611430d18dbd324d2ffbe7706ef2c73c3521ee588a"
+    },
+    {
+      "path": "src/assets.d.ts",
+      "sha256": "727c0f28bab9265e33e07f82cabc0ad317c8696ce3e6a59f9c1133e25c6dc79f"
+    },
+    {
+      "path": "src/cleave-knife-profile.ts",
+      "sha256": "3998d42935db88d712b2ff3552ff780cf3157c955032e3a4e43625996b5e86fe"
+    },
+    {
+      "path": "src/cleave-visuals.ts",
+      "sha256": "4cb08acce7ee23faec69ff67fd3e10409928c4c1ab472ea675690eb16ef65154"
+    },
+    {
+      "path": "src/cut-impact.ts",
+      "sha256": "cceefc30c47a74380361a9f826caa41d5db57f3ead709c782bc6957278eb1a7f"
+    },
+    {
+      "path": "src/cut-plane-geometry.ts",
+      "sha256": "6fd5f2afc82d4a9f8519b0996f6b1177b18767f14b070822d29e41523e709a1b"
+    },
+    {
+      "path": "src/cut-poc-3d-core.ts",
+      "sha256": "c2a04c5712b6944041bb5481c09b363e9450c0bce650fe53e5c38f7dd4dac41d"
+    },
+    {
+      "path": "src/finish-label-layout.ts",
+      "sha256": "2ec0e509df461b074ed4aa708680750cfa4231f0813608ca1c7b0287fa1cd56d"
+    },
+    {
+      "path": "src/food-cleave-demo.ts",
+      "sha256": "244e8083015af407b411a01f9c3b25bb6b9dade52514c04ebae3eb065b1dbb27"
+    },
+    {
+      "path": "src/food-cleave.ts",
+      "sha256": "2510c689eb6d2e3fffcf8863689e1e237f1f6d67fddfde3482587b3fb7c588e6"
+    },
+    {
+      "path": "src/fruit-cut-layers.ts",
+      "sha256": "a7d80421310e076c876cf643061b1026dcd62ce99bb243a912f659dc01918dbc"
+    },
+    {
+      "path": "src/game-content.ts",
+      "sha256": "211a831824d47994721156f9584c8a63efb802376421f76ad8b5a24e961749f7"
+    },
+    {
+      "path": "src/game-core.ts",
+      "sha256": "caa37fc414a5d9fbaab7851329d653f6eef4f60d7d7988c9fe47f7382b9a379f"
+    },
+    {
+      "path": "src/game-levels.ts",
+      "sha256": "019ab2e5c607f53806c49ed9fd2bdfa9353fd2949d19f565d57aebce86a218f8"
+    },
+    {
+      "path": "src/game-watermelon-visuals.ts",
+      "sha256": "29a817773b75b3f46ab52ae9bfad258ecf75888a4a109754b1e082831a3a4322"
+    },
+    {
+      "path": "src/level-one-guidance.ts",
+      "sha256": "23c22abf655804a3db6d8f88236f925a94c6ecd053b38559ae744f5118ba98c6"
+    },
+    {
+      "path": "src/level-progress.ts",
+      "sha256": "c1143784b08b9a0033689ac74850c818cf5ec566dd531c7c4ce72d653ec481ec"
+    },
+    {
+      "path": "src/main.ts",
+      "sha256": "37cc78fe0bd1cde424cd1148f5348b9f9d4a4766acb94f4b6f4d282eac27415f"
+    },
+    {
+      "path": "src/melon-material.ts",
+      "sha256": "79c430c1483d1746c45d7e099afcc2a5e56f6c0714fba57bb760c424ff192b0a"
+    },
+    {
+      "path": "src/melon-softbody.d.ts",
+      "sha256": "a00cd34cd75e7fc9a67fc9a5d44c93eb6f4c76250ba551e25926cbc8ef6cae61"
+    },
+    {
+      "path": "src/melon-softbody.js",
+      "sha256": "33f6778d657aa11389f88dd6a700ed671085698a6731546a3b2315352f5531a5"
+    },
+    {
+      "path": "src/melon-visuals.ts",
+      "sha256": "a80489e212f5ab4d65a9e0b799eb6d3282509188fcc09039adf1894c13b42b71"
+    },
+    {
+      "path": "src/poc-3d-skin.ts",
+      "sha256": "dda5b03ea99b0da0678ec09f7219d4dfb11e302ed19ff4c35e29b0fa943017e3"
+    },
+    {
+      "path": "src/poc-3d-texture-routing.ts",
+      "sha256": "4af8718e1d9e53468bb54679c401c951f07747ce9e5cd551ecc98eed21dfacc2"
+    },
+    {
+      "path": "src/poc-3d.css",
+      "sha256": "8580bcaae219db4a7867ac1bac7424ed130a60717813801a5033993a0a4e327b"
+    },
+    {
+      "path": "src/poc-3d.ts",
+      "sha256": "389edf55147fc875458e4f85bb8a6b0bc0ddfa7e37bdbce6c988cd51ab41f9b8"
+    },
+    {
+      "path": "src/style.css",
+      "sha256": "dccd99676fe1a19b534090e363e4f75c50986af2dc63b69de777b65c5826d831"
+    },
+    {
+      "path": "src/theme.ts",
+      "sha256": "e810ca2e128ed859978a0d881d02b64c1552ae3d35734f6c3263a92d0b507b27"
+    },
+    {
+      "path": "src/three-cut-visuals.ts",
+      "sha256": "8e009bca2190b62d68a475a3ee322df94e153d95c6a4282961f0c8c569879f4e"
+    },
+    {
+      "path": "src/three-presentation.ts",
+      "sha256": "69cbc9ddd236eeb481df61c6ce78344b770d6883d215cf2d3f32bc74daac75a4"
+    },
+    {
+      "path": "src/three-world-renderer.ts",
+      "sha256": "47352cc11e3465b6f39bbdb0afd670e9a6792805ee0fab70f0a4cf301aa241f2"
+    },
+    {
+      "path": "src/watermelon-cleave-demo.ts",
+      "sha256": "38ed64d126bc2bd11f4ae308e43a1ad4cd7ccf5394f78a9421eab64d57d3149e"
+    },
+    {
+      "path": "src/watermelon-cleave.ts",
+      "sha256": "1cd4a60309ea5e8c0504a3bb69e28cb449abe3a27864555e54a89034f4e41a20"
+    }
+  ],
+  "disposition": "BLOCKED_LEGACY_BOOTSTRAP_AND_UNAPPROVED_CORE_CONTRACT"
+}

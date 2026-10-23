@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "factory-control-plane",
+  "workspace": "/Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市",
+  "report": "Research 输入截断、QA 自报 PASS 可覆盖失败细节、顺序比较退化为均值、Factory Eval 只检验路由；需复用历史试点并严格区分自主发现与提示后发现。",
+  "classification": [
+    "qa-false-positive",
+    "factory-routing",
+    "reference-fidelity"
+  ],
+  "scope": {
+    "route": "shared-factory",
+    "rationale": "共享交接/比较/评测缺陷；不修改生成游戏。",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "游戏代码和素材的写权限",
+      "其他游戏分支",
+      "模型与角色调整",
+      "未绑定参考媒体"
+    ]
+  },
+  "reproduction": {
+    "status": "PARTIALLY_REPRODUCED",
+    "steps": [
+      "复用 20261020 实际 provider 失败记录并核对源文件",
+      "先在已集成 main/#72 的基线运行复用的失败回归",
+      "用同案、边界和负向样本复测，另行隔离盲评输入"
+    ],
+    "observed": [
+      "历史 A2 无法解析被截断 provenance JSON；A/B 未完成，不能推断质量改善",
+      "Factory Eval 只调用 RequestRouter；无 Agent 输出评分",
+      "源代码显示 QA aggregate 未处理 failed checks/error issues；顺序比较仅取均值，待失败回归复现"
+    ],
+    "evidence": [
+      {
+        "path": "src/core/research-sandbox.ts",
+        "sha256": "bbb4e40a518c645c5ce02a8a0241154c6080bbaffdc85837bbcbaac67ff53b92",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      },
+      {
+        "path": "src/agents/index.ts",
+        "sha256": "2b9575d6ab16698c9e4893cabb94f6cc25592a1b5e231406725a3a5e7a24fe6e",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      },
+      {
+        "path": "src/core/reference-comparison.ts",
+        "sha256": "0584d864c7f24770a24f1b7afefcbd17dd25ba646409845b190f14bce6e1c005",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      },
+      {
+        "path": "src/core/factory-eval.ts",
+        "sha256": "c1fb0c1400009ccc395ea24682a91b49234f6f25817fdceaa06e371ae09af4c0",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "有效结构输入完整进入只读 research sandbox；非法或丢失必需文件明确失败",
+    "已声明契约不能被 provider 省略或弱化；failed check/error/natural failure 不能得到 QA PASS",
+    "明确顺序样本的置换/缺失/额外值应检出；不捏造旧合同的比较语义",
+    "沿用 Factory Eval CLI，指标有分子分母、未验证与阻断状态；无真实输出不计成功",
+    "原始游戏、失败证据、历史分支和用户修改保持不变；最多五轮 FIX",
+    "lint/typecheck/test 与真实自然输入/独立参考检查分开报告"
+  ],
+  "status": "OPEN",
+  "createdAt": "2026-10-23T09:25:58.247668Z"
+}
