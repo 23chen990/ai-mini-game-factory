@@ -168,7 +168,7 @@ describe('CodexCliProvider', () => {
     const parsed = parseCodexJsonl([
       '{"type":"turn.completed","usage":{"input_tokens":100,"cached_input_tokens":80,"output_tokens":20}}',
       '{"type":"turn.completed","usage":{"input_tokens":70,"cached_input_tokens":50,"output_tokens":10}}',
-    ].join('\\n'));
+    ].join('\n'));
     expect(parsed.usage).toEqual({ inputTokens: 170, outputTokens: 30, totalTokens: 200 });
   });
 
