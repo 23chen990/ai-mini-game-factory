@@ -401,6 +401,46 @@ test('a fast readable bend can earn a drift and its exit spray is not vetoed by 
   exit.smallWindow = 0;
   assert.equal(v11AiInput(exit, track, 1/120).wPressed, false);
 });
+test('skilled physical rivals finish a safe short drift before native spray qualification, never through hazards',()=>{
+  const track=trackFixture();delete track.__RACE_SHORTCUT__;
+  const fixture={...carFixture(track),skill:1.80,drifting:true,driftTime:.16,
+    driftDir:1,driftAngle:.22,lat:0,s:38,impact:0,airborne:false,spin:0};
+  const before=physical(fixture);
+  const committed=v11AiInput(fixture,track,1/120);
+  assert.equal(committed.shift,true,'a safe 0.16s drift may reach the native >0.22s reward threshold');
+  assert.equal(committed.wPressed,false,'being in a drift never creates small boost');
+  assert.deepEqual(physical(fixture),before,'drift commit only holds the real Shift input');
+  for(const unsafe of [
+    {driftTime:.36},{impact:5},{spin:.3},{airborne:true},
+    {lat:track.halfW-1},{skill:1.20},
+  ]){
+    const c={...fixture,...unsafe,__V11_DRIFT_COOLDOWN__:0};
+    assert.equal(v11AiInput(c,track,1/120).shift,false,
+      'unsafe or exhausted drift has to release: '+JSON.stringify(unsafe));
+  }
+});
+test('elite AI consumes only an earned physical exit window, with skill and edge risk bounded',()=>{
+  const track=arcTrack(80,10);
+  const car={...carFixture(track),track,x:0,z:0,d:0,m:-.09,h:-.09,
+    s:40,lat:0,skill:1.80,smallWindow:.3,nitroCount:0,
+    drifting:false,airborne:false,spin:0,impact:0};
+  const before=physical(car);
+  const input=v11AiInput(car,track,1/120);
+  assert.equal(input.wPressed,true,'elite AI should not waste a legal corner exit at .29 rad heading error');
+  assert.equal(input.nitroPressed,false,'no earned stock: no nitro');
+  assert.deepEqual(physical(car),before,'input controller never grants speed or stock');
+  const conservative={...car,skill:1.20};
+  assert.equal(v11AiInput(conservative,track,1/120).wPressed,false,
+    'weaker rivals retain conservative line discipline');
+  for(const unsafe of [
+    {smallWindow:0},{smallWindow:.5},{impact:4},{spin:.2},
+    {airborne:true},{drifting:true},{lat:9},
+  ]){
+    const c={...car,...unsafe};
+    assert.equal(v11AiInput(c,track,1/120).wPressed,false,
+      'no fabricated, premature or hazardous exit boost: '+JSON.stringify(unsafe));
+  }
+});
 test('near-bend sensing compares raw curvature consistently, independent of the wider-line speed budget', () => {
   const track = trackFixture();
   delete track.__RACE_SHORTCUT__;

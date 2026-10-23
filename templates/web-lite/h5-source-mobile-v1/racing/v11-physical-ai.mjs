@@ -211,9 +211,21 @@ export function v11AiInput(ai, track, dt, tune = DEFAULT_TUNE) {
   if (ai.drifting) {
     const correction = wrap(aim - ai.h);
     input.steerAxis = clamp(correction * 2.4, -1, 1);
-    input.shift = Number.isFinite(ai.driftTime) && ai.driftTime < 0.34 &&
-      Math.sign(input.steerAxis) === Math.sign(ai.driftDir) &&
-      Math.abs(input.steerAxis) > 0.12 && Math.abs(ai.driftAngle ?? 0) < 0.8 &&
+    const elapsed = ai.driftTime;
+    const sameDirection = Math.sign(input.steerAxis) === Math.sign(ai.driftDir) &&
+      Math.abs(input.steerAxis) > 0.12;
+    // A premature release (<.22s) never creates a native small-spray window.
+    // Skilled rivals can hold a short genuine Shift drift while their wheel
+    // begins to countersteer, but ONLY inside the physical road corridor.
+    // Never override an impact, airborne state, spin, dangerous yaw or fork.
+    const halfWidth = track.v9WidthAt?.(ai.d) ?? track.halfW;
+    const finishCleanly = ability >= 1.55 && !route && elapsed < 0.29 &&
+      speed > 24 && Math.abs(correction) < 0.32 &&
+      Math.abs(ai.lat ?? 0) < halfWidth - 2.4 &&
+      Math.abs(ai.driftAngle ?? 0) < 0.62;
+    input.shift = Number.isFinite(elapsed) && elapsed < 0.34 &&
+      (sameDirection || finishCleanly) &&
+      Math.abs(ai.driftAngle ?? 0) < 0.8 &&
       !ai.airborne && (ai.spin ?? 0) <= 0 && (ai.impact ?? 0) <= 0;
     if (!input.shift) ai.__V11_DRIFT_COOLDOWN__ = 1.8;
   } else {
@@ -230,13 +242,23 @@ export function v11AiInput(ai, track, dt, tune = DEFAULT_TUNE) {
   input.right = input.steerAxis < -.04;
   const safeBoost = !route && largestCurve < .0055 && Math.abs(headingError) < .10 &&
     !ai.airborne && !ai.drifting && (ai.spin ?? 0) <= 0 && (ai.impact ?? 0) <= 0 && speed > 24;
-  // A just-earned clean-drift spray may be released safely at corner exit.
-  // Nitro remains stock-based, and can only be used on the original safer straight.
+  // Skill tiers distinguish a good corner-exit spray from perfect robotic
+  // spam. A real PlayerCar drift/landing must first earn a smallWindow; this
+  // is only a delayed input within that native half-second opportunity.
+  // Less skilled rivals retain the old conservative line requirement.
+  const strong = ability >= 1.60, practiced = ability >= 1.35;
+  const roadHalf = track.v9WidthAt?.(ai.d) ?? track.halfW;
   const safeSpray = !route && !ai.airborne && !ai.drifting &&
     (ai.spin ?? 0) <= 0 && (ai.impact ?? 0) <= 0 &&
-    Math.abs(nearCurve) < .016 && Math.abs(headingError) < .20 &&
-    Math.abs(input.steerAxis) < .65 && speed > 21;
-  input.wPressed = (safeBoost || safeSpray) && (ai.smallWindow ?? 0) > 0;
+    Math.abs(nearCurve) < (strong ? .024 : practiced ? .021 : .016) &&
+    Math.abs(headingError) < (strong ? .36 : practiced ? .29 : .20) &&
+    Math.abs(input.steerAxis) < (strong ? .85 : practiced ? .76 : .65) &&
+    Math.abs(gripLag) < (practiced ? .70 : .45) &&
+    Math.abs(ai.lat ?? 0) < roadHalf - 1.6 && speed > 21;
+  const earnedWindow = ai.smallWindow ?? 0;
+  const humanReaction = strong ? .44 : practiced ? .41 : .39;
+  input.wPressed = (safeBoost || safeSpray) &&
+    earnedWindow > .04 && earnedWindow <= humanReaction;
   // An earned nitro can be used at a real corner exit even if a *later*
   // medium bend within 105m makes the generic straight test too cautious.
   // The near road, current line, impact and heading still have hard safety
