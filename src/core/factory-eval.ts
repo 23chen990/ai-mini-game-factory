@@ -46,6 +46,7 @@ export const FACTORY_EVAL_SOURCE_PATHS = [
   'src/core/redaction.ts',
   'src/core/request-router.ts',
   'src/core/run-store.ts',
+  'src/core/codex-budget.ts',
   'src/core/state-machine.ts',
   'src/core/side-effects.ts',
   'src/core/schema-migrations.ts',
@@ -406,6 +407,7 @@ export function scoreFactoryAgentEval(corpusValue: unknown, observationsValue: u
     for (const [index, item] of group.cases.entries()) {
       const observation = group.observations[index]!;
       if (observation.status === 'BLOCKED') continue;
+      if (item.agent === 'QA' && item.qaDefectGoldComplete !== true) continue;
       const judgments = new Map(observation.judgments.map(row => [row.labelId, row]));
       for (const label of item.labels) {
         const judgment = judgments.get(label.id)!; // completeness was validated above
@@ -421,6 +423,10 @@ export function scoreFactoryAgentEval(corpusValue: unknown, observationsValue: u
     const metrics: FactoryAgentEvaluation['cohorts'][number]['metrics'] = {};
     const positives = truePositive + falseNegative;
     const completedObservations = group.observations.filter(item => item.status === 'COMPLETED');
+    metrics.taskSuccessRate = rate(group.cases.filter((item, index) => {
+      const observation = group.observations[index]!;
+      return observation.status === 'COMPLETED' && item.labels.every(label => observation.judgments.some(judgment => judgment.labelId === label.id && judgment.observed === label.expected && (label.route === undefined || judgment.route === label.route)));
+    }).length, completedObservations.length);
     if (agent === 'Research') {
       metrics.keyMechanismPrecision = rate(truePositive, truePositive + falsePositive);
       metrics.importantOmissionRate = rate(falseNegative, positives);

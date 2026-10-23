@@ -1,3 +1,4 @@
+import { beginCodexExecution } from '../../src/core/codex-budget.js';
 import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
@@ -221,6 +222,43 @@ describe('codex-account orchestration', () => {
     expect(executor.labels.filter((label) => label === 'BUILD')).toHaveLength(buildCallsBefore);
     const report = JSON.parse(await readFile(path.join(runRoot, 'artifacts/build-report.json'), 'utf8')) as { verification: string[] };
     expect(report.verification).toEqual(expect.arrayContaining(['test:passed', 'typecheck:passed']));
+  });
+
+  it('recovers the latest canonical Builder execution and charges each orphan receipt once', async () => {
+    const { root, seed } = await setup();
+    const executor = new FakeExecutor();
+    const images = new MockImageProvider();
+    const factory = createFactory({ root, repositoryRoot: process.cwd(), mode: 'codex-account', qaMode: 'stub', codexExecutor: executor, previewImageProvider: images, assetImageProvider: images });
+    const runId = await factory.newRun(seed);
+    await factory.run(runId);
+    await factory.approvePrototype(runId, { decision: 'APPROVE', notes: '' });
+    await factory.resume(runId);
+    await factory.approve(runId, { direction: 'direction_a', notes: '' });
+    await factory.resume(runId);
+    const runRoot = path.join(root, 'runs', runId);
+    const state = await factory.status(runId);
+    const build = state.stages.FULL_BUILD!;
+    build.status = 'failed'; build.providerCalls.agent = 0;
+    build.tokenUsage = { inputTokens: 0, outputTokens: 0, totalTokens: 0 };
+    build.codexExecutionIds = [];
+    state.stage = 'FAILED'; state.status = 'failed'; delete state.codexThreadId;
+    await writeFile(path.join(runRoot, 'state.json'), JSON.stringify(state));
+    const ids: string[] = [];
+    for (const tokens of [10, 20]) {
+      const execution = await beginCodexExecution(runRoot, { stage: 'FULL_BUILD', model: 'controlled-no-model' });
+      ids.push(execution.executionId);
+      await writeFile(path.join(execution.logDir, 'BUILD.attempt-1.stdout.jsonl'), JSON.stringify({ type: 'thread.started', thread_id: `canonical-${tokens}` }) + '\n' + JSON.stringify({ type: 'turn.completed', usage: { input_tokens: tokens, output_tokens: 0 } }) + '\n');
+      await execution.save({ inputTokens: tokens, outputTokens: 0, totalTokens: tokens }, 1, 'complete');
+      await execution.release();
+    }
+    await writeFile(path.join(runRoot, 'logs/codex/BUILD.attempt-1.stdout.jsonl'), '{"type":"thread.started","thread_id":"stale-compatibility"}\n{"type":"turn.completed","usage":{"input_tokens":999,"output_tokens":0}}\n');
+    const callsBefore = executor.labels.length;
+    const recovered = await factory.verifyBuild(runId);
+    expect(recovered.codexThreadId).toBe('canonical-20');
+    expect(executor.labels).toHaveLength(callsBefore);
+    expect(recovered.stages.FULL_BUILD).toMatchObject({ codexExecutionIds: expect.arrayContaining(ids), tokenUsage: { totalTokens: 30 }, providerCalls: { agent: 2 } });
+    const usage = JSON.parse(await readFile(path.join(runRoot, 'artifacts/cost-usage.json'), 'utf8'));
+    expect(usage.agentTokens).toBe(Object.values(recovered.stages).reduce((sum, record) => sum + record.tokenUsage.totalTokens, 0));
   });
 
   it('refreshes a completed build report and downstream QA/release without another Codex call', async () => {

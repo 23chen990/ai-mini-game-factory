@@ -95,7 +95,7 @@ describe('CodexCliProvider', () => {
     const result = await provider.execute({ label: 'BLUEPRINT', prompt: 'Read input/seed.yaml', cwd: root, sandbox: 'read-only', outputSchema: { type: 'object', additionalProperties: false }, outputPath: path.join(root, 'game-blueprint.json'), logDir: path.join(root, 'logs') });
 
     expect(calls[0]?.command).toBe('codex');
-    expect(calls[0]?.args).toEqual(buildCodexExecArgs({ cwd: root, sandbox: 'read-only', schemaPath: path.join(root, 'logs/BLUEPRINT.schema.json'), outputPath: path.join(root, 'game-blueprint.json') }));
+    expect(calls[0]?.args).toEqual(buildCodexExecArgs({ cwd: root, sandbox: 'read-only', schemaPath: path.join(root, `logs/codex/executions/${result.executionId}/BLUEPRINT.schema.json`), outputPath: path.join(root, 'game-blueprint.json') }));
     expect(calls[0]?.args).not.toContain('danger-full-access');
     expect(calls[0]?.stdin).toBe('Read input/seed.yaml');
     expect(JSON.parse(await readFile(path.join(root, 'logs/BLUEPRINT.schema.json'), 'utf8'))).toMatchObject({ type: 'object' });
@@ -162,6 +162,38 @@ describe('CodexCliProvider', () => {
 
     await expect(provider.execute({ label: 'BLUEPRINT', prompt: 'minimal', cwd: root, sandbox: 'read-only', outputPath: path.join(root, 'out.json'), logDir: path.join(root, 'logs') })).rejects.toThrow(/timed out/i);
     expect(killed.value).toBe(true);
+  });
+
+  it('sums completed-turn usage instead of silently keeping only the final turn', () => {
+    const parsed = parseCodexJsonl([
+      '{"type":"turn.completed","usage":{"input_tokens":100,"cached_input_tokens":80,"output_tokens":20}}',
+      '{"type":"turn.completed","usage":{"input_tokens":70,"cached_input_tokens":50,"output_tokens":10}}',
+    ].join('\n'));
+    expect(parsed.usage).toEqual({ inputTokens: 170, outputTokens: 30, totalTokens: 200 });
+  });
+
+  it('kills a still-running Codex process when its completed-turn usage reaches budget', async () => {
+    const root = await mkdtemp(path.join(tmpdir(), 'codex-cli-live-budget-'));
+    const calls: string[] = [];
+    let killed = false;
+    const controlledSpawn = (() => {
+      const child = new EventEmitter() as EventEmitter & {
+        stdout: PassThrough; stderr: PassThrough; stdin: PassThrough; kill: (signal?: string) => boolean;
+      };
+      child.stdout = new PassThrough(); child.stderr = new PassThrough(); child.stdin = new PassThrough();
+      child.kill = (signal) => { killed = true; calls.push(String(signal)); queueMicrotask(() => child.emit('close', null, 'SIGTERM')); return true; };
+      queueMicrotask(() => {
+        child.stdout.write('{"type":"turn.completed","usage":{"input_tokens":35,"output_tokens":20}}\n');
+      });
+      return child as never;
+    }) as SpawnFunction;
+    const provider = new CodexCliProvider({ spawn: controlledSpawn, timeoutMs: 1000, maxRetries: 1 });
+    await expect(provider.execute({ label: 'BLUEPRINT', prompt: 'read', cwd: root, sandbox: 'read-only',
+      outputPath: path.join(root, 'out.json'), logDir: path.join(root, 'logs'), maxTotalTokens: 50 })).rejects.toThrow('token-budget');
+    expect(killed).toBe(true);
+    expect(calls).toEqual(['SIGTERM']);
+    const receipt = JSON.parse(await readFile(path.join(root, 'logs/BLUEPRINT.attempt-1.usage.json'), 'utf8'));
+    expect(receipt).toMatchObject({ cumulativeObservedTokens: 55, maxTotalTokens: 50, stopReason: 'token-budget', lowerBoundOnly: true });
   });
 
   it('allows a long-running Builder request to override the text-stage timeout', async () => {

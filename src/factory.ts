@@ -1,3 +1,4 @@
+import { codexStageExecution, codexExecutionEvidence, readCodexUsageReceipts, unaccountedCodexUsage } from './core/codex-budget.js';
 import { captureReferenceUrl, promoteReferenceCapture, discardReferenceCapture } from './core/reference-web-capture.js';
 import { isReferenceWebCapturePath } from './schemas/reference-web-capture.js';
 import { appendFile, copyFile, lstat, mkdir, readFile, realpath, readdir, writeFile } from 'node:fs/promises';
@@ -108,7 +109,7 @@ import { MockAgentProvider, MockCodexProvider, MockImageProvider } from './provi
 import type { AgentProvider, AgentCallMetrics, CodexProvider, ImageProvider } from './providers/interfaces.js';
 import { OpenAIAgentProvider, OpenAIImageProvider, ProviderOutputError } from './providers/real.js';
 import { CodexAccountProvider, type CodexExecutor } from './providers/codex-account.js';
-import { CodexCliProvider, parseCodexJsonl } from './providers/codex-cli.js';
+import { CodexCliProvider, CodexExecutionError, parseCodexJsonl } from './providers/codex-cli.js';
 import { CodexImagegenPendingError, CodexImagegenProvider } from './providers/codex-imagegen.js';
 import { buildPerceptualQaReport, LocalRuntimeProvider, MockQAProvider, PlaywrightQAProvider } from './providers/runtime-qa.js';
 import { AccountPortfolioSchema, ArtApprovalSchema, ArtDirectionsSchema, ArtPreviewManifestSchema, AssetManifestSchema, BusinessPreflightSchema, CompetitorResearchSchema, ContentVariationReportSchema, CostAdjustmentEntrySchema, CostAdjustmentLedgerSchema, CostBudgetSchema, CostRateCardSchema, FactoryOperatingProfileSchema, FormalPrototypeBuildReportSchema, FormalPrototypeFollowupConstraintsSchema, GameBlueprintSchema, GameplayRevisionLockSchema, HumanPlaytestAcceptanceSchema, HumanReferenceDecisionSchema, IaaContractSchema, IaaMonetizationReviewSchema, OpenSourceResearchArtifactSchema, OpenSourceResearchSchema, PlatformQaSubmissionSchema, PlatformReleaseMatrixSchema, QaReportSchema, ReferenceBehaviorAnalysisSchema, ReferenceEvidencePackSchema, ReferenceMechanicSpecSchema, ReleaseCandidateSchema, StateTransitionRecordSchema, StateTransitionReportSchema, StyleLockSchema, QualityBaselineReportSchema, OriginalityDeclarationSchema, CertificationChecklistSchema, LaunchMetricSnapshotSchema, PlatformSpineContractSchema, PermissionManifestBundleSchema, PermissionManifestSchema, ReleaseLifecycleSchema, ReleaseLifecycleStatusSchema, ExperienceReviewReportSchema, StageContractSchema, type CompetitorResearch, type GameBlueprint, type GameplayRevisionLock, type ReferenceMechanicSpec, type RunState, type Seed, type StageName, type StageRecord } from './schemas/index.js';
@@ -351,6 +352,7 @@ export function createFactory(options: FactoryOptions = {}) {
     const handoffRelative = `logs/handoffs/${stage}.attempt-${attempt}.json`;
     await writeJsonAtomic(path.join(runRoot, handoffRelative), handoff);
     await store.log(path.basename(runRoot), 'context.handoff.persisted', { stage, attempt, path: handoffRelative, estimatedChars: handoff.estimatedChars, estimatedTokens: handoff.estimatedTokens });
+    await persistCodexRunBudget(path.basename(runRoot));
     return assertExecutionContext({ runRoot, outputPath, logDir: path.join(runRoot, 'logs/codex'), inputPaths: safeInputPaths, stage, model: policy.model, reasoning: policy.reasoning, sandbox: policy.sandbox, contextPacket, enforceBoundary: true, ...boundary });
   }
 
@@ -359,7 +361,7 @@ export function createFactory(options: FactoryOptions = {}) {
     const previous = state.stages[stage];
     state.stage = stage;
     state.status = 'waiting';
-    state.stages[stage] = { stage, status: 'waiting', startedAt: previous?.startedAt ?? now, finishedAt: null, attempts: waitingAttemptCount(previous), inputArtifacts, outputArtifacts, errors: previous?.errors ?? [], evidence, providerCalls: previous?.providerCalls ?? { agent: 0, image: 0 }, tokenUsage: previous?.tokenUsage ?? { inputTokens: 0, outputTokens: 0, totalTokens: 0 } };
+    state.stages[stage] = { stage, status: 'waiting', startedAt: previous?.startedAt ?? now, finishedAt: null, attempts: waitingAttemptCount(previous), inputArtifacts, outputArtifacts, errors: previous?.errors ?? [], evidence, codexExecutionIds: previous?.codexExecutionIds, providerCalls: previous?.providerCalls ?? { agent: 0, image: 0 }, tokenUsage: previous?.tokenUsage ?? { inputTokens: 0, outputTokens: 0, totalTokens: 0 } };
     // Every pause is an auditable, incomplete stage transition.  Persisting
     // this here covers provider failures and human gates that do not have a
     // bespoke call site; explicit callers may subsequently enrich the same
@@ -2004,6 +2006,11 @@ export function createFactory(options: FactoryOptions = {}) {
     return CostBudgetSchema.parse(result.budget);
   }
 
+  async function persistCodexRunBudget(runId: string) {
+    const budget = await costBudgetForRun(runId);
+    await writeJsonAtomic(path.join(store.runRoot(runId), 'artifacts/codex-run-budget.json'), { schemaVersion: 1, maxAgentTokens: budget.maxAgentTokens });
+  }
+
   async function preflightCostBeforeStage(state: RunState, stage: StageName) {
     const { rateCard } = await ensureCostArtifacts(state.runId);
     const current = await usageForState(state);
@@ -2484,10 +2491,30 @@ export function createFactory(options: FactoryOptions = {}) {
         await store.writeArtifact(state.runId, metadataName, buildArtifactMetadata({ runId: state.runId, path: output, producerStage: record.stage, inputHashes: entry.inputHashes, outputHash: entry.sha256, model: policy.model, reasoning: policy.reasoning, approvalStatus: getStageContract(record.stage).approvalRequired ? 'PENDING' : 'NONE' }));
       } catch { /* metadata is audit enrichment; stage output remains authoritative */ }
     }
-    const modelEvidence = record.evidence.filter((item) => item.startsWith('model:'));
+    const modelEvidence = record.evidence.filter((item) => item.startsWith('model:') || item.startsWith('codex-execution:'));
     record.status = 'completed'; record.finishedAt = new Date().toISOString(); record.outputArtifacts = outputs; record.evidence = [...new Set([...evidence, ...modelEvidence])]; state.status = 'running'; await store.save(state); await store.log(state.runId, 'stage.completed', { stage: record.stage, outputs, evidence: record.evidence, contractPassed: audit.passed });
   }
-  function addAgentMetrics(record: StageRecord, metrics: AgentCallMetrics) { record.providerCalls.agent += metrics.calls; const model = metrics.model.trim(); if (model && !record.evidence.includes(`model:${model}`)) record.evidence.push(`model:${model}`); if (metrics.usage) { record.tokenUsage.inputTokens += metrics.usage.inputTokens; record.tokenUsage.outputTokens += metrics.usage.outputTokens; record.tokenUsage.totalTokens += metrics.usage.totalTokens; } }
+  function addAgentMetrics(record: StageRecord, metrics: AgentCallMetrics) {
+    if (metrics.executionId) {
+      record.codexExecutionIds ??= [];
+      if (record.codexExecutionIds.includes(metrics.executionId)) return;
+      record.codexExecutionIds.push(metrics.executionId);
+      record.evidence.push(codexExecutionEvidence(metrics.executionId));
+    }
+    record.providerCalls.agent += metrics.calls;
+    const model = metrics.model.trim();
+    if (model && !record.evidence.includes(`model:${model}`)) record.evidence.push(`model:${model}`);
+    if (metrics.usage) {
+      record.tokenUsage.inputTokens += metrics.usage.inputTokens;
+      record.tokenUsage.outputTokens += metrics.usage.outputTokens;
+      record.tokenUsage.totalTokens += metrics.usage.totalTokens;
+    }
+  }
+  async function reconcileCodexStageMetrics(state: RunState, record: StageRecord) {
+    const receipts = (await readCodexUsageReceipts(store.runRoot(state.runId))).filter((receipt) => receipt.stage === record.stage);
+    for (const receipt of receipts) addAgentMetrics(record, { provider: 'codex-cli', model: receipt.model, calls: receipt.attempts, usage: receipt.usage, executionId: receipt.executionId });
+    return receipts.length > 0;
+  }
   async function routedModelForAttempt(state: RunState, stage: StageName, attempt: number): Promise<string> {
     const routeFile = path.join(store.runRoot(state.runId), `artifacts/model-routing/${stage}.attempt-${Math.max(1, Math.trunc(attempt))}.json`);
     try {
@@ -2502,6 +2529,7 @@ export function createFactory(options: FactoryOptions = {}) {
   async function backfillCodexMetrics(state: RunState, stage: 'FULL_BUILD' | 'FIX') {
     const record = state.stages[stage];
     if (!record) return;
+    if (await reconcileCodexStageMetrics(state, record)) return;
     if (record.providerCalls.agent > 0) {
       if (stage === 'FIX' && record.providerCalls.agent < record.attempts) record.providerCalls.agent = record.attempts;
       return;
@@ -2529,6 +2557,10 @@ export function createFactory(options: FactoryOptions = {}) {
   }
   function completeImagegenWait(state: RunState, outputs: string[]) { const wait = state.stages.WAITING_FOR_CODEX_IMAGEGEN; if (wait?.status === 'waiting') { wait.status = 'completed'; wait.finishedAt = new Date().toISOString(); wait.outputArtifacts = outputs; } }
   async function fail(state: RunState, record: StageRecord, error: unknown): Promise<never> {
+    if (error instanceof CodexExecutionError) {
+      addAgentMetrics(record, { provider: 'codex-cli', model: error.model, calls: error.attempts, usage: error.usage, executionId: error.executionId });
+      await saveUsage(state);
+    }
     if (error instanceof ProviderOutputError) {
       addAgentMetrics(record, error.metrics);
       await store.writeArtifact(state.runId, `provider-errors/${record.stage}.json`, redactValue({ schemaVersion: 1, stage: record.stage, rawResponses: error.rawResponses, validationErrors: error.validationErrors, metrics: error.metrics }));
@@ -4425,13 +4457,14 @@ export function createFactory(options: FactoryOptions = {}) {
     const measured = measureRunExecutionTime(journal, state, Date.now());
     const wallClockMinutes = measured?.wallClockMinutes ?? (started.length > 0 ? Math.max(0, Math.ceil((Date.now() - Math.min(...started)) / 60_000)) : 0);
     const accounting = await ensureCostArtifacts(state.runId);
-    return deriveCostUsage(stages, { rateCard: accounting.rateCard, adjustments: accounting.adjustments, wallClockMinutes });
+    const unacknowledged = unaccountedCodexUsage(stages, await readCodexUsageReceipts(store.runRoot(state.runId)));
+    return deriveCostUsage([...stages, ...unacknowledged], { rateCard: accounting.rateCard, adjustments: accounting.adjustments, wallClockMinutes });
   }
 
   function markControlStage(state: RunState, stage: StageName, status: 'completed' | 'waiting', inputArtifacts: string[], outputArtifacts: string[], evidence: string[]) {
     const now = new Date().toISOString();
     const previous = state.stages[stage];
-    state.stages[stage] = { stage, status, startedAt: previous?.startedAt ?? now, finishedAt: status === 'completed' ? now : null, attempts: previous?.attempts ?? 1, inputArtifacts, outputArtifacts, errors: previous?.errors ?? [], evidence, providerCalls: previous?.providerCalls ?? { agent: 0, image: 0 }, tokenUsage: previous?.tokenUsage ?? { inputTokens: 0, outputTokens: 0, totalTokens: 0 } };
+    state.stages[stage] = { stage, status, startedAt: previous?.startedAt ?? now, finishedAt: status === 'completed' ? now : null, attempts: previous?.attempts ?? 1, inputArtifacts, outputArtifacts, errors: previous?.errors ?? [], evidence, codexExecutionIds: previous?.codexExecutionIds, providerCalls: previous?.providerCalls ?? { agent: 0, image: 0 }, tokenUsage: previous?.tokenUsage ?? { inputTokens: 0, outputTokens: 0, totalTokens: 0 } };
   }
 
   async function persistControlStageAudit(state: RunState, stage: StageName, status: 'completed' | 'waiting', inputs: string[], outputs: string[], evidence: string[], options: { minimumArtifacts?: Record<string, number> } = {}) {
@@ -5210,6 +5243,10 @@ export function createFactory(options: FactoryOptions = {}) {
       if (!await exists(path.join(workspace, 'package.json'))) throw new Error(`Formal prototype workspace is missing package.json: ${constraints.targetWorkspace}`);
       const selectedWorkspace = path.posix.join('runs', actionState.runId, variant.workspace);
       if (path.resolve(repositoryRoot, selectedWorkspace) === workspace) throw new Error('Selected action experiment workspace must remain isolated from the formal workspace');
+      const targetRunRoot = path.resolve(workspace, '../..');
+      const targetRunId = path.basename(targetRunRoot);
+      if (targetRunRoot !== store.runRoot(targetRunId)) throw new Error('Formal prototype target must belong to the configured run store for budget accounting');
+      await persistCodexRunBudget(targetRunId);
       const result = await builderAgent.implementFormalPrototype(workspace, {
         constraints,
         research,
@@ -5299,7 +5336,8 @@ export function createFactory(options: FactoryOptions = {}) {
       if (!rawOutputStat?.isFile() || rawOutputStat.isSymbolicLink()) throw new Error(`Run ${runId} has no regular reference research output to recover`);
 
       const codexLogDir = path.join(runRoot, 'logs/codex');
-      const logNames = (await readdir(codexLogDir).catch(() => []))
+      const latestResearch = await codexStageExecution(runRoot, 'REFERENCE_DEEP_RESEARCH', 'REFERENCE_DEEP_RESEARCH');
+      const logNames = latestResearch ? [path.relative(codexLogDir, latestResearch.stdoutPath)] : (await readdir(codexLogDir).catch(() => []))
         .filter((name) => /^REFERENCE_DEEP_RESEARCH\.attempt-\d+\.stdout\.jsonl$/u.test(name))
         .sort((left, right) => left.localeCompare(right, undefined, { numeric: true }));
       const routedModel = await routedModelForAttempt(state, 'REFERENCE_DEEP_RESEARCH', record.attempts);
@@ -5319,7 +5357,7 @@ export function createFactory(options: FactoryOptions = {}) {
       const originalPack = ReferenceEvidencePackSchema.parse(await store.readArtifact(runId, 'reference-evidence-pack.json'));
       const preservedModelOutputFile = path.join(runRoot, 'artifacts/reference-behavior-analysis.model-output.raw.json');
       const preservedModelOutputStat = await lstat(preservedModelOutputFile).catch(() => undefined);
-      const modelOutputSource = preservedModelOutputStat?.isFile() && !preservedModelOutputStat.isSymbolicLink() ? preservedModelOutputFile : rawOutputFile;
+      const modelOutputSource = latestResearch ? latestResearch.outputPath : preservedModelOutputStat?.isFile() && !preservedModelOutputStat.isSymbolicLink() ? preservedModelOutputFile : rawOutputFile;
       const rawOutputText = await readFile(modelOutputSource, 'utf8');
       const modelOutput = JSON.parse(rawOutputText) as unknown;
       // Preserve exact model bytes before canonical output replaces the
@@ -5410,11 +5448,13 @@ export function createFactory(options: FactoryOptions = {}) {
       state.stage = 'REFERENCE_DEEP_RESEARCH';
       state.status = 'running';
       delete state.failureReason;
-      record.providerCalls.agent = Math.max(record.providerCalls.agent, recovered.metrics.calls);
-      if (recovered.metrics.usage) {
-        record.tokenUsage.inputTokens = Math.max(record.tokenUsage.inputTokens, recovered.metrics.usage.inputTokens);
-        record.tokenUsage.outputTokens = Math.max(record.tokenUsage.outputTokens, recovered.metrics.usage.outputTokens);
-        record.tokenUsage.totalTokens = Math.max(record.tokenUsage.totalTokens, recovered.metrics.usage.totalTokens);
+      if (!await reconcileCodexStageMetrics(state, record)) {
+        record.providerCalls.agent = Math.max(record.providerCalls.agent, recovered.metrics.calls);
+        if (recovered.metrics.usage) {
+          record.tokenUsage.inputTokens = Math.max(record.tokenUsage.inputTokens, recovered.metrics.usage.inputTokens);
+          record.tokenUsage.outputTokens = Math.max(record.tokenUsage.outputTokens, recovered.metrics.usage.outputTokens);
+          record.tokenUsage.totalTokens = Math.max(record.tokenUsage.totalTokens, recovered.metrics.usage.totalTokens);
+        }
       }
       if (!record.evidence.includes(`model:${recovered.metrics.model}`)) record.evidence.push(`model:${recovered.metrics.model}`);
       await saveUsage(state);
@@ -5480,7 +5520,8 @@ export function createFactory(options: FactoryOptions = {}) {
       const runRoot = store.runRoot(runId);
       let threadId = state.codexThreadId;
       let historicalBuild: ReturnType<typeof parseCodexJsonl> | undefined;
-      const logFile = path.join(runRoot, 'logs/codex/BUILD.attempt-1.stdout.jsonl');
+      const latestBuild = await codexStageExecution(runRoot, 'FULL_BUILD', 'BUILD');
+      const logFile = latestBuild?.stdoutPath ?? path.join(runRoot, 'logs/codex/BUILD.attempt-1.stdout.jsonl');
       if (buildStatus === 'failed') {
         if (!await exists(logFile)) throw new Error(`Run ${runId} has no completed Builder JSONL log to verify`);
         const parsedBuild = parseCodexJsonl(await readFile(logFile, 'utf8'));
@@ -5498,7 +5539,8 @@ export function createFactory(options: FactoryOptions = {}) {
       const record = await begin(state, 'FULL_BUILD', inputs);
       try {
         const result = await builderAgent.verifyExisting(path.join(runRoot, 'workspace/game'), blueprint.template, threadId, 'full');
-        if (record.providerCalls.agent === 0 && historicalBuild) addAgentMetrics(record, { provider: 'codex-cli', model: await routedModelForAttempt(state, 'FULL_BUILD', 1), calls: 1, usage: historicalBuild.usage });
+        const hasReceipts = await reconcileCodexStageMetrics(state, record);
+        if (!hasReceipts && record.providerCalls.agent === 0 && historicalBuild) addAgentMetrics(record, { provider: 'codex-cli', model: await routedModelForAttempt(state, 'FULL_BUILD', 1), calls: 1, usage: historicalBuild.usage });
         await backfillCodexMetrics(state, 'FIX');
         state.codexThreadId = threadId;
         await store.writeArtifact(runId, 'build-report.json', result.report);

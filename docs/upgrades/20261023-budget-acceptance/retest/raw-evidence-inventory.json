@@ -1,0 +1,291 @@
+{
+  "schemaVersion": 1,
+  "rawMedia": "retained locally; no third-party recording uploaded",
+  "files": [
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/engineering-lint.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/engineering-lint.log",
+      "sha256": "6dbeb5a5df94f7c16c62b6704af9d643eb25d75b8701ec1385fcaa0af97fadb4",
+      "bytes": 68
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/engineering-tests.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/engineering-tests.log",
+      "sha256": "d0e7df9268330f211df757efc402df04fbe7254a82af3bca3e285ee288887e91",
+      "bytes": 41564
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/engineering-typecheck.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/engineering-typecheck.log",
+      "sha256": "8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92",
+      "bytes": 15
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/follow-390-after-replay-new-cut-start.png",
+      "sha256": "ab1e7d6bf1d43de30064c536fe2370c569a28fceff615a079032f3df40715890",
+      "bytes": 80079
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/follow-390-after-replay-new-cut.png",
+      "sha256": "245217b42343d7ef92c1b3686855c96162837568a986fd4e4ddde6bab3da159e",
+      "bytes": 80896
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/follow-390-console.json",
+      "sha256": "dada33c0060f777624dfc9fc36212225763e799a663e8a3fad570f85b884b73d",
+      "bytes": 683
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/follow-390-final.png",
+      "sha256": "90bfdafaff5c9ada05566de0b8db97c26f7ca5b728dee8220fd249e3f14f77e5",
+      "bytes": 81814
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/follow-390-inputs.json",
+      "sha256": "7deb879b518cf39a0f8c4396e999b9746c19ff61e01c2b12ccd37794a0c9c89d",
+      "bytes": 11303
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/follow-390-startup.png",
+      "sha256": "49e8fae84b18c036c4d2c5706635636c52cc27a827ca28cbdb5f90b772bf8ccc",
+      "bytes": 72327
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/follow-390-summary.json",
+      "sha256": "0e39212768a50fb4d944aa388bf58b3a44151a4172108d629b728cade0843b9d",
+      "bytes": 1223
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/follow-390-terminal-failed.png",
+      "sha256": "4cecc09579153cfe0e2119508a7d526ba939414825f9745d07c11f7c83bb05f2",
+      "bytes": 71421
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/follow-390-trace.jsonl",
+      "sha256": "dbfdbe6cd9647f6f413541e001ecdec80b8c93dcf1869b2d6dbbc96d0adb9ff6",
+      "bytes": 117324
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/followfixed-390-after-replay-new-cut.png",
+      "sha256": "18c8a2432691218c04dc0b898fb6b650ac86c8b17d59fd56c61910fee13d085f",
+      "bytes": 114484
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/followfixed-390-after-replay-start.png",
+      "sha256": "a3380fb48b2ae7dc53b98ede227c05f77d890d4d76f583a8ea0a4936ce7a7f93",
+      "bytes": 78834
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/followfixed-390-console.json",
+      "sha256": "c7a9de5a38b590691bea7cbde558dfe0740e81ae1b7bba609e4dd594873fff2a",
+      "bytes": 683
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/followfixed-390-cutting.png",
+      "sha256": "9aac8a9a95545b7aad0edc567608b27fe9600ab3c49ac8190cb419e9a6854800",
+      "bytes": 113912
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/followfixed-390-final.png",
+      "sha256": "33c76f9b268aa1fc140bd8ee98db1b8d174ae48d4da7590c35bc19743c7bae0d",
+      "bytes": 92185
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/followfixed-390-inputs.json",
+      "sha256": "aefedf432dfd46beabb59656794f712d20a522675dd4d6d2de4b94f3aed7c78a",
+      "bytes": 15036
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/followfixed-390-startup.png",
+      "sha256": "0b51311caa2b196cbb5e359367ccd790d1ae6c02d2769e926ab14e4d0f417e12",
+      "bytes": 72383
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/followfixed-390-summary.json",
+      "sha256": "fe63ad3997df7723cf272b223a5b1d870ebf4fd3143ebc7dcf8b390c11917d8e",
+      "bytes": 1207
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/followfixed-390-terminal-won.png",
+      "sha256": "c0ae55890485e1471ec31a3ce86cc87634900ddbf5885dba353c70bc4aad2c1e",
+      "bytes": 66137
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/followfixed-390-trace.jsonl",
+      "sha256": "90bfac572989850dab586a2ec0071fa977b84fd571f7970e295f7cd21da61ff7",
+      "bytes": 288864
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/hold-844x390-after-replay-new-cut.png",
+      "sha256": "52178525939e0d42f247b32cd5aaba6990182b931b38ae45a1b9c9d6f8636059",
+      "bytes": 115431
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/hold-844x390-after-replay-start.png",
+      "sha256": "828c606460140adfe2cddd1e6c64efc0c1363b1d8cb9122b1c75b5923f1b8802",
+      "bytes": 85171
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/hold-844x390-console.json",
+      "sha256": "e2ef5a8d3f465dcba286f81c223fce9f95cea56ee5d3098a8f5094e7185252a4",
+      "bytes": 683
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/hold-844x390-cutting.png",
+      "sha256": "a46516ada12f9da07695a07db42461e28b58904af988b57c691257d30ff148e5",
+      "bytes": 116916
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/hold-844x390-final.png",
+      "sha256": "03ce57590975597cfaadf06b11015249ebe5ff50bdb7fd746bf5b31565d4e06f",
+      "bytes": 101565
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/hold-844x390-inputs.json",
+      "sha256": "b31a1b3b6a4f3c5c385e87bd6eb40769c0e8d5253468e6337908fe7d943f22a5",
+      "bytes": 12246
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/hold-844x390-p2.png",
+      "sha256": "e9a72392d2975118d720dbb1a183256c7277e111eb55bfede0527158a38fc387",
+      "bytes": 108897
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/hold-844x390-startup.png",
+      "sha256": "37a72e7802a35e3d6ed85839f5aa8abe72ddf61ef496cb511aa627d0f8e7ab6a",
+      "bytes": 79026
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/hold-844x390-summary.json",
+      "sha256": "0ca32be438417814c81e2594ed7ffc043d368e57fd0887a5b8d82fabcf384985",
+      "bytes": 1225
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/hold-844x390-terminal-failed.png",
+      "sha256": "95e408d99901c120f73f7485b48b362966472f54dcc1512bcd899fd0e7437f96",
+      "bytes": 108829
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/hold-844x390-trace.jsonl",
+      "sha256": "c1b0bc85a2875995b688229193362af14503e438b1350210e4f564002c26607e",
+      "bytes": 225020
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/inspect-start.mjs",
+      "sha256": "a1b856a3f3b1ad6ea5c023ed45739c352d59f0a144ce79fab4434c1eff4b9899",
+      "bytes": 1840
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/natural-390-s1-console.json",
+      "sha256": "8bae75c96973c72b382d2c0eea4197990859fbe50905741c6052176b9df0edc1",
+      "bytes": 683
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/natural-390-s1-event-196-airborne-cuts0.png",
+      "sha256": "152dbd3a6fec1347bfee50fd59a50447741e8b36a874230d8d52f72fcaa83e01",
+      "bytes": 79575
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/natural-390-s1-event-574-airborne-cuts1.png",
+      "sha256": "483e5d968dfc88b4e46c7ef8fb8c38a9fcc8410f35ceb78fa3197faddd25e1c6",
+      "bytes": 114361
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/natural-390-s1-event-963-anchored-cuts1.png",
+      "sha256": "b9e6c929170cad1b84602e6c88940cc09148c0764e3ceeab447c084cad47ece2",
+      "bytes": 93454
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/natural-390-s1-startup.png",
+      "sha256": "9a24fd5c95833737d061d0bac8bcdf69810e7cf4ffdd46bdb399404d36c6218c",
+      "bytes": 72365
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/natural-390-s1-terminal.png",
+      "sha256": "0ea057f92cf12c7e7dea2c8dfdc25a5ff81efdcde6c7ba5fc28d52c3b43a5121",
+      "bytes": 90277
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/natural-390-s1-trace.jsonl",
+      "sha256": "a45431ed5cd49718535e0f698252dd6b5e4ea0325784dfc6a9f276822fa903a1",
+      "bytes": 363871
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/natural-390-s1.mjs",
+      "sha256": "bd3d3c5f5d96394da7d3b43905f1fb426410c0f5f8c68d93d3e787080c06a19d",
+      "bytes": 3135
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/natural-follow.mjs",
+      "sha256": "3b11a8592112ffbb70bc69d3c59514f5ea0d067f27f6c433eea7d3253388b630",
+      "bytes": 6007
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/natural-run.mjs",
+      "sha256": "314a9874a1897a8bc50321bd3ffb2fe3a59d0462dd02ad4e1b69facdf1fa0733",
+      "bytes": 5806
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/packet.json",
+      "sha256": "fdec3adeae7a94e0cbafd8c1bb55e6c2af72bfb9ee0eef4265ba4db08e2938ef",
+      "bytes": 6630
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/result.json",
+      "sha256": "ed63828dcac41ff49f01734f49d2fcc2395c50a91cc61b6468905323f7b9e24f",
+      "bytes": 8260
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/server.log",
+      "sha256": "53791f6b970099754753cc9362134f4dbc29a63a2ef4ee916dc12b403215a3a7",
+      "bytes": 404
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/startup-390x844.json",
+      "sha256": "05e4fe0ce52abfad5d24fe8fdc727deb93b156bb98a892f1d3615d8cdfee1a8d",
+      "bytes": 22519
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/startup-390x844.png",
+      "sha256": "b7433e8075efbd18efb15a6d8a532d1d4cf98f921050d4df89800c54c13cf2aa",
+      "bytes": 75184
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/videos/page@9c1d614daa8eb101b1541d9dbe0e0ad5.webm",
+      "sha256": "15d9643abb7d6e7b1414d60fa3f8fdab53e5ed6b57c63d268aeff34652c5811a",
+      "bytes": 4732645
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/videos/page@cd8d12380bb8cf18a238450ddb4b6611.webm",
+      "sha256": "3c53f5975a110bbf9f54f115ff3ae2ebc25276de7fe6920f13040c322c7eab7a",
+      "bytes": 56556
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/videos/page@d8a47c0893650e4c9468646c5167bf41.webm",
+      "sha256": "a49307adaa74c5dbeb5067c4323b0753203ac2333575c1581802881ab713748a",
+      "bytes": 3804120
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/videos/page@e21ba099e97f674ee6c2900b79ca5763.webm",
+      "sha256": "501983d80b67cbcf327c471ca3b91b70cc5aad2e91222d9fcca9a2ac651a0983",
+      "bytes": 3788423
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/videos/page@ed9d648bac636c2a762bbafaed34abe9.webm",
+      "sha256": "e28d8c6d3f1a5392825c3672badd017d10070b2e731c056e80554677868fd2f4",
+      "bytes": 2183401
+    }
+  ]
+}

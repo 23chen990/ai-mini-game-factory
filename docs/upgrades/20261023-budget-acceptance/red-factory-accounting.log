@@ -1,0 +1,42 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市
+
+ ❯ tests/integration/codex-budget-accounting.test.ts (1 test | 1 failed) 179ms
+   × persists the effective run ceiling and records failed Codex usage exactly once 178ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/integration/codex-budget-accounting.test.ts > persists the effective run ceiling and records failed Codex usage exactly once
+AssertionError: expected { stage: 'COMPETITOR_RESEARCH', …(11) } to match object { …(2) }
+(13 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "providerCalls": {
+-     "agent": 1,
++     "agent": 0,
+    },
+    "tokenUsage": {
+-     "totalTokens": 400,
++     "totalTokens": 0,
+    },
+  }
+
+ ❯ tests/integration/codex-budget-accounting.test.ts:24:46
+     22|     await expect(factory.run(runId)).rejects.toThrow('token-budget');
+     23|     const state = await factory.status(runId);
+     24|     expect(state.stages.COMPETITOR_RESEARCH).toMatchObject({ tokenUsag…
+       |                                              ^
+     25|     expect(state.stages.COMPETITOR_RESEARCH?.evidence).toContain(`code…
+     26|     const artifacts = path.join(root, 'runs', runId, 'artifacts');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  23:19:33
+   Duration  2.09s (transform 1.01s, setup 0ms, import 1.81s, tests 179ms, environment 0ms)
+

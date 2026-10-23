@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "case": "blind-qa-v2 on c4cc3c427fc52c9f91f6229c9aea0ae7cfe8220341be521df6c807626d101aae",
+  "observation": "Two reported reward-absence findings are contradicted by the subject's raw video; six core branches remain unobserved. No complete current-build defect gold exists.",
+  "causeEvidence": "scoreFactoryAgentEval currently interprets every QA boolean label as defect gold. Using protocol-compliance labels would manufacture defectDetectionRate/missedDefectRate. This is a scorer semantics defect, not proof of the game root cause.",
+  "alternatives": "Keep this actual experiment BLOCKED/unscored, or minimally declare QA gold completeness on existing case schema and separate taskSuccessRate from defect metrics. Choose the latter: one optional boolean, same corpus/scorer/review channel, no Agent/Gate/stage/dependency/model change.",
+  "experiment": "Test-first: incomplete and omitted QA gold must produce zero defect-metric denominators/null rates while grading completed protocol judgments separately. Explicit complete synthetic gold retains exact existing confusion counts. Keep historical observations and holdout isolation unchanged; revert if old complete-gold regressions change. No paid calls."
+}

@@ -1,0 +1,10 @@
+$ vitest run
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市
+
+
+ Test Files  193 passed (193)
+      Tests  1228 passed (1228)
+   Start at  23:59:04
+   Duration  145.90s (transform 2.58s, setup 0ms, import 41.94s, tests 231.15s, environment 12ms)
+

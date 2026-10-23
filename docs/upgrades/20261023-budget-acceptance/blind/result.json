@@ -1,0 +1,280 @@
+{
+  "schemaVersion": 1,
+  "protocolSha256": "6194f64374ed10d582d1222b1e764ea23fda9f32d72aafd2c12d17c355066163",
+  "candidateSha256": "c4cc3c427fc52c9f91f6229c9aea0ae7cfe8220341be521df6c807626d101aae",
+  "referenceSha256": "3781e4dcd3d21094f186cf442b3ee30cddfbb2fbe68d87c5c7470a2c742bf75a",
+  "startedAt": "2026-10-23T15:31:00Z",
+  "finishedAt": "2026-10-23T15:43:01Z",
+  "durationMs": 721000,
+  "cases": [
+    {
+      "id": "L1-INPUT-390",
+      "outcome": "PASS",
+      "observations": "Fresh 390x844 touch context. Startup visibly presented the blade, first watermelon, and its supporting lane. A normal touch at (195,380) was followed by visible blade movement/rotation, watermelon separation, and HUD change to one cut/score/income. No internal API or state injection was used.",
+      "evidencePaths": [
+        "candidate-390-run1-start.png",
+        "candidate-390-run1-after-first-tap.png",
+        "inputs-390-run1.jsonl",
+        "video-390-run1/page@7f561af4f071005e20a6a6863a30aa60.webm"
+      ],
+      "unobservedSubpaths": []
+    },
+    {
+      "id": "L1-GROUND-390",
+      "outcome": "PASS",
+      "observations": "Startup and first-cut screenshots show a thick visible lane/base, tapered supports meeting the pale ground plane, and the fruit aligned to the upper support surface; the visible relation persisted through the first approach/contact. No gap or floating fruit was visible in the captured branch.",
+      "evidencePaths": [
+        "candidate-390-run1-start.png",
+        "candidate-390-run1-after-first-tap.png",
+        "video-390-run1/page@7f561af4f071005e20a6a6863a30aa60.webm"
+      ],
+      "unobservedSubpaths": []
+    },
+    {
+      "id": "L1-STACK-390",
+      "outcome": "UNOBSERVED",
+      "observations": "The four natural 390x844 sessions ended at distance 21–22 with a visible 'fell off route' failure. No clearly identifiable overlapping cuttable stack was followed through contact, separation, unsupported fall, and landing; no second natural replay attempt at that stack was possible within the observed path.",
+      "evidencePaths": [
+        "candidate-390-run1-batch-3.png",
+        "candidate-390-run2-batch6.png",
+        "candidate-390-run3-released-wait.png",
+        "candidate-390-run4-fast-wait.png",
+        "inputs-390-run1.jsonl",
+        "inputs-390-run2.jsonl",
+        "inputs-390-run3.jsonl",
+        "inputs-390-run4.jsonl"
+      ],
+      "unobservedSubpaths": [
+        "stack contact/separation",
+        "unsupported piece falling and landing",
+        "second replay with intentional avoidance"
+      ]
+    },
+    {
+      "id": "L1-REWARD-390",
+      "outcome": "FAIL",
+      "observations": "On the observed first cut, the fruit separates and the HUD synchronizes to cut/score/income 1, but the only visible '+1' reward toast is HUD-pinned at the upper left, far from the split fruit at the lower left. No reward animation at the cut object's world position was visible in the first-cut screenshot/video window, so the required local-reward stage is absent on this observed branch.",
+      "evidencePaths": [
+        "candidate-390-run1-after-first-tap.png",
+        "candidate-390-run2-after-first.png",
+        "inputs-390-run1.jsonl",
+        "video-390-run1/page@7f561af4f071005e20a6a6863a30aa60.webm"
+      ],
+      "unobservedSubpaths": [
+        "reward presentation on later cuttable types/segments"
+      ]
+    },
+    {
+      "id": "L1-PRESSURE-390",
+      "outcome": "UNOBSERVED",
+      "observations": "Natural play produced a generic 'fell off route' failure and visible replay button, but the spike warning/approach, spike avoidance versus contact, and spike-attributable failure branch were not observed. A red-outlined shape in a failure frame was not sufficient to establish the spike lifecycle.",
+      "evidencePaths": [
+        "candidate-390-run1-batch-3.png",
+        "candidate-390-run2-batch6.png",
+        "candidate-390-run3-released-wait.png",
+        "candidate-390-run4-fast-wait.png",
+        "inputs-390-run1.jsonl",
+        "inputs-390-run2.jsonl",
+        "inputs-390-run3.jsonl",
+        "inputs-390-run4.jsonl"
+      ],
+      "unobservedSubpaths": [
+        "warning before spike approach",
+        "natural avoidance and its outcome",
+        "spike collision and attributable failure",
+        "recovery from a spike failure"
+      ]
+    },
+    {
+      "id": "L1-FINISH-390",
+      "outcome": "UNOBSERVED",
+      "observations": "All four fresh 390x844 sessions ended before the finish at distance 21–22. No result lanes, terminal world feedback, settlement, or replay from a completed result were observed. A replay button after falling is not evidence for this terminal branch.",
+      "evidencePaths": [
+        "candidate-390-run1-batch-3.png",
+        "candidate-390-run2-batch6.png",
+        "candidate-390-run3-released-wait.png",
+        "candidate-390-run4-fast-wait.png",
+        "inputs-390-run1.jsonl",
+        "inputs-390-run2.jsonl",
+        "inputs-390-run3.jsonl",
+        "inputs-390-run4.jsonl"
+      ],
+      "unobservedSubpaths": [
+        "finish lanes visible before choice",
+        "choice/contact and world outcome",
+        "settlement",
+        "replay from terminal result to playable first stage"
+      ]
+    },
+    {
+      "id": "L1-INPUT-1100",
+      "outcome": "PASS",
+      "observations": "Fresh 1100x720 pointer context. Startup showed the first watermelon, blade, and supporting path together. A normal pointer click at (550,360) was followed by visible blade movement, fruit separation, and HUD cut/score/income increment; the branch satisfies the first-input/cut requirement.",
+      "evidencePaths": [
+        "candidate-1100-run1-start.png",
+        "candidate-1100-run1-first-tap.png",
+        "inputs-1100-run1.jsonl",
+        "video-1100-run1/page@235dcec036b9a559eda3ee08d4eacd1c.webm"
+      ],
+      "unobservedSubpaths": []
+    },
+    {
+      "id": "L1-GROUND-1100",
+      "outcome": "PASS",
+      "observations": "The startup and first-cut screenshots show readable lane thickness, tapered supports meeting the pale ground plane, and fruit aligned to the upper path. The relation remains visually consistent through the first approach/contact; no unsupported/floating item was visible in this branch.",
+      "evidencePaths": [
+        "candidate-1100-run1-start.png",
+        "candidate-1100-run1-first-tap.png",
+        "video-1100-run1/page@235dcec036b9a559eda3ee08d4eacd1c.webm"
+      ],
+      "unobservedSubpaths": []
+    },
+    {
+      "id": "L1-STACK-1100",
+      "outcome": "UNOBSERVED",
+      "observations": "A cluster of overlapping objects was visible in the distance-20 failure screenshot, but the failure overlay and sparse screenshots do not directly establish the complete stack contact → separation → unsupported fall → landing sequence, nor a second replay with avoidance. The visible cluster alone is not a pass.",
+      "evidencePaths": [
+        "candidate-1100-run1-batch7.png",
+        "candidate-1100-run1-batch14.png",
+        "inputs-1100-run1.jsonl",
+        "video-1100-run1/page@235dcec036b9a559eda3ee08d4eacd1c.webm"
+      ],
+      "unobservedSubpaths": [
+        "stack contact/separation event order",
+        "unsupported pieces falling and landing",
+        "second replay with intentional avoidance"
+      ]
+    },
+    {
+      "id": "L1-REWARD-1100",
+      "outcome": "FAIL",
+      "observations": "The first cut visibly separates the watermelon and updates the total, but '+1' is shown in a HUD-pinned upper-left toast while the split fruit is near the center-left world area. No local reward animation at the cut object's world position was visible; this directly contradicts the required local reward stage on the observed first-cut branch.",
+      "evidencePaths": [
+        "candidate-1100-run1-first-tap.png",
+        "inputs-1100-run1.jsonl",
+        "video-1100-run1/page@235dcec036b9a559eda3ee08d4eacd1c.webm"
+      ],
+      "unobservedSubpaths": [
+        "reward presentation on later cuttable types/segments"
+      ]
+    },
+    {
+      "id": "L1-PRESSURE-1100",
+      "outcome": "UNOBSERVED",
+      "observations": "The run ended at distance 20 with a generic 'fell off route' result and visible replay. The screenshot at distance 25 did not show a spike warning; the distance-20 failure frame contains a red-outlined shape, but no warning/avoidance/contact lifecycle was directly observed, so it is not classified as a spike failure.",
+      "evidencePaths": [
+        "candidate-1100-run1-batch7.png",
+        "candidate-1100-run1-batch14.png",
+        "candidate-1100-run1-after-replay.png",
+        "inputs-1100-run1.jsonl",
+        "video-1100-run1/page@235dcec036b9a559eda3ee08d4eacd1c.webm"
+      ],
+      "unobservedSubpaths": [
+        "warning before spike approach",
+        "natural avoidance and its outcome",
+        "spike collision and attributable failure",
+        "recovery from a spike failure"
+      ]
+    },
+    {
+      "id": "L1-FINISH-1100",
+      "outcome": "UNOBSERVED",
+      "observations": "The only 1100x720 session failed at distance 20 before the finish. No finish lanes, terminal world feedback, settlement, or completed-result replay were reached. The failure replay button returned to the initial playable state, but it does not satisfy terminal replay.",
+      "evidencePaths": [
+        "candidate-1100-run1-batch14.png",
+        "candidate-1100-run1-after-replay.png",
+        "inputs-1100-run1.jsonl",
+        "video-1100-run1/page@235dcec036b9a559eda3ee08d4eacd1c.webm"
+      ],
+      "unobservedSubpaths": [
+        "finish lanes visible before choice",
+        "choice/contact and world outcome",
+        "settlement",
+        "replay from terminal result to playable first stage"
+      ]
+    }
+  ],
+  "naturalJourney": {
+    "status": "BLOCKED",
+    "summary": "Fresh 390x844 (four sessions) and 1100x720 (one session) contexts reached startup and the first cut, but each natural path ended early with 'fell off route' at distance 20–22. At 1100x720, the visible failure replay returned to the initial playable state. No terminal/settlement was reached; this limited-scope default journey is blocked.",
+    "evidencePaths": [
+      "inputs-390-run1.jsonl",
+      "inputs-390-run2.jsonl",
+      "inputs-390-run3.jsonl",
+      "inputs-390-run4.jsonl",
+      "inputs-1100-run1.jsonl",
+      "candidate-390-run4-fast-wait.png",
+      "candidate-1100-run1-batch14.png",
+      "candidate-1100-run1-after-replay.png"
+    ]
+  },
+  "perceptual": {
+    "status": "BLOCKED",
+    "summary": "The first input/cut is visibly legible at both tested viewports, but the required world-local reward was not visible on either first-cut branch. Hazard and terminal branches were not observed, so the exact warning, choice, attribution, settlement, and replay perceptual gates remain unverified.",
+    "evidencePaths": [
+      "candidate-390-run1-after-first-tap.png",
+      "candidate-1100-run1-first-tap.png",
+      "candidate-1100-run1-batch14.png"
+    ]
+  },
+  "additionalObservations": [
+    "The frozen protocol hash, candidate hash, and reference hash matched their expected values. The reference was independently reviewed before candidate play by inspecting all 19 verified contact sheets covering the 292 manifest frames sampled across the complete 36.492s clip; no defect labels, prior QA, source, oracle, or other run artifacts were consulted.",
+    "Candidate attempts: 390x844 used four fresh contexts (the per-viewport maximum); 1100x720 used one fresh context. The observed 'fell off route' distances were 21, 21, 21, 22 at 390x844 and 20 at 1100x720. A visible failure replay at 1100 returned to the startup screen.",
+    "browser-events.jsonl contains four Chromium/WebGL performance warnings reporting GPU stall due to ReadPixels. No pageerror or requestfailed event was logged; no JavaScript console error was observed.",
+    "The browser and candidate-only static server were closed. The coordinator imposed the 600000ms administrative wall-clock stop at 2026-10-23T15:43:01Z; this supplied no gameplay hint (answerHints=0). No new game session or capture was performed after that stop; remaining branches stay UNOBSERVED.",
+    "The first explicit UTC clock marker available in this record is 2026-10-23T15:31:00Z; the exact timestamp of the first tool call is unavailable. durationMs is the elapsed time from that earliest recorded marker to the coordinator stop (721000ms), a lower bound rather than an exact first-tool duration. This exposes the timing evidence gap instead of fabricating an exact start."
+  ],
+  "humanInterventions": [],
+  "filesRead": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/protocol.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/artifacts/reference-frame-manifest.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/incoming/_2026-09-06-135548-3781e4dcd3d2.mp4 (SHA-256 only; visual review via verified contact sheets)",
+    "/Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市/.agents/skills/game-playtest/SKILL.md",
+    "/Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市/package.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/qa-builds/attempt13/index.html (hash checked and browser-served only; source not inspected)",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/natural-runner.mjs",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/browser-events.jsonl",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-390-run1-start.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-390-run1-after-first-tap.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-390-run1-run1-wait.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-390-run1-second-tap.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-390-run1-batch-3.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-390-run2-after-first.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-390-run2-batch.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-390-run2-batch6.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-390-run3-idle-five.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-390-run3-released.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-390-run3-released-wait.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-390-run4-fast-batch.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-390-run4-fast-wait.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-1100-run1-start.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-1100-run1-first-tap.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-1100-run1-batch7.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-1100-run1-batch14.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-1100-run1-after-replay.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-000-00000-00015.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-001-00016-00031.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-002-00032-00047.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-003-00048-00063.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-004-00064-00079.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-005-00080-00095.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-006-00096-00111.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-007-00112-00127.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-008-00128-00143.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-009-00144-00159.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-010-00160-00175.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-011-00176-00191.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-012-00192-00207.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-013-00208-00223.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-014-00224-00239.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-015-00240-00255.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-016-00256-00271.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-017-00272-00287.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-018-00288-00291.jpg"
+  ],
+  "labelExposure": false,
+  "cost": {
+    "totalTokens": null,
+    "costUsd": null
+  }
+}

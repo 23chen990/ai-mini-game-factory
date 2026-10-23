@@ -418,6 +418,8 @@ export const FactoryAgentEvalCasesSchema = z.object({
   cases: z.array(z.object({
     caseId: Text, familyId: Text, agent: EvalAgentSchema, dataset: FactoryEvalDatasetSchema,
     category: z.enum(['normal', 'historical-failure', 'boundary-unknown', 'injected-defect']),
+    /** Only explicit complete gold permits QA defect/omission rates. */
+    qaDefectGoldComplete: z.boolean().optional(),
     binding: EvalBindingSchema, sourceEvidence: z.array(EvalEvidenceFileSchema).min(1),
     labels: z.array(z.object({ id: Text, expected: z.boolean(), route: EvalRouteSchema.optional() }).strict()).min(1),
   }).strict()).min(1),

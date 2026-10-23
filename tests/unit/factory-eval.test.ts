@@ -8,6 +8,7 @@ describe('factory eval suite', () => {
       'src/core/reference-comparison.ts', 'src/schemas/reference-comparison.ts',
       'src/core/preview-infrastructure.ts', 'src/core/builder-continuation.ts',
       'src/core/workspace-path.ts', 'src/schemas/product-readiness.ts',
+      'src/core/codex-budget.ts',
     ]));
   });
 

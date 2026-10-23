@@ -1,0 +1,56 @@
+{
+  "label": "follow-390",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "withhold": false,
+  "terminalSeen": true,
+  "didReplay": true,
+  "postReplayCut": true,
+  "final": {
+    "status": "airborne",
+    "phase": "ordinary",
+    "levelNumber": 1,
+    "player": {
+      "x": 152.5,
+      "y": 328.625,
+      "vy": -110,
+      "vx": 150
+    },
+    "cuts": 0,
+    "score": 0,
+    "finishPhase": "idle",
+    "finishSettled": false,
+    "failReason": null,
+    "visible": {
+      "large": true,
+      "cue": "wait",
+      "title": "观察下落，准备落点",
+      "detail": "无需连点；接近落点时再轻触",
+      "compact": false,
+      "compactText": "观察下落，接近落点时再轻触"
+    },
+    "buttons": [
+      "01",
+      "02",
+      "03",
+      "04",
+      "05",
+      "06",
+      "07",
+      "08",
+      "09",
+      "10",
+      "11",
+      "12",
+      "选关",
+      "重玩"
+    ]
+  },
+  "shots": [],
+  "video": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/videos/page@e21ba099e97f674ee6c2900b79ca5763.webm",
+  "inputs": 28,
+  "logs": 4,
+  "durationMs": 33142
+}

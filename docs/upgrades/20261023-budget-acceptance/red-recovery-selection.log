@@ -1,0 +1,21 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市
+
+ ❯ tests/unit/codex-budget-accounting.test.ts (3 tests | 1 failed) 19ms
+   × selects the latest uniquely bound execution for recovery instead of a first-call pointer 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/codex-budget-accounting.test.ts > selects the latest uniquely bound execution for recovery instead of a first-call pointer
+TypeError: codexStageExecution is not a function
+ ❯ tests/unit/codex-budget-accounting.test.ts:38:18
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  23:31:54
+   Duration  633ms (transform 298ms, setup 0ms, import 508ms, tests 19ms, environment 0ms)
+

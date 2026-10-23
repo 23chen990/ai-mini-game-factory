@@ -6,7 +6,7 @@ import type { RuntimeAdapter } from '../adapters/runtime.js';
 import type { ReferenceIntakeEvidence } from '../schemas/reference-intake.js';
 
 export type TokenUsage = { inputTokens: number; outputTokens: number; totalTokens: number };
-export type AgentCallMetrics = { provider: string; model: string; calls: number; usage?: TokenUsage };
+export type AgentCallMetrics = { provider: string; model: string; calls: number; usage?: TokenUsage; executionId?: string };
 export type AgentProviderResult = { value: unknown; metrics: AgentCallMetrics };
 export type AgentExecutionContext = {
   runRoot: string;

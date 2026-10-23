@@ -239,6 +239,73 @@
           "route": "BUILDER"
         }
       ]
+    },
+    {
+      "caseId": "slice-blind-core-v2",
+      "familyId": "slice-independent-observation",
+      "agent": "QA",
+      "dataset": "canary",
+      "category": "historical-failure",
+      "qaDefectGoldComplete": false,
+      "binding": {
+        "targetRunId": "mobile-slice-adaptation-20260830",
+        "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+        "contractHash": "6194f64374ed10d582d1222b1e764ea23fda9f32d72aafd2c12d17c355066163",
+        "buildHash": "c4cc3c427fc52c9f91f6229c9aea0ae7cfe8220341be521df6c807626d101aae"
+      },
+      "sourceEvidence": [
+        {
+          "path": "docs/upgrades/20261023-budget-acceptance/blind/protocol.json",
+          "sha256": "6194f64374ed10d582d1222b1e764ea23fda9f32d72aafd2c12d17c355066163"
+        }
+      ],
+      "labels": [
+        {
+          "id": "normal-input-only",
+          "expected": true
+        },
+        {
+          "id": "reported-findings-supported",
+          "expected": true
+        },
+        {
+          "id": "unobserved-branches-not-passed",
+          "expected": true
+        },
+        {
+          "id": "within-frozen-wall-clock",
+          "expected": true
+        }
+      ]
+    },
+    {
+      "caseId": "slice-gap-retest-attempt10",
+      "familyId": "slice-repair",
+      "agent": "Fixer",
+      "dataset": "canary",
+      "category": "historical-failure",
+      "binding": {
+        "targetRunId": "mobile-slice-adaptation-20260830",
+        "workspace": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/workspace/prototype-a",
+        "contractHash": "fdec3adeae7a94e0cbafd8c1bb55e6c2af72bfb9ee0eef4265ba4db08e2938ef",
+        "buildHash": "28b2879d24d20c76d519fabb5dcc7a9ea19f96460b024057bf870f45ecea87fa"
+      },
+      "sourceEvidence": [
+        {
+          "path": "docs/upgrades/20261023-budget-acceptance/retest/packet.json",
+          "sha256": "fdec3adeae7a94e0cbafd8c1bb55e6c2af72bfb9ee0eef4265ba4db08e2938ef"
+        },
+        {
+          "path": "docs/upgrades/20261023-budget-acceptance/repair-continuation.json",
+          "sha256": "baff5763df797087c5b86933633cc7db434e0f9d34dc28a9068ba963057b52dc"
+        }
+      ],
+      "labels": [
+        {
+          "id": "exact-branch-independent-retest-pass",
+          "expected": true
+        }
+      ]
     }
   ]
 }

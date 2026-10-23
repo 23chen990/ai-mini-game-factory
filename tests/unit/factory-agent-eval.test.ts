@@ -11,7 +11,7 @@ const binding = { targetRunId: 'historical-pilot', workspace: 'workspace/prototy
 function fixture() {
   const corpus = { schemaVersion: 1, suiteVersion: 'factory-eval-v3', cases: [{
     caseId: 'qa-history', familyId: 'slice-history', agent: 'QA', dataset: 'golden', category: 'historical-failure',
-    binding, sourceEvidence: [file],
+    binding, sourceEvidence: [file], qaDefectGoldComplete: true,
     labels: [
       { id: 'known-defect', expected: true, route: 'BUILDER' },
       { id: 'missed-defect', expected: true, route: 'CONTRACT' },
@@ -53,6 +53,18 @@ describe('Agent evidence within Factory Eval, never route-only capability claims
         attributionAccuracy: { numerator: 1, denominator: 2, value: 0.5 },
       }, totals: { totalTokens: { total: null, measuredCases: 0 }, humanInterventions: { total: 0, measuredCases: 1 } },
     });
+  });
+
+  it.each(['incomplete', 'undeclared'])('never manufactures defect rates from %s QA gold', (mode) => {
+    const input = fixture();
+    if (mode === 'undeclared') Reflect.deleteProperty(input.corpus.cases[0]!, 'qaDefectGoldComplete');
+    else input.corpus.cases[0]!.qaDefectGoldComplete = false;
+    const cohort = score(input).cohorts[0]!;
+    expect(cohort.metrics.defectDetectionRate).toEqual({ numerator: 0, denominator: 0, value: null });
+    expect(cohort.metrics.missedDefectRate).toEqual({ numerator: 0, denominator: 0, value: null });
+    expect(cohort.metrics.falsePositiveRate).toEqual({ numerator: 0, denominator: 0, value: null });
+    expect(cohort.confusion).toEqual({ truePositive: 0, falsePositive: 0, trueNegative: 0, falseNegative: 0 });
+    expect(cohort.metrics.taskSuccessRate).toEqual({ numerator: 0, denominator: 1, value: 0 });
   });
 
   it('keeps absent and blocked observations unverified rather than perfect or false negatives', () => {

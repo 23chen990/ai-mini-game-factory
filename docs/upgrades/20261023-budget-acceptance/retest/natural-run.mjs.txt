@@ -1,0 +1,47 @@
+import { createRequire } from 'node:module';
+const require=createRequire('/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/workspace/prototype-a/package.json');
+const {chromium}=require('@playwright/test'); const fs=require('node:fs');
+const out='/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023';
+const label=process.argv[2], width=Number(process.argv[3]), height=Number(process.argv[4]), withhold=process.argv[5]==='withhold';
+const vp={width,height}, browser=await chromium.launch({headless:true});
+const context=await browser.newContext({viewport:vp,deviceScaleFactor:1,isMobile:true,hasTouch:true,recordVideo:{dir:out+'/videos',size:vp}});
+const page=await context.newPage(), logs=[], trace=[], inputs=[], shotIds=[];
+page.on('console',m=>logs.push({type:m.type(),text:m.text()})); page.on('pageerror',e=>logs.push({type:'pageerror',text:String(e)}));
+await page.goto('http://127.0.0.1:4173/',{waitUntil:'networkidle'}); await page.waitForTimeout(400);
+await page.screenshot({path:`${out}/${label}-startup.png`});
+function now(){return Math.round(performance.now());}
+async function read(){return await page.evaluate(()=>{
+ const s=window.__GAME_TEST__.getState(); const c=document.querySelector('#tutorial-cue'), k=document.querySelector('#instruction-text');
+ const visible=e=>!!e&&!e.hidden&&getComputedStyle(e).display!=='none'&&getComputedStyle(e).visibility!=='hidden';
+ return {status:s.status,phase:s.phase,levelNumber:s.levelNumber,player:{x:s.player.x,y:s.player.y,vy:s.player.vy,vx:s.player.vx},cuts:s.cuts,score:s.score,finishPhase:s.finishPhase,finishSettled:s.finishSettled,failReason:s.failReason,visible:{large:visible(c),cue:c?.dataset.cue,title:c?.querySelector('#tutorial-cue-title')?.textContent?.trim()||'',detail:c?.querySelector('#tutorial-cue-detail')?.textContent?.trim()||'',compact:visible(k),compactText:k?.textContent?.trim()||''},buttons:[...document.querySelectorAll('button')].filter(b=>!b.hidden&&getComputedStyle(b).display!=='none').map(b=>b.textContent.trim())};
+});}
+async function tap(reason,sample){const x=Math.round(width/2),y=Math.round(height/2);inputs.push({atMs:now(),type:'touchscreen.tap',x,y,reason,visibleCue:sample.visible});await page.touchscreen.tap(x,y);}
+const started=Date.now(); let lastAction='', actionAt=0, didReplay=false, replayStartedAt=0, terminalSeen=false, cuttingShot=false;
+await tap('startup cue: 点击任意处起飞',await read());
+for(let i=0;i<1800 && Date.now()-started<60000;i++){
+ await page.waitForTimeout(25); const elapsed=Date.now()-started, s=await read(); trace.push({atMs:elapsed,...s});
+ if(!cuttingShot&&s.cuts>0){cuttingShot=true;await page.screenshot({path:`${out}/${label}-cutting.png`});}
+ if(['failed','won'].includes(s.status)){
+   if(!terminalSeen){terminalSeen=true;await page.screenshot({path:`${out}/${label}-terminal-${s.status}.png`});}
+   if(!didReplay){await page.waitForTimeout(900);const replay=page.getByRole('button',{name:'重玩',exact:true});
+     if(await replay.isVisible().catch(()=>false)){const before=await read();await replay.tap();inputs.push({atMs:now(),type:'visible button tap',label:'重玩',reason:'natural visible replay control',visibleCue:before.visible});didReplay=true;lastAction='';replayStartedAt=Date.now();await page.waitForTimeout(250);const after=await read();if(after.visible.title.includes('点击任意处起飞'))await tap('replay startup cue: 点击任意处起飞',after);await page.screenshot({path:`${out}/${label}-after-replay-start.png`});}
+   }
+ }
+ const cueText=`${s.visible.title} ${s.visible.detail} ${s.visible.compactText}`;
+ const anchored=s.visible.large&&s.visible.title.includes('点击继续起飞');
+ const gapNow=s.visible.large&&/现在轻触|轻触向前上抬/.test(cueText)&&!/暂不轻触|不要轻触/.test(cueText);
+ const actionable=anchored?'continue:'+s.visible.title:(gapNow?'gap-now:'+s.visible.title+':'+s.visible.detail:'');
+ if(actionable&&actionable!==lastAction&&now()-actionAt>180){
+   if(!(withhold&&gapNow)){await tap(gapNow?'follow visible gap action cue':'follow visible anchored continue cue',s);lastAction=actionable;actionAt=now();}
+   else if(!inputs.some(x=>x.reason==='withheld visible gap cue')){inputs.push({atMs:now(),type:'withheld input',reason:'visible usable gap action cue intentionally withheld for natural failure/replay check',visibleCue:s.visible});lastAction=actionable;actionAt=now();}
+ }else if(!actionable){lastAction='';}
+ const p=s.player;
+ for(const [id,cond] of Object.entries({p1:p.x>=2470&&p.x<=2490&&p.y>=480&&p.y<=525&&p.vy>=400,p2:p.x>=2508&&p.x<=2540&&p.y>=600&&p.y<=680&&p.vy>=550,p3:p.x>=2538&&p.x<=2562&&p.y>=660&&p.y<=710&&p.vy>=600})){
+  if(cond&&!shotIds.includes(id)){shotIds.push(id);await page.screenshot({path:`${out}/${label}-${id}.png`});}
+ }
+ if(didReplay&&Date.now()-replayStartedAt>500&&s.cuts>0){await page.screenshot({path:`${out}/${label}-after-replay-new-cut.png`});break;}
+ if(didReplay&&Date.now()-replayStartedAt>9000)break;
+}
+const final=await read(); await page.screenshot({path:`${out}/${label}-final.png`}); const video=await page.video().path();
+await context.close(); await browser.close();
+fs.writeFileSync(`${out}/${label}-trace.jsonl`,trace.map(x=>JSON.stringify(x)).join('\n')+'\n');fs.writeFileSync(`${out}/${label}-inputs.json`,JSON.stringify(inputs,null,2));fs.writeFileSync(`${out}/${label}-console.json`,JSON.stringify(logs,null,2));fs.writeFileSync(`${out}/${label}-summary.json`,JSON.stringify({label,viewport:vp,withhold,terminalSeen,didReplay,final,shots:shotIds,video,inputCount:inputs.length,logs:logs.length,durationMs:Date.now()-started},null,2));

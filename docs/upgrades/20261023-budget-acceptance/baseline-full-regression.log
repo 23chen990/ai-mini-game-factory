@@ -1,0 +1,977 @@
+$ vitest run
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市
+
+ ❯ tests/e2e/cut-stack-playwright-qa.test.ts (1 test | 1 failed) 472ms
+     × proves cut, drop, attributable hazard failure, natural retry, finish, and replay on the packaged mother template 471ms
+ ❯ tests/e2e/factory.e2e.test.ts (1 test | 1 failed) 281ms
+   × runs seed through human gate, build, deterministic Playwright QA, and release 280ms
+ ❯ tests/e2e/reference-web-capture.test.ts (19 tests | 15 failed) 75ms
+     × binds the explicit CDN policy into capture identity instead of reusing a differently authorized capture 16ms
+     × holds a key down long enough for movement, then releases it 4ms
+     × releases a short hold before the next frame instead of stretching it 4ms
+     × captures a local canvas page as a draft without touching the evidence manifest 3ms
+     × promotes a chosen READY draft into one pending evidence entry 3ms
+     × refuses to promote a draft whose frames changed after capture 3ms
+     × refuses to promote a blocked draft 3ms
+     × discards an unpromoted draft and keeps promoted captures 3ms
+     × clips screenshots to the game area 3ms
+     × reuses an existing capture without rewriting screenshots 3ms
+     × rejects reuse when capture actions or target identity changed 3ms
+     × rejects a second capture id pointed at a different url 8ms
+     × retries a blocked capture of the same url instead of keeping the failure 3ms
+     × records a blocked capture when the page cannot be opened and does not ingest it 3ms
+     × blocks page requests and redirects to loopback before they reach the local service 7ms
+ ❯ tests/e2e/reference-capture-session.test.ts (8 tests | 8 failed) 44ms
+     × keeps one page open across steps and writes an interactive draft on finish 16ms
+     × rejects commands that do not carry the session token 4ms
+     × refuses a step that would exceed the session frame limit 3ms
+     × finishes by itself after the idle timeout 3ms
+     × refuses to reuse a capture id that already has an index 3ms
+     × writes a blocked draft when the page cannot be opened 5ms
+     × restarts a blocked session id against the same url 2ms
+     × rejects restarting a blocked session id with changed capture settings 8ms
+ ❯ tests/e2e/reference-demo.test.ts (1 test | 1 failed) 1774ms
+   × turns bound first-party requirements into a playable H5 while preserving independent acceptance gaps 1773ms
+ ❯ tests/e2e/reference-level-runtime-binding.test.ts (4 tests | 3 failed) 56ms
+     × checks current data throughout natural settlement and replay 20ms
+     × checks missing data throughout natural settlement and replay 11ms
+     × checks stale-after-action data throughout natural settlement and replay 6ms
+ ❯ tests/e2e/playwright-qa-auto-production.test.ts (5 tests | 4 failed) 55ms
+   × playtests an automatic-production game without depending on a #produce button 22ms
+   × fails QA when a reference-reskin core loop requires scrolling past the first mobile viewport 5ms
+   × passes revision-specific progressive disclosure checks for a compact mobile first viewport 10ms
+   × fails revision-specific QA when progressive disclosure overflows or exposes hidden progression 6ms
+ ❯ tests/unit/action-playwright-qa.test.ts (3 tests | 2 failed) 28ms
+     × marks every slot failed when the required __ACTION_TEST__ v1 contract is absent 20ms
+     × returns independent A/B/C metric results and writes screenshot, log, and trace evidence 5ms
+ ❯ tests/e2e/reference-intake-capture.test.ts (1 test | 1 failed) 42ms
+   × captures into a brief-only run and keeps collection separate from identity and mechanic approval 42ms
+ ❯ tests/unit/grid-comparison-adapter.test.ts (5 tests | 1 failed) 19ms
+     × waits for actually visible terminal feedback, not just an opacity-zero game-over element 15ms
+ ❯ tests/unit/runtime-qa-tournament.test.ts (6 tests | 2 failed) 16ms
+     × atomically skips a prototype control that becomes disabled before click 11ms
+     × waits for an automatic prototype phase to enable a playable control 2ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 39 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/e2e/cut-stack-playwright-qa.test.ts > cut-stack-dodge natural runtime QA > proves cut, drop, attributable hazard failure, natural retry, finish, and replay on the packaged mother template
+AssertionError: {
+  "checks": [
+    {
+      "name": "packaged-webkit-load",
+      "passed": false,
+      "evidence": "browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/webkit-2336/pw_run.sh\n╔════════════════════════════════════════════════════════════╗\n║ Looks like Playwright was just installed or updated.       ║\n║ Please run the following command to download new browsers: ║\n║                                                            ║\n║     pnpm exec playwright install                           ║\n║                                                            ║\n║ <3 Playwright Team                                         ║\n╚════════════════════════════════════════════════════════════╝"
+    }
+  ],
+  "issues": [
+    {
+      "id": "cut-stack-preview-runtime",
+      "severity": "error",
+      "message": "browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell\n╔════════════════════════════════════════════════════════════╗\n║ Looks like Playwright was just installed or updated.       ║\n║ Please run the following command to download new browsers: ║\n║                                                            ║\n║     pnpm exec playwright install                           ║\n║                                                            ║\n║ <3 Playwright Team                                         ║\n╚════════════════════════════════════════════════════════════╝",
+      "evidence": "Chromium cut-stack journey"
+    },
+    {
+      "id": "cut-stack-package-runtime",
+      "severity": "error",
+      "message": "browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/webkit-2336/pw_run.sh\n╔════════════════════════════════════════════════════════════╗\n║ Looks like Playwright was just installed or updated.       ║\n║ Please run the following command to download new browsers: ║\n║                                                            ║\n║     pnpm exec playwright install                           ║\n║                                                            ║\n║ <3 Playwright Team                                         ║\n╚════════════════════════════════════════════════════════════╝",
+      "evidence": "WebKit HTTP-served packaged dist/"
+    },
+    {
+      "id": "check-3",
+      "severity": "error",
+      "message": "packaged-webkit-load failed",
+      "evidence": "browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/webkit-2336/pw_run.sh\n╔════════════════════════════════════════════════════════════╗\n║ Looks like Playwright was just installed or updated.       ║\n║ Please run the following command to download new browsers: ║\n║                                                            ║\n║     pnpm exec playwright install                           ║\n║                                                            ║\n║ <3 Playwright Team                                         ║\n╚════════════════════════════════════════════════════════════╝"
+    }
+  ]
+}: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/e2e/cut-stack-playwright-qa.test.ts:59:135
+     57|     const report = await runPlaywrightQa(adapter, workspace, runRoot);
+     58|
+     59|     expect(report.passed, JSON.stringify({ checks: report.checks, issu…
+       |                                                                                                                                       ^
+     60|     expect(report.naturalFlow).toMatchObject({ line: 'cut-stack-dodge'…
+     61|     expect(report.naturalFlow?.transitions.map(({ name }) => name)).to…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/39]⎯
+
+ FAIL  tests/e2e/factory.e2e.test.ts > runs seed through human gate, build, deterministic Playwright QA, and release
+Error: browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     pnpm exec playwright install                           ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+ ❯ PlaywrightQAProvider.playtestTournament src/providers/runtime-qa.ts:238:36
+    236|   playtest({ runtime, workspace, runRoot }: { runtime: RuntimeAdapter;…
+    237|   async playtestTournament({ runtime, report, runRoot }: { runtime: Ru…
+    238|     const browser = await chromium.launch({ headless: true }); const c…
+       |                                    ^
+    239|     await mkdir(path.join(runRoot, 'screenshots'), { recursive: true }…
+    240|     try {
+ ❯ QAAgent.tournament src/agents/index.ts:489:156
+ ❯ executePipeline src/factory.ts:3411:175
+ ❯ execute src/factory.ts:4390:14
+ ❯ Object.demo src/factory.ts:5537:141
+ ❯ tests/e2e/factory.e2e.test.ts:10:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/39]⎯
+
+ FAIL  tests/e2e/playwright-qa-auto-production.test.ts > playtests an automatic-production game without depending on a #produce button
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/e2e/playwright-qa-auto-production.test.ts:179:25
+    177|   const report = await runPlaywrightQa(runtime, root, root);
+    178|
+    179|   expect(report.passed).toBe(true);
+       |                         ^
+    180|   expect(report.checks.map((check) => check.name)).toEqual(expect.arra…
+    181|     'packaged-webkit-load',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/39]⎯
+
+ FAIL  tests/e2e/playwright-qa-auto-production.test.ts > fails QA when a reference-reskin core loop requires scrolling past the first mobile viewport
+AssertionError: expected [ { …(3) }, { …(3) }, { …(3) } ] to deep equally contain ObjectContaining{…}
+
+- Expected:
+ObjectContaining {
+  "name": "mobile-core-loop-visible",
+  "passed": false,
+}
+
++ Received:
+[
+  {
+    "evidence": "dist/index.html executed __GAME_TEST__ through WebKit file://",
+    "name": "packaged-webkit-load",
+    "passed": false,
+  },
+  {
+    "evidence": "Packaged Phaser canvas visible through WebKit file://",
+    "name": "packaged-canvas-visible",
+    "passed": false,
+  },
+  {
+    "evidence": "Packaged HUD visible through WebKit file://",
+    "name": "packaged-hud-visible",
+    "passed": false,
+  },
+]
+
+ ❯ tests/e2e/playwright-qa-auto-production.test.ts:268:25
+    266|
+    267|   expect(report.passed).toBe(false);
+    268|   expect(report.checks).toContainEqual(expect.objectContaining({ name:…
+       |                         ^
+    269|   expect(report.issues).toContainEqual(expect.objectContaining({ sever…
+    270| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/39]⎯
+
+ FAIL  tests/e2e/playwright-qa-auto-production.test.ts > passes revision-specific progressive disclosure checks for a compact mobile first viewport
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/e2e/playwright-qa-auto-production.test.ts:295:25
+    293|   const report = await runPlaywrightQa(runtime, root, root);
+    294|
+    295|   expect(report.passed).toBe(true);
+       |                         ^
+    296|   expect(report.checks).toEqual(expect.arrayContaining([
+    297|     expect.objectContaining({ name: 'mobile-progressive-disclosure', p…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/39]⎯
+
+ FAIL  tests/e2e/playwright-qa-auto-production.test.ts > fails revision-specific QA when progressive disclosure overflows or exposes hidden progression
+AssertionError: expected [ { …(3) }, { …(3) }, { …(3) } ] to deeply equal ArrayContaining{…}
+
+- Expected
++ Received
+
+- ArrayContaining [
+-   ObjectContaining {
+-     "name": "mobile-progressive-disclosure",
+-     "passed": false,
+-   },
+-   ObjectContaining {
+-     "name": "mobile-primary-action",
+-     "passed": false,
+-   },
+-   ObjectContaining {
+-     "name": "roadmap-default-closed",
++ [
++   {
++     "evidence": "dist/index.html executed __GAME_TEST__ through WebKit file://",
++     "name": "packaged-webkit-load",
+      "passed": false,
+    },
+-   ObjectContaining {
+-     "name": "locked-requirement-levels",
++   {
++     "evidence": "Packaged Phaser canvas visible through WebKit file://",
++     "name": "packaged-canvas-visible",
+      "passed": false,
+    },
+-   ObjectContaining {
+-     "name": "downstream-chapters-hidden",
++   {
++     "evidence": "Packaged HUD visible through WebKit file://",
++     "name": "packaged-hud-visible",
+      "passed": false,
+    },
+  ]
+
+ ❯ tests/e2e/playwright-qa-auto-production.test.ts:327:25
+    325|
+    326|   expect(report.passed).toBe(false);
+    327|   expect(report.checks).toEqual(expect.arrayContaining([
+       |                         ^
+    328|     expect.objectContaining({ name: 'mobile-progressive-disclosure', p…
+    329|     expect.objectContaining({ name: 'mobile-primary-action', passed: f…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/39]⎯
+
+ FAIL  tests/e2e/reference-capture-session.test.ts > reference capture session > keeps one page open across steps and writes an interactive draft on finish
+Error: browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     pnpm exec playwright install                           ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+ ❯ CaptureRecorder.open src/core/reference-web-capture.ts:217:36
+    215|
+    216|   async open() {
+    217|     const browser = await chromium.launch();
+       |                                    ^
+    218|     this.browser = browser;
+    219|     this.browserVersion = browser.version();
+ ❯ startReferenceCaptureSession src/core/reference-web-capture.ts:546:33
+ ❯ start tests/e2e/reference-capture-session.test.ts:40:18
+ ❯ tests/e2e/reference-capture-session.test.ts:48:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/39]⎯
+
+ FAIL  tests/e2e/reference-capture-session.test.ts > reference capture session > rejects commands that do not carry the session token
+Error: browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     pnpm exec playwright install                           ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+ ❯ CaptureRecorder.open src/core/reference-web-capture.ts:217:36
+    215|
+    216|   async open() {
+    217|     const browser = await chromium.launch();
+       |                                    ^
+    218|     this.browser = browser;
+    219|     this.browserVersion = browser.version();
+ ❯ startReferenceCaptureSession src/core/reference-web-capture.ts:546:33
+ ❯ start tests/e2e/reference-capture-session.test.ts:40:18
+ ❯ tests/e2e/reference-capture-session.test.ts:80:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/39]⎯
+
+ FAIL  tests/e2e/reference-capture-session.test.ts > reference capture session > refuses a step that would exceed the session frame limit
+Error: browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     pnpm exec playwright install                           ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+ ❯ CaptureRecorder.open src/core/reference-web-capture.ts:217:36
+    215|
+    216|   async open() {
+    217|     const browser = await chromium.launch();
+       |                                    ^
+    218|     this.browser = browser;
+    219|     this.browserVersion = browser.version();
+ ❯ startReferenceCaptureSession src/core/reference-web-capture.ts:546:33
+ ❯ start tests/e2e/reference-capture-session.test.ts:40:18
+ ❯ tests/e2e/reference-capture-session.test.ts:87:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/39]⎯
+
+ FAIL  tests/e2e/reference-capture-session.test.ts > reference capture session > finishes by itself after the idle timeout
+Error: browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     pnpm exec playwright install                           ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+ ❯ CaptureRecorder.open src/core/reference-web-capture.ts:217:36
+    215|
+    216|   async open() {
+    217|     const browser = await chromium.launch();
+       |                                    ^
+    218|     this.browser = browser;
+    219|     this.browserVersion = browser.version();
+ ❯ startReferenceCaptureSession src/core/reference-web-capture.ts:546:33
+ ❯ start tests/e2e/reference-capture-session.test.ts:40:18
+ ❯ tests/e2e/reference-capture-session.test.ts:93:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/39]⎯
+
+ FAIL  tests/e2e/reference-capture-session.test.ts > reference capture session > refuses to reuse a capture id that already has an index
+Error: browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     pnpm exec playwright install                           ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+ ❯ CaptureRecorder.open src/core/reference-web-capture.ts:217:36
+    215|
+    216|   async open() {
+    217|     const browser = await chromium.launch();
+       |                                    ^
+    218|     this.browser = browser;
+    219|     this.browserVersion = browser.version();
+ ❯ captureReferenceUrl src/core/reference-web-capture.ts:432:24
+ ❯ tests/e2e/reference-capture-session.test.ts:102:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/39]⎯
+
+ FAIL  tests/e2e/reference-capture-session.test.ts > reference capture session > writes a blocked draft when the page cannot be opened
+AssertionError: expected [Function] to throw error matching /page-load-failed/ but got 'browserType.launch: Executable doesn\…'
+
+- Expected:
+/page-load-failed/
+
++ Received:
+"browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     pnpm exec playwright install                           ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝"
+
+ ❯ tests/e2e/reference-capture-session.test.ts:109:127
+    107|     const { runRoot, workspace } = await fixture();
+    108|     const missing = pathToFileURL(path.join(workspace, 'missing-game.h…
+    109|     await expect(startReferenceCaptureSession({ runRoot, targetGame: '…
+       |                                                                                                                               ^
+    110|     const index = JSON.parse(await readFile(path.join(runRoot, 'refere…
+    111|     expect(index).toMatchObject({ status: 'BLOCKED', mode: 'interactiv…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/39]⎯
+
+ FAIL  tests/e2e/reference-capture-session.test.ts > reference capture session > restarts a blocked session id against the same url
+AssertionError: expected [Function] to throw error matching /page-load-failed/ but got 'browserType.launch: Executable doesn\…'
+
+- Expected:
+/page-load-failed/
+
++ Received:
+"browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     pnpm exec playwright install                           ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝"
+
+ ❯ tests/e2e/reference-capture-session.test.ts:119:118
+    117|     const pageFile = path.join(workspace, 'late-game.html');
+    118|     const url = pathToFileURL(pageFile).href;
+    119|     await expect(startReferenceCaptureSession({ runRoot, targetGame: '…
+       |                                                                                                                      ^
+    120|     await writeFile(pageFile, counterPage);
+    121|     const handle = await start({ runRoot, targetGame: 'g', workspace, …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/39]⎯
+
+ FAIL  tests/e2e/reference-capture-session.test.ts > reference capture session > rejects restarting a blocked session id with changed capture settings
+AssertionError: expected [Function] to throw error matching /page-load-failed/ but got 'browserType.launch: Executable doesn\…'
+
+- Expected:
+/page-load-failed/
+
++ Received:
+"browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     pnpm exec playwright install                           ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝"
+
+ ❯ tests/e2e/reference-capture-session.test.ts:129:118
+    127|     const pageFile = path.join(workspace, 'late-game.html');
+    128|     const url = pathToFileURL(pageFile).href;
+    129|     await expect(startReferenceCaptureSession({ runRoot, targetGame: '…
+       |                                                                                                                      ^
+    130|     await writeFile(pageFile, counterPage);
+    131|     await expect(startReferenceCaptureSession({ runRoot, targetGame: '…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/39]⎯
+
+ FAIL  tests/e2e/reference-demo.test.ts > turns bound first-party requirements into a playable H5 while preserving independent acceptance gaps
+Error: ENOENT: no such file or directory, lstat '/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/factory-reference-demo-OoLFuM/runs/20261023150252-reference-d225db52/screenshots/cut-stack:natural-evidence-missing'
+ ❯ safeRunFile src/core/reference-evidence.ts:38:18
+     36|     if (!component || component === '.') continue;
+     37|     current = path.join(current, component);
+     38|     const stat = await lstat(current);
+       |                  ^
+     39|     if (stat.isSymbolicLink()) throw new Error(`reference source path …
+     40|     if (current !== resolved && !stat.isDirectory()) throw new Error(`…
+ ❯ archiveRepairQaReport src/factory.ts:2315:30
+ ❯ prepareRepairAttempt src/factory.ts:2334:57
+ ❯ executeReplicaPreview src/factory.ts:3009:28
+ ❯ execute src/factory.ts:4390:14
+ ❯ runReferenceDemo src/demo/reference-demo.ts:91:13
+ ❯ tests/e2e/reference-demo.test.ts:13:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/39]⎯
+
+ FAIL  tests/e2e/reference-intake-capture.test.ts > captures into a brief-only run and keeps collection separate from identity and mechanic approval
+Error: browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     pnpm exec playwright install                           ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+ ❯ CaptureRecorder.open src/core/reference-web-capture.ts:217:36
+    215|
+    216|   async open() {
+    217|     const browser = await chromium.launch();
+       |                                    ^
+    218|     this.browser = browser;
+    219|     this.browserVersion = browser.version();
+ ❯ captureReferenceUrl src/core/reference-web-capture.ts:432:24
+ ❯ tests/e2e/reference-intake-capture.test.ts:23:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/39]⎯
+
+ FAIL  tests/e2e/reference-level-runtime-binding.test.ts > recording runtime binding in a fresh browser > checks current data throughout natural settlement and replay
+AssertionError: ["reference-level:trace-not-started-from-reset","reference-level:runtime-binding-unobserved","reference-level:object-missing:player","reference-level:object-missing:platform","reference-level:object-missing:replay","reference-level:checkpoint-mismatch:ready","reference-level:checkpoint-mismatch:settlement","reference-level:placement-missing:ready:player","reference-level:relation-missing:standing","reference-level:action-mismatch:finish","reference-level:camera-mismatch:ready","reference-level:terminal-not-reached","reference-level:terminal-result-mismatch","reference-level:terminal-cause-not-visible","reference-level:settlement-not-visible","reference-level:replay-mismatch","reference-level:runner:browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell\n╔════════════════════════════════════════════════════════════╗\n║ Looks like Playwright was just installed or updated.       ║\n║ Please run the following command to download new browsers: ║\n║                                                            ║\n║     pnpm exec playwright install                           ║\n║                                                            ║\n║ <3 Playwright Team                                         ║\n╚════════════════════════════════════════════════════════════╝"]: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/e2e/reference-level-runtime-binding.test.ts:101:70
+     99|     const input = await fixture(mode);
+    100|     const result = await runReferenceLevelQa(input);
+    101|     expect(result.gate.passed, JSON.stringify(result.gate.blockers)).t…
+       |                                                                      ^
+    102|     expect(result.trace.actions).toMatchObject([{ actionId: 'finish', …
+    103|     expect(result.trace.replay).toMatchObject({ returnedToCheckpointId…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/39]⎯
+
+ FAIL  tests/e2e/reference-level-runtime-binding.test.ts > recording runtime binding in a fresh browser > checks missing data throughout natural settlement and replay
+ FAIL  tests/e2e/reference-level-runtime-binding.test.ts > recording runtime binding in a fresh browser > checks stale-after-action data throughout natural settlement and replay
+AssertionError: expected [] to match object [ { actionId: 'finish', …(2) } ]
+
+- Expected
++ Received
+
+- [
+-   {
+-     "actionId": "finish",
+-     "naturalInput": true,
+-     "stateChanged": true,
+-   },
+- ]
++ []
+
+ ❯ tests/e2e/reference-level-runtime-binding.test.ts:102:34
+    100|     const result = await runReferenceLevelQa(input);
+    101|     expect(result.gate.passed, JSON.stringify(result.gate.blockers)).t…
+    102|     expect(result.trace.actions).toMatchObject([{ actionId: 'finish', …
+       |                                  ^
+    103|     expect(result.trace.replay).toMatchObject({ returnedToCheckpointId…
+    104|     if (mode === 'missing') expect(result.gate.blockers).toContain('re…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/39]⎯
+
+ FAIL  tests/e2e/reference-web-capture.test.ts > reference web capture > binds the explicit CDN policy into capture identity instead of reusing a differently authorized capture
+Error: browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     pnpm exec playwright install                           ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+ ❯ CaptureRecorder.open src/core/reference-web-capture.ts:217:36
+    215|
+    216|   async open() {
+    217|     const browser = await chromium.launch();
+       |                                    ^
+    218|     this.browser = browser;
+    219|     this.browserVersion = browser.version();
+ ❯ captureReferenceUrl src/core/reference-web-capture.ts:432:24
+ ❯ tests/e2e/reference-web-capture.test.ts:46:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/39]⎯
+
+ FAIL  tests/e2e/reference-web-capture.test.ts > reference web capture > holds a key down long enough for movement, then releases it
+Error: browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     pnpm exec playwright install                           ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+ ❯ CaptureRecorder.open src/core/reference-web-capture.ts:217:36
+    215|
+    216|   async open() {
+    217|     const browser = await chromium.launch();
+       |                                    ^
+    218|     this.browser = browser;
+    219|     this.browserVersion = browser.version();
+ ❯ captureReferenceUrl src/core/reference-web-capture.ts:432:24
+ ❯ tests/e2e/reference-web-capture.test.ts:60:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/39]⎯
+
+ FAIL  tests/e2e/reference-web-capture.test.ts > reference web capture > releases a short hold before the next frame instead of stretching it
+Error: browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     pnpm exec playwright install                           ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+ ❯ CaptureRecorder.open src/core/reference-web-capture.ts:217:36
+    215|
+    216|   async open() {
+    217|     const browser = await chromium.launch();
+       |                                    ^
+    218|     this.browser = browser;
+    219|     this.browserVersion = browser.version();
+ ❯ captureReferenceUrl src/core/reference-web-capture.ts:432:24
+ ❯ tests/e2e/reference-web-capture.test.ts:78:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/39]⎯
+
+ FAIL  tests/e2e/reference-web-capture.test.ts > reference web capture > captures a local canvas page as a draft without touching the evidence manifest
+Error: browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     pnpm exec playwright install                           ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+ ❯ CaptureRecorder.open src/core/reference-web-capture.ts:217:36
+    215|
+    216|   async open() {
+    217|     const browser = await chromium.launch();
+       |                                    ^
+    218|     this.browser = browser;
+    219|     this.browserVersion = browser.version();
+ ❯ captureReferenceUrl src/core/reference-web-capture.ts:432:24
+ ❯ tests/e2e/reference-web-capture.test.ts:90:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[22/39]⎯
+
+ FAIL  tests/e2e/reference-web-capture.test.ts > reference web capture > promotes a chosen READY draft into one pending evidence entry
+Error: browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     pnpm exec playwright install                           ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+ ❯ CaptureRecorder.open src/core/reference-web-capture.ts:217:36
+    215|
+    216|   async open() {
+    217|     const browser = await chromium.launch();
+       |                                    ^
+    218|     this.browser = browser;
+    219|     this.browserVersion = browser.version();
+ ❯ captureReferenceUrl src/core/reference-web-capture.ts:432:24
+ ❯ tests/e2e/reference-web-capture.test.ts:110:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[23/39]⎯
+
+ FAIL  tests/e2e/reference-web-capture.test.ts > reference web capture > refuses to promote a draft whose frames changed after capture
+Error: browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     pnpm exec playwright install                           ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+ ❯ CaptureRecorder.open src/core/reference-web-capture.ts:217:36
+    215|
+    216|   async open() {
+    217|     const browser = await chromium.launch();
+       |                                    ^
+    218|     this.browser = browser;
+    219|     this.browserVersion = browser.version();
+ ❯ captureReferenceUrl src/core/reference-web-capture.ts:432:24
+ ❯ tests/e2e/reference-web-capture.test.ts:124:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[24/39]⎯
+
+ FAIL  tests/e2e/reference-web-capture.test.ts > reference web capture > refuses to promote a blocked draft
+Error: browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     pnpm exec playwright install                           ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+ ❯ CaptureRecorder.open src/core/reference-web-capture.ts:217:36
+    215|
+    216|   async open() {
+    217|     const browser = await chromium.launch();
+       |                                    ^
+    218|     this.browser = browser;
+    219|     this.browserVersion = browser.version();
+ ❯ captureReferenceUrl src/core/reference-web-capture.ts:432:24
+ ❯ tests/e2e/reference-web-capture.test.ts:133:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[25/39]⎯
+
+ FAIL  tests/e2e/reference-web-capture.test.ts > reference web capture > discards an unpromoted draft and keeps promoted captures
+Error: browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     pnpm exec playwright install                           ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+ ❯ CaptureRecorder.open src/core/reference-web-capture.ts:217:36
+    215|
+    216|   async open() {
+    217|     const browser = await chromium.launch();
+       |                                    ^
+    218|     this.browser = browser;
+    219|     this.browserVersion = browser.version();
+ ❯ captureReferenceUrl src/core/reference-web-capture.ts:432:24
+ ❯ tests/e2e/reference-web-capture.test.ts:139:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[26/39]⎯
+
+ FAIL  tests/e2e/reference-web-capture.test.ts > reference web capture > clips screenshots to the game area
+Error: browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     pnpm exec playwright install                           ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+ ❯ CaptureRecorder.open src/core/reference-web-capture.ts:217:36
+    215|
+    216|   async open() {
+    217|     const browser = await chromium.launch();
+       |                                    ^
+    218|     this.browser = browser;
+    219|     this.browserVersion = browser.version();
+ ❯ captureReferenceUrl src/core/reference-web-capture.ts:432:24
+ ❯ tests/e2e/reference-web-capture.test.ts:150:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[27/39]⎯
+
+ FAIL  tests/e2e/reference-web-capture.test.ts > reference web capture > reuses an existing capture without rewriting screenshots
+Error: browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     pnpm exec playwright install                           ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+ ❯ CaptureRecorder.open src/core/reference-web-capture.ts:217:36
+    215|
+    216|   async open() {
+    217|     const browser = await chromium.launch();
+       |                                    ^
+    218|     this.browser = browser;
+    219|     this.browserVersion = browser.version();
+ ❯ captureReferenceUrl src/core/reference-web-capture.ts:432:24
+ ❯ tests/e2e/reference-web-capture.test.ts:172:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[28/39]⎯
+
+ FAIL  tests/e2e/reference-web-capture.test.ts > reference web capture > rejects reuse when capture actions or target identity changed
+Error: browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     pnpm exec playwright install                           ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+ ❯ CaptureRecorder.open src/core/reference-web-capture.ts:217:36
+    215|
+    216|   async open() {
+    217|     const browser = await chromium.launch();
+       |                                    ^
+    218|     this.browser = browser;
+    219|     this.browserVersion = browser.version();
+ ❯ captureReferenceUrl src/core/reference-web-capture.ts:432:24
+ ❯ tests/e2e/reference-web-capture.test.ts:183:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[29/39]⎯
+
+ FAIL  tests/e2e/reference-web-capture.test.ts > reference web capture > rejects a second capture id pointed at a different url
+Error: browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     pnpm exec playwright install                           ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+ ❯ CaptureRecorder.open src/core/reference-web-capture.ts:217:36
+    215|
+    216|   async open() {
+    217|     const browser = await chromium.launch();
+       |                                    ^
+    218|     this.browser = browser;
+    219|     this.browserVersion = browser.version();
+ ❯ captureReferenceUrl src/core/reference-web-capture.ts:432:24
+ ❯ tests/e2e/reference-web-capture.test.ts:190:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[30/39]⎯
+
+ FAIL  tests/e2e/reference-web-capture.test.ts > reference web capture > retries a blocked capture of the same url instead of keeping the failure
+Error: browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     pnpm exec playwright install                           ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+ ❯ CaptureRecorder.open src/core/reference-web-capture.ts:217:36
+    215|
+    216|   async open() {
+    217|     const browser = await chromium.launch();
+       |                                    ^
+    218|     this.browser = browser;
+    219|     this.browserVersion = browser.version();
+ ❯ captureReferenceUrl src/core/reference-web-capture.ts:432:24
+ ❯ tests/e2e/reference-web-capture.test.ts:201:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[31/39]⎯
+
+ FAIL  tests/e2e/reference-web-capture.test.ts > reference web capture > records a blocked capture when the page cannot be opened and does not ingest it
+Error: browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     pnpm exec playwright install                           ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+ ❯ CaptureRecorder.open src/core/reference-web-capture.ts:217:36
+    215|
+    216|   async open() {
+    217|     const browser = await chromium.launch();
+       |                                    ^
+    218|     this.browser = browser;
+    219|     this.browserVersion = browser.version();
+ ❯ captureReferenceUrl src/core/reference-web-capture.ts:432:24
+ ❯ tests/e2e/reference-web-capture.test.ts:214:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[32/39]⎯
+
+ FAIL  tests/e2e/reference-web-capture.test.ts > reference web capture > blocks page requests and redirects to loopback before they reach the local service
+Error: browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     pnpm exec playwright install                           ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+ ❯ CaptureRecorder.open src/core/reference-web-capture.ts:217:36
+    215|
+    216|   async open() {
+    217|     const browser = await chromium.launch();
+       |                                    ^
+    218|     this.browser = browser;
+    219|     this.browserVersion = browser.version();
+ ❯ captureReferenceUrl src/core/reference-web-capture.ts:432:24
+ ❯ tests/e2e/reference-web-capture.test.ts:254:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[33/39]⎯
+
+ FAIL  tests/unit/action-playwright-qa.test.ts > runActionPlaywrightQa > marks every slot failed when the required __ACTION_TEST__ v1 contract is absent
+AssertionError: expected 'logs/action-A.log: browser infrastruc…' to match /contract/i
+
+- Expected:
+/contract/i
+
++ Received:
+"logs/action-A.log: browser infrastructure failure: browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     pnpm exec playwright install                           ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝"
+
+ ❯ tests/unit/action-playwright-qa.test.ts:191:47
+    189|         expect.arrayContaining([expect.objectContaining({ passed: fals…
+    190|       );
+    191|       expect(result.inputResponseMs.evidence).toMatch(/contract/i);
+       |                                               ^
+    192|     }
+    193|     expect(runtime.started).toHaveLength(3);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[34/39]⎯
+
+ FAIL  tests/unit/action-playwright-qa.test.ts > runActionPlaywrightQa > returns independent A/B/C metric results and writes screenshot, log, and trace evidence
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/unit/action-playwright-qa.test.ts:210:172
+    208|     });
+    209|     expect(report.results.map(({ slot }) => slot)).toEqual(['A', 'B', …
+    210|     expect(report.results.every((result) => Object.values(result).filt…
+       |                                                                                                                                                                            ^
+    211|     for (const slot of slots) {
+    212|       await expect(access(path.join(runRoot, `screenshots/action-${slo…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[35/39]⎯
+
+ FAIL  tests/unit/grid-comparison-adapter.test.ts > independent DOM-observation grid comparator > waits for actually visible terminal feedback, not just an opacity-zero game-over element
+Error: browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     pnpm exec playwright install                           ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+ ❯ tests/unit/grid-comparison-adapter.test.ts:28:34
+     26|   it('waits for actually visible terminal feedback, not just an opacit…
+     27|     expect(adapter).toHaveProperty('waitForGridTerminal');
+     28|     const browser=await chromium.launch({headless:true});
+       |                                  ^
+     29|     try {
+     30|       const page=await browser.newPage();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[36/39]⎯
+
+ FAIL  tests/unit/runtime-qa-tournament.test.ts > prototype tournament browser controls > atomically skips a prototype control that becomes disabled before click
+Error: browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     pnpm exec playwright install                           ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+ ❯ tests/unit/runtime-qa-tournament.test.ts:45:36
+     43|     if (!clickPrototypeControl) return;
+     44|
+     45|     const browser = await chromium.launch({ headless: true });
+       |                                    ^
+     46|     const page = await browser.newPage();
+     47|     try {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[37/39]⎯
+
+ FAIL  tests/unit/runtime-qa-tournament.test.ts > prototype tournament browser controls > waits for an automatic prototype phase to enable a playable control
+Error: browserType.launch: Executable doesn't exist at /Users/kker/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     pnpm exec playwright install                           ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+ ❯ tests/unit/runtime-qa-tournament.test.ts:73:36
+     71|     if (!clickPrototypeControl) return;
+     72|
+     73|     const browser = await chromium.launch({ headless: true });
+       |                                    ^
+     74|     const page = await browser.newPage();
+     75|     try {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[38/39]⎯
+
+
+ Test Files  11 failed | 179 passed (190)
+      Tests  39 failed | 1165 passed (1204)
+   Start at  23:02:50
+   Duration  83.50s (transform 2.39s, setup 0ms, import 39.21s, tests 109.63s, environment 12ms)
+
+[ELIFECYCLE] Test failed. See above for more details.

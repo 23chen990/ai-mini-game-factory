@@ -1,0 +1,1 @@
+$ tsx src/cli/factory.ts eval --agent-results docs/upgrades/20261023-budget-acceptance/agent-observations.json

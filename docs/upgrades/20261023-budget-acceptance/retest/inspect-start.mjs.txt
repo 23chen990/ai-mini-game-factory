@@ -1,0 +1,15 @@
+import { createRequire } from 'node:module';
+const require = createRequire('/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/workspace/prototype-a/package.json');
+const { chromium } = require('@playwright/test');
+const fs = require('node:fs');
+const out = '/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023';
+const browser = await chromium.launch({headless:true});
+const context = await browser.newContext({viewport:{width:390,height:844},deviceScaleFactor:1,recordVideo:{dir:out+'/videos',size:{width:390,height:844}}});
+const page = await context.newPage();
+const logs=[]; page.on('console',m=>logs.push({type:m.type(),text:m.text()})); page.on('pageerror',e=>logs.push({type:'pageerror',text:String(e)}));
+await page.goto('http://127.0.0.1:4173/',{waitUntil:'networkidle'});
+await page.waitForTimeout(1000);
+const result={url:page.url(),title:await page.title(),viewport:page.viewportSize(),text:await page.locator('body').innerText(),buttons:await page.locator('button').allTextContents(),canvasCount:await page.locator('canvas').count(),state:await page.evaluate(()=>window.__GAME_TEST__?.getState()),cue:await page.locator('#tutorial-cue').evaluate(el=>({hidden:el.hidden,position:el.dataset.position,cue:el.dataset.cue,title:el.querySelector('#tutorial-cue-title')?.textContent,detail:el.querySelector('#tutorial-cue-detail')?.textContent})),compact:await page.locator('#instruction-text').evaluate(el=>({hidden:el.hidden,text:el.textContent})),logs};
+await page.screenshot({path:out+'/startup-390x844.png'});
+fs.writeFileSync(out+'/startup-390x844.json',JSON.stringify(result,null,2));
+await context.close(); await browser.close();

@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "packetSha256": "fdec3adeae7a94e0cbafd8c1bb55e6c2af72bfb9ee0eef4265ba4db08e2938ef",
+  "buildSha256": "28b2879d24d20c76d519fabb5dcc7a9ea19f96460b024057bf870f45ecea87fa",
+  "issueId": "LOW-GAP-CUE-MISMATCH-009",
+  "route": "formal-fixer",
+  "attempt": 10,
+  "engineering": {
+    "status": "PASS",
+    "checks": [
+      {"name":"packet hash","command":"sha256sum packet.json","status":"PASS","exitCode":0,"evidence":"packet.json matched fdec3adeae7a94e0cbafd8c1bb55e6c2af72bfb9ee0eef4265ba4db08e2938ef"},
+      {"name":"candidate build hash","command":"sha256sum dist/index.html","status":"PASS","exitCode":0,"evidence":"dist/index.html matched 28b2879d24d20c76d519fabb5dcc7a9ea19f96460b024057bf870f45ecea87fa"},
+      {"name":"packet source hashes","command":"sha256sum packet sources","status":"PASS","exitCode":0,"evidence":"All six packet source SHA-256 values matched; attempt-10-engineering-results.json was hash-verified only, not read."},
+      {"name":"unit tests","command":"pnpm test","status":"PASS","exitCode":0,"evidence":"engineering-tests.log; full existing tests command exited 0; no build invoked."},
+      {"name":"lint","command":"pnpm lint","status":"PASS","exitCode":0,"evidence":"engineering-lint.log; command exited 0."},
+      {"name":"typecheck","command":"pnpm typecheck","status":"PASS","exitCode":0,"evidence":"engineering-typecheck.log; command exited 0."}
+    ],
+    "evidence": ["engineering-tests.log","engineering-lint.log","engineering-typecheck.log","packet.json", "candidate dist/index.html"]
+  },
+  "natural": {
+    "status": "BLOCKED",
+    "matrix": [
+      {
+        "id":"gap-cue-390x844",
+        "objectType":"actual horizontal gap and action cue",
+        "lifecycleStateBranch":"gap action → successful crossing OR below-landing descent → terminal → replay",
+        "rendererPath":"src/main.ts → src/game-levels.ts / src/game-core.ts → ThreePresentationModel → ThreeWorldRenderer/current fruit-cleave pipeline",
+        "viewport":{"label":"mobile portrait","width":390,"height":844},
+        "expected":"Visible action at usable timing; following it crosses gap and completes, withholding it produces attributable failure and replay.",
+        "status":"BLOCKED",
+        "observed":"Natural run follow-390 reached airborne low-gap descent: x2522.22,y562.79,vy525 displayed cue kind danger/title 落点过低：正在下坠; x2558.47,y707.79,vy670 remained airborne before failed fall at x2560.97,y719.09. A separate normal cue-following run reached x3691.76, won, used visible 重玩, then began a new cut (cuts=1). No screenshot captured the named low-descent state.",
+        "evidence":["follow-390-trace.jsonl","follow-390-terminal-failed.png","followfixed-390-trace.jsonl","followfixed-390-terminal-won.png","followfixed-390-after-replay-new-cut.png","videos/page@e21ba099e97f674ee6c2900b79ca5763.webm","videos/page@9c1d614daa8eb101b1541d9dbe0e0ad5.webm"]
+      },
+      {
+        "id":"gap-cue-844x390",
+        "objectType":"actual horizontal gap and action cue",
+        "lifecycleStateBranch":"gap action → successful crossing OR below-landing descent → terminal → replay",
+        "rendererPath":"src/main.ts → src/game-levels.ts / src/game-core.ts → ThreePresentationModel → ThreeWorldRenderer/current fruit-cleave pipeline",
+        "viewport":{"label":"mobile landscape","width":844,"height":390},
+        "expected":"Visible action at usable timing; following it crosses gap and completes, withholding it produces attributable failure and replay.",
+        "status":"BLOCKED",
+        "observed":"Normal inputs reached the gap. At x2539.72,y628.42,vy595, status airborne and visible cue kind danger/title 落点过低：正在下坠; terminal fall followed at x2560.97,y719.09. The visible gap action was intentionally withheld once, then the visible 重玩 control was tapped and a new cut began. The attempted p2 screenshot was delayed until terminal, so it does not prove pixels at the low-falling state.",
+        "evidence":["hold-844x390-trace.jsonl","hold-844x390-inputs.json","hold-844x390-terminal-failed.png","hold-844x390-p2.png","hold-844x390-after-replay-new-cut.png","videos/page@d8a47c0893650e4c9468646c5167bf41.webm"]
+      }
+    ],
+    "journey": {
+      "status":"PASS_WITH_GAPS",
+      "steps":[
+        {"step":"startup","status":"PASS","evidence":"startup-390x844.png; followfixed-390-startup.png; hold-844x390-startup.png"},
+        {"step":"core cutting","status":"PASS","evidence":"Natural runs recorded increasing cuts; followfixed-390-cutting.png and hold-844x390 trace show cutting before terminal."},
+        {"step":"terminal/settlement","status":"PASS","evidence":"followfixed-390-terminal-won.png; hold-844x390-terminal-failed.png"},
+        {"step":"visible replay","status":"PASS","evidence":"followfixed-390-inputs.json and hold-844x390-inputs.json record taps on visible 重玩 control."},
+        {"step":"new cut after replay","status":"PASS","evidence":"followfixed-390-after-replay-new-cut.png (telemetry cuts=1); hold-844x390-after-replay-new-cut.png (telemetry cuts=1)."},
+        {"step":"natural failure and replay","status":"PASS","evidence":"hold-844x390 trace records low fall, failed/fall terminal, visible replay tap and new cut."}
+      ],
+      "evidence":["followfixed-390-trace.jsonl","followfixed-390-inputs.json","hold-844x390-trace.jsonl","hold-844x390-inputs.json"]
+    },
+    "evidence":["natural-390-s1-trace.jsonl","follow-390-trace.jsonl","followfixed-390-trace.jsonl","hold-844x390-trace.jsonl","follow-390-inputs.json","followfixed-390-inputs.json","hold-844x390-inputs.json","follow-390-console.json","followfixed-390-console.json","hold-844x390-console.json"],
+    "unobserved":["No branch-matched player-visible screenshot in 390x844 or 844x390 for x2480,y500; x2518,y643; x2550,y690.","Compact cue text was observed via read-only telemetry/DOM fields, but its pixels at the same low-descent branch were not captured; it was hidden while the large cue was visible in the sampled state.","No compact-cue branch screenshot."]
+  },
+  "perceptual": {
+    "status":"BLOCKED",
+    "findings":[
+      {"severity":"blocking","finding":"The view_image inspection of hold-844x390-p2.png showed the terminal 跳出路线 / replay overlay, not the telemetry state x2539.72,y628.42,vy595 that triggered the screenshot. Therefore it cannot evidence the low-falling cue pixels.","evidence":"hold-844x390-p2.png"},
+      {"severity":"blocking","finding":"Large cue title/detail and compact text were observed through page DOM telemetry, but the compact element was hidden while the large danger cue was shown. No exact-branch compact pixels were verified.","evidence":"hold-844x390-trace.jsonl; hold-844x390-p2.png"}
+    ],
+    "evidence":["startup-390x844.png","hold-844x390-p2.png","hold-844x390-terminal-failed.png","followfixed-390-terminal-won.png"]
+  },
+  "overall":"BLOCKED",
+  "humanInterventions":[],
+  "filesRead":[
+    "packet.json",
+    "packet sources: all six SHA-256 verified; attempt-10-engineering-results.json hash only, content not read",
+    ".agents/skills/game-playtest/SKILL.md",
+    ".agents/skills/codex-game-repair/SKILL.md",
+    "workspace/prototype-a/package.json",
+    "workspace/prototype-a/src/main.ts:15-45 (public test bridge interface only)",
+    "workspace/prototype-a/tests/level-ui.test.ts:45-110",
+    "workspace/prototype-a/tests/level1-recovery.test.ts:1-90",
+    "workspace/prototype-a/tests/level-progress.test.ts:1-35",
+    "workspace/prototype-a/dist/index.html (SHA-256 only)"
+  ],
+  "startedAt":"2026-10-23T15:37:31.000Z",
+  "finishedAt":"2026-10-23T15:54:43.000Z",
+  "durationMs":1032000,
+  "cost":{"totalTokens":null,"costUsd":null},
+  "remainingBlockers":[
+    "Exact branch-matched player-visible pixels were not captured/inspected for both viewport matrix cells; p2 screen capture lagged until terminal.",
+    "Compact cue pixels at the low-falling state were not observed; DOM telemetry is not perceptual evidence.",
+    "600000ms packet wall-clock limit was exceeded. durationMs is measured from the first captured UTC marker (15:37:31) and is a lower bound because initial packet/hash review preceded that marker; further runs were stopped."
+  ]
+}
