@@ -466,23 +466,27 @@ test('V6.0 no easy rank gates remain across the thirty stages',()=>{
   }
 });
 
-// V5.3 commercial UX: fuel should never softlock the very first honest loss.
-test('failed rank/objective earns exactly one free same-stage replay, even at zero fuel',()=>{
+// RC25: charge the first entry; genuine consecutive losses can be retried
+// on the same stage without an energy paywall. Wins/exits never mint fuel.
+test('consecutive honest losses preserve same-stage free retries without fuel or ad rewards',()=>{
   const c=new RacingCareer(memory()),g=game();
   c.fuelEnabled=true;c.fuel.amount=5;
   assert.equal(c.canStart(),true);
-  c.begin(g);
-  assert.equal(c.fuel.amount,0);
-  const loss=c.finalize(g,{finished:true,place:4,time:100,stats:{crash:1}});
-  assert.equal(loss.stars,0);
-  assert.equal(c.hasFreeReplay(),true);
-  assert.equal(c.canStart(),true,'last fuel spent; earned retry still starts');
-  c.begin(g);
-  assert.equal(c.fuel.amount,0,'free replay cannot debit fuel below zero');
-  assert.equal(c.hasFreeReplay(),false);
-  c.finalize(g,{finished:false,place:6,time:null,stats:{crash:3}});
-  assert.equal(c.hasFreeReplay(),false,'no infinite ticket farming on subsequent losses');
-  assert.equal(c.canStart(),false,'after the free retry, normal fuel limits apply');
+  c.begin(g);assert.equal(c.fuel.amount,0);
+  let graded=c.finalize(g,{finished:true,place:4,time:100,stats:{crash:1}});
+  assert.equal(graded.stars,0);
+  for(let i=0;i<3;i++){
+    assert.equal(c.hasFreeReplay(),true,'each actual loss earns another same-stage retry');
+    assert.equal(c.canStart(),true,'zero fuel cannot block an earned retry');
+    c.begin(g);
+    assert.equal(c.fuel.amount,0,'free retry must not debit fuel');
+    assert.equal(c.hasFreeReplay(),false,'new race consumes pending credit');
+    graded=c.finalize(g,{finished:false,place:6,time:null,stats:{crash:3}});
+    assert.equal(graded.stars,0);
+  }
+  assert.equal(c.progress.rounds,4,'only settled results count');
+  assert.equal(c.fuel.amount,0,'free retries never create fuel');
+  assert.equal(c.nextStageAdRound,4,'optional next-stage ad eligibility remains result-based');
 });
 test('stage/daily switch cannot transfer a free retry; wins never grant one',()=>{
   const c=new RacingCareer(memory()),g=game();c.fuelEnabled=true;

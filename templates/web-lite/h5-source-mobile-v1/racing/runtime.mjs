@@ -23,9 +23,9 @@ export class RacingCareer {
     this.dailySnapshot = null;
     this.auto = new AutoItems();this.passes = new OvertakeTracker();this.recovery = new WrongWayRecovery();this.pressure = new RivalPressure();
     this.config = null;this.tap = null;this.fuelEnabled = false;this.adReady = false;this.adBusy = false;this.attempt = 0;
-    // One earned free replay per stage/session after an actual failed result.
-    // Never mutate native vehicle, rank or reward callbacks.
-    this.freeReplayStageId = null;this.usedFreeReplays = new Set();
+    // A settled loss earns another same-stage attempt in this live session.
+    // The initial entry costs fuel; no quit or skipped stage mints a credit.
+    this.freeReplayStageId = null;
     // A short-session optional rewarded boost, NOT a paywall or fake in-race revive.
     this.retryOfferRound = -1;this.retryAdAttempts = 0;
     this.retryAdLastAt = 0;this.bonusNitroStageId = null;
@@ -240,7 +240,6 @@ export class RacingCareer {
       // Claim only AFTER native countdown has successfully begun. This must
       // never become extra fuel or transfer to a different stage.
       if (this.freeReplayStageId === this.stage.id) {
-        this.usedFreeReplays.add(this.stage.id);
         this.freeReplayStageId = null;
       } else {
         const spent = spendRaceFuel(this.fuel);
@@ -433,10 +432,10 @@ export class RacingCareer {
     this.progress = outcome.career;
     this.nextStageAdRound = !this.dailySnapshot && outcome.stars===0 ? this.progress.rounds : -1;
     this.retryOfferRound = outcome.stars === 0 ? this.progress.rounds : -1;
-    // One free retry after failure only. No resets on subsequent losses;
-    // tickets do not persist to the next browser session.
-    this.freeReplayStageId = outcome.stars === 0 && this.fuelEnabled &&
-      !this.usedFreeReplays.has(stage.id) ? stage.id : null;
+    // Consecutive settled losses keep the same-stage skill loop open.
+    // Winning, switching stages and a new browser session remove the ticket.
+    // This never grants fuel, speed, medals or advertisement entitlements.
+    this.freeReplayStageId = outcome.stars === 0 && this.fuelEnabled ? stage.id : null;
     this.save();
     return { ...outcome, best, metric: { ...this.metrics } };
   }

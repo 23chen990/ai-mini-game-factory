@@ -149,13 +149,16 @@ function renderGarage() {
 }
 function fuelView() {
   const fullFuelText=career.fuelText();
+  const freeReplay=career.hasFreeReplay();
   $('fuel-info').textContent = (!career.storageOK ? '本地存储不可用 · 不限油' :
+    freeReplay ? `↻ 本关免费重试 · ⛽ ${career.fuel.amount}/${FUEL_RULES.max}` :
     fullFuelText.replace(' · 每局 -5 · 每分钟 +1','')) +
     (performance.now() < adNoticeUntil ? ' · ' + adNotice : '');
   $('fuel-box').title=fullFuelText;
   const metered=career.fuelEnabled;
   if(metered)career.fuel=syncFuel(career.fuel);
-  const empty=metered && !career.hasFreeReplay() && career.fuel.amount<FUEL_RULES.raceCost;
+  const empty=metered && !freeReplay && career.fuel.amount<FUEL_RULES.raceCost;
+  const low=metered && !freeReplay && career.fuel.amount<=FUEL_RULES.raceCost*2;
   $('fuel-gauge').hidden=!metered;
   $('fuel-gauge').setAttribute('aria-valuenow',String(career.fuel.amount));
   for(const [index,segment] of [...$('fuel-gauge').children].entries()){
@@ -163,6 +166,7 @@ function fuelView() {
     segment.style.setProperty('--fill',(filled*100)+'%');
     segment.classList.toggle('filled',filled>=1);
   }
+  $('fuel-box').classList.toggle('low',low);
   $('fuel-box').classList.toggle('empty',empty);
   $('fuel-box').classList.toggle('notice',performance.now()<adNoticeUntil);
   $('storage-warning').hidden=career.storageOK;
@@ -745,20 +749,26 @@ const actionViews=Object.fromEntries(Object.keys(actionButtons).map(action=>[act
     node,icon:node.querySelector('.race-action-icon'),label:node.querySelector('.race-action-name'),badge:node.querySelector('.race-action-badge'),
   }))
 ]));
+const writeRaceText=(node,value)=>{if(node.textContent!==value)node.textContent=value;};
 function renderActions(player){
   for(const [action,view] of Object.entries(raceActionView(player))){
     for(const {node,icon,label,badge} of actionViews[action]){
       node.classList.toggle('ready',view.ready);node.classList.toggle('active',view.active);
-      icon.textContent=view.icon;label.textContent=view.label;badge.textContent=view.badge;
-      badge.hidden=!view.badge;
+      writeRaceText(icon,view.icon);writeRaceText(label,view.label);writeRaceText(badge,view.badge);
+      if(badge.hidden===!!view.badge)badge.hidden=!view.badge;
       if(action==='small') {
-        node.dataset.sprayPhase=view.phase;
-        node.style.setProperty('--spray-progress',view.progress.toFixed(3));
+        if(node.dataset.sprayPhase!==view.phase)node.dataset.sprayPhase=view.phase;
+        const nextProgress=view.progress.toFixed(3);
+        if(node.style.getPropertyValue('--spray-progress')!==nextProgress)
+          node.style.setProperty('--spray-progress',nextProgress);
       }
     }
-    actionButtons[action].dataset.label=action==='item'&&player.items[0]?ITEM_LABELS[player.items[0]]:view.label;
-    actionButtons[action].setAttribute('aria-label',action==='drift'?'按住漂移':
-      (action==='item'&&player.items[0]?'使用'+ITEM_LABELS[player.items[0]]:view.label)+(view.ready?'，可用':''));
+    const nextLabel=action==='item'&&player.items[0]?ITEM_LABELS[player.items[0]]:view.label;
+    if(actionButtons[action].dataset.label!==nextLabel)actionButtons[action].dataset.label=nextLabel;
+    const ariaLabel=action==='drift'?'按住漂移':
+      (action==='item'&&player.items[0]?'使用'+ITEM_LABELS[player.items[0]]:view.label)+(view.ready?'，可用':'');
+    if(actionButtons[action].getAttribute('aria-label')!==ariaLabel)
+      actionButtons[action].setAttribute('aria-label',ariaLabel);
   }
 }
 const recordStickEvent=(kind='move')=>{if(phase!=='race')return;touchSerial++;lastStickEventAt=performance.now();touchHealth.touch(lastStickEventAt,joystick.snapshot(),kind);};

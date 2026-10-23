@@ -44,6 +44,27 @@ test('result stars describe THIS finish; best record belongs in secondary copy',
   assert.equal(win.stars,2);assert.equal(win.primary,'next');
   assert.match(win.subtitle,/下一关/);
 });
+test('loss recap gives factual performance without fabricated coaching',()=>{
+  const close=presentation.raceResultView({finished:true,place:4,time:125,stats:{crash:3}},0,2,1.26);
+  assert.equal(close.primary,'replay');
+  assert.equal(close.subtitle,'距前三 1.3 秒 · 碰撞 3 次');
+  const unfinished=presentation.raceResultView({finished:false,completion:.627,stats:{crash:1}},0,0,null);
+  assert.equal(unfinished.subtitle,'本场未完赛 · 进度 63% · 碰撞 1 次');
+  const unknown=presentation.raceResultView({finished:true,stats:{crash:0}},0,0,undefined);
+  assert.equal(unknown.subtitle,'本场未进前三');
+  assert.equal(presentation.raceResultView({finished:true,stats:{crash:8}},2,3,1).subtitle,'进入前三 · 下一关已解锁');
+});
+test('running HUD only writes changed button state and spray progress',()=>{
+  assert.match(source,/const writeRaceText=\(node,value\)=>\{if\(node\.textContent!==value\)/);
+  assert.match(source,/if\(node\.style\.getPropertyValue\('--spray-progress'\)!==nextProgress\)/);
+  assert.match(source,/if\(actionButtons\[action\]\.getAttribute\('aria-label'\)!==ariaLabel\)/);
+});
+test('normal fuel UI is quiet while retry and real shortage are visible',()=>{
+  assert.match(source,/const low=metered && !freeReplay && career\.fuel\.amount<=FUEL_RULES\.raceCost\*2/);
+  assert.match(source,/本关免费重试/);
+  const css=readFileSync(new URL('../racing/mobile.css',import.meta.url),'utf8');
+  assert.match(css,/#race-fuel-box:not\(\.low\):not\(\.empty\):not\(\.notice\) #race-fuel-gauge/);
+});
 test('default results keep diagnostics and detailed statistics out of the main action path',()=>{
   assert.match(source,/id="race-result-details"/);
   assert.match(source,/qaDiagnostics/);

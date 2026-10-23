@@ -29,10 +29,15 @@ export function playDriftReleaseCue(audio,event) {
 }
 /** A previous medal is a record, not the current race's result. */
 export function raceResultView(result,stars,bestStars,gap) {
+  const crashes=Number.isInteger(result?.stats?.crash) && result.stats.crash>0
+    ? ` · 碰撞 ${result.stats.crash} 次` : '';
+  const progress=Number.isFinite(result?.completion)
+    ? ` · 进度 ${Math.max(0,Math.min(100,Math.round(result.completion*100)))}%` : '';
+  const gapText=Number.isFinite(gap) && gap>=0 ? `距前三 ${gap.toFixed(1)} 秒` : '本场未进前三';
   return {
     stars,primary:stars>0?'next':'replay',
     subtitle:stars>0?'进入前三 · 下一关已解锁':
-      !result.finished?'本场未完赛':gap!==null?`距前三 ${gap.toFixed(1)} 秒`:'本场未进前三',
+      !result.finished ? `本场未完赛${progress}${crashes}` : gapText+crashes,
     record:`本场 ${stars} 星 · 历史最高 ${bestStars} 星`,
   };
 }

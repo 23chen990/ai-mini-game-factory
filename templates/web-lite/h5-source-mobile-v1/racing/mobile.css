@@ -909,3 +909,19 @@ html[data-race-mobile][data-race-platform] #race-kit[data-phase="finished"] #rac
   #race-kit[data-phase="finished"] #race-result-details {margin-top:6px;}
   #race-result-details summary {min-height:44px;}
 }
+
+/* RC25: normal fuel stays a quiet label near Start; show the six-block
+ * meter only when fuel is scarce, empty, or an ad outcome needs emphasis.
+ * No extra overlay, shader pass, backdrop blur or driving obstruction. */
+#race-kit[data-phase="ready"] #race-fuel-box:not(.low):not(.empty):not(.notice) {
+  justify-content:flex-start;gap:6px;margin:1px 0 6px;
+}
+#race-kit[data-phase="ready"] #race-fuel-box:not(.low):not(.empty):not(.notice) #race-fuel-gauge {
+  display:none!important;
+}
+#race-kit[data-phase="ready"] #race-fuel-box.low:not(.empty) #race-fuel-info {
+  color:#ffe0a4;font-weight:700;
+}
+#race-kit[data-phase="ready"] #race-fuel-box.empty #race-fuel-info {
+  color:#ffe3ce;font-weight:800;
+}
