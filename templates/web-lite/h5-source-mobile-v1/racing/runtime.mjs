@@ -31,7 +31,7 @@ export class RacingCareer {
     this.retryAdLastAt = 0;this.bonusNitroStageId = null;
     this.rewardedProvider = requestRewardedVideo;
     this.stageAdEpoch = 0;this.nextStageAdRound = -1;
-    this.startedAt = Date.now();this.active = false;this.notice = [];this.boss = null;
+    this.startedAt = Date.now();this.active = false;this.activeStageId = null;this.notice = [];this.boss = null;
     this.metrics = this.freshMetrics();
   }
   get stage() { return this.dailySnapshot ?? STAGES[this.index]; }
@@ -197,9 +197,17 @@ export class RacingCareer {
     this.fuel = syncFuel(this.fuel);
     return this.freeReplayStageId === this.stage.id || this.fuel.amount >= FUEL_RULES.raceCost;
   }
-  begin(game) {
+  /** A pause-menu restart reuses the fuel debit of the current live attempt.
+   * Explicit stage identity and active-run checks prevent a quit/new stage from
+   * receiving a free entry. Do not apply to a finished race. */
+  canRestartCurrentEntry() {
+    return this.active && !this.adBusy && this.activeStageId === this.stage.id;
+  }
+  begin(game, { reuseCurrentEntry = false } = {}) {
+    const keepExistingDebit = reuseCurrentEntry && this.canRestartCurrentEntry();
     this.stageAdEpoch++;this.nextStageAdRound=-1;
-    this.active = true;this.boss = null;this.bossName = '';this.notice = [];this.metrics = this.freshMetrics();
+    this.active = true;this.activeStageId = this.stage.id;
+    this.boss = null;this.bossName = '';this.notice = [];this.metrics = this.freshMetrics();
     this.metrics.timeAllowance = this.stage.kind === 'relay' ? this.stage.baseTime : this.stage.kind === 'time' ? this.stage.target : 0;
     this.auto.reset();this.passes.reset();this.recovery.reset();this.pressure.reset();
     this.passes.previous = game.standings.indexOf(game.player) + 1;
@@ -236,9 +244,9 @@ export class RacingCareer {
           this.stage.id==='16'?2.10:Math.max(this.boss.skill,2.04);
       }
     }
-    if (this.fuelEnabled) {
-      // Claim only AFTER native countdown has successfully begun. This must
-      // never become extra fuel or transfer to a different stage.
+    if (this.fuelEnabled && !keepExistingDebit) {
+      // Claim only AFTER native countdown has successfully begun. A pause
+      // restart reuses its already-consumed debit; no bonus fuel is minted.
       if (this.freeReplayStageId === this.stage.id) {
         this.freeReplayStageId = null;
       } else {
@@ -406,7 +414,7 @@ export class RacingCareer {
   drainNotices() { return this.notice.splice(0, this.notice.length); }
   finalize(game, result) {
     if (!this.active) return null;
-    this.active = false;
+    this.active = false;this.activeStageId = null;
     if (this.boss) this.metrics.beatBoss = game.standings.indexOf(game.player) < game.standings.indexOf(this.boss);
     const stage = this.stage, outcome = recordStage(this.progress, stage, result, this.metrics);
     let best = outcome.career.times[stage.id] ?? null;

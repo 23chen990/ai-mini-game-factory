@@ -488,6 +488,32 @@ test('consecutive honest losses preserve same-stage free retries without fuel or
   assert.equal(c.fuel.amount,0,'free retries never create fuel');
   assert.equal(c.nextStageAdRound,4,'optional next-stage ad eligibility remains result-based');
 });
+test('pause-menu restart reuses one legitimate fuel debit, including zero balance',()=>{
+  const c=new RacingCareer(memory()),g=game();
+  c.setupAd({status:'PENDING'},null);
+  c.fuel.amount=5;
+  assert.equal(c.canRestartCurrentEntry(),false,'no race: no free restart');
+  c.begin(g);
+  assert.equal(c.fuel.amount,0);
+  assert.equal(c.canRestartCurrentEntry(),true);
+  c.begin(g,{reuseCurrentEntry:true});
+  assert.equal(c.fuel.amount,0,'pausing/restarting a live race cannot charge twice');
+  assert.equal(c.progress.rounds,0,'restart cannot settle a phantom loss');
+  assert.equal(c.canStart(),false,'a fresh unrelated entry still requires fuel');
+  c.finalize(g,{finished:true,place:1,time:75,stats:{crash:0}});
+  assert.equal(c.canRestartCurrentEntry(),false,'finish closes the free restart path');
+});
+test('pause-menu restart cannot reuse a debit for a different active stage',()=>{
+  const c=new RacingCareer(memory()),g=game();
+  c.setupAd({status:'PENDING'},null);
+  c.progress.stars['01']=1;
+  c.fuel.amount=10;
+  c.begin(g);assert.equal(c.fuel.amount,5);
+  assert.equal(c.setStage(1),true);
+  assert.equal(c.canRestartCurrentEntry(),false,'stage identity no longer matches');
+  c.begin(g,{reuseCurrentEntry:true});
+  assert.equal(c.fuel.amount,0,'cross-stage reuse must be charged normally');
+});
 test('stage/daily switch cannot transfer a free retry; wins never grant one',()=>{
   const c=new RacingCareer(memory()),g=game();c.fuelEnabled=true;
   c.begin(g);c.finalize(g,{finished:false,place:6,time:null,stats:{crash:1}});

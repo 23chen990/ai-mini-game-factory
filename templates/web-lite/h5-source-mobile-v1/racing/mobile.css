@@ -925,3 +925,14 @@ html[data-race-mobile][data-race-platform] #race-kit[data-phase="finished"] #rac
 #race-kit[data-phase="ready"] #race-fuel-box.empty #race-fuel-info {
   color:#ffe3ce;font-weight:800;
 }
+
+/* RC26: physical overtakes and reversals subtly change the existing speed
+ * HUD border for 650ms. No new DOM nodes, tutorials or full-screen effects. */
+#race-kit[data-phase="race"][data-race-duel="skill"] #race-speed{
+  border-color:#80f8d5;
+  box-shadow:0 0 0 2px #66f1be55,0 4px 14px #062b31a8;
+}
+#race-kit[data-phase="race"][data-race-duel="threat"] #race-speed{
+  border-color:#ffb280;
+  box-shadow:0 0 0 2px #f39b6a50,0 4px 14px #331b16a8;
+}

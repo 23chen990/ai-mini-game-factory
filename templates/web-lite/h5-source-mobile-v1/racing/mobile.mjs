@@ -170,8 +170,9 @@ function fuelView() {
   $('fuel-box').classList.toggle('empty',empty);
   $('fuel-box').classList.toggle('notice',performance.now()<adNoticeUntil);
   $('storage-warning').hidden=career.storageOK;
+  const pausedRestart=phase==='paused' && started && !result && career.canRestartCurrentEntry();
   for(const id of ['start','replay','restart','next','retry-ad']) $(id).disabled =
-    loading || !policyReady || career.adBusy || empty;
+    loading || !policyReady || career.adBusy || (empty && !(id==='restart' && pausedRestart));
   const garageView=garage.snapshot();
   $('start').disabled ||= gateSelectionIndex!==null||!garageView.canRace;
   $('start').textContent=!policyReady?'读取油量规则…':empty?'⏳ 等待油量恢复':
@@ -389,7 +390,7 @@ function display(next) {
 }
 function pause() {
   if (!g || !started || result || !['race', 'countdown'].includes(g.state)) { releaseInput(); return; }
-  g.togglePause(); releaseInput(); display('paused');
+  g.togglePause(); releaseInput(); display('paused');fuelView();
 }
 function resume() {
   if (!g || backgrounded || document.hidden || portrait() || result || g.state !== 'paused' || !['race', 'countdown'].includes(g.pausedFrom)) return;
@@ -407,7 +408,9 @@ function start() {
     loadTrack(career.stage.map, false);
     return; // The native physical map must match the stage objective.
   }
-  if (!career.canStart()) {
+  const pausedRestart=phase==='paused' && started && !result &&
+    g.state==='paused' && career.canRestartCurrentEntry();
+  if (!pausedRestart && !career.canStart()) {
     $('note').textContent = '油量不足，等待自然恢复或主动看广告加油';
     display('ready');fuelView();return;
   }
@@ -421,7 +424,7 @@ function start() {
     g.camMode = 1;g.mobileMode = touchDriving;nativeStartRace();
     if (g.state !== 'countdown') throw Error('原生比赛未进入倒计时');
     garage.reset(false);
-    career.begin(g);
+    career.begin(g,{reuseCurrentEntry:pausedRestart});
     trial.start(career.stage);
     inputTime = performance.now();$('heading').textContent = career.stage.name;display('countdown');fuelView();
   } catch (error) {
@@ -896,6 +899,7 @@ async function boot() {
     return translated;
   };
   let v10AuthenticBurstAt=-Infinity;
+  let lastDuelPulseAt=-Infinity;
   const nativeEvents = g.handleEvents.bind(g);
   g.handleEvents = player => {
     const pending = player.events.map(event => ({ ...event, data: { ...event.data } }));nativeEvents(player);
@@ -940,6 +944,8 @@ async function boot() {
     const dt = (now - lastFrame) / 1000;lastFrame = now;
     if(root.dataset.v10Burst==='true'&&now-v10AuthenticBurstAt>550)
       root.dataset.v10Burst='false';
+    if(root.dataset.raceDuel&&now-lastDuelPulseAt>650)
+      root.dataset.raceDuel='';
     if(touchDriving && phase==='race')touchHealth.frame(dt);
     if ((phase === 'ready' || phase === 'finished') && now - lastFuelTick > 1000) { lastFuelTick = now;fuelView(); }
     if (started && !result && g.player) {
@@ -947,7 +953,11 @@ async function boot() {
       else if (g.state !== phase && ['race', 'countdown', 'paused'].includes(g.state)) display(g.state);
       if (g.state === 'race') {
         const failure = career.frame(g);
-        duel.frame(g); // Keep genuine native overtakes for test telemetry; no toast.
+        const duelMoment=duel.frame(g); // Only actual physical position-crossing events.
+        if(duelMoment && (duelMoment.kind==='skill'||duelMoment.kind==='threat')) {
+          root.dataset.raceDuel=duelMoment.kind;
+          lastDuelPulseAt=now; // A brief speed-HUD rim pulse; no track-covering toast.
+        }
         shortcutDecisions.frame(g); // Observe native Track.project; no speed or progress changes.
         career.drainNotices(); // Lifecycle notices are not a running commentary.
         if(shouldRefreshRaceHud(now,lastHudTick)) {

@@ -65,6 +65,20 @@ test('normal fuel UI is quiet while retry and real shortage are visible',()=>{
   const css=readFileSync(new URL('../racing/mobile.css',import.meta.url),'utf8');
   assert.match(css,/#race-fuel-box:not\(\.low\):not\(\.empty\):not\(\.notice\) #race-fuel-gauge/);
 });
+test('paused restart remains actionable at zero fuel without enabling a fresh paid entry',()=>{
+  assert.match(source,/const pausedRestart=phase==='paused' && started && !result/);
+  assert.match(source,/if \(!pausedRestart && !career\.canStart\(\)\)/);
+  assert.match(source,/career\.begin\(g,\{reuseCurrentEntry:pausedRestart\}\)/);
+  assert.match(source,/id==='restart' && pausedRestart/);
+});
+test('real overtake feedback pulses existing HUD without any new driving overlay',()=>{
+  assert.match(source,/const duelMoment=duel\.frame\(g\)/);
+  assert.match(source,/root\.dataset\.raceDuel=duelMoment\.kind/);
+  assert.match(source,/now-lastDuelPulseAt>650/);
+  const css=readFileSync(new URL('../racing/mobile.css',import.meta.url),'utf8');
+  assert.match(css,/#race-kit\[data-phase="race"\]\[data-race-duel="skill"\] #race-speed/);
+  assert.match(css,/#race-kit\[data-phase="race"\]\[data-race-duel="threat"\] #race-speed/);
+});
 test('default results keep diagnostics and detailed statistics out of the main action path',()=>{
   assert.match(source,/id="race-result-details"/);
   assert.match(source,/qaDiagnostics/);
