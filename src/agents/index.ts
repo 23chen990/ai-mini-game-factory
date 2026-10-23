@@ -377,6 +377,13 @@ export class BuilderAgent {
 export class QAAgent {
   constructor(private readonly provider: QAProvider, private readonly runtime: RuntimeAdapter) {}
   async run(workspace: string, runRoot: string, buildPassed = false): Promise<QaReport> {
+    // This artifact is optional, but an unreadable or invalid declaration is
+    // not an undeclared run. Only actual absence permits provider-only legacy QA.
+    const continuityText = await readFile(path.join(runRoot, 'artifacts/interaction-continuity-contract.json'), 'utf8').catch((error: NodeJS.ErrnoException) => {
+      if (error.code === 'ENOENT') return undefined;
+      throw error;
+    });
+    const declaredContinuity = continuityText === undefined ? undefined : InteractionContinuityContractSchema.parse(JSON.parse(continuityText));
     const raw = await this.provider.playtest({ runtime: this.runtime, workspace, runRoot });
     const rawRecord = raw && typeof raw === 'object' && !Array.isArray(raw) ? raw as Record<string, unknown> : undefined;
     const rawEvidence = rawRecord?.evidence;
@@ -413,16 +420,24 @@ export class QAAgent {
     // serialize an empty array.  Treat both forms as missing; an empty array
     // is not usable evidence and must never be persisted as a passing report.
     let interactionContinuity: InteractionContinuityReport | undefined;
-    const continuityContract = rawRecord?.interactionContinuityContract ?? (rawRecord?.interactionContinuity && typeof rawRecord.interactionContinuity === 'object' && !Array.isArray(rawRecord.interactionContinuity) ? (rawRecord.interactionContinuity as Record<string, unknown>).contract : undefined);
+    const continuityContract = declaredContinuity ?? rawRecord?.interactionContinuityContract ?? (rawRecord?.interactionContinuity && typeof rawRecord.interactionContinuity === 'object' && !Array.isArray(rawRecord.interactionContinuity) ? (rawRecord.interactionContinuity as Record<string, unknown>).contract : undefined);
     const continuityObservation = rawRecord?.interactionContinuityObservation ?? (rawRecord?.interactionContinuity && typeof rawRecord.interactionContinuity === 'object' && !Array.isArray(rawRecord.interactionContinuity) ? (rawRecord.interactionContinuity as Record<string, unknown>).observation : undefined);
     if (continuityContract !== undefined || continuityObservation !== undefined) {
-      try {
-        const contract = InteractionContinuityContractSchema.parse(continuityContract);
-        const observation = InteractionContinuityObservationSchema.parse(continuityObservation);
-        interactionContinuity = evaluateInteractionContinuity(contract, observation);
-      } catch (error) {
-        const message = error instanceof Error ? error.message : 'interaction continuity artifact is invalid';
-        interactionContinuity = InteractionContinuityReportSchema.parse({ schemaVersion: 1, contractId: 'invalid-interaction-continuity', passed: false, blockers: [`contract:invalid:${message.slice(0, 240)}`], evidence: ['artifacts/interaction-continuity-report.json'], checkedNodes: 0, checkedScenarios: 0, checkedRepetitions: 0, evaluatedAt: new Date().toISOString() });
+      const contract = InteractionContinuityContractSchema.safeParse(continuityContract);
+      const observation = InteractionContinuityObservationSchema.safeParse(continuityObservation);
+      if (contract.success && observation.success) {
+        interactionContinuity = evaluateInteractionContinuity(contract.data, observation.data);
+      } else {
+        interactionContinuity = InteractionContinuityReportSchema.parse({
+          schemaVersion: 1, contractId: contract.success ? contract.data.contractId : 'invalid-interaction-continuity',
+          passed: false,
+          blockers: [
+            ...(!contract.success ? [`contract:invalid:${contract.error.message.slice(0, 240)}`] : []),
+            ...(!observation.success ? [continuityObservation === undefined ? 'observation:missing' : `observation:invalid:${observation.error.message.slice(0, 240)}`] : []),
+          ],
+          evidence: ['artifacts/interaction-continuity-report.json'],
+          checkedNodes: 0, checkedScenarios: 0, checkedRepetitions: 0, evaluatedAt: new Date().toISOString(),
+        });
       }
     }
     const report = QaReportSchema.parse({
@@ -439,8 +454,15 @@ export class QAAgent {
       } : {}),
     });
     const continuityFailed = interactionContinuity !== undefined && !interactionContinuity.passed;
-    const finalReport = continuityFailed
-      ? QaReportSchema.parse({ ...report, passed: false, issues: [...report.issues, { id: 'interaction-continuity', severity: 'error' as const, message: 'interaction continuity contract failed', evidence: 'artifacts/interaction-continuity-report.json' }] })
+    const naturalFailed = report.naturalFlow?.passed === false;
+    const checksFailed = report.checks.some((check) => !check.passed);
+    const errorsReported = report.issues.some((issue) => issue.severity === 'error');
+    const finalReport = checksFailed || errorsReported || continuityFailed || naturalFailed
+      ? QaReportSchema.parse({ ...report, passed: false, issues: [
+        ...report.issues,
+        ...(continuityFailed ? [{ id: 'interaction-continuity', severity: 'error' as const, message: 'interaction continuity contract failed', evidence: 'artifacts/interaction-continuity-report.json' }] : []),
+        ...(naturalFailed ? [{ id: 'natural-flow', severity: 'error' as const, message: 'natural player-input journey failed; structural success cannot override it', evidence: 'artifacts/qa-report.json' }] : []),
+      ] })
       : report;
     await writeFile(path.join(runRoot, 'artifacts/qa-evidence.json'), `${JSON.stringify(report.evidence, null, 2)}\n`);
     if (interactionContinuity) await writeFile(path.join(runRoot, 'artifacts/interaction-continuity-report.json'), `${JSON.stringify(interactionContinuity, null, 2)}\n`);

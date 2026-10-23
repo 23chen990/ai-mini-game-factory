@@ -48,7 +48,7 @@ const contract=ReferenceFidelityContractSchema.parse({
     playerInput:protocol,expectedStateChange:row.description,spatialRelationship:'4 by 4 adjacency; no reference UI coordinates reused',
     visibleFeedback:{anchor:row.id==='score-feedback'?'score':'board and terminal overlay',eventOrder:['normal input','visible consequence']},viewport,
     sourceRefs:[{...referenceArtifact,locator:'files: js/game_manager.js move/setup/restart/movesAvailable; js/html_actuator.js actuate/updateScore'}],
-    comparison:{evidenceBasis:'source-derived',referenceArtifact,condition:row.description,protocol,metric:`${row.id}-rule-error`,unit:'violations',referenceRange:{min:0,max:0},maxDelta:0,minimumSamples:1},
+    comparison:{evidenceBasis:'source-derived',referenceArtifact,condition:row.description,protocol,metric:`${row.id}-rule-error`,unit:'violations',comparisonMode: 'mean' as const, referenceRange:{min:0,max:0},maxDelta:0,minimumSamples:1},
   })),
 });
 const contractHash=sha256Text(JSON.stringify(contract));

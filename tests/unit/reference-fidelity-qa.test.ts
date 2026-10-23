@@ -55,7 +55,7 @@ async function pairedFixture() {
     behaviorChecks: input.contract.behaviorChecks.map((check) => ({ ...check, comparison: {
       evidenceBasis: 'runtime-observed', referenceArtifact: input.contract.provenance[0]!,
       condition: 'fresh session; target ready', protocol: 'activate target; replay',
-      metric: 'response', unit: 'ms', referenceRange: { min: 80, max: 120 }, maxDelta: 20, minimumSamples: 2,
+      metric: 'response', unit: 'ms', comparisonMode: 'mean' as const, referenceRange: { min: 80, max: 120 }, maxDelta: 20, minimumSamples: 2,
     } })),
   };
   const contractHash = sha256Text(JSON.stringify(contract));

@@ -2,6 +2,7 @@ import { mkdtemp } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
+import { writeResearchManifests, writeResearchReferenceInputs } from '../helpers/research-manifests.js';
 import { CodexAccountProvider, codexOutputSchema, type CodexExecutor } from '../../src/providers/codex-account.js';
 import type { CodexExecRequest, CodexExecResult } from '../../src/providers/codex-cli.js';
 import { ArtDirectionsSchema, GameBlueprintSchema, OpenSourceResearchSchema, type ArtDirections, type GameBlueprint, type StyleLock } from '../../src/schemas/index.js';
@@ -78,6 +79,8 @@ describe('CodexAccountProvider', () => {
 
   it('requires recording-backed reference research to inspect verified frames and emit a level reconstruction', async () => {
     const root = await mkdtemp(path.join(tmpdir(), 'codex-account-reference-frames-'));
+    await writeResearchManifests(root);
+    await writeResearchReferenceInputs(root);
     const client = new FakeExecutor([{}]);
     const provider = new CodexAccountProvider(client);
     await provider.analyzeReferenceEvidence({} as never, {

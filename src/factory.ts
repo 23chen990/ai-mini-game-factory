@@ -28,7 +28,7 @@ import { archiveRunPaths } from './core/run-preservation.js';
 import { mergeOperatingProfile } from './core/operating-profile.js';
 import { buildBusinessPreflightTemplate, evaluateOperatingGates } from './core/operating-gates.js';
 import { buildPlatformReleaseMatrix, evaluateCostGate, evaluatePlatformQa, evaluatePlatformReleaseMatrix, makeFailureReport, makeGrowthExperiment, decideGrowthExperiment } from './core/factory-operating.js';
-import { buildFeedbackRegressionSignature, collectFactorySourceEntries, defaultFactoryEvalCases, FACTORY_EVAL_SOURCE_PATHS, FACTORY_EVAL_SUITE_VERSION, buildFactorySourceSignature, feedbackRegressionEvalCases, mergeFactoryEvalCases, parseFactoryEvalCasesFile, runFactoryEvalSuite } from './core/factory-eval.js';
+import { buildFeedbackRegressionSignature, collectFactorySourceEntries, defaultFactoryEvalCases, FACTORY_EVAL_SOURCE_PATHS, FACTORY_EVAL_SUITE_VERSION, buildFactorySourceSignature, feedbackRegressionEvalCases, mergeFactoryEvalCases, parseFactoryEvalCasesFile, runFactoryEvalSuite, scoreFactoryAgentEval, verifyFactoryAgentEvalEvidence } from './core/factory-eval.js';
 import { assertStagePlannedOrLegacy, buildPipelinePlan, CANONICAL_STAGE_ORDER, missingMandatoryProfileStages, missingRequiredGovernanceStages, requiredStageContractsForPlan } from './core/pipeline-plan.js';
 import { validatePipelinePlan } from './core/pipeline-plan.js';
 import { buildOriginalityTemplate, evaluateOriginality } from './core/originality.js';
@@ -4840,8 +4840,14 @@ export function createFactory(options: FactoryOptions = {}) {
      * implementation details so the owner can immediately verify the result. */
     buildAcceptanceHandoff,
     async runFactoryEval() { return buildFactoryEvalReport(); },
-    async persistFactoryEval() {
+    async persistFactoryEval(options: { agentResultsPath?: string } = {}) {
       const report = await buildFactoryEvalReport();
+      if (options.agentResultsPath !== undefined) {
+        const corpus = JSON.parse(await readFile(path.join(repositoryRoot, 'factory-eval/agent-cases.json'), 'utf8'));
+        const observations = JSON.parse(await readFile(options.agentResultsPath, 'utf8'));
+        await verifyFactoryAgentEvalEvidence(repositoryRoot, corpus, observations);
+        report.agentEvaluation = scoreFactoryAgentEval(corpus, observations);
+      }
       const file = path.join(root, 'factory-eval/latest.json');
       await mkdir(path.dirname(file), { recursive: true });
       await writeJsonAtomic(file, report);

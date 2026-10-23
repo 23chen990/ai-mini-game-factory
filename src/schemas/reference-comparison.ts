@@ -12,6 +12,8 @@ export const ReferenceComparisonSpecSchema = z.object({
   protocol: Text,
   metric: Text,
   unit: Text,
+  /** Legacy artifacts remain readable; acceptance requires explicit semantics. */
+  comparisonMode: z.enum(['mean', 'ordered']).optional(),
   referenceRange: z.object({ min: z.number().finite(), max: z.number().finite() }).strict()
     .refine((range) => range.min <= range.max, 'reference range must be ordered'),
   maxDelta: z.number().finite().nonnegative(),

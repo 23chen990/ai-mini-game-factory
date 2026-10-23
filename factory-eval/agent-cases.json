@@ -1,0 +1,244 @@
+{
+  "schemaVersion": 1,
+  "suiteVersion": "factory-eval-v3",
+  "cases": [
+    {
+      "caseId": "slice-research-provider",
+      "familyId": "slice-input-delivery",
+      "agent": "Research",
+      "dataset": "golden",
+      "category": "historical-failure",
+      "binding": {
+        "targetRunId": "mobile-slice-adaptation-20260830",
+        "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+        "contractHash": null,
+        "buildHash": "c4cc3c427fc52c9f91f6229c9aea0ae7cfe8220341be521df6c807626d101aae"
+      },
+      "sourceEvidence": [
+        {
+          "path": "docs/upgrades/20261023/historical/research-provider-failure.json",
+          "sha256": "4c9ef327b1ff0ed7dbd2040082d4e4b71371a36e6e371178c554ce3efc6fae22"
+        }
+      ],
+      "labels": [
+        {
+          "id": "completed-evidence-backed-mechanism-analysis",
+          "expected": true
+        }
+      ]
+    },
+    {
+      "caseId": "builder-existing-workspace",
+      "familyId": "workspace-continuation",
+      "agent": "Builder",
+      "dataset": "golden",
+      "category": "normal",
+      "binding": {
+        "targetRunId": "factory-control-plane",
+        "workspace": "shared-factory",
+        "contractHash": null,
+        "buildHash": null
+      },
+      "sourceEvidence": [
+        {
+          "path": "tests/unit/builder-workspace-reuse.test.ts",
+          "sha256": "9c8f2cbd49022ab847a41b17e2c6ce267b62475cc871d700f11775555c9dfffa"
+        }
+      ],
+      "labels": [
+        {
+          "id": "existing-workspace-preserved",
+          "expected": true
+        }
+      ]
+    },
+    {
+      "caseId": "qa-provider-contradiction",
+      "familyId": "qa-verdict-precedence",
+      "agent": "QA",
+      "dataset": "adversarial",
+      "category": "injected-defect",
+      "binding": {
+        "targetRunId": "factory-control-plane",
+        "workspace": "shared-factory",
+        "contractHash": null,
+        "buildHash": null
+      },
+      "sourceEvidence": [
+        {
+          "path": "tests/unit/qa-agent-aggregation.test.ts",
+          "sha256": "8ec8e86880ac40f6f119a5a88db3e84c3de8e2d3c920ebcd9318a302ee722a1b"
+        }
+      ],
+      "labels": [
+        {
+          "id": "failed-detail-detected",
+          "expected": true
+        },
+        {
+          "id": "warning-only-is-not-defect",
+          "expected": false
+        }
+      ]
+    },
+    {
+      "caseId": "qa-ordered-sequence",
+      "familyId": "ordered-comparison",
+      "agent": "QA",
+      "dataset": "golden",
+      "category": "injected-defect",
+      "binding": {
+        "targetRunId": "factory-control-plane",
+        "workspace": "shared-factory",
+        "contractHash": null,
+        "buildHash": null
+      },
+      "sourceEvidence": [
+        {
+          "path": "tests/unit/reference-comparison-mode.test.ts",
+          "sha256": "76ea5fbc8a50793230e6f097c55d9bd85a41c893a25600a1a6b31239644aaf64"
+        }
+      ],
+      "labels": [
+        {
+          "id": "permutation-detected",
+          "expected": true
+        },
+        {
+          "id": "unchanged-sequence-is-not-defect",
+          "expected": false
+        }
+      ]
+    },
+    {
+      "caseId": "slice-blind-qa",
+      "familyId": "slice-independent-observation",
+      "agent": "QA",
+      "dataset": "canary",
+      "category": "historical-failure",
+      "binding": {
+        "targetRunId": "mobile-slice-adaptation-20260830",
+        "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+        "contractHash": null,
+        "buildHash": "c4cc3c427fc52c9f91f6229c9aea0ae7cfe8220341be521df6c807626d101aae"
+      },
+      "sourceEvidence": [
+        {
+          "path": "docs/upgrades/20261023/blind/result.json",
+          "sha256": "d4cac4f3f1e6c4b89778a67c0d2bcee00ffc91f7e05df03d4e6e5ba7720164d9"
+        },
+        {
+          "path": "docs/upgrades/20261023/blind/decision.json",
+          "sha256": "bded07b339d954de8819751c8c8d91375e845dff5feaa8a229bfca333af02565"
+        }
+      ],
+      "labels": [
+        {
+          "id": "complete-independent-core-comparison",
+          "expected": true
+        }
+      ]
+    },
+    {
+      "caseId": "slice-exact-repair",
+      "familyId": "slice-repair",
+      "agent": "Fixer",
+      "dataset": "golden",
+      "category": "historical-failure",
+      "binding": {
+        "targetRunId": "mobile-slice-adaptation-20260830",
+        "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+        "contractHash": null,
+        "buildHash": "c4cc3c427fc52c9f91f6229c9aea0ae7cfe8220341be521df6c807626d101aae"
+      },
+      "sourceEvidence": [
+        {
+          "path": "docs/upgrades/20261023/historical/slice-repair-state.json",
+          "sha256": "b227463cbc8bc3c5377126e16f43469e8ae6377376fb694e7461948eaaae218e"
+        }
+      ],
+      "labels": [
+        {
+          "id": "exact-branch-independently-retested",
+          "expected": true
+        }
+      ]
+    },
+    {
+      "caseId": "slice-end-to-end",
+      "familyId": "slice-delivery",
+      "agent": "Pipeline",
+      "dataset": "golden",
+      "category": "historical-failure",
+      "binding": {
+        "targetRunId": "mobile-slice-adaptation-20260830",
+        "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+        "contractHash": null,
+        "buildHash": "c4cc3c427fc52c9f91f6229c9aea0ae7cfe8220341be521df6c807626d101aae"
+      },
+      "sourceEvidence": [
+        {
+          "path": "docs/upgrades/20261023/blind/reproduction-matrix.json",
+          "sha256": "eae56c2d6ab509e6b95ea3afcfd082904a12544b994e2990b7516f5d6257bdb9"
+        }
+      ],
+      "labels": [
+        {
+          "id": "qualified-delivery",
+          "expected": true
+        }
+      ]
+    },
+    {
+      "caseId": "holdout-unbound-research",
+      "familyId": "unknown-provenance-boundary",
+      "agent": "Research",
+      "dataset": "holdout",
+      "category": "boundary-unknown",
+      "binding": {
+        "targetRunId": "factory-control-plane",
+        "workspace": "shared-factory",
+        "contractHash": null,
+        "buildHash": null
+      },
+      "sourceEvidence": [
+        {
+          "path": "tests/unit/reference-evidence.test.ts",
+          "sha256": "c9f213954a02a45c70eb7c5a2f9c70d1932449726531787516dba3854553a48d"
+        }
+      ],
+      "labels": [
+        {
+          "id": "critical-unknown-not-promoted",
+          "expected": true
+        }
+      ]
+    },
+    {
+      "caseId": "holdout-grid-negative",
+      "familyId": "grid-reference-negative",
+      "agent": "QA",
+      "dataset": "holdout",
+      "category": "injected-defect",
+      "binding": {
+        "targetRunId": "factory-control-plane",
+        "workspace": "shared-factory",
+        "contractHash": null,
+        "buildHash": null
+      },
+      "sourceEvidence": [
+        {
+          "path": "docs/upgrades/20261019/reference-chain-verification.json",
+          "sha256": "a2983ffa38b4b696b9c0cc4e452f8e9a9402890073699c88ef99417fe0dcaf59"
+        }
+      ],
+      "labels": [
+        {
+          "id": "injected-score-error-detected",
+          "expected": true,
+          "route": "BUILDER"
+        }
+      ]
+    }
+  ]
+}

@@ -13,7 +13,7 @@ async function main() {
   if (command === 'doctor') { const report = await runDoctor(); console.log(JSON.stringify(report, null, 2)); if (!report.healthy) process.exitCode = 1; return; }
   switch (command) {
     case 'route': console.log(JSON.stringify(factory.routeRequest({ request: requireArg(args[0], 'request'), targetRunId: option('--run') }), null, 2)); break;
-    case 'eval': console.log(JSON.stringify(await factory.persistFactoryEval(), null, 2)); break;
+    case 'eval': { const results = args.includes('--agent-results') ? requireArg(option('--agent-results'), '--agent-results file') : undefined; console.log(JSON.stringify(await factory.persistFactoryEval(results === undefined ? {} : { agentResultsPath: path.resolve(results) }), null, 2)); break; }
     case 'feedback': console.log(JSON.stringify(await factory.recordFeedback(requireArg(args[0], 'run-id'), requireArg(args[1], 'feedback')), null, 2)); break;
     case 'feedback-structured': { const runId = requireArg(args[0], 'run-id'); const value = JSON.parse(await (await import('node:fs/promises')).readFile(path.resolve(requireArg(args[1], 'feedback-json')), 'utf8')); console.log(JSON.stringify(await factory.recordStructuredFeedback(runId, value), null, 2)); break; }
     case 'operating-status': console.log(JSON.stringify(await factory.operatingStatus(requireArg(args[0], 'run-id')), null, 2)); break;

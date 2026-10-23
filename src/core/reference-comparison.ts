@@ -2,7 +2,16 @@ import type { ReferenceBehaviorCheck, ReferenceFidelityContract, ReferenceFideli
 import type { ReferenceComparisonCapture, ReferenceDifference } from '../schemas/reference-comparison.js';
 import { ReferenceComparisonTaskSchema } from '../schemas/reference-comparison.js';
 
-export const REFERENCE_COMPARISON_RESEARCH_INSTRUCTION = 'Choose acquisition by the unmet claim: read complete readable source directly; use REA for packaged/minified/native artifacts or questions source inspection cannot answer, then corroborate behavior with actual normal-input observation. REA exit success is not mechanism accuracy. Each behaviorCheck must supply comparison with evidenceBasis (runtime-observed, source-derived, inferred, unknown), a source-bound referenceArtifact, exact condition and protocol, metric/unit, evidence-backed referenceRange, justified maxDelta and minimumSamples. These fields are the shared Builder/QA contract, not candidate-selected expectations. Never invent measurements or relax tolerance to fit the candidate; keep unsupported mechanisms explicitly unknown/BLOCKED. Perceptual quality and human acceptance remain separate from numeric comparison.';
+export const REFERENCE_COMPARISON_RESEARCH_INSTRUCTION = [
+  'Choose acquisition by the unmet claim: read complete readable source directly; use REA for packaged/minified/native artifacts or questions source inspection cannot answer, then corroborate behavior with actual normal-input observation. REA exit success is not mechanism accuracy.',
+  'Each behaviorCheck must supply comparison with evidenceBasis (runtime-observed, source-derived, inferred, unknown), a source-bound referenceArtifact, exact condition and protocol, metric/unit, evidence-backed referenceRange, justified maxDelta and minimumSamples. These fields are the shared Builder/QA contract, not candidate-selected expectations.',
+  'comparison.referenceArtifact must exactly match one sourceFiles path/SHA-256 pair from the evidence pack. Cite derived frames as locators within that source, not as replacement source artifacts.',
+  'Choose a metric that distinguishes the claimed behavior from a concrete counterexample, and describe that distinction in protocol. A count cannot verify order: swapping two objects preserves the count but violates an order claim. Do not substitute a convenient count for a relation or event sequence.',
+  'Declare comparisonMode: "mean" for independent repeated measurements, or "ordered" for a complete ordered sequence. Ordered samples are compared position by position with maxDelta and must have equal lengths; define a stable identity-to-number mapping and sampling order in protocol, shared by both captures. Never renumber candidate identities by their observed position or use mean to test ordinal order. A scalar whole-sequence predicate may use mean only if its protocol evaluates the entire sequence before producing each sample.',
+  'Use one lifecycle/state condition per check and referenceRange. Separate ready and moving observations when their expected values differ; do not apply one branch range to samples from another branch. Check that the source observations themselves satisfy the proposed protocol and range.',
+  'Do not fabricate a reference action trace from changed pixels. If input, timing, or causality is unobserved, preserve that gap and omit the unsupported check rather than inventing actions or measurements.',
+  'Never invent measurements or relax tolerance to fit the candidate; keep unsupported mechanisms explicitly unknown/BLOCKED. Perceptual quality and human acceptance remain separate from numeric comparison.',
+].join(' ');
 
 export function referenceComparisonNextStage(differences: ReferenceDifference[]) {
   if (differences.some(({ route }) => route === 'RESEARCH' || route === 'CONTRACT')) return 'REFERENCE_DEEP_RESEARCH';
@@ -53,6 +62,7 @@ function inspectComparisonContract(contract: ComparisonContract) {
   for (const check of contract.behaviorChecks) {
     const spec = check.comparison;
     if (spec === undefined) { differences.push({ checkId: check.id, route: 'CONTRACT', reason: 'measurement-protocol-missing' }); continue; }
+    if (spec.comparisonMode === undefined) { differences.push({ checkId: check.id, route: 'CONTRACT', reason: 'comparison-mode-missing' }); continue; }
     if (spec.evidenceBasis === 'inferred' || spec.evidenceBasis === 'unknown') { differences.push({ checkId: check.id, route: 'RESEARCH', reason: 'mechanism-not-confirmed' }); continue; }
     if (!contract.provenance.some(source => source.path === spec.referenceArtifact.path && source.sha256 === spec.referenceArtifact.sha256)) {
       differences.push({ checkId: check.id, route: 'RESEARCH', reason: 'reference-artifact-unbound' }); continue;
@@ -125,7 +135,14 @@ export function compareReferenceCaptures(input: {
       add(check.id, 'RESEARCH', 'reference-observation-contradicts-contract'); continue;
     }
     const mean = (samples: number[]) => samples.reduce((sum, value) => sum + value, 0) / samples.length;
-    if (Math.abs(mean(referenceSamples) - mean(candidateSamples)) > spec.maxDelta
+    const diverges = spec.comparisonMode === 'ordered'
+      ? candidateSamples.length > referenceSamples.length || referenceSamples.some((value, index) => {
+        // Captures may contain a shorter sequence: a missing item is a real difference.
+        const observed = candidateSamples[index];
+        return observed === undefined || Math.abs(value - observed) > spec.maxDelta;
+      })
+      : Math.abs(mean(referenceSamples) - mean(candidateSamples)) > spec.maxDelta;
+    if (diverges
       || candidateSamples.some((value) => value < spec.referenceRange.min - spec.maxDelta || value > spec.referenceRange.max + spec.maxDelta)) {
       add(check.id, 'BUILDER', 'candidate-behavior-diverges');
     }

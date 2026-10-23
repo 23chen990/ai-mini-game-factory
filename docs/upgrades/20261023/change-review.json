@@ -1,0 +1,51 @@
+{
+  "scope": "shared-factory; no extra agent/gate/model",
+  "observedCase": "mobile-slice-adaptation-20260830; 20261019 provider failures and 20261020 QA counterexamples",
+  "expectedVsActual": "完整来源→可执行行为契约→独立核验；实际有空/截断输入、契约可省略、同均值的顺序反例无法检出，Agent 指标缺失。",
+  "causality": {
+    "observed": [
+      "输入文件解析错误真实发生",
+      "deterministic eval 未调用 Agent"
+    ],
+    "hypotheses": [
+      "完整交付消除解析故障",
+      "QA 聚合/顺序比较缺口可以局部修复"
+    ],
+    "notEstablished": [
+      "输入截断是历史游戏体验偏差的唯一原因",
+      "更多研究或更强模型会改善体验",
+      "本轮能减少商业研发成本"
+    ]
+  },
+  "alternatives": [
+    {
+      "option": "keep existing",
+      "cost": "0 code/context; retains reproduced defects"
+    },
+    {
+      "option": "selective local patches + existing eval",
+      "cost": "reuse archived tests; 0 extra production roles, 0 paid provider retries; local runtime verification"
+    },
+    {
+      "option": "new agent/gate/rebuild",
+      "decision": "reject; no evidence of added value; larger token/time/maintenance cost"
+    }
+  ],
+  "experiment": {
+    "baseline": "integrated main + #72, before patch; RED assertions retained",
+    "treatment": "only causal shared source fixes, same tests/protocol/reference",
+    "regressions": [
+      "legacy readable contracts stay readable",
+      "malformed inputs fail",
+      "QA warnings do not become errors",
+      "valid comparison remains valid"
+    ],
+    "limits": {
+      "automaticFixAttempts": 5,
+      "newPaidProviderCalls": 0,
+      "newGames": 0
+    },
+    "retain": "only after counterexample goes RED→GREEN and full checks pass; report unresolved natural/perceptual blockers",
+    "revert": "regressions or unsupported claims; never lower acceptance"
+  }
+}

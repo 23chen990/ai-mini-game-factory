@@ -38,7 +38,7 @@ class ExplicitRequirementsFixture extends MockAgentProvider {
             evidenceBasis: 'source-derived', referenceArtifact: { path: source.path, sha256: source.sha256 },
             condition: `Authored fixture branch: ${check.stateBranch}`,
             protocol: `${check.playerInput}; check ${check.expectedStateChange}; feedback order: ${check.visibleFeedback.eventOrder.join(' → ')}`,
-            metric: 'authored requirement satisfied', unit: 'boolean', referenceRange: { min: 1, max: 1 }, maxDelta: 0, minimumSamples: 1,
+            metric: 'authored requirement satisfied', unit: 'boolean', comparisonMode: 'mean' as const, referenceRange: { min: 1, max: 1 }, maxDelta: 0, minimumSamples: 1,
           },
         })),
         failurePressureContract: { schemaVersion: 1, purpose: 'Keep the first-party fixture pressure requirements attributable to their document.',

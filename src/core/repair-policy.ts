@@ -55,7 +55,7 @@ export function decideRepairAttempt(input: {
   hypothesis: RepairHypothesis;
   previous?: RepairAttempt;
 }): RepairAdmission {
-  if (input.maxFixAttempts !== undefined && input.attempt > input.maxFixAttempts) return { allowed: false, reason: 'configured-fix-attempt-ceiling' };
+  if (input.attempt > Math.min(5, input.maxFixAttempts ?? 5)) return { allowed: false, reason: 'configured-fix-attempt-ceiling' };
   if (input.maxRepairLoops !== undefined && input.attempt > input.maxRepairLoops) return { allowed: false, reason: 'configured-repair-loop-ceiling' };
   if (input.previous?.status === 'started') return { allowed: false, reason: 'incomplete-prior-attempt' };
   if (input.previous && input.previous.inputBuildHash === input.previous.outputBuildHash) return { allowed: false, reason: 'unchanged-build' };

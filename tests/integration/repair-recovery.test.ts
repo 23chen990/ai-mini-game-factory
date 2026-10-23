@@ -78,7 +78,7 @@ describe('formal repair recovery', () => {
     expect(codex.fixes).toBe(0);
     expect((await factory.status(runId)).fixAttempts).toBe(0);
   });
-  it('permits six distinct evidenced repairs and resumes without duplicating the count or provider call', async () => {
+  it('stops after five distinct evidenced repairs and resumes without duplicating the count or provider call', async () => {
     const { root, seed } = await fixture();
     const codex = new RepairingCodexProvider();
     let qaCalls = 0;
@@ -101,24 +101,24 @@ describe('formal repair recovery', () => {
     const waiting = await factory.resume(runId);
     const runRoot = path.join(root, 'runs', runId);
     const history = RepairHistorySchema.parse(JSON.parse(await readFile(path.join(runRoot, 'artifacts/repair-history.json'), 'utf8')));
-    expect(waiting).toMatchObject({ stage: 'FIX', status: 'waiting', fixAttempts: 6, codexThreadId: 'fix-thread-6' });
-    expect(waiting.stages.FIX?.attempts).toBe(6);
-    expect(codex.fixes).toBe(6);
-    expect(codex.inputThreads).toEqual(['builder-thread', 'fix-thread-1', 'fix-thread-2', 'fix-thread-3', 'fix-thread-4', 'fix-thread-5']);
-    expect(history.attempts).toHaveLength(6);
-    expect(history.qaReports).toHaveLength(7);
+    expect(waiting).toMatchObject({ stage: 'FIX', status: 'waiting', fixAttempts: 5, codexThreadId: 'fix-thread-5' });
+    expect(waiting.stages.FIX?.attempts).toBe(5);
+    expect(codex.fixes).toBe(5);
+    expect(codex.inputThreads).toEqual(['builder-thread', 'fix-thread-1', 'fix-thread-2', 'fix-thread-3', 'fix-thread-4']);
+    expect(history.attempts).toHaveLength(5);
+    expect(history.qaReports).toHaveLength(6);
     expect(history.attempts.every((attempt) => attempt.status === 'completed' && attempt.inputBuildHash !== attempt.outputBuildHash)).toBe(true);
     expect(history.qaReports[0]?.evidenceFiles.map((file) => file.sourcePath)).toContain('logs/console.log');
     await expect(readFile(path.join(runRoot, history.qaReports[0]!.evidenceFiles.find((file) => file.sourcePath === 'logs/console.log')!.artifactPath), 'utf8')).resolves.toBe('stub QA\n');
-    expect(JSON.parse(await readFile(path.join(runRoot, 'artifacts/repair-policy-decision.json'), 'utf8'))).toMatchObject({ allowed: false, reason: 'unchanged-hypothesis' });
+    expect(JSON.parse(await readFile(path.join(runRoot, 'artifacts/repair-policy-decision.json'), 'utf8'))).toMatchObject({ allowed: false, reason: 'configured-fix-attempt-ceiling' });
 
     const resumed = await factory.resume(runId);
     const resumedHistory = RepairHistorySchema.parse(JSON.parse(await readFile(path.join(runRoot, 'artifacts/repair-history.json'), 'utf8')));
-    expect(resumed).toMatchObject({ stage: 'FIX', status: 'waiting', fixAttempts: 6, codexThreadId: 'fix-thread-6' });
-    expect(resumed.stages.FIX?.attempts).toBe(6);
-    expect(codex.fixes).toBe(6);
-    expect(resumedHistory.attempts).toHaveLength(6);
-    expect(resumedHistory.qaReports).toHaveLength(8);
+    expect(resumed).toMatchObject({ stage: 'FIX', status: 'waiting', fixAttempts: 5, codexThreadId: 'fix-thread-5' });
+    expect(resumed.stages.FIX?.attempts).toBe(5);
+    expect(codex.fixes).toBe(5);
+    expect(resumedHistory.attempts).toHaveLength(5);
+    expect(resumedHistory.qaReports).toHaveLength(7);
     await expect(readFile(path.join(runRoot, resumedHistory.qaReports[0]!.artifactPath), 'utf8')).resolves.toContain('issue-1');
     await expect(readFile(path.join(runRoot, resumedHistory.qaReports[6]!.artifactPath), 'utf8')).resolves.toContain('issue-6');
   });

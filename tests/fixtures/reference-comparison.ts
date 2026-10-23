@@ -22,7 +22,7 @@ export function syntheticComparisonChecks(checks: ReferenceBehaviorCheck[]) {
   return checks.map((check) => ({ ...check, comparison: {
     evidenceBasis: 'runtime-observed' as const, referenceArtifact: {path:check.sourceRefs[0]!.path,sha256:check.sourceRefs[0]!.sha256},
     condition: 'synthetic ready state', protocol: 'synthetic tap then retry', metric: 'synthetic rule violations', unit: 'count',
-    referenceRange: {min:0,max:0}, maxDelta:0, minimumSamples:1,
+    comparisonMode: 'mean' as const, referenceRange: {min:0,max:0}, maxDelta:0, minimumSamples:1,
   }}));
 }
 

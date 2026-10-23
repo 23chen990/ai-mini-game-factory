@@ -127,7 +127,7 @@ QA 分开检验：
 
 `factory readiness <run-id>` 输出 **codeCorrectness / gameplayFidelity / experienceQuality / monetizationReadiness / platformReleaseReadiness** 五个独立维度、证据、缺口和下一步；不是另造一套 QA。完成预览的状态是 `PREVIEW_ACCEPTED`，不会冒充 `CANDIDATE_READY` 或 `RELEASE_READY`。
 
-自动 FIX 保留原 Builder 线程、累计次数、每次 QA/截图/轨迹、输入/输出构建哈希。默认无固定 2/5 轮上限；明确配置的次数、成本、时间、Token、平台上限仍生效。没有新失败依据、构建未变、上一尝试中断或历史不一致时，**先停再花钱**，在 `repair-policy-decision.json` 写明原因。当前自动假设基于失败检查/问题签名；相同失败仍需新诊断，不能用重建或换时间戳充当修复成功。
+自动 FIX 保留原 Builder 线程、累计次数、每次 QA/截图/轨迹、输入/输出构建哈希。自动修复最多五轮；更严格的项目次数、成本、时间、Token、平台上限优先生效，不能用较大的配置绕过五轮上限。没有新失败依据、构建未变、上一尝试中断或历史不一致时，**先停再花钱**，在 `repair-policy-decision.json` 写明原因。当前自动假设基于失败检查/问题签名；相同失败仍需新诊断，不能用重建或换时间戳充当修复成功。
 
 `resume` 不盲目重做已完成的模型调用；工件漂移会失效下游。已完成 Builder turn 但本地验证失败时可用 `factory verify-build <run-id>`，它不再调用模型。历史 FIX 已有计数却无可恢复账本时会明确暂停，不能凭空补造旧证据。
 
@@ -165,3 +165,18 @@ pnpm factory eval
 [本次审计与验证](docs/upgrades/20261019/audit.md) · [内部架构](docs/architecture.md) · [玩家验收](docs/player-acceptance-workflow.md) · [三平台与许可政策](docs/platform-publishing-policy.md)
 
 README 是当前入口/阶段策略的规范；旧计划和评审文档中的实验路线、历史模型名称与旧修复上限不是当前运行默认值。所有游戏代码、资产、QA 和构建仅存在于自己的 `runs/<run-id>/workspace` 及同 run 证据目录；提交不包含生成游戏或本地密钥。
+
+
+## 7. Factory Eval：路由回归与 Agent 能力证据分开
+
+`pnpm factory eval` 只执行确定性控制面回归，报告明确标记 `CONTROL_PLANE` / `productQuality: NOT_ASSESSED`。它不调用 Research、Builder、QA 或 Fixer，不证明游戏合格。
+
+```bash
+pnpm factory eval --agent-results docs/upgrades/20261023/agent-observations.json
+```
+
+同一命令可附带独立审查后的 Agent 观察，使用现有 `factory-eval/agent-cases.json` 与 Zod schema；输出仍在 `factory-eval/latest.json`。标签只供评分，禁止传给受测 Agent。case 绑定 run、工作区、规格/构建哈希；观察另绑定源码 revision、原始输出、实际输入、协议及独立审查证据。文件字节改变、路径越界、缺文件、重复/缺失判断、自己评分或已暴露的 holdout 均拒绝。
+
+指标同时输出分子、分母和 `value`；无数据为 `null`，不是 0% 或 100%。按角色、dataset、`live-agent` / `historical-agent` / `deterministic-regression` 分组，不能用 Mock/回归替代自主能力。阻断样本不计质量成功，已测耗时/成本仍保留。固定 holdout 有家族隔离检查，但本轮尚无有效完成的独立留出结果；标签隔离依赖实际执行审计，schema 不能证明模型没见过答案。
+
+本轮审计、同案 RED→GREEN、真实无提示 QA 的负面结果和未完成链路见 [2026-10-23 升级报告](docs/upgrades/20261023/audit.md)。没有新增生产 Agent、Gate、模型或依赖；没有修改原切割游戏、重置历史次数、合成验收或批准发布。

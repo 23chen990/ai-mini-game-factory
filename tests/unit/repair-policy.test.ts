@@ -31,10 +31,10 @@ function completedAttempt(attempt: number, inputBuild: string, outputBuild: stri
 }
 
 describe('formal repair admission', () => {
-  it('allows more than five distinct evidence-backed repairs without a configured ceiling', () => {
+  it('allows five distinct evidenced repairs within the production ceiling', () => {
     let previous: RepairAttempt | undefined;
 
-    for (let attempt = 1; attempt <= 6; attempt += 1) {
+    for (let attempt = 1; attempt <= 5; attempt += 1) {
       const hypothesis = buildRepairHypothesis(qaReport(`issue-${attempt}`), `artifacts/repair-history/qa-${attempt}.json`);
       expect(hypothesis.evidence).not.toHaveLength(0);
       expect(decideRepairAttempt({
@@ -86,5 +86,15 @@ describe('formal repair admission', () => {
 
   it('requires failed QA evidence before creating a repair hypothesis', () => {
     expect(() => buildRepairHypothesis({ ...qaReport('unused'), checks: [{ name: 'pass', passed: true, evidence: 'ok' }], issues: [] }, 'artifacts/qa-report.json')).toThrow(/failed QA evidence/iu);
+  });
+});
+
+
+describe('five-attempt production ceiling', () => {
+  it('does not admit a sixth repair even with a larger configured budget', () => {
+    const hypothesis = buildRepairHypothesis({ schemaVersion: 1, passed: false, checks: [{ name: 'core', passed: false, evidence: 'qa trace' }], issues: [], screenshots: [], consoleLog: 'logs/console.log', testedAt: new Date(0).toISOString() }, 'qa.json');
+    for (const maxFixAttempts of [undefined, 10]) {
+      expect(decideRepairAttempt({ attempt: 6, maxFixAttempts, currentBuildHash: 'a'.repeat(64), hypothesis })).toEqual({ allowed: false, reason: 'configured-fix-attempt-ceiling' });
+    }
   });
 });

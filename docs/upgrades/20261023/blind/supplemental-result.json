@@ -1,0 +1,51 @@
+{
+  "status": "PARTIAL",
+  "targetRunId": "mobile-slice-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+  "referenceHash": "3781e4dcd3d21094f186cf442b3ee30cddfbb2fbe68d87c5c7470a2c742bf75a",
+  "candidateHash": "c4cc3c427fc52c9f91f6229c9aea0ae7cfe8220341be521df6c807626d101aae",
+  "startedAt": "2026-10-23T09:34:34Z",
+  "finishedAt": "2026-10-23T09:36:28.261Z",
+  "humanHints": 0,
+  "actions": [
+    "Kept initial result.json unchanged; verified its SHA-256 remains d4cac4f3f1e6c4b89778a67c0d2bcee00ffc91f7e05df03d4e6e5ba7720164d9.",
+    "Verified neutral task copy is present at /Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa/neutral-task-copy.json with SHA-256 cf66db981f0ba6afd87a649883cafbc47c60c3afa00d539eca21357a9d930351.",
+    "Ran one fresh 1100x720 Chromium session with normal mouse input: initial center click, twenty center clicks at 300ms intervals, 8s idle until the visible failure/replay screen, then one click on its visible 重玩 button at (550,470), followed by a 1.2s wait.",
+    "Inspected before/after screenshots and visible text. Replay reset score/reward to 0, returned to stage 1 at distance 29, and displayed the initial “点击任意处起飞” tutorial. Stopped the temporary localhost server."
+  ],
+  "findings": [],
+  "gaps": [
+    "Reference is recording-only without an input trace; replay behavior cannot be paired against reference input or attributed as a parity requirement.",
+    "This supplemental observation is not release approval and does not establish a successful candidate terminal/settlement path."
+  ],
+  "evidence": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/incoming/_2026-09-06-135548-3781e4dcd3d2.mp4",
+      "sha256": "3781e4dcd3d21094f186cf442b3ee30cddfbb2fbe68d87c5c7470a2c742bf75a"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/dist/index.html",
+      "sha256": "c4cc3c427fc52c9f91f6229c9aea0ae7cfe8220341be521df6c807626d101aae"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa/neutral-task-copy.json",
+      "sha256": "cf66db981f0ba6afd87a649883cafbc47c60c3afa00d539eca21357a9d930351"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa/result.json",
+      "sha256": "d4cac4f3f1e6c4b89778a67c0d2bcee00ffc91f7e05df03d4e6e5ba7720164d9"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa/replay-input-log.json",
+      "sha256": "398805ecaeeb004c131c765497a278cf41a78489060b494d00c8c24884df7596"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa/candidate-replay-before.png",
+      "sha256": "97fa36641a079e533125151d3da38be450da9eeb3245b5daf342733cf75f3fdf"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa/candidate-replay-after.png",
+      "sha256": "bf10eebcf31a7cb8570a4c18aa3a186517e42947f8e5e590b38341b227791f7c"
+    }
+  ]
+}
