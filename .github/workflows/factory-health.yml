@@ -1,0 +1,42 @@
+name: Factory release gates
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  release-registry:
+    name: Release registry integrity
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate game evidence registry
+        run: node tools/release-status/validate.mjs
+      - name: Run evidence gate regression tests
+        run: node --test tools/release-status/validate-checks.mjs
+
+  factory-core:
+    name: Factory lint, types and tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Enable pnpm
+        run: corepack enable
+      - name: Install locked dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Install Playwright Chromium and WebKit for browser-backed Vitest checks
+        run: pnpm exec playwright install --with-deps chromium webkit
+      - name: Verify factory core with bounded browser-test parallelism
+        run: pnpm lint && pnpm typecheck && pnpm exec vitest run --maxWorkers=2

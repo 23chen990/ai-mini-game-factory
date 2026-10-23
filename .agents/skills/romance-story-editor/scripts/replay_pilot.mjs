@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* global process,console,URL */
 /** Re-run original normal-input r4 witness commands on a separate text candidate.
  * Not browser, human, independent editorial or platform verification.
  */

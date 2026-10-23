@@ -122,17 +122,19 @@ describe('stage contracts', () => {
     expect(release.maxAttempts ?? Number.POSITIVE_INFINITY).toBeLessThanOrEqual(build.maxAttempts ?? Number.POSITIVE_INFINITY);
   });
 
-  it('allows evidence-backed formal fixer retries without a fixed attempt ceiling', () => {
+  it('bounds autonomous formal FIX after five evidenced attempts', () => {
     const fixer = getStageContract('FIX');
     expect(isStageContractExplicit('FIX')).toBe(true);
     expect(fixer.ownerRole).toBe('FixerAgent');
     expect(fixer.verifierRole).toBe('QAAgent');
-    expect(fixer.maxAttempts).toBeNull();
-    expect(fixer.retryPolicy.maxAttempts).toBeNull();
-    expect(fixer.retryPolicy.unboundedUntilPass).toBe(true);
-    expect(fixer.passCriteria).toEqual(expect.arrayContaining(['formal QA → FIX → QA has no fixed repair-attempt ceiling']));
-    expect(stageAttemptAllowed(fixer, 6)).toBe(true);
-    expect(stageAttemptAllowed(fixer, 1_000)).toBe(true);
+    expect(fixer.maxAttempts).toBe(5);
+    expect(fixer.retryPolicy.maxAttempts).toBe(5);
+    expect(fixer.retryPolicy.unboundedUntilPass).toBe(false);
+    expect(fixer.passCriteria).toEqual(expect.arrayContaining([
+      'formal QA → FIX → QA automatically retries at most five times with independent evidence for each attempt',
+    ]));
+    for (const attempt of [1, 2, 3, 4, 5]) expect(stageAttemptAllowed(fixer, attempt)).toBe(true);
+    for (const attempt of [6, 25, 1_000]) expect(stageAttemptAllowed(fixer, attempt)).toBe(false);
     expect(stageAttemptAllowed(getStageContract('QA'), 3)).toBe(false);
     expect(fixer.mutationScope).toBe('game-workspace');
   });

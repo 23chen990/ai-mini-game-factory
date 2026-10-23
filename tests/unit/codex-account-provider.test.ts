@@ -199,7 +199,7 @@ describe('CodexAccountProvider', () => {
       assets: { schemaVersion: 1, provider: 'test', assets: ['customer', 'product', 'background', 'upgrade'].map((id, index) => ({ id, kind: (['character', 'product', 'background', 'ui'] as const)[index]!, path: `assets/${id}.png`, prompt: id, status: 'generated' as const, sha256: 'hash' })) },
       template: 'idle-shop-v1',
       context: {
-        runRoot: path.resolve(workspace, '../..'), outputPath: path.resolve(workspace, '../../logs/codex/BUILD.last-message.txt'), logDir: path.resolve(workspace, '../../logs/codex'),
+        runRoot: workspace, outputPath: path.join(workspace, 'logs/codex/BUILD.last-message.txt'), logDir: path.join(workspace, 'logs/codex'),
         inputPaths: ['artifacts/reference-level-implementation-contract.json'], requiredArtifacts: ['artifacts/reference-level-implementation-contract.json'], stage: 'FULL_BUILD', sandbox: 'workspace-write',
       },
     });
@@ -247,7 +247,7 @@ describe('CodexAccountProvider', () => {
       styleLock,
       assets: { schemaVersion: 1, provider: 'test', assets: ['blade', 'target', 'background', 'replay'].map((id, index) => ({ id, kind: (['character', 'product', 'background', 'ui'] as const)[index]!, path: `assets/${id}.png`, prompt: id, status: 'generated' as const, sha256: 'hash' })) },
       template: 'cut-stack-dodge-v1',
-      context: { runRoot: path.resolve(workspace, '../..'), outputPath: path.resolve(workspace, '../../logs/codex/BUILD.last-message.txt'), logDir: path.resolve(workspace, '../../logs/codex'), inputPaths: ['artifacts/reference-level-implementation-contract.json'], requiredArtifacts: ['artifacts/reference-level-implementation-contract.json'], stage: 'FULL_BUILD', sandbox: 'workspace-write' },
+      context: { runRoot: workspace, outputPath: path.join(workspace, 'logs/codex/BUILD.last-message.txt'), logDir: path.join(workspace, 'logs/codex'), inputPaths: ['artifacts/reference-level-implementation-contract.json'], requiredArtifacts: ['artifacts/reference-level-implementation-contract.json'], stage: 'FULL_BUILD', sandbox: 'workspace-write' },
     });
 
     const prompt = client.requests[0]?.prompt ?? '';
@@ -314,7 +314,7 @@ describe('CodexAccountProvider', () => {
       realDecision: true,
     };
 
-    const result = await provider.prototype({ workspace, idea, slot: 'b', context: { runRoot: path.resolve(workspace, '../..'), outputPath: path.join(workspace, 'prototype.log'), logDir: path.join(workspace, 'logs'), inputPaths: [], stage: 'BUILD_3_PROTOTYPES', model: 'gpt-5.6-terra', reasoning: 'max', sandbox: 'workspace-write' } });
+    const result = await provider.prototype({ workspace, idea, slot: 'b', context: { runRoot: workspace, outputPath: path.join(workspace, 'prototype.log'), logDir: path.join(workspace, 'logs'), inputPaths: [], stage: 'BUILD_3_PROTOTYPES', model: 'gpt-5.6-terra', reasoning: 'max', sandbox: 'workspace-write' } });
 
     expect(client.requests[0]).toMatchObject({ label: 'PROTOTYPE_B', cwd: workspace, sandbox: 'workspace-write' });
     expect(client.requests[0]?.prompt).toContain('[data-choice], [data-action], [data-lantern]');
@@ -351,7 +351,7 @@ describe('CodexAccountProvider', () => {
       workspace,
       spec,
       variant: spec.prototypes[0]!,
-      context: { runRoot: path.resolve(workspace, '../..'), outputPath: path.join(workspace, 'action.log'), logDir: path.join(workspace, 'logs'), inputPaths: [], stage: 'BUILD_ACTION_PROTOTYPES', model: 'gpt-5.6-terra', reasoning: 'max', sandbox: 'workspace-write' },
+      context: { runRoot: workspace, outputPath: path.join(workspace, 'action.log'), logDir: path.join(workspace, 'logs'), inputPaths: [], stage: 'BUILD_ACTION_PROTOTYPES', model: 'gpt-5.6-terra', reasoning: 'max', sandbox: 'workspace-write' },
     });
     expect(result.metrics.model).toBe('gpt-5.6-terra');
   });
@@ -365,7 +365,7 @@ describe('CodexAccountProvider', () => {
       workspace,
       threadId: 'builder-thread-99',
       qaReport: { schemaVersion: 1, passed: false, checks: [], issues: [{ id: 'recording-level-comparison', severity: 'error', message: 'placement mismatch at checkpoint cut-1', evidence: 'artifacts/reference-level-comparison-gate.json' }], screenshots: [], consoleLog: 'logs/console.log', testedAt: new Date().toISOString() },
-      context: { runRoot: path.resolve(workspace, '../..'), outputPath: path.join(workspace, 'fix.log'), logDir: path.join(workspace, 'logs'), inputPaths: ['artifacts/qa-report.json', 'artifacts/reference-level-implementation-contract.json', 'artifacts/reference-level-runtime-trace.json', 'artifacts/reference-level-comparison-gate.json'], requiredArtifacts: ['artifacts/reference-level-implementation-contract.json'], stage: 'FIX', sandbox: 'workspace-write' },
+      context: { runRoot: workspace, outputPath: path.join(workspace, 'fix.log'), logDir: path.join(workspace, 'logs'), inputPaths: ['artifacts/qa-report.json', 'artifacts/reference-level-implementation-contract.json', 'artifacts/reference-level-runtime-trace.json', 'artifacts/reference-level-comparison-gate.json'], requiredArtifacts: ['artifacts/reference-level-implementation-contract.json'], stage: 'FIX', sandbox: 'workspace-write' },
     });
 
     expect(client.requests[0]).toMatchObject({ label: 'FIX', sandbox: 'workspace-write', resumeThreadId: 'builder-thread-99', timeoutMs: 600_000, maxRetries: 0 });
