@@ -1,0 +1,386 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "极速飞驰 / qq-speed",
+  "workspace": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/runs/h5-qq-mobile-20261013/workspace",
+  "axes": {
+    "objectTypes": [
+      "player-control",
+      "physical-rival",
+      "settlement"
+    ],
+    "lifecycleStateBranches": [
+      "drift-held-countersteer",
+      "clean-release-spray",
+      "collision-recovery",
+      "chase-pass",
+      "loss-replay"
+    ],
+    "rendererPaths": [
+      "native PlayerCar + Three.js + DOM"
+    ],
+    "viewports": [
+      {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      {
+        "label": "phone",
+        "width": 844,
+        "height": 390
+      },
+      {
+        "label": "small-phone",
+        "width": 667,
+        "height": 375
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "desktop-drift-held-countersteer",
+      "objectType": "player-control",
+      "lifecycleStateBranch": "drift-held-countersteer",
+      "rendererPath": "native PlayerCar + Three.js + DOM",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Same normal-input drift/release/spray sequence before and after on desktop1366x768, touch844x390 and touch667x375; explicit successful input has timely visible vehicle, sound and speed feedback without new track-obscuring particles or banners.",
+      "observed": "RC24 after24-serial-desktop-journey: native PODIUM, place1, replaytrue. Normal evidence recorded; independent perceptual acceptance remains unavailable. No sibling branch may clear this cell.",
+      "evidence": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-desktop-journey/report.json",
+          "sha256": "bd61b8c666c232a145b4de16ae38c57380583fdced78aaea0ba146acbb158398",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "desktop-clean-release-spray",
+      "objectType": "player-control",
+      "lifecycleStateBranch": "clean-release-spray",
+      "rendererPath": "native PlayerCar + Three.js + DOM",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Same normal-input drift/release/spray sequence before and after on desktop1366x768, touch844x390 and touch667x375; explicit successful input has timely visible vehicle, sound and speed feedback without new track-obscuring particles or banners.",
+      "observed": "RC24 after24-serial-desktop-journey: native PODIUM, place1, replaytrue. Normal evidence recorded; independent perceptual acceptance remains unavailable. No sibling branch may clear this cell.",
+      "evidence": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-desktop-journey/report.json",
+          "sha256": "bd61b8c666c232a145b4de16ae38c57380583fdced78aaea0ba146acbb158398",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "desktop-collision-recovery",
+      "objectType": "player-control",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "native PlayerCar + Three.js + DOM",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Same normal-input drift/release/spray sequence before and after on desktop1366x768, touch844x390 and touch667x375; explicit successful input has timely visible vehicle, sound and speed feedback without new track-obscuring particles or banners.",
+      "observed": "RC24 after24-serial-desktop-journey: native PODIUM, place1, replaytrue. Normal evidence recorded; independent perceptual acceptance remains unavailable. No sibling branch may clear this cell.",
+      "evidence": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-desktop-journey/report.json",
+          "sha256": "bd61b8c666c232a145b4de16ae38c57380583fdced78aaea0ba146acbb158398",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "desktop-chase-pass",
+      "objectType": "physical-rival",
+      "lifecycleStateBranch": "chase-pass",
+      "rendererPath": "native PlayerCar + Three.js + DOM",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Same normal-input drift/release/spray sequence before and after on desktop1366x768, touch844x390 and touch667x375; explicit successful input has timely visible vehicle, sound and speed feedback without new track-obscuring particles or banners.",
+      "observed": "RC24 after24-serial-desktop-journey: native PODIUM, place1, replaytrue. Normal evidence recorded; independent perceptual acceptance remains unavailable. No sibling branch may clear this cell.",
+      "evidence": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-desktop-journey/report.json",
+          "sha256": "bd61b8c666c232a145b4de16ae38c57380583fdced78aaea0ba146acbb158398",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "desktop-loss-replay",
+      "objectType": "settlement",
+      "lifecycleStateBranch": "loss-replay",
+      "rendererPath": "native PlayerCar + Three.js + DOM",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "First stage and a legitimately unlocked difficult stage reach actual terminal and replay through normal keys/touch; failures remain failures. Observe physical AI chase/pass, do not weaken early stages or use player-lead rubberbanding.",
+      "observed": "RC24 after24-serial-desktop-journey: native PODIUM, place1, replaytrue. Normal evidence recorded; independent perceptual acceptance remains unavailable. No sibling branch may clear this cell.",
+      "evidence": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-desktop-journey/report.json",
+          "sha256": "bd61b8c666c232a145b4de16ae38c57380583fdced78aaea0ba146acbb158398",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "phone-drift-held-countersteer",
+      "objectType": "player-control",
+      "lifecycleStateBranch": "drift-held-countersteer",
+      "rendererPath": "native PlayerCar + Three.js + DOM",
+      "viewport": {
+        "label": "phone",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Same normal-input drift/release/spray sequence before and after on desktop1366x768, touch844x390 and touch667x375; explicit successful input has timely visible vehicle, sound and speed feedback without new track-obscuring particles or banners.",
+      "observed": "RC24 after24-serial-phone-journey: native LOSS_OR_UNFINISHED, place6, replaytrue. Normal evidence recorded; independent perceptual acceptance remains unavailable. No sibling branch may clear this cell.",
+      "evidence": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-phone-journey/report.json",
+          "sha256": "964366114b406dd27551e74602b7f9cafa9c0774860e31a5b629dc75953cad5f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "phone-clean-release-spray",
+      "objectType": "player-control",
+      "lifecycleStateBranch": "clean-release-spray",
+      "rendererPath": "native PlayerCar + Three.js + DOM",
+      "viewport": {
+        "label": "phone",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Same normal-input drift/release/spray sequence before and after on desktop1366x768, touch844x390 and touch667x375; explicit successful input has timely visible vehicle, sound and speed feedback without new track-obscuring particles or banners.",
+      "observed": "RC24 after24-serial-phone-journey: native LOSS_OR_UNFINISHED, place6, replaytrue. Normal evidence recorded; independent perceptual acceptance remains unavailable. No sibling branch may clear this cell.",
+      "evidence": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-phone-journey/report.json",
+          "sha256": "964366114b406dd27551e74602b7f9cafa9c0774860e31a5b629dc75953cad5f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "phone-collision-recovery",
+      "objectType": "player-control",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "native PlayerCar + Three.js + DOM",
+      "viewport": {
+        "label": "phone",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Same normal-input drift/release/spray sequence before and after on desktop1366x768, touch844x390 and touch667x375; explicit successful input has timely visible vehicle, sound and speed feedback without new track-obscuring particles or banners.",
+      "observed": "RC24 after24-serial-phone-journey: native LOSS_OR_UNFINISHED, place6, replaytrue. Normal evidence recorded; independent perceptual acceptance remains unavailable. No sibling branch may clear this cell.",
+      "evidence": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-phone-journey/report.json",
+          "sha256": "964366114b406dd27551e74602b7f9cafa9c0774860e31a5b629dc75953cad5f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "phone-chase-pass",
+      "objectType": "physical-rival",
+      "lifecycleStateBranch": "chase-pass",
+      "rendererPath": "native PlayerCar + Three.js + DOM",
+      "viewport": {
+        "label": "phone",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Same normal-input drift/release/spray sequence before and after on desktop1366x768, touch844x390 and touch667x375; explicit successful input has timely visible vehicle, sound and speed feedback without new track-obscuring particles or banners.",
+      "observed": "RC24 after24-serial-phone-journey: native LOSS_OR_UNFINISHED, place6, replaytrue. Normal evidence recorded; independent perceptual acceptance remains unavailable. No sibling branch may clear this cell.",
+      "evidence": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-phone-journey/report.json",
+          "sha256": "964366114b406dd27551e74602b7f9cafa9c0774860e31a5b629dc75953cad5f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "phone-loss-replay",
+      "objectType": "settlement",
+      "lifecycleStateBranch": "loss-replay",
+      "rendererPath": "native PlayerCar + Three.js + DOM",
+      "viewport": {
+        "label": "phone",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "First stage and a legitimately unlocked difficult stage reach actual terminal and replay through normal keys/touch; failures remain failures. Observe physical AI chase/pass, do not weaken early stages or use player-lead rubberbanding.",
+      "observed": "RC24 after24-serial-phone-journey: native LOSS_OR_UNFINISHED, place6, replaytrue. Normal evidence recorded; independent perceptual acceptance remains unavailable. No sibling branch may clear this cell.",
+      "evidence": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-phone-journey/report.json",
+          "sha256": "964366114b406dd27551e74602b7f9cafa9c0774860e31a5b629dc75953cad5f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "small-phone-drift-held-countersteer",
+      "objectType": "player-control",
+      "lifecycleStateBranch": "drift-held-countersteer",
+      "rendererPath": "native PlayerCar + Three.js + DOM",
+      "viewport": {
+        "label": "small-phone",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Same normal-input drift/release/spray sequence before and after on desktop1366x768, touch844x390 and touch667x375; explicit successful input has timely visible vehicle, sound and speed feedback without new track-obscuring particles or banners.",
+      "observed": "RC24 after24-serial-small-journey: native LOSS_OR_UNFINISHED, place6, replaytrue. Normal evidence recorded; independent perceptual acceptance remains unavailable. No sibling branch may clear this cell.",
+      "evidence": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-small-journey/report.json",
+          "sha256": "ab56c1ed2405b3abca11306c874f1eb7bb841cbee53939ce4915cec08090f280",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "small-phone-clean-release-spray",
+      "objectType": "player-control",
+      "lifecycleStateBranch": "clean-release-spray",
+      "rendererPath": "native PlayerCar + Three.js + DOM",
+      "viewport": {
+        "label": "small-phone",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Same normal-input drift/release/spray sequence before and after on desktop1366x768, touch844x390 and touch667x375; explicit successful input has timely visible vehicle, sound and speed feedback without new track-obscuring particles or banners.",
+      "observed": "RC24 after24-serial-small-journey: native LOSS_OR_UNFINISHED, place6, replaytrue. Normal evidence recorded; independent perceptual acceptance remains unavailable. No sibling branch may clear this cell.",
+      "evidence": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-small-journey/report.json",
+          "sha256": "ab56c1ed2405b3abca11306c874f1eb7bb841cbee53939ce4915cec08090f280",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "small-phone-collision-recovery",
+      "objectType": "player-control",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "native PlayerCar + Three.js + DOM",
+      "viewport": {
+        "label": "small-phone",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Same normal-input drift/release/spray sequence before and after on desktop1366x768, touch844x390 and touch667x375; explicit successful input has timely visible vehicle, sound and speed feedback without new track-obscuring particles or banners.",
+      "observed": "RC24 after24-serial-small-journey: native LOSS_OR_UNFINISHED, place6, replaytrue. Normal evidence recorded; independent perceptual acceptance remains unavailable. No sibling branch may clear this cell.",
+      "evidence": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-small-journey/report.json",
+          "sha256": "ab56c1ed2405b3abca11306c874f1eb7bb841cbee53939ce4915cec08090f280",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "small-phone-chase-pass",
+      "objectType": "physical-rival",
+      "lifecycleStateBranch": "chase-pass",
+      "rendererPath": "native PlayerCar + Three.js + DOM",
+      "viewport": {
+        "label": "small-phone",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Same normal-input drift/release/spray sequence before and after on desktop1366x768, touch844x390 and touch667x375; explicit successful input has timely visible vehicle, sound and speed feedback without new track-obscuring particles or banners.",
+      "observed": "RC24 after24-serial-small-journey: native LOSS_OR_UNFINISHED, place6, replaytrue. Normal evidence recorded; independent perceptual acceptance remains unavailable. No sibling branch may clear this cell.",
+      "evidence": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-small-journey/report.json",
+          "sha256": "ab56c1ed2405b3abca11306c874f1eb7bb841cbee53939ce4915cec08090f280",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "small-phone-loss-replay",
+      "objectType": "settlement",
+      "lifecycleStateBranch": "loss-replay",
+      "rendererPath": "native PlayerCar + Three.js + DOM",
+      "viewport": {
+        "label": "small-phone",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "First stage and a legitimately unlocked difficult stage reach actual terminal and replay through normal keys/touch; failures remain failures. Observe physical AI chase/pass, do not weaken early stages or use player-lead rubberbanding.",
+      "observed": "RC24 after24-serial-small-journey: native LOSS_OR_UNFINISHED, place6, replaytrue. Normal evidence recorded; independent perceptual acceptance remains unavailable. No sibling branch may clear this cell.",
+      "evidence": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-small-journey/report.json",
+          "sha256": "ab56c1ed2405b3abca11306c874f1eb7bb841cbee53939ce4915cec08090f280",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "Normal keyboard trace: W at2.908s while drifting, clean driftEnd3.050s, no smallBoost. Subsequent collision preserved. Native input.frame clears the edge; touch has260ms pending action support but desktop bypasses it.",
+    "Action view currently provides no pre-release charge/eligibility or remaining-window meter; native handleEvents has no driftEnd audio branch. Speed, flames and smallBoost sound already exist and must not be recreated as a new feature.",
+    "Desktop early-W loss repaired through pending real input, no speed/position grants.",
+    "Existing native collision/recovery remains, not an autopilot rewrite."
+  ],
+  "remainingGaps": [
+    "Human enjoyment/voluntary retry not measured.",
+    "No physical Android/iPhone, real ads or platform acceptance.",
+    "Independent perceptual reviewer not run in this chat; self-inspection is not a passing independent gate.",
+    "Only01 and legitimately previously unlocked06 sampled here, not all30 naturally completed.",
+    "RC23 remains historical candidate; RC24 is an internal candidate, not formal FIX/release acceptance."
+  ],
+  "createdAt": "2026-10-21T03:50:36.528Z"
+}

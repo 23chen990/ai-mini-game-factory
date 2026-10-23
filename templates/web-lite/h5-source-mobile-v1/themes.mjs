@@ -11,22 +11,34 @@ export function createFpsAdapter(game, doc) {
   };
 }
 let adBusy = false;
-/** Official H5 global tap only; no APK SDK, placeholder unit, or automatic activation. */
+// TapTap's video component is a singleton and close events have no request ID.
+// After a timeout its later close cannot safely belong to another request.
+const timedOutProviders = new WeakSet();
+/** Explicitly provisioned tap bridge only. Live H5 compatibility still requires
+ * the target account's SDK contract; never auto-enable from a browser alone. */
 export function requestRewardedVideo({ tap, config, loadTimeoutMs = 8000, closeTimeoutMs = 180000 } = {}) {
   if (adBusy) return Promise.resolve({ status: 'busy' });
   if (config?.status !== 1 || config.source !== 'check_ads_status' || !config.appId ||
-    config.screenOrientation !== 1 || typeof config.spaceId !== 'string' || !config.spaceId ||
+    ![0, 1].includes(config.screenOrientation) || typeof config.spaceId !== 'string' || !config.spaceId ||
     typeof tap?.createRewardedVideoAd !== 'function') return Promise.resolve({ status: 'unavailable' });
+  if (timedOutProviders.has(tap)) return Promise.resolve({ status: 'unavailable' });
   adBusy = true;
   return new Promise(resolve => {
-    let ad, finished = false, timer;
+    let ad, finished = false, timer, phase = 'loading', firstClose;
     const finish = status => {
       if (finished) return;
+      if (status === 'timed-out') timedOutProviders.add(tap);
       finished = true; clearTimeout(timer); adBusy = false;
       ad?.offClose?.(closed); ad?.offError?.(errored);
       resolve({ status });
     };
-    const closed = result => finish(result?.isEnded === true ? 'completed' : 'cancelled');
+    // External singleton events may arrive before presentation. A synchronous
+    // close from show() is held until its Promise confirms successful display.
+    const closed = result => {
+      if (phase === 'loading' || firstClose !== undefined) return;
+      firstClose = result?.isEnded === true ? 'completed' : 'cancelled';
+      if (phase === 'shown') finish(firstClose);
+    };
     const errored = () => finish('failed');
     try {
       ad = tap.createRewardedVideoAd({ adUnitId: config.spaceId });
@@ -36,7 +48,11 @@ export function requestRewardedVideo({ tap, config, loadTimeoutMs = 8000, closeT
       Promise.resolve().then(() => ad.load()).then(() => {
         if (finished) return;
         clearTimeout(timer); timer = setTimeout(() => finish('timed-out'), closeTimeoutMs);
-        return ad.show();
+        phase = 'showing';
+        return Promise.resolve(ad.show()).then(() => {
+          phase = 'shown';
+          if (firstClose !== undefined) finish(firstClose);
+        });
       }).catch(errored);
     } catch { finish('failed'); }
   });

@@ -1,0 +1,219 @@
+{
+  "schemaVersion": 1,
+  "mode": "touch",
+  "sourceCommit": "042c21168f0ac433b721e7b95b01d2bcbfce64e1",
+  "buildHash": "40cf9871719d1154d7d855a805f157f5c00a88b23d6700f90c119717772c7542",
+  "inputHash": "8e09f4831d99d7ab35af02394e360b1f20429142dde8b8ae18578d84bed9efd5",
+  "htmlSha256": "6949497a622678fe3e8ccd5d059a66894ce293020afcaf17fc7c42c31c1ca812",
+  "physicalPhone": false,
+  "host": "darwin",
+  "rows": [
+    {
+      "case": "natural-touch-left-drift",
+      "state": "race",
+      "phase": "race",
+      "raceTime": 3.4419000000059543,
+      "steerAxis": 1,
+      "speed": 195.57760710047523,
+      "steer": 0.9986965785093587,
+      "heading": 2.3066493483315424,
+      "drifting": true,
+      "quality": "low",
+      "pixelRatio": 1,
+      "buffer": [
+        844,
+        390
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 119,
+      "geometries": 775,
+      "textures": 37,
+      "heapBytes": 90528422,
+      "displayedCar": "starter",
+      "owned": [
+        "starter"
+      ],
+      "note": "",
+      "viewport": [
+        844,
+        390
+      ],
+      "screenshot": "touch-left-drift.png"
+    },
+    {
+      "case": "natural-touch-emergency-countersteer",
+      "state": "race",
+      "phase": "race",
+      "raceTime": 4.0252000000178745,
+      "steerAxis": -1,
+      "speed": 88.43618160705489,
+      "steer": -0.9983962927831725,
+      "heading": 1.764026740698991,
+      "drifting": false,
+      "quality": "low",
+      "pixelRatio": 1,
+      "buffer": [
+        844,
+        390
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 120,
+      "geometries": 783,
+      "textures": 37,
+      "heapBytes": 77811118,
+      "displayedCar": "starter",
+      "owned": [
+        "starter"
+      ],
+      "note": "",
+      "viewport": [
+        844,
+        390
+      ],
+      "screenshot": "touch-countersteer.png"
+    },
+    {
+      "case": "natural-touch-release",
+      "state": "race",
+      "phase": "race",
+      "raceTime": 4.748999999999996,
+      "steerAxis": 0,
+      "speed": 131.34699581473666,
+      "steer": -2.690732290302939e-9,
+      "heading": 1.4959011038273802,
+      "drifting": false,
+      "quality": "low",
+      "pixelRatio": 1,
+      "buffer": [
+        844,
+        390
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 120,
+      "geometries": 783,
+      "textures": 37,
+      "heapBytes": 69934755,
+      "displayedCar": "starter",
+      "owned": [
+        "starter"
+      ],
+      "note": "",
+      "viewport": [
+        844,
+        390
+      ],
+      "screenshot": "touch-release.png"
+    },
+    {
+      "case": "pause-clears-multitouch",
+      "state": "paused",
+      "phase": "paused",
+      "raceTime": 5.0074000000059575,
+      "steerAxis": 0,
+      "speed": 142.8325273957619,
+      "steer": 0.897731696903169,
+      "heading": 1.7904047012129554,
+      "drifting": true,
+      "quality": "low",
+      "pixelRatio": 1,
+      "buffer": [
+        844,
+        390
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 116,
+      "geometries": 783,
+      "textures": 37,
+      "heapBytes": 77363786,
+      "displayedCar": "starter",
+      "owned": [
+        "starter"
+      ],
+      "note": "",
+      "viewport": [
+        844,
+        390
+      ],
+      "screenshot": "touch-pause.png"
+    },
+    {
+      "case": "real-tab-background",
+      "status": "NOT_OBSERVED",
+      "backgroundVisibility": {
+        "hidden": false,
+        "focused": true,
+        "events": []
+      },
+      "limitation": "Automation browser did not emit hidden or blur; this does not validate actual background lifecycle."
+    },
+    {
+      "case": "viewport-rotation-resume",
+      "state": "race",
+      "phase": "race",
+      "raceTime": 5.7724999999701945,
+      "steerAxis": 0,
+      "speed": 162.8339842119784,
+      "steer": 1.9881780284792004e-11,
+      "heading": 1.8249459994038781,
+      "drifting": false,
+      "quality": "low",
+      "pixelRatio": 1,
+      "buffer": [
+        844,
+        390
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 120,
+      "geometries": 783,
+      "textures": 37,
+      "heapBytes": 76641556,
+      "displayedCar": "starter",
+      "owned": [
+        "starter"
+      ],
+      "note": "",
+      "viewport": [
+        844,
+        390
+      ]
+    },
+    {
+      "case": "wall-clock-raf-sample",
+      "seconds": 5,
+      "frames": 601,
+      "p50Ms": 8.300000000001091,
+      "p95Ms": 9.200000000000728,
+      "state": "race",
+      "phase": "race",
+      "raceTime": 10.788799999982086,
+      "steerAxis": 0,
+      "speed": 112.22042489256212,
+      "steer": 3.7993949562801803e-81,
+      "heading": 1.0330251674224977,
+      "drifting": false,
+      "quality": "low",
+      "pixelRatio": 1,
+      "buffer": [
+        844,
+        390
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 120,
+      "geometries": 785,
+      "textures": 38,
+      "heapBytes": 82468792,
+      "displayedCar": "starter",
+      "owned": [
+        "starter"
+      ],
+      "note": "",
+      "viewport": [
+        844,
+        390
+      ]
+    }
+  ],
+  "errors": [],
+  "passed": true,
+  "browser": "151.0.7922.34"
+}

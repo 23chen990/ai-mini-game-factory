@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "极速飞驰 / qq-speed",
+  "workspace": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/runs/h5-qq-mobile-20261013/workspace",
+  "report": "User authorizes visible product polish; phone and desktop need independent camera composition, not a shared zoom. Deliver a playable change rather than test volume.",
+  "classification": [
+    "visual-hierarchy",
+    "mobile-readability",
+    "core-experience"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Default camera/HUD/results span modules and existing formal player acceptance; preserve the stored repair history and natural retest.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "Other games",
+      "Platform credentials",
+      "AI pace retuning without reproduced defect",
+      "New progression or monetization systems"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Review the three exact RC19 captures and their run-bound provenance.",
+      "Inspect active native camera patch and live HUD/result entrypoints, not the unused legacy camera preset."
+    ],
+    "observed": [
+      "RC19 phone racing capture: vehicle silhouette is small relative to the bright exhaust; live phone FOV reaches 88 degrees. Desktop uses a separate native camera and must not inherit a phone zoom.",
+      "RC19 touch nitro/item buttons repeat their names below the button in 9px labels; current item identity is not the main button icon.",
+      "RC19 result shows QA export, fuel rule text, four metric columns and a scrolling leaderboard before the player actions.",
+      "Six locked cars can already be previewed; all share native physics. Reward presentation must not imply a paid speed advantage or cross-device ownership.",
+      "Desktop input.frame maps both Space and Ctrl to the same nitroPressed flag; the item-race world consumes that flag as item use. Earned nitro has a separate touch-only edge. Split Space nitro / Ctrl item before native edge clearing; retain keyboard acceleration and steering."
+    ],
+    "evidence": [
+      {
+        "path": "docs/lean-pilot/racing-internal-20261020/materials/screenshot-driving.png",
+        "sha256": "56b75d6a2873a2dc1f94c1415c78ca8ddcbb87e1a777f7b05c7eb085bbf3882b",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "docs/lean-pilot/racing-internal-20261020/materials/screenshot-settlement.png",
+        "sha256": "c424bd63dd176b4c6bc6dbaf8503e672b7c53d043d1d454a2871438b688ecbef",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "docs/lean-pilot/racing-internal-20261020/materials/screenshot-garage.png",
+        "sha256": "d5da03ad17527f9a69d23edbb8fb47acca3d38decef32d060aae6cff727f6c49",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Phone camera improves vehicle readability at 844x390 and 667x375; desktop native camera coefficients remain byte-identical. No simulation, AI, course, rank, fuel or ad grant changes.",
+    "Live action identity, resource count and ready state are inside fixed buttons; no duplicate sublabels, no new advice banners, no automatic action consumption.",
+    "Desktop item races: Space consumes earned nitro only, Ctrl consumes item only; keyboard help matches the actual native keys.",
+    "Normal home/result has no QA export; result primary action is next for podium or replay for loss, details remain accessible and current-run stars never impersonate historical medals.",
+    "Use normal UI preview/start/driving/settlement/replay and visible before/after captures on both platforms. Keep any failed runs, no injected wins."
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-20T12:12:39.265Z"
+}

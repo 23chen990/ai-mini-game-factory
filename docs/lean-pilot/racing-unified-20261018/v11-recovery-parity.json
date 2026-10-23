@@ -1,0 +1,278 @@
+{
+  "artifact": "racing-v11-playtest.html",
+  "artifactSha256": "542239a88d814b433f9c840b892f9a361a2a00cffa25cefd8d7d2940544f61b6",
+  "sourceRecovery": "Names and comments were restored from minified runtime code. Original source byte identity is not claimed.",
+  "catalogSha256": "2ef027b102346edc25cab45e36f37739b761ee0e18d83cee7f0914e1525ed1fb",
+  "allGeometrySha256": "3a45f68a72d2cb0c0d23e92b3ba29130515fa7bfb198fef6b568d6d55c92ed72",
+  "all30Exact": true,
+  "courses": [
+    {
+      "id": "01",
+      "identity": "新城攻防：街口三连反打接内街回头",
+      "controls": 64,
+      "perimeterM": 3167.161411300085,
+      "maxGrade": 0.054923483477092576,
+      "geometrySha256": "fc19e4f67447778908c4eade67ea1d7349fcce8a6d0544c17f8a72d91a1fbdfb"
+    },
+    {
+      "id": "02",
+      "identity": "风蚀箭谷：长弧翻过沙脊后收紧反切",
+      "controls": 71,
+      "perimeterM": 3288.9008107441446,
+      "maxGrade": 0.10302230006776839,
+      "geometrySha256": "9078c21a7407f72c78d8f833f4b2ca9be6ef99d8ae8b860c7d480ea58c8e863e"
+    },
+    {
+      "id": "03",
+      "identity": "风车立交：四臂回廊接错位切线",
+      "controls": 76,
+      "perimeterM": 3382.2070090932225,
+      "maxGrade": 0.10334309182223485,
+      "geometrySha256": "4dda3e56c97b2af3d4b305d79d749f39ae47939331519dcde4a758227f7612e8"
+    },
+    {
+      "id": "04",
+      "identity": "海鸥湾：外海宽弧与港内窄回头交替",
+      "controls": 74,
+      "perimeterM": 3375.524793864546,
+      "maxGrade": 0.07493141473829733,
+      "geometrySha256": "5571fc33cec9b74406eec94ed0b3a6624b5fed1f72201d7aff355e36190992eb"
+    },
+    {
+      "id": "05",
+      "identity": "失落神殿：双臂马蹄回头与内院斜切",
+      "controls": 76,
+      "perimeterM": 3400.032321128923,
+      "maxGrade": 0.0848850431469285,
+      "geometrySha256": "582fc77b081388040ffbb5407ec63a3e7566d0d6dc1a8be8126b27437a4b761d"
+    },
+    {
+      "id": "06",
+      "identity": "双城回廊：方形内院交错嵌入阶梯街网",
+      "controls": 69,
+      "perimeterM": 3079.781564014822,
+      "maxGrade": 0.09027540953939414,
+      "geometrySha256": "1cd75105835847a46e96d0db0f51cebb780a2196b160b3e19641c1a90c4978be"
+    },
+    {
+      "id": "07",
+      "identity": "海崖阶梯：三级错台连续回头，坡面横穿后反向落到下一层",
+      "controls": 97,
+      "perimeterM": 4994.640039300735,
+      "maxGrade": 0.11443259769130497,
+      "geometrySha256": "c6209144f6618ec64456b3a511201e398ce600a5406d655f8ca3336dde648037"
+    },
+    {
+      "id": "08",
+      "identity": "雪岭Ω：外岭长回头套住内钩再接谷底双切",
+      "controls": 81,
+      "perimeterM": 3657.4170994867127,
+      "maxGrade": 0.07497224428827737,
+      "geometrySha256": "19055438f1f7f94eb35b74a6c11ac62eb0df136ab1c0a46ca10c68004a0ccf4d"
+    },
+    {
+      "id": "09",
+      "identity": "仙人掌岭：三片岩脊尖端之间交错换线",
+      "controls": 66,
+      "perimeterM": 3258.919942903501,
+      "maxGrade": 0.11002529037441425,
+      "geometrySha256": "3cd598c7d30745453a711545b369eaa1af798707ac101b37b5d352aa4136797f"
+    },
+    {
+      "id": "10",
+      "identity": "霓虹闪电：连续Z形切线接双层折返街区",
+      "controls": 81,
+      "perimeterM": 3507.07052734765,
+      "maxGrade": 0.09795351541180397,
+      "geometrySha256": "e390090c3a01f9f9ee9504ddbed8bfb96178719f3d5ba8b71a289e98a1242fc2"
+    },
+    {
+      "id": "11",
+      "identity": "海蛇湾：三排山腰道路串联两组内侧长S",
+      "controls": 79,
+      "perimeterM": 3361.978685023905,
+      "maxGrade": 0.09473923934648261,
+      "geometrySha256": "4111319c3756c9384ac6b44e354b24fcfe167fd9ef4c6e960e2e4e9d3e3f9df6"
+    },
+    {
+      "id": "12",
+      "identity": "冰旋高架：外桥大回转折入内桥窄U",
+      "controls": 82,
+      "perimeterM": 3525.0801999355635,
+      "maxGrade": 0.09106002495402571,
+      "geometrySha256": "75db9f43c09c9a01bb0e8e7e57a838a0bc6f2a680a30126279df463f9f718e73"
+    },
+    {
+      "id": "13",
+      "identity": "皇冠内街：正交双发夹，内街穿过两枚冠齿后再次折返",
+      "controls": 70,
+      "perimeterM": 3274.190746414596,
+      "maxGrade": 0.10060180614044688,
+      "geometrySha256": "816c65057e9248a137130396fc8d5ca7976f7c4aee98d9b2fa6bd41a110b33ee"
+    },
+    {
+      "id": "14",
+      "identity": "双丘三叉：两座坡顶之间换边接谷底三折",
+      "controls": 71,
+      "perimeterM": 3438.8152447282573,
+      "maxGrade": 0.12229481205308554,
+      "geometrySha256": "d2604d652214a2547ffbd15a3bcf26866cbdb38411a1d6007048dac1634ea262"
+    },
+    {
+      "id": "15",
+      "identity": "极地三叶：三瓣回头各用不同入弯方向",
+      "controls": 77,
+      "perimeterM": 3529.2581850428674,
+      "maxGrade": 0.09822452736399846,
+      "geometrySha256": "01a8d08308e155d919066fdac5f6381a6c8cd35ee582699b9b3d660721be9974"
+    },
+    {
+      "id": "16",
+      "identity": "悬崖王冠：山腰双折返与悬崖内线决战",
+      "controls": 75,
+      "perimeterM": 3580.7818230171897,
+      "maxGrade": 0.08011346507190896,
+      "geometrySha256": "4f29c757458fbe9de55f08890432acb1b00e3f52a268dc66615b3530f4f95d17"
+    },
+    {
+      "id": "17",
+      "identity": "剪刀立交：内折斜桥咬合正交回头庭院",
+      "controls": 80,
+      "perimeterM": 3368.2320559123623,
+      "maxGrade": 0.08508049595720811,
+      "geometrySha256": "b82a5352b41a78c33366ea6fa53f666e3ddff087095ecabe2fbf997e0377e0bc"
+    },
+    {
+      "id": "18",
+      "identity": "双谷裂隙：内谷窄U与外谷长回头成对出现",
+      "controls": 75,
+      "perimeterM": 3525.31126654623,
+      "maxGrade": 0.09792037401195955,
+      "geometrySha256": "5672fdcb1bdde537b223991aa94749ae8b3e033c66179b20283e1aa89b234d2d"
+    },
+    {
+      "id": "19",
+      "identity": "潮汐岬角：突出海角与后撤港湾交错相连",
+      "controls": 76,
+      "perimeterM": 3429.8014172556595,
+      "maxGrade": 0.11049611360338224,
+      "geometrySha256": "1752981f6af65adaae7e85c00ca8faf6de08a04be029eaf83c9f44b322692736"
+    },
+    {
+      "id": "20",
+      "identity": "水晶山巅：双山口急收紧与连续峰间反打",
+      "controls": 78,
+      "perimeterM": 3591.1502175933056,
+      "maxGrade": 0.09469840500796514,
+      "geometrySha256": "962265e21aabc4e0dd1f57be7945a64155094ab1f70b1b672b01450b2b21ff64"
+    },
+    {
+      "id": "21",
+      "identity": "双弓回环：两座长负荷内回环由收紧的中央S连接",
+      "controls": 88,
+      "perimeterM": 3606.3903250845638,
+      "maxGrade": 0.05188252655919767,
+      "geometrySha256": "486b5cd2748dda3068dbb142c8f3fadf02a86fcbaf3742941d465b6961d4a1b2"
+    },
+    {
+      "id": "22",
+      "identity": "峡谷折页：宽谷折回窄谷，三折岩缝后沿对侧山壁下行",
+      "controls": 105,
+      "perimeterM": 5069.693709468873,
+      "maxGrade": 0.15659530226175103,
+      "geometrySha256": "0c6634f0e14338626e28d10266762e9b1117a501f97f9630613b58684be0da63"
+    },
+    {
+      "id": "23",
+      "identity": "群岛跳桥：三岛内庭与相反朝向的桥头U口",
+      "controls": 74,
+      "perimeterM": 3157.496562336297,
+      "maxGrade": 0.127919667287357,
+      "geometrySha256": "fdcb15f7ce554993354f1ac371333df77990651aa65562e22773c7fc6f256090"
+    },
+    {
+      "id": "24",
+      "identity": "白夜冰钩：短正交S接深内钩，沿平行内街反向脱出",
+      "controls": 70,
+      "perimeterM": 3456.784042565053,
+      "maxGrade": 0.061003418224917116,
+      "geometrySha256": "7cf3281f97faa5c0b1909851b72a96c1fece04a1645f188eb05cb7f63c35de9f"
+    },
+    {
+      "id": "25",
+      "identity": "量子高架：内外双回廊串联三次错位出桥",
+      "controls": 81,
+      "perimeterM": 3629.1668911753354,
+      "maxGrade": 0.08511800011635061,
+      "geometrySha256": "6a51b5b57c190b533593e5269586fde0b5f15a0f407d1b9b156124d02a8b534e"
+    },
+    {
+      "id": "26",
+      "identity": "落日石环：偏心岩台三瓣回转与谷口切线",
+      "controls": 74,
+      "perimeterM": 3493.1415955497223,
+      "maxGrade": 0.11446001891678265,
+      "geometrySha256": "112a79cfa3961d589cda8077ef1b774e0a5f032449917ca24cf1d8c03586cff3"
+    },
+    {
+      "id": "27",
+      "identity": "云脊长蛇：横贯三组正反S，回程通过脊下内街",
+      "controls": 83,
+      "perimeterM": 3653.527105760391,
+      "maxGrade": 0.14851296967529,
+      "geometrySha256": "145d03115a6d9cbf6a57acba36babaa743a4b6830e083ccc4f5f9800575f55f4"
+    },
+    {
+      "id": "28",
+      "identity": "极光分岔：北侧深指廊接三座桥头反切",
+      "controls": 76,
+      "perimeterM": 3543.1504642829123,
+      "maxGrade": 0.1543081927782276,
+      "geometrySha256": "17b0668b8f291ff132a0ef0850c79ec63b162133381d4e7e4f768ddb965efaa0"
+    },
+    {
+      "id": "29",
+      "identity": "夜幕交错：四向街廊与内街连续晚弯心",
+      "controls": 84,
+      "perimeterM": 3662.3381336077077,
+      "maxGrade": 0.0851204812977875,
+      "geometrySha256": "513c4cc2e3684f75f6f74a735c59672f38ebf63b21aa1b6cd6a613e3bb2aaaa0"
+    },
+    {
+      "id": "30",
+      "identity": "天际终章：嵌套双U与三段收紧反切连考",
+      "controls": 81,
+      "perimeterM": 3612.55526580188,
+      "maxGrade": 0.11117469941945486,
+      "geometrySha256": "f23c92d03ca91ac7096744e94b2dffb826c016e35ef9870fe415ecb18cbbaf1c"
+    }
+  ],
+  "mobileBundle30Exact": true,
+  "fraction30Exact": true,
+  "recoveredModuleSha256": "6a3153a041344fd475abd3ee6d37792e167d281f06735fceecd0414f3eb5bb59",
+  "schemaVersion": 1,
+  "recoveryMethod": "Evaluated the actual archived native and mobile bundles independently; restored readable source with descriptive identifiers; compared every generated route field to both original bundles.",
+  "nativeAdapter": {
+    "originalBundlePortableHash": "9f11aa9387b0d3e71e9d52138a57e195df0757a69018674a97b11bd9351474ae",
+    "verifiedStages": 30,
+    "numericPrecision": 1e-06,
+    "seedOrigin": [
+      31,
+      -79,
+      0
+    ],
+    "explicitLegacyBuildPaths": true,
+    "legacyV9": "The separately selected V9 route retains the merged later rhythm and V9.1 pacing changes; it is not part of the V11 restoration parity claim.",
+    "legacyV10BaselineRevision": "c099cfa17",
+    "legacyV10PortableHash": "e3645425f2a323cfa655607145f8534c0b28105f7aa2055e49abdde4f796d481",
+    "legacyV10Verification": "All 30 layouts were independently compared with the original V9, V10 and track-design modules from c099cfa17; the three-point baseline is explicit and later V9 insertions are rejected."
+  },
+  "localVerification": {
+    "restorationTestsPassed": 7,
+    "restorationTestsFailed": 0,
+    "nativeBundleGeometryComparisons": 30,
+    "mobileBundleGeometryComparisons": 30,
+    "fractionComparisons": 30
+  },
+  "runtimeCaveat": "Data/adapter restoration evidence only; native renderer, shortcut clearance and human driving verification are tracked by the integrated build."
+}

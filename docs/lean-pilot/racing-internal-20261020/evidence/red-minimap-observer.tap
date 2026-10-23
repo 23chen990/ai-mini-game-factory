@@ -1,0 +1,87 @@
+✖ visible arrow heading is observable across raster rotations, not mistaken for a yellow rival circle (1255.222625ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1515.869042
+
+✖ failing tests:
+
+test at tools/lean-pilot/tests/racing-minimap-observer.node.mjs:6:1
+✖ visible arrow heading is observable across raster rotations, not mistaken for a yellow rival circle (1255.222625ms)
+  AssertionError [ERR_ASSERTION]: Arrow pixel observation must not lose rotational branches
+  + actual - expected
+  
+  + [
+  +   {
+  +     degrees: 0,
+  +     observation: {
+  +       direction: null,
+  +       reason: 'player-arrow-not-visible'
+  +     }
+  +   },
+  +   {
+  +     degrees: 45,
+  +     observation: {
+  +       direction: null,
+  +       reason: 'player-arrow-not-visible'
+  +     }
+  +   },
+  +   {
+  +     degrees: 90,
+  +     observation: {
+  +       direction: null,
+  +       reason: 'player-arrow-not-visible'
+  +     }
+  +   },
+  +   {
+  +     degrees: 135,
+  +     observation: {
+  +       direction: null,
+  +       reason: 'player-arrow-not-visible'
+  +     }
+  +   },
+  +   {
+  +     degrees: 180,
+  +     observation: {
+  +       direction: null,
+  +       reason: 'player-arrow-not-visible'
+  +     }
+  +   },
+  +   {
+  +     degrees: 225,
+  +     observation: {
+  +       direction: null,
+  +       reason: 'player-arrow-not-visible'
+  +     }
+  +   },
+  +   {
+  +     degrees: 270,
+  +     observation: {
+  +       direction: null,
+  +       reason: 'player-arrow-not-visible'
+  +     }
+  +   },
+  +   {
+  +     degrees: 315,
+  +     observation: {
+  +       direction: null,
+  +       reason: 'player-arrow-not-visible'
+  +     }
+  +   }
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///Users/kker/.codex/worktrees/racing-final-acceptance/%E5%A6%96%E6%80%AA%E5%A4%9C%E5%B8%82/tools/lean-pilot/tests/racing-minimap-observer.node.mjs:27:12)
+      at async Test.run (node:internal/test_runner/test:1125:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:358:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ { degrees: 0, observation: [Object] }, { degrees: 45, observation: [Object] }, { degrees: 90, observation: [Object] }, { degrees: 135, observation: [Object] }, { degrees: 180, observation: [Object] }, { degrees: 225, observation: [Object] }, { degrees: 270, observation: [Object] }, { degrees: 315, observation: [Object] } ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

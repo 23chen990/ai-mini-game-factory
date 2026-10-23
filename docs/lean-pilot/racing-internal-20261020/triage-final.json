@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "qq-speed / 极速飞驰",
+  "workspace": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/runs/h5-qq-mobile-20261013/workspace",
+  "report": "Continue internal experience repairs; account blockers are separate. Do not call missing or failed natural/perceptual evidence problem-free.",
+  "classification": [
+    "core-experience",
+    "visual-hierarchy",
+    "mobile-readability",
+    "failure-attribution"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Existing validated core-loop and perceptual QA failures require retained QA → Fixer → natural/perceptual retest. No new factory stage or gate.",
+    "generatedWorkspaceModified": true,
+    "contextIntentionallyOmitted": [
+      "Other games",
+      "Account provisioning",
+      "Historical branches already audited",
+      "Unverified reference media"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Read exact attempt 16 evidence",
+      "Recheck remote HEAD 05e31aa698b3625a7efdc16490cdf05bf69c6351",
+      "Compare isolated controller hypotheses on unchanged native physics before implementing"
+    ],
+    "observed": [
+      "Attempt 16 visible-pixel/touch driver won stages 01–12 with 8–32 crashes per race and no effective drift, spray or nitro. This is not a human win-rate estimate.",
+      "Removing predictive braking in the read-only experiment improved stage 01 from 128.000 to 119.575 s, but increased aggregate wall crashes from 5 to 525: rejected, not a fix.",
+      "Six actual car previews exist. Custom-01 at 844×390 has busy high-contrast purple/black surfaces and the faceted green vegetation conflicts with the hard-surface car.",
+      "Trusted touch countersteer passed the starter/844×390 branch; resource use, small viewport natural driving, later stages and physical devices remain separate evidence gaps.",
+      "Attempt 17 actual natural baseline placed 2/3/4; visible-resource input placed 1/1/1. All 150 native rivals finish; no native physics changes. More-map and smaller-screen natural coverage still pending.",
+      "Attempt 17 environment reduction alone did not remove near-mirror baked texels. Disabling normal maps did not resolve the glare; bounding mapped roughness and metallic contribution visibly reduced it. Preserve all source maps and mesh topology.",
+      "Attempt 17 background test did not observe blur: an isolated browser test identified Playwright forced-focus emulation. Disabling it allows real window blur; final gameplay retest pending.",
+      "Attempt 18 engineering-only native audit omits live traffic tactics; its clustered finishes alone cannot diagnose runtime convoys. A separate same-seed six-route run INCLUDING the existing tactical lane planner reproduced repeated contacts (stage01 8522 contact frames, stage08 47687). The legacy passing planner expects a >=3.9m offset, but V11 shrinks that request by an additional0.70. Wider legal steering targets (no position writes) reduce contact frames to2504/24039 respectively, with the six-route total wall crashes unchanged at16. This is engineering evidence, not natural overtaking acceptance.",
+      "Attempt18 natural resource-policy run qualified01/02 but lost03 after40+wall crashes. No race errors, no injected state. This is a retained failed playthrough, not a human win-rate or proof that the game is impossible.",
+      "Final19 evidence summary: observed 01,02,03,04,05,06,08,13; natural missing 07,09,10,11,12,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30. Human/phone/platform/rights gates are not overridden by successful engineering tests."
+    ],
+    "evidence": [
+      {
+        "path": "docs/lean-pilot/racing-final-20261020/evidence/natural-summary.json",
+        "sha256": "14c9fb4a418fb66d43ed5b998bebe13ad13d12119b8c4105516c1b3d48ff3661",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "docs/lean-pilot/racing-final-20261020/evidence/browser-gallery.json",
+        "sha256": "ae721261ae33dedf1b742ef518cc90580d1e17ed3626bd0e19aa1c7815228f1f",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/finish-diagnostic17/report.json",
+        "sha256": "253fc41cb58304f81121f3f06bed67b38cdd58df50059d79db317f41d3c93059",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/touch-e8ae1ba8825e/report.json",
+        "sha256": "90cfc05621747a78a9f3a60a1719b0408a68d60ee87c25e102666549ca392654",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/h5-qq-mobile-20261013/evidence/rc17-natural-baseline/report.json",
+        "sha256": "78e24142f1c2c1eca49edf170b2f71dc29c6e5b529d6c10fa9fbf2982cd59307",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/h5-qq-mobile-20261013/evidence/rc17-natural-resources/report.json",
+        "sha256": "95dcd53f6b57e340198ad070f3afdaebb94025695ffea016f1d5cd703a560b02",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/lane-experiment-0.7-true.json",
+        "sha256": "4448afd0ad4a2969ad3a19b31574ea6e252c4d33adb0de7a46af405186a84920",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/lane-experiment-1-true.json",
+        "sha256": "29a81de7f798cbea59e159c6d5125e334b44f1662e92356a436b2e0c0da45035",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "No changes to native player physics, speed, position, progress, rank, clocks, finish rules or catch-up based on player lead.",
+    "All 150 fixed-seed native opponents finish all 30 unchanged routes within the existing 350 s limit; legal shortcut entries/exits remain balanced.",
+    "Retain an AI change only with a material pace improvement over attempt 16 on early routes, no existing podium pace regression beyond the existing 1 s budget, and no wall-riding or sustained collision-convoy strategy.",
+    "Run the same visible-pixel normal-input player policy against the new build, record rank changes, rival gaps and overtakes; a no-resource crash-heavy easy win is not sufficient competition.",
+    "Natural successful drift release → small spray, earned nitro and item use are independently observable; repeat countersteer, pause and rotate at both 844×390 and 667×375 without overlapping controls.",
+    "Review all six exact models at three landscape viewports; reduce the observed presentation defect without replacing licensed/user assets blindly, hiding it in particles or falsely animating merged wheels.",
+    "Natural wins, losses, retry, next-stage and saved progress must use normal inputs; preserve every failed run and exact build hash. Hardware and human subjective findings remain honest, never inferred from automation."
+  ],
+  "status": "BLOCKED",
+  "createdAt": "2026-10-20T08:34:07.516Z"
+}

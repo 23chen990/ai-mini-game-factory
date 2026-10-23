@@ -1,0 +1,157 @@
+{
+  "schemaVersion": 1,
+  "type": "fixer-handoff",
+  "route": "formal-fixer",
+  "role": "FixerAgent",
+  "issueId": "V116-DELIVERY-LARGE-INLINE",
+  "gameId": "qq-speed",
+  "workspace": "/workspace/scratch/29547c23d820/racing-unified/runs/h5-qq-mobile-20261013/workspace",
+  "status": "SOURCE_READY_FOR_ROOT_QA",
+  "routeReason": "A validated release-verification failure in the actual 13,338,723-byte standalone H5 requires the formal Fixer to QA retest route.",
+  "taskSha256": "adb8edaf531c1b3e570bf0c84fffa8930c2098d4a3cb4d5ca70c0cf6361e3ff4",
+  "contextOmitted": [
+    "Unrelated gameplay, vehicle assets, historical reports, browser state, and upload payloads."
+  ],
+  "files": [
+    {
+      "path": "tools/lean-pilot/racing-delivery-verify.mjs",
+      "beforeBytes": 8306,
+      "beforeSha256": "78c143c2ae5972b90dc945c51d17e43df2daf64b859cc29feabc87e29b292885",
+      "bytes": 8822,
+      "sha256": "4fa0fe87d33b75d2e5a7e4eb57f9cc8fa0b21b92884dd115fad4f2d882f1eba6",
+      "gitBlobSha": "9a041e4bc852f6fc9e805ad2fb9d30a1633e83f5"
+    },
+    {
+      "path": "tools/lean-pilot/racing-delivery-verify.test.mjs",
+      "beforeBytes": 11842,
+      "beforeSha256": "2c2d5598589bded0659c14b88b645e1704515f2647857de0d1b4493af948ee43",
+      "bytes": 12868,
+      "sha256": "4cea6f557c0dcab90bf64fc1c80444eb4a5b6a6c0f81b0635c9dbd6e5ce96b56",
+      "gitBlobSha": "cefecdb8dd33c4fcf7c0a4c770b7ecd6804b9a7a"
+    }
+  ],
+  "changes": [
+    "Scan only opening script tags, locate literal closing tags with indexOf, and slice complete bodies. Reject an unmatched opening tag with the existing runtime-entry error.",
+    "Keep every other production byte unchanged, including exactly two inline scripts, external entry rejection, license, script syntax, build/input/artifact hashes, ZIP equality, and natural-stage coverage.",
+    "Add one real-verifier regression with a 14 MiB localized inline body, a second script, exact output equality, exact UTF-8 byte length, ZIP checks, and child syntax checks."
+  ],
+  "regression": {
+    "asciiOnlyPreFix": "PASS: the ASCII-only fixture did not reproduce the real localized-H5 failure.",
+    "localizedPreFix": {
+      "status": "EXPECTED_FAIL",
+      "exitCode": 1,
+      "error": "Maximum call stack size exceeded",
+      "evidence": {
+        "path": "/workspace/scratch/29547c23d820/recovery/delivery-inline-regression-red-utf8.tap",
+        "bytes": 1831,
+        "sha256": "f71d918e74a6a1e9c1c50f1b6a7b301a0991ee4113052d314474009a94a45bc7"
+      }
+    },
+    "postFix": {
+      "status": "PASS",
+      "exitCode": 0,
+      "tests": 23,
+      "pass": 23,
+      "fail": 0,
+      "skipped": 0,
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "tools/lean-pilot/racing-delivery-verify.test.mjs"
+      ],
+      "evidence": {
+        "path": "/workspace/scratch/29547c23d820/recovery/delivery-inline-contracts-23.tap",
+        "bytes": 4618,
+        "sha256": "4c00583b6bd01af3b973200984d7288e1ee7150df06c426d9b9beb3908173a5b"
+      }
+    }
+  },
+  "staticChecks": [
+    {
+      "name": "syntax-verifier",
+      "status": "PASS",
+      "exitCode": 0,
+      "command": [
+        "node",
+        "--check",
+        "tools/lean-pilot/racing-delivery-verify.mjs"
+      ],
+      "evidence": {
+        "path": "/workspace/scratch/29547c23d820/recovery/delivery-inline-syntax-verifier.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "syntax-contract",
+      "status": "PASS",
+      "exitCode": 0,
+      "command": [
+        "node",
+        "--check",
+        "tools/lean-pilot/racing-delivery-verify.test.mjs"
+      ],
+      "evidence": {
+        "path": "/workspace/scratch/29547c23d820/recovery/delivery-inline-syntax-contract.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "lint",
+      "status": "PASS",
+      "exitCode": 0,
+      "command": [
+        "node",
+        "node_modules/eslint/bin/eslint.js",
+        "tools/lean-pilot/racing-delivery-verify.mjs",
+        "tools/lean-pilot/racing-delivery-verify.test.mjs"
+      ],
+      "evidence": {
+        "path": "/workspace/scratch/29547c23d820/recovery/delivery-inline-lint.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "typecheck",
+      "status": "PASS",
+      "exitCode": 0,
+      "command": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit"
+      ],
+      "evidence": {
+        "path": "/workspace/scratch/29547c23d820/recovery/delivery-inline-typecheck.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "invariants": {
+    "onlyExtractionAndBodyWriteChanged": true,
+    "originalTestStatementsUnchanged": true,
+    "originalTopLevelTests": 7,
+    "newTopLevelTests": 8,
+    "addedTopLevelTests": 1,
+    "originalTestStatementsSha256": "8f670e5eb2b8a76c78b5736362d11d5bf820d1325051f9d890ae97a2fd4e6cdc",
+    "retainedTestStatementsSha256": "8f670e5eb2b8a76c78b5736362d11d5bf820d1325051f9d890ae97a2fd4e6cdc",
+    "noThresholdOrHashGateChange": true
+  },
+  "remainingEvidenceGaps": [
+    "Root must rerun the actual final delivery manifest with this verifier before accepting final delivery QA.",
+    "No build, browser, remote upload, Git staging, commit, or ref movement was performed by this Fixer."
+  ],
+  "uploadFollowup": "Replace the previously uploaded verifier blob and include tools/lean-pilot/racing-delivery-verify.test.mjs in the new source commit/freeze; the preceding 38-file coverage report describes the pre-fix source tree.",
+  "nextOwner": "root",
+  "mutations": {
+    "sourceFiles": 2,
+    "index": false,
+    "remote": false,
+    "buildOutput": false,
+    "existingEvidence": false
+  },
+  "zodValidated": true
+}

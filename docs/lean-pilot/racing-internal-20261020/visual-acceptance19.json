@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "task": "visual-acceptance19",
+  "findings": [
+    {
+      "id": "bounded-finish-remains-readable",
+      "severity": "INFO",
+      "observation": "Observed: in attempt19, custom-01 at 1366×768 and 844×390 remains dark purple/black with visible body detail rather than being washed into near-white mirror highlights; custom-04 at 1366×768 retains distinguishable red panels. This is consistent with the attempt16→18 pixel comparison recorded in visual-acceptance18.json. Inference: current private material bounds in race-user-car.mjs:createUserCarFactory (environment intensity ×0.45, metalness ×0.55, mapped-roughness floor 0.38) keep the imported texture detail while reducing the problematic finish. Unknown: this gallery does not isolate each coefficient or measure performance.",
+      "evidence": [
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery-1366x768-custom-01.png",
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery-844x390-custom-01.png",
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery-1366x768-custom-04.png",
+        "docs/lean-pilot/racing-internal-20261020/visual-acceptance18.json, material-highlight-reduction (attempt16/17 context)"
+      ],
+      "recommendation": "Keep the existing per-instance finish bounds in race-user-car.mjs:createUserCarFactory. These pixels do not support another global lighting/camera change, further map removal, or coefficient tuning."
+    },
+    {
+      "id": "remaining-model-specific-art-style",
+      "severity": "P2",
+      "observation": "Observed: custom-01 keeps dense magenta/purple high-contrast markings at 667×375; custom-02 is very high-chroma lime at 844×390; custom-05 has irregular tan/blue-white markings at 1366×768. custom-03 remains an open-wheel formula silhouette at 1366×768 while custom-04 is a red sports-car silhouette at 844×390. The cars remain recognizable and their shape/detail is visible. Inference: this residual variation is model-specific authored texture/mesh style rather than a common framing failure. Unknown: these captures cannot establish whether any marking is intentional, unwanted baking, or an asset-rights issue.",
+      "evidence": [
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery-667x375-custom-01.png",
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery-844x390-custom-02.png",
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery-1366x768-custom-05.png",
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery-1366x768-custom-03.png",
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery-844x390-custom-04.png",
+        "runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/race-user-car.mjs:createUserCarFactory; imported cars preserve supplied maps and mesh topology"
+      ],
+      "recommendation": "Do not chase the remaining per-model look with another global camera, lighting, or geometry edit. Keep it as non-blocking asset polish; any per-asset repaint/re-authoring should wait for the asset owner and rights review."
+    },
+    {
+      "id": "smooth-tree-shading-retained",
+      "severity": "P2",
+      "observation": "Observed: foliage behind the selected car reads as rounded, smoothly shaded crowns in the starter 1366×768 and custom-01 844×390 previews; the crown silhouette is still visibly coarse/low-poly in custom-02 667×375. This matches the improvement recorded against attempt16 in visual-acceptance18.json. Inference: the result is consistent with props.js:addTree using smooth standard-material shading while retaining the existing low-detail crown geometry. Unknown: the menu gallery does not cover every course biome or race-scene composition.",
+      "evidence": [
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery-1366x768-starter.png",
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery-844x390-custom-01.png",
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery-667x375-custom-02.png",
+        "runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/props.js:addTree"
+      ],
+      "recommendation": "Retain the smooth crown shading. Do not increase geometry detail for this gallery-only residual silhouette; revisit only if race-scene QA shows a concrete scenery regression."
+    },
+    {
+      "id": "gallery-framing-and-ui-clearance",
+      "severity": "INFO",
+      "observation": "Observed: all six selected cars are fully within frame in each of the 1366×768, 844×390, and 667×375 landscape captures; no car is visibly covered by the left menu or selector panel. On the shorter captures, the custom-01/custom-02/custom-04 spoiler tips come close to the selector panel's lower edge but remain visibly separate. The 667×375 carousel intentionally shows only the visible portion of its horizontal level row. No screenshot supports a severe readability, overlap, clipping, or layout blocker for this menu-preview branch.",
+      "evidence": [
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery-1366x768-starter.png",
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery-1366x768-custom-01.png",
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery-1366x768-custom-02.png",
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery-1366x768-custom-03.png",
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery-1366x768-custom-04.png",
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery-1366x768-custom-05.png",
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery-844x390-starter.png",
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery-844x390-custom-01.png",
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery-844x390-custom-02.png",
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery-844x390-custom-03.png",
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery-844x390-custom-04.png",
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery-844x390-custom-05.png",
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery-667x375-starter.png",
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery-667x375-custom-01.png",
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery-667x375-custom-02.png",
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery-667x375-custom-03.png",
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery-667x375-custom-04.png",
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery-667x375-custom-05.png",
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery.json (18 landscape menu captures; sourceCommit 6196faa085e18ac38b484fcfc1d6909c2bf22882)"
+      ],
+      "recommendation": "Keep the existing menu camera and layout; these exact captures do not justify a layout patch. Preserve the spoiler clearance during any later responsive-camera adjustment."
+    },
+    {
+      "id": "driving-and-settlement-controls-visible-in-stills",
+      "severity": "INFO",
+      "observation": "Observed: in the 844×390 terminal still, the result title, stats, and 再来一局/下一关/返回首页 buttons are legible and separated; in the nitro and smallBoost stills, steering, item, nitro, small-boost, drift, minimap, pause, and progress HUD elements are on-screen without visible control overlap. These are point-in-time visibility observations only; they do not establish tap-target quality or dynamic/natural-input behavior.",
+      "evidence": [
+        "runs/h5-qq-mobile-20261013/evidence/rc19-natural-retry04-look16/05-terminal.png (844×390)",
+        "runs/h5-qq-mobile-20261013/evidence/rc19-natural-retry04-look16/05-nitro.png (844×390)",
+        "runs/h5-qq-mobile-20261013/evidence/rc19-natural-retry06-gain15/06-smallBoost.png (844×390)"
+      ],
+      "recommendation": "No P0/P1 visibility correction is supported by these frames. Keep continuous natural-input and dynamic feedback checks in the separate QA evidence; do not treat this still-image review as a player-perception pass."
+    }
+  ],
+  "blockers": [
+    "The gallery manifest covers the menu state; the three driving/terminal images are still frames and cannot establish continuous feedback, tap-target quality, or complete natural-input acceptance."
+  ],
+  "commands": [
+    "view_image inspected all 18 attempt19 landscape captures (six cars × 1366×768, 844×390, 667×375) and all three named 844×390 driving/terminal stills.",
+    "Read gallery.json, visual-acceptance18.json, and the relevant createUserCarFactory/addTree source; no source, build, test, or workspace files were modified.",
+    "file checked the dimensions of the three driving/terminal PNGs; node summarized gallery.json state, capture count, source commit, and build hash.",
+    "Zod validation was run on this output artifact; no browser was launched."
+  ]
+}

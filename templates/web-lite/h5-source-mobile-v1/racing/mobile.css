@@ -10,7 +10,7 @@ html[data-race-mobile] #topc { position:static; display:block; transform:none; }
 html[data-race-mobile] #bigrank { left:var(--race-left);top:var(--race-top);bottom:auto;line-height:1;display:flex;gap:3px;align-items:baseline;background:#07172db3;border:1px solid #ffffff26;border-radius:12px;padding:10px 12px;box-shadow:0 2px 9px #0002;text-shadow:none; }
 html[data-race-mobile] #bigrank .r { font:800 26px/1 system-ui;background:none;color:#ffe18a;-webkit-text-fill-color:#ffe18a; }
 html[data-race-mobile] #bigrank .of { font:600 13px/1 system-ui;color:#fff;opacity:.85; }
-html[data-race-mobile] #lapbox { position:absolute;left:calc(var(--race-left) + 98px);top:calc(var(--race-top) + 2px);width:auto;padding:6px 10px;background:#07172d85;border:1px solid #ffffff1c;border-radius:10px;box-shadow:none; }
+html[data-race-mobile] #lapbox { position:absolute;left:calc(var(--race-left) + 98px);top:calc(var(--race-top) + 2px);width:auto;padding:6px 10px;background:#07172da6;border:1px solid #ffffff1c;border-radius:10px;box-shadow:none; }
 html[data-race-mobile] #lapbox .l { font:700 17px/1 system-ui;color:white; }
 html[data-race-mobile] #lapbox .s { font:500 10px/1.2 system-ui;margin-top:3px;color:#d9e5f1; }
 html[data-race-mobile] #timebox { position:absolute;left:50%;top:calc(var(--race-top) + 4px);transform:translateX(-50%);width:auto;min-width:110px;padding:7px 12px;background:#07172da6;border:1px solid #ffffff1f;box-shadow:none; }
@@ -68,7 +68,9 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
 /* Career is configured in the lobby; never add new touch targets to the driving HUD. */
 #race-kit #race-ready { flex-wrap:wrap;gap:5px 8px;margin-bottom:7px; }
 #race-kit #race-stage { max-width:235px;min-width:160px;flex:1; }
-#race-kit #race-skin { min-width:78px;max-width:118px; }
+#race-kit #race-skin { min-width:78px;max-width:175px; }
+#race-kit #race-skin-ad { min-height:36px;padding:6px 10px;border:1px solid #f4bd66;border-radius:9px;background:#80521e;color:#fff4da;font:750 12px/1.25 system-ui; }
+#race-kit #race-skin-ad[hidden] {display:none!important;}
 #race-kit #race-map[hidden] { display:none!important; }
 #race-kit #race-stage-goal { font-size:12px;color:#f6d995;margin:0 0 5px;line-height:1.35; }
 #race-kit #race-fuel-box { display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 8px;font-size:11px;color:#b9d6e8; }
@@ -205,7 +207,7 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
 #race-action-pad button[data-race-action="small"] {right:clamp(88px,13vw,110px);bottom:0;}
 #race-action-pad button[data-race-action="nitro"] {right:clamp(88px,13vw,110px);bottom:clamp(76px,20vh,90px);background:#173b55de;}
 #race-action-pad button[data-race-action="item"] {right:0;bottom:clamp(100px,27vh,120px);}
-#race-kit[data-item-mode="false"] #race-action-pad button[data-race-action="item"] {display:none;}
+#race-kit[data-item-mode="false"] #race-controls #race-action-pad button[data-race-action="item"] {display:none;}
 #race-action-pad button.held {background:#a26a32;border-color:#fff0aa;transform:scale(.96);}
 #race-action-pad button.ready {border-color:#8af7dd;box-shadow:0 0 13px #35d7ae80;}
 #race-kit #race-controls {touch-action:none;}
@@ -319,6 +321,330 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
 }
 #race-kit #race-export:active {background:#275270;}
 
+
+/* V9.1 one production rotary wheel, consolidated landscape HUD and thumb hierarchy. */
+html[data-race-mobile] { --race-left:max(14px,env(safe-area-inset-left));--race-right:max(14px,env(safe-area-inset-right));--race-top:max(8px,env(safe-area-inset-top));--race-bottom:max(10px,env(safe-area-inset-bottom));}
+html[data-race-mobile] #bigrank,html[data-race-mobile] #lapbox,html[data-race-mobile] #timebox {background:#051322a3;border:1px solid #d8e8f42a;box-shadow:0 5px 16px #0003;backdrop-filter:blur(7px)}
+html[data-race-mobile] #bigrank{padding:7px 11px;border-radius:10px}
+html[data-race-mobile] #bigrank .r{font-size:27px}
+html[data-race-mobile] #lapbox{left:calc(var(--race-left) + 91px);padding:5px 9px}
+html[data-race-mobile] #timebox{padding:5px 14px}
+html[data-race-mobile] #minimap{width:clamp(68px,11vh,84px);height:clamp(68px,11vh,84px);right:calc(var(--race-right) + 52px);background:#061c2b80;border:1px solid #c9eaff2c}
+html[data-race-mobile] #gaugebox{height:23px;bottom:calc(var(--race-bottom) + 2px);background:#081625a8;border-color:#ffffff1d}
+#race-kit #race-speed,#race-kit[data-stage-kind="elimination"] #race-speed{top:auto;bottom:calc(var(--race-bottom) + clamp(152px,39vh,183px));left:calc(var(--race-left) + 24px);background:transparent;border:0;box-shadow:none;padding:2px}
+#race-kit #race-speed strong{font-size:clamp(21px,5.6vh,29px);text-shadow:0 2px 8px #000b}
+#race-kit #race-compact-goal{top:calc(var(--race-top) + 49px);max-width:155px;background:#081b2bc0;font-size:10px}
+#race-kit #race-knockout{top:calc(var(--race-top) + 91px);width:174px}
+#race-joystick{width:clamp(124px,41vh,166px);left:calc(var(--race-left) + 3px);bottom:var(--race-bottom);border-radius:50%;filter:drop-shadow(0 6px 12px #0006)}
+#race-joystick .race-stick-track{inset:0;border:6px solid #617d8dc7;background:radial-gradient(circle at 47% 42%,#244357bb,#091824ee 72%);box-shadow:inset 0 0 0 3px #c1e1f44f,inset 0 0 16px #000a,0 0 0 1px #e3f7ff69}
+#race-joystick .race-stick-track:after{content:"";position:absolute;inset:3px;border:2px solid #bcecf77a;border-radius:50%;box-shadow:0 0 calc(8px + 9px * var(--turn-strength,0)) #5cdff77a;pointer-events:none}
+#race-stick-knob{left:13%;top:13%;width:74%;height:74%;border:9px solid #b9cedbe8;background:radial-gradient(circle,#213e54 0 34%,#112b40 36% 100%);box-shadow:inset 0 0 0 3px #152b3f,inset 0 3px 6px #fff5,0 2px 9px #000b;transform:rotate(0deg);transition:transform .19s cubic-bezier(.22,.8,.2,1)}
+#race-joystick.held #race-stick-knob{transition:none;box-shadow:inset 0 0 0 3px #152b3f,0 0 12px #56ccee6b}
+.race-wheel-spoke{position:absolute;background:linear-gradient(90deg,#859cae,#deedf5 46%,#7c96a7);border-radius:5px;pointer-events:none}
+.race-wheel-spoke.spoke-top{width:15%;height:34%;top:0;left:42.5%}
+.race-wheel-spoke.spoke-left{width:36%;height:14%;top:46%;left:0;transform:rotate(17deg);transform-origin:right center}
+.race-wheel-spoke.spoke-right{width:36%;height:14%;top:46%;right:0;transform:rotate(-17deg);transform-origin:left center}
+.race-wheel-hub{position:absolute;z-index:2;width:33%;aspect-ratio:1;left:33.5%;top:33.5%;border-radius:50%;background:radial-gradient(circle at 38% 32%,#4c6f80,#0e263b 70%);border:2px solid #bbdbe6}
+#race-action-pad{width:clamp(198px,31vw,267px);height:clamp(135px,37vh,173px)}
+#race-kit #race-controls #race-action-pad button{width:clamp(58px,9.4vh,76px);height:clamp(58px,9.4vh,76px);display:flex;flex-direction:column;gap:0;align-items:center;justify-content:center;border:2px solid #c1dae38c;border-radius:50%;font:800 clamp(11px,2.8vh,14px)/1.1 system-ui;color:#edf8ff;background:linear-gradient(145deg,#284357ed,#091c2fe8);box-shadow:inset 0 2px 0 #ffffff24,0 5px 15px #0008}
+#race-kit #race-controls #race-action-pad button:before{display:none}
+#race-kit #race-controls #race-action-pad button[data-race-action="drift"]{width:clamp(87px,23vh,105px);height:clamp(87px,23vh,105px);right:0;bottom:0;color:#fff2cc;background:linear-gradient(145deg,#8e5730,#47271ae8);border:3px solid #ffcd73;box-shadow:inset 0 2px 0 #fff6,0 5px 20px #0009}
+#race-kit #race-controls #race-action-pad button[data-race-action="drift"]:before{content:"↷";font-size:28px}
+#race-kit #race-controls #race-action-pad button[data-race-action="small"]{right:clamp(100px,25vh,118px);bottom:0}
+#race-kit #race-controls #race-action-pad button[data-race-action="small"]:before{content:"»"}
+#race-kit #race-controls #race-action-pad button[data-race-action="nitro"]{right:clamp(100px,25vh,118px);bottom:clamp(69px,19vh,86px)}
+#race-kit #race-controls #race-action-pad button[data-race-action="nitro"]:before{content:"⚡"}
+#race-kit #race-controls #race-action-pad button[data-race-action="item"]{right:0;bottom:clamp(110px,29vh,131px)}
+#race-kit #race-controls #race-action-pad button[data-race-action="item"]:before{content:"✦"}
+#race-kit #race-controls #race-action-pad button:after{display:none}
+#race-kit #race-controls #race-action-pad button.ready{border-color:#95f9ea;background:linear-gradient(155deg,#20666e,#123d56);box-shadow:0 0 0 2px #8dfae53a,0 0 15px #3adfc780}
+#race-kit #race-controls #race-action-pad button.held{transform:scale(.94);background:linear-gradient(145deg,#b67d3c,#55351c);border-color:#fff5b3}
+#race-pause{width:40px;height:40px;border-radius:11px;background:#07192da8;border-color:#ffffff38}
+#race-kit #race-panel{border-color:#71bddb50;background:linear-gradient(145deg,#071728f7,#102c42f7);box-shadow:0 18px 60px #000b}
+@media(max-height:365px){
+  #race-joystick{width:clamp(116px,40vh,141px)}
+  #race-action-pad{transform:none}
+  #race-kit #race-speed,#race-kit[data-stage-kind="elimination"] #race-speed{bottom:calc(var(--race-bottom) + 136px)}
+  #race-kit #race-controls #race-action-pad button[data-race-action="drift"]{width:83px;height:83px}
+  #race-kit #race-controls #race-action-pad button[data-race-action="nitro"]{bottom:70px}
+  #race-kit #race-controls #race-action-pad button[data-race-action="item"]{bottom:101px}
+}
+@media(prefers-reduced-motion:reduce){#race-stick-knob{transition:none}}
+
+
+/* V9.1: separate desktop composition, never scale phone buttons across devices. */
+html[data-race-mobile][data-race-platform="desktop"] {
+  --race-left:clamp(22px,2.2vw,38px);
+  --race-right:clamp(22px,2.2vw,38px);
+  --race-top:clamp(18px,2.4vh,34px);
+  --race-bottom:clamp(18px,2.5vh,35px);
+}
+html[data-race-platform="desktop"] #race-controls{display:none!important}
+html[data-race-mobile][data-race-platform="desktop"] #bigrank{padding:10px 16px;border-radius:12px}
+html[data-race-mobile][data-race-platform="desktop"] #bigrank .r{font-size:clamp(28px,3.5vh,38px)}
+html[data-race-mobile][data-race-platform="desktop"] #bigrank .of{font-size:16px}
+html[data-race-mobile][data-race-platform="desktop"] #lapbox{
+  left:calc(var(--race-left) + 124px);top:calc(var(--race-top) + 3px);padding:9px 13px
+}
+html[data-race-mobile][data-race-platform="desktop"] #lapbox .l{font-size:22px}
+html[data-race-mobile][data-race-platform="desktop"] #timebox{padding:10px 20px;border-radius:13px;min-width:136px}
+html[data-race-mobile][data-race-platform="desktop"] #timebox .t{font-size:clamp(22px,3vh,29px)}
+html[data-race-mobile][data-race-platform="desktop"] #minimap{
+  width:clamp(102px,11vh,145px);height:clamp(102px,11vh,145px);
+  right:calc(var(--race-right) + 57px);top:var(--race-top);
+  border-radius:15px;background:#071929a3
+}
+html[data-race-mobile][data-race-platform="desktop"] #gaugebox{
+  width:clamp(220px,22vw,350px);height:29px;bottom:var(--race-bottom);padding:7px 12px
+}
+html[data-race-mobile][data-race-platform="desktop"] #race-kit #race-speed,
+html[data-race-mobile][data-race-platform="desktop"] #race-kit[data-stage-kind="elimination"] #race-speed{
+  left:var(--race-left);bottom:var(--race-bottom);top:auto;
+  background:#081c2acc;border:1px solid #dbeef229;border-radius:14px;
+  padding:9px 13px;min-width:128px;box-shadow:0 5px 18px #0004
+}
+html[data-race-mobile][data-race-platform="desktop"] #race-kit #race-speed strong{font-size:clamp(34px,4.4vh,49px)}
+html[data-race-mobile][data-race-platform="desktop"] #race-kit #race-speed span{font-size:11px}
+html[data-race-mobile][data-race-platform="desktop"] #race-kit #race-compact-goal{
+  left:var(--race-left);top:calc(var(--race-top) + 71px);font-size:13px;max-width:235px;padding:6px 10px
+}
+html[data-race-mobile][data-race-platform="desktop"] #race-kit #race-knockout{
+  left:var(--race-left);top:calc(var(--race-top) + 109px);width:200px
+}
+html[data-race-mobile][data-race-platform="desktop"] #race-pause{width:43px;height:43px;border-radius:12px}
+html[data-race-mobile][data-race-platform="desktop"] #race-kit #race-panel{
+  width:min(760px,calc(100% - 64px));border-radius:23px;padding:25px 33px
+}
+html[data-race-mobile][data-race-platform="desktop"] #race-kit #race-heading{font-size:clamp(29px,4vh,42px)}
+html[data-race-mobile][data-race-platform="desktop"] #race-kit #race-guide p{font-size:13px}
+@media(min-width:1500px){
+  html[data-race-mobile][data-race-platform="desktop"] #race-kit #race-panel{width:min(830px,calc(100% - 72px))}
+}
+html[data-race-platform="touch"] #race-joystick{max-height:43vh}
+
+/* Status text under the nitro/item button cannot catch the other thumb. */
+#race-kit #race-controls #race-action-pad button::after{pointer-events:none}
+
+/* On results only: a clear three-star podium and retained best record. */
+#race-kit #race-result-stars{display:flex;align-items:center;justify-content:center;gap:clamp(6px,1.6vw,12px);
+  margin:2px auto 5px;min-height:35px;font-variant-numeric:tabular-nums}
+#race-kit #race-result-stars[hidden]{display:none!important}
+#race-kit #race-result-stars span{font-size:clamp(24px,6vh,40px);line-height:1;text-shadow:0 2px 8px #0006}
+#race-kit #race-result-stars span.earned{color:#ffd675;text-shadow:0 0 13px #ffb44083}
+#race-kit #race-result-stars span.empty{color:#77909b;opacity:.62}
+#race-kit #race-result-stars small{font:700 clamp(10px,2.2vh,12px)/1.25 system-ui;
+  color:#d9edf3;margin-left:6px;white-space:normal;max-width:200px;text-align:left}
+@media(max-height:360px){
+ #race-kit #race-result-stars{margin:0 auto 2px;min-height:26px;gap:4px}
+ #race-kit #race-result-stars span{font-size:22px}
+ #race-kit #race-result-stars small{font-size:10px;max-width:165px}
+}
+
+/* Fuel V2: six readable blocks represent five units each (not 30 tiny ticks).
+ * Exact fuel remains visible in the text, and the DOM meter reports 0..30. */
+#race-kit #race-fuel-gauge{width:clamp(140px,21vw,182px);height:13px;gap:4px}
+#race-kit #race-fuel-gauge span{
+  border-radius:4px;border:1px solid #a6cddd65;
+  background:linear-gradient(90deg,#e6bf66 var(--fill,0%),#0a2034 var(--fill,0%));
+}
+#race-kit #race-fuel-gauge span.filled{border-color:#ffe3a2}
+#race-kit .race-actions #race-star-ad{
+  min-height:44px;padding:11px 20px;
+  background:linear-gradient(120deg,#e7bd6b,#cf9235);
+  border:1px solid #ffe1aa;color:#102838;
+  box-shadow:0 4px 17px #0005;
+}
+#race-kit[data-star-locked="true"] #race-stage-goal{
+  font-weight:800;color:#ffda81;letter-spacing:.2px;
+}
+#race-kit[data-star-locked="true"] #race-course-card{
+  border-color:#f7bf6a8c;
+}
+#race-kit #race-star-ad[hidden]{display:none!important}
+@media(max-height:375px){
+  #race-kit #race-fuel-gauge{width:135px}
+  #race-kit .race-actions #race-star-ad{padding:9px 12px;min-height:40px}
+}
+
+/* One-home campaign rail: preserve the native select for keyboard, assistive
+ * technology and automation while the visible snap row carries stage status. */
+.race-visually-hidden,
+.race-native-stage-select {
+  position:absolute!important;width:1px!important;height:1px!important;
+  margin:-1px!important;padding:0!important;overflow:hidden!important;
+  clip:rect(0,0,0,0)!important;clip-path:inset(50%)!important;
+  white-space:nowrap!important;border:0!important;
+}
+#race-kit .race-native-stage-select:focus-visible {
+  position:fixed!important;left:var(--race-left)!important;top:var(--race-top)!important;
+  z-index:40;width:min(290px,calc(100vw - var(--race-left) - var(--race-right)))!important;
+  height:44px!important;margin:0!important;padding:4px 12px!important;
+  clip:auto!important;clip-path:none!important;outline:3px solid #ffd581!important;
+  border-radius:9px;
+}
+#race-stage-rail {
+  position:absolute;z-index:32;left:var(--race-left);right:var(--race-right);
+  bottom:var(--race-bottom);height:80px;display:grid;grid-template-rows:12px 1fr;
+  gap:4px;padding:0 2px 4px;pointer-events:auto;color:#eaf8ff;
+}
+.race-stage-rail-meta {
+  display:flex;justify-content:space-between;align-items:center;padding:0 5px;
+  color:#b5d3dd;font:800 9px/1 system-ui;letter-spacing:1.8px;
+}
+.race-stage-choices {
+  display:flex;min-width:0;gap:8px;overflow-x:auto;overflow-y:hidden;
+  overscroll-behavior-x:contain;scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;touch-action:pan-x;scrollbar-color:#8bd8dc72 #08203480;
+  scrollbar-width:thin;
+}
+#race-kit .race-stage-choice,
+#race-kit .race-daily-choice {
+  position:relative;flex:0 0 clamp(92px,10vw,120px);min-width:92px;min-height:56px;
+  display:grid;grid-template-columns:1fr auto;grid-template-rows:18px 16px 14px;
+  align-content:center;align-items:center;gap:0 5px;padding:4px 9px;
+  border:1px solid #9dc5d94a;border-radius:12px;scroll-snap-align:start;
+  background:linear-gradient(155deg,#102f47e8,#07192be8);color:#c4dce5;
+  box-shadow:0 4px 12px #0005;text-align:left;touch-action:pan-x;
+}
+#race-kit .race-daily-choice { flex-basis:clamp(112px,11vw,136px);min-width:112px; }
+#race-kit .race-stage-choice:before,
+#race-kit .race-daily-choice:before {
+  content:"";position:absolute;left:8px;right:8px;top:0;height:2px;
+  border-radius:0 0 2px 2px;background:#6dc2c473;
+}
+#race-kit .race-stage-choice .race-stage-number,
+#race-kit .race-daily-choice .race-stage-number {
+  grid-column:1;grid-row:1;color:#f5fbff;font:850 13px/1 system-ui;
+  font-variant-numeric:tabular-nums;
+}
+#race-kit .race-stage-choice .race-stage-name,
+#race-kit .race-daily-choice .race-stage-name {
+  grid-column:1 / -1;grid-row:2;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+  color:#bad1dc;font:650 10px/1.2 -apple-system,BlinkMacSystemFont,system-ui;
+}
+#race-kit .race-stage-choice .race-stage-state,
+#race-kit .race-daily-choice .race-stage-state {
+  grid-column:1 / -1;grid-row:3;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+  color:#8fe6d5;font:750 9px/1 system-ui;letter-spacing:.25px;
+}
+#race-kit .race-stage-choice[aria-pressed="true"],
+#race-kit .race-daily-choice[aria-pressed="true"] {
+  border-color:#ffe094;background:linear-gradient(145deg,#24445a,#102739);
+  box-shadow:0 0 0 2px #ffd87842,0 5px 17px #0008;color:#fff;
+}
+#race-kit .race-stage-choice[aria-pressed="true"]:before,
+#race-kit .race-daily-choice[aria-pressed="true"]:before {background:#ffd878;}
+#race-kit .race-stage-choice[data-star-locked="true"] {border-color:#e7b96c70;}
+#race-kit .race-stage-choice[data-star-locked="true"] .race-stage-state {color:#ffd27c;}
+#race-kit .race-stage-choice[data-locked="true"][data-star-locked="false"] {
+  border-color:#8295a13d;background:#0a1928d9;color:#788f9c;
+}
+#race-kit .race-stage-choice[data-locked="true"][data-star-locked="false"] .race-stage-number,
+#race-kit .race-stage-choice[data-locked="true"][data-star-locked="false"] .race-stage-name,
+#race-kit .race-stage-choice[data-locked="true"][data-star-locked="false"] .race-stage-state {
+  color:#8095a0;
+}
+#race-kit .race-stage-choice:disabled {opacity:.8;cursor:default;}
+#race-kit .race-daily-choice:disabled {opacity:.58;cursor:default;}
+#race-kit .race-stage-choice:focus-visible,
+#race-kit .race-daily-choice:focus-visible {outline-color:#ffe094;outline-offset:2px;}
+
+/* Landscape home and settlement leave the right 57% unobstructed for the car. */
+@media (min-width:650px) and (orientation:landscape) {
+  #race-kit[data-phase="ready"] #race-panel,
+  #race-kit[data-phase="finished"] #race-panel {
+    left:clamp(18px,3vw,44px);top:calc((100% - var(--race-bottom) - 96px + var(--race-top))/2);
+    transform:translateY(-50%);width:min(40vw,575px);
+    max-height:calc(100% - var(--race-top) - var(--race-bottom) - 96px);
+    padding:clamp(13px,1.8vw,26px);text-align:left;border-radius:21px;
+  }
+  #race-kit[data-phase="ready"] #race-guide {justify-content:flex-start;gap:10px;margin:0 0 10px;}
+  #race-kit[data-phase="ready"] #race-guide .race-guide-keys span {
+    width:34px;height:34px;border-radius:50%;font-size:26px;line-height:1;
+  }
+  #race-kit[data-phase="ready"] #race-guide p {font-size:12px;line-height:1.3;}
+  #race-kit[data-phase="ready"] #race-heading {margin:5px 0 9px;font-size:clamp(27px,4vh,38px);}
+  #race-kit[data-phase="ready"] #race-ready {justify-content:flex-start;gap:6px 9px;margin:0 0 8px;}
+  #race-kit[data-phase="ready"] #race-stage-tag {margin-right:auto;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  #race-kit[data-phase="ready"] #race-course-card {justify-content:flex-start;min-height:64px;margin:0 0 7px;}
+  #race-kit[data-phase="ready"] #race-stage-goal {font-size:12px;margin:4px 0 7px;}
+  #race-kit[data-phase="ready"] #race-fuel-box {justify-content:flex-start;gap:8px;margin-bottom:8px;}
+  #race-kit[data-phase="ready"] .race-actions {justify-content:flex-start;flex-wrap:wrap;}
+  #race-kit[data-phase="ready"] .race-actions button {min-height:44px;}
+  #race-kit[data-phase="finished"] #race-heading {text-align:left;}
+  #race-kit[data-phase="finished"] #race-panel {
+    top:50%;max-height:calc(100% - var(--race-top) - var(--race-bottom) - 18px);
+  }
+  #race-kit[data-phase="finished"] #race-result-copy {text-align:left;}
+  #race-kit[data-phase="finished"] #race-result-stats {justify-content:flex-start;gap:clamp(12px,2vw,24px);}
+  #race-kit[data-phase="finished"] #race-results {max-height:130px;}
+}
+
+@media (min-width:650px) and (max-height:450px) and (orientation:landscape) {
+  #race-kit[data-phase="ready"] #race-panel {padding:10px 14px;}
+  #race-kit[data-phase="ready"] #race-heading {margin:2px 0 5px;font-size:clamp(21px,6vh,26px);}
+  #race-kit[data-phase="ready"] #race-guide {gap:8px;margin:0 0 6px;}
+  #race-kit[data-phase="ready"] #race-guide .race-guide-keys span {width:29px;height:29px;font-size:22px;}
+  #race-kit[data-phase="ready"] #race-guide p {font-size:10px;}
+  #race-kit[data-phase="ready"] #race-ready {gap:4px 7px;margin-bottom:4px;}
+  #race-kit[data-phase="ready"] #race-stage-tag {max-width:115px;font-size:10px;}
+  /* Localized option text uses the space left on this row instead of forcing a second row. */
+  #race-kit[data-phase="ready"] #race-skin {flex:1 1 0%;}
+  #race-kit[data-phase="ready"] #race-course-card {min-height:46px;margin-bottom:3px;}
+  #race-kit[data-phase="ready"] #race-stage-goal {font-size:11px;margin:2px 0 4px;}
+  #race-kit[data-phase="ready"] #race-fuel-box {gap:6px;margin-bottom:4px;font-size:10px;}
+  #race-kit[data-phase="ready"] .race-actions {gap:6px;}
+  #race-kit[data-phase="ready"] .race-actions button {min-height:44px;padding:9px 17px;}
+  #race-kit[data-phase="ready"] #race-note {margin-top:3px;}
+}
+
+@media (max-width:649px) and (orientation:landscape) {
+  #race-stage-rail {left:max(8px,env(safe-area-inset-left));right:max(8px,env(safe-area-inset-right));}
+}
+
+/* Exact Chromium attempt4 regression: the inherited phone briefing grid and
+ * platform-prefixed desktop width otherwise override the new single-home view. */
+@media (min-width:650px) and (orientation:landscape) {
+  html[data-race-mobile][data-race-platform] #race-kit[data-phase="ready"] #race-panel,
+  html[data-race-mobile][data-race-platform] #race-kit[data-phase="finished"] #race-panel {
+    width:min(40vw,575px);padding:20px 24px;
+  }
+  html[data-race-mobile][data-race-platform] #race-kit[data-phase="ready"] #race-panel {
+    display:block;grid-template-columns:none;grid-template-areas:none;
+  }
+}
+@media (min-width:650px) and (max-height:450px) and (orientation:landscape) {
+  html[data-race-mobile][data-race-platform] #race-kit[data-phase="ready"] #race-panel {padding:9px 13px;}
+  #race-kit[data-phase="ready"] #race-panel>.race-eyebrow {font-size:8px;letter-spacing:1.5px;}
+  #race-kit[data-phase="ready"] #race-guide {display:none;}
+  #race-kit[data-phase="ready"] #race-course-map {flex:0 0 80px;min-width:80px;max-width:80px;}
+  #race-kit[data-phase="ready"] #race-course-card {min-height:44px;padding:4px 7px;gap:8px;}
+  #race-kit[data-phase="ready"] .race-track-diagram {height:42px;}
+  #race-kit[data-phase="ready"] .race-course-info strong {font-size:13px;}
+  #race-kit[data-phase="ready"] .race-course-info small {font-size:9px;}
+  #race-kit[data-phase="ready"] #race-ready {margin:3px 0 4px;}
+  #race-kit[data-phase="ready"] #race-fuel-box {gap:4px;margin-bottom:5px;}
+  #race-kit[data-phase="ready"] #race-stage-goal {font-size:10px;line-height:1.25;margin:3px 0;}
+}
+
+/* Settlement is the existing result, not a second race briefing. */
+#race-kit[data-phase="finished"] #race-course-card {display:none;}
+@media (min-width:650px) and (max-height:450px) and (orientation:landscape) {
+  html[data-race-mobile][data-race-platform] #race-kit[data-phase="finished"] #race-panel {padding:10px 12px;}
+  #race-kit[data-phase="finished"] .race-actions {gap:6px;}
+  #race-kit[data-phase="finished"] .race-actions button {flex:1;min-width:0;min-height:44px;padding:8px 6px;font-size:12px;}
+}
+@media (min-width:650px) and (max-height:375px) and (orientation:landscape) {
+  html[data-race-mobile][data-race-platform] #race-kit[data-phase="ready"] #race-panel {padding:7px 13px;}
+  #race-kit[data-phase="ready"] #race-heading {font-size:21px;margin:2px 0 3px;}
+  #race-kit[data-phase="ready"] .race-track-diagram {height:38px;}
+}
+@media (min-width:650px) and (max-height:375px) and (orientation:landscape) {
+  #race-kit[data-phase="ready"] #race-stage-tag {max-width:80px;}
+  #race-kit[data-phase="ready"] #race-panel>.race-eyebrow {display:none;}
+  #race-kit[data-phase="ready"] #race-course-feel {display:none;}
+}
+
 /* V10 real corner-to-spray payoff. A restrained speedometer highlight
  * follows ONLY a native perfect small-spray/double-boost event. Never puts a
  * banner across approaching corners, nor modifies the touch hit boxes. */
@@ -334,4 +660,279 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
   #race-kit[data-phase="race"][data-v10-burst="true"] #race-speed {
     box-shadow:0 0 0 1px rgba(250,216,130,.7);
   }
+}
+
+/* A single-run route ends at a visible square; the return connector is omitted. */
+#race-kit .race-track-finish {fill:#fff4ce;stroke:#122c40;stroke-width:1.5px;}
+/* The optional next-level reward never replaces the ordinary same-level retry. */
+#race-kit .race-actions #race-next-ad {
+  border-color:#b3e5e9;color:#dcffff;background:#173f51;
+  min-height:44px;white-space:normal;
+}
+#race-kit #race-next-ad[hidden] {display:none!important;}
+
+/* The home garage previews the actual model, with permanent ownership on cards. */
+#race-garage {
+  position:absolute;z-index:31;left:46%;right:var(--race-right);top:var(--race-top);
+  max-width:720px;padding:10px 12px;pointer-events:auto;
+  border:1px solid #86bad53d;border-radius:16px;
+  background:linear-gradient(145deg,#061625ec,#102b40d9);box-shadow:0 9px 24px #00102040;
+}
+.race-garage-title {display:flex;align-items:center;gap:9px;min-height:20px;margin-bottom:7px;white-space:nowrap;}
+.race-garage-title>span {color:#a2bdcd;font-size:10px;letter-spacing:2px;}
+#race-car-name {font-size:14px;color:#effaff;overflow:hidden;text-overflow:ellipsis;}
+#race-car-status {margin-left:auto;color:#f0d38d;font-size:10px;}
+#race-car-choices {display:grid;grid-template-columns:repeat(6,minmax(44px,1fr));gap:6px;}
+#race-kit #race-car-choices button {
+  position:relative;min-width:44px;min-height:64px;padding:3px 2px 5px;overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  border:1px solid #a1c6db45;border-radius:9px;background:#0a2034;color:#d7e8f1;
+  box-shadow:inset 0 1px 0 #ffffff09;
+}
+#race-kit #race-car-choices button[aria-pressed="true"] {
+  border-color:#ffde91;background:#244153;box-shadow:0 0 0 1px #ecca7559;
+}
+#race-kit #race-car-choices button:disabled {opacity:.65;cursor:wait;}
+.race-car-thumb {display:grid;place-items:center;width:100%;height:35px;overflow:hidden;color:#c4e9f5;font:italic 800 25px/1 system-ui;}
+.race-car-thumb img {width:100%;height:100%;object-fit:contain;}
+.race-car-label {display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;line-height:1.2;}
+.race-car-lock {position:absolute;right:4px;top:2px;font-size:9px;line-height:1.4;filter:drop-shadow(0 1px 2px #000);}
+#race-car-choices button[data-owned="true"] .race-car-lock {color:#9cf6d3;}
+.race-garage-actions {display:flex;gap:7px;align-items:stretch;}
+#race-kit .race-garage-actions button {
+  min-height:44px;margin-top:8px;padding:8px 12px;border:1px solid #f6d08bc4;
+  border-radius:10px;background:#eed699;color:#173247;font-size:12px;
+}
+#race-kit #race-car-ad {flex:1;}
+#race-kit #race-car-owned {border-color:#80b0c66b;background:#133147;color:#d4e8f2;font-size:11px;}
+#race-kit .race-garage-actions button:disabled {opacity:.5;cursor:wait;}
+#race-car-note {margin:6px 1px 0;color:#f3dda6;font-size:10px;line-height:1.4;}
+@media (min-width:1000px) and (min-height:500px) {
+  #race-garage {left:48%;top:clamp(18px,4vh,40px);right:clamp(20px,3vw,56px);padding:14px 16px;}
+  .race-garage-title {margin-bottom:10px;}
+  #race-car-name {font-size:18px;}
+  #race-kit #race-car-choices button {min-height:85px;}
+  .race-car-thumb {height:52px;}
+  .race-car-label {font-size:12px;}
+}
+@media (max-height:450px) and (orientation:landscape) {
+  #race-garage {padding:7px 8px;border-radius:12px;}
+  .race-garage-title {min-height:16px;margin-bottom:5px;gap:6px;}
+  #race-car-name {font-size:12px;}
+  #race-car-status {font-size:9px;}
+  #race-car-choices {gap:4px;}
+  #race-kit #race-car-choices button {min-height:54px;padding:2px 1px 4px;gap:2px;}
+  .race-car-thumb {height:29px;}
+  .race-car-label {font-size:9px;}
+  #race-kit .race-garage-actions button {margin-top:6px;padding:7px 9px;font-size:11px;}
+  #race-kit #race-car-owned {font-size:10px;}
+  #race-car-note {margin-top:5px;font-size:9px;}
+}
+#race-kit[data-phase="finished"] #race-note {
+  color:#f4d99d;font-size:11px;line-height:1.35;margin:7px 0 0;
+}
+@media (min-width:650px) and (max-height:450px) and (orientation:landscape) {
+  #race-kit[data-phase="finished"] .race-actions #race-next-ad {flex:1 0 100%;}
+}
+
+/* V11.7 home-only visual hierarchy. No new shader, lights, canvas, or gameplay
+ * layer: background tint remains behind interactive controls and the 3D car
+ * stays on the same native WebGL scene. */
+#race-kit[data-phase="ready"]::before {
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(90deg,rgba(3,11,24,.50) 0%,rgba(4,17,29,.27) 38%,rgba(3,14,25,.03) 75%),
+    linear-gradient(0deg,rgba(3,11,21,.42),transparent 25%),
+    linear-gradient(180deg,rgba(2,9,18,.16),transparent 38%);
+}
+#race-kit[data-phase="ready"] #race-panel {
+  border-color:#a0c7d848;
+  background:linear-gradient(145deg,rgba(7,21,36,.96),rgba(11,30,46,.95));
+  box-shadow:0 22px 66px #0009,inset 0 1px 0 #fff1;
+}
+#race-kit[data-phase="ready"] #race-course-card {
+  border-color:#61b8d354;
+  background:linear-gradient(120deg,rgba(5,37,53,.94),rgba(15,58,70,.84));
+}
+#race-kit[data-phase="ready"] #race-heading {letter-spacing:.4px;}
+#race-kit[data-phase="ready"] #race-stage-rail {
+  background:linear-gradient(0deg,rgba(3,11,20,.45),transparent);
+}
+@media(min-width:1000px) and (orientation:landscape) {
+  /* Match the hero's 57-65% breathing room; do not add a showroom page. */
+  html[data-race-mobile][data-race-platform] #race-kit[data-phase="ready"] #race-panel {
+    width:min(36vw,545px);
+  }
+  #race-kit[data-phase="ready"] #race-garage {
+    left:auto;right:clamp(18px,3vw,52px);top:clamp(15px,2.8vh,31px);
+    width:min(44vw,665px);max-width:665px;
+    padding:10px 12px;
+  }
+  #race-kit[data-phase="ready"] #race-garage .race-garage-title {margin-bottom:7px;}
+  #race-kit[data-phase="ready"] #race-garage #race-car-name {font-size:15px;}
+  #race-kit[data-phase="ready"] #race-car-choices button {min-height:68px;}
+  #race-kit[data-phase="ready"] .race-car-thumb {height:39px;}
+  #race-kit[data-phase="ready"] .race-car-label {font-size:10px;}
+}
+@media(prefers-reduced-motion:reduce) {
+  #race-kit[data-phase="ready"] #race-stage-rail {scroll-behavior:auto;}
+}
+
+/* V11.8 showroom atmosphere: ready-only color separation without a second
+ * canvas, postprocess pass or full-screen backdrop-filter. */
+#race-kit[data-phase="ready"]::before {
+  background:
+    radial-gradient(ellipse 37% 40% at 72% 62%,rgba(255,224,166,.065),transparent 78%),
+    linear-gradient(90deg,rgba(3,11,24,.56) 0%,rgba(4,17,29,.24) 38%,transparent 72%),
+    linear-gradient(0deg,rgba(3,11,21,.43),transparent 26%),
+    linear-gradient(180deg,rgba(2,9,18,.12),transparent 42%);
+}
+#race-kit[data-phase="ready"] #race-garage {
+  border-color:#a9c4d83a;
+  background:linear-gradient(150deg,rgba(5,18,31,.94),rgba(10,32,45,.91));
+  box-shadow:0 16px 40px #010c1b85,inset 0 1px 0 #ffffff0d;
+}
+#race-kit[data-phase="ready"] #race-export {
+  opacity:.68;min-width:32px;
+  border-color:#99acc34d;
+  background:rgba(7,25,42,.56);
+}
+#race-kit[data-phase="ready"] #race-export:focus-visible,
+#race-kit[data-phase="ready"] #race-export:hover {opacity:1;}
+#race-kit[data-phase="ready"] #race-course-card {
+  border-color:#86c9d745;
+  background:linear-gradient(130deg,rgba(7,33,50,.93),rgba(11,45,59,.84));
+}
+@media (min-width:1000px) and (orientation:landscape) {
+  #race-kit[data-phase="ready"] #race-garage {
+    width:min(42vw,630px);
+  }
+  #race-kit[data-phase="ready"] #race-car-choices button {min-height:62px;}
+  #race-kit[data-phase="ready"] .race-car-thumb {height:35px;}
+}
+
+/* V11.9 garage focus: keep QA export functional but remove developer chrome
+ * from the hero, and make controls a quiet hint rather than a briefing card. */
+#race-kit[data-phase="ready"] #race-export {
+  min-width:32px;width:32px;height:32px;padding:0;
+  display:grid;place-items:center;font-size:0;line-height:0;
+  color:#b9d5e3;background:rgba(8,25,42,.48);
+}
+#race-kit[data-phase="ready"] #race-export::after {
+  content:"⋯";font:800 19px/1 system-ui;display:block;
+}
+#race-kit[data-phase="ready"] #race-guide {
+  justify-content:flex-start;gap:0;margin:1px 0 10px;
+  opacity:.73;
+}
+#race-kit[data-phase="ready"] #race-guide .race-guide-keys {display:none;}
+#race-kit[data-phase="ready"] #race-guide p {
+  font-size:11px;line-height:1.35;color:#c7d9e4;
+}
+@media (max-height:450px) and (orientation:landscape) {
+  #race-kit[data-phase="ready"] #race-guide {display:none;}
+}
+
+/* Product pass: action identity belongs inside a stable thumb target. Desktop
+ * gets keyboard status, never a scaled-up phone steering wheel. */
+#race-action-pad .race-action-icon {font:800 27px/1 system-ui;font-style:normal;margin-bottom:3px;}
+#race-action-pad .race-action-name {font-size:12px;line-height:1.2;}
+#race-action-pad .race-action-badge {position:absolute;top:0;right:-1px;min-width:20px;height:20px;border-radius:10px;background:#112939;border:1px solid #9dbacb;color:#e8f4ff;display:grid;place-items:center;font:800 12px/1 system-ui;font-style:normal;}
+#race-action-pad [data-race-action="small"] .race-action-badge {top:-5px;right:5px;left:5px;font-size:10px;background:#d4ffb6;color:#183e27;border-color:#eaffd9;}
+#race-kit #race-controls #race-action-pad [data-race-action="small"].ready {color:#e7ffd5;border-color:#dcffad;background:#315a3d;box-shadow:0 0 0 3px #cffc6c40,inset 0 0 0 2px #e3ffa329;}
+#race-kit #race-controls #race-action-pad [data-race-action="nitro"].ready {border-color:#a6e6ff;background:#194f75;box-shadow:0 0 0 2px #8cd9fa32;}
+#race-kit #race-controls #race-action-pad [data-race-action="item"].ready {border-color:#e3c1ff;background:#513965;box-shadow:0 0 0 2px #e5b8ff30;}
+#race-kit #race-controls #race-action-pad button.active {border-color:#fff6c9;box-shadow:inset 0 0 0 3px #fff5c245;}
+#race-kit #race-controls #race-action-pad button:not(.ready):not(.active):not([data-race-action="drift"]) {opacity:.72;}
+#race-keyboard-actions {display:none;}
+html[data-race-platform="desktop"] #race-kit[data-phase="race"] #race-keyboard-actions {display:flex;position:absolute;bottom:calc(var(--race-bottom) + 37px);left:50%;transform:translateX(-50%);gap:7px;white-space:nowrap;pointer-events:none;}
+#race-keyboard-actions>span {display:flex;align-items:center;gap:6px;padding:9px 11px;border-radius:9px;border:1px solid #91b1bf45;background:#0b2032d9;color:#9fb8c7;font-size:11px;}
+#race-keyboard-actions kbd {font:700 11px/1.2 system-ui;border:1px solid #b2c9d36b;border-bottom-width:2px;border-radius:4px;padding:3px 5px;color:#e6f0f7;}
+#race-keyboard-actions .race-action-icon {font-style:normal;font-size:17px;}
+#race-keyboard-actions .race-action-badge {font-style:normal;color:#f1dfaa;}
+#race-keyboard-actions>span.ready {border-color:#a2dfc7;color:#effff8;background:#19473edb;}
+#race-keyboard-actions>span.active {border-color:#ffe0a0;color:#fff3d0;}
+/* Readable in the original control footprint: fill while drifting, drain only
+ * during the real spray window. No track overlay, particles or flashing. */
+[data-spray-phase] {position:relative;}
+[data-spray-phase]::after {content:"";position:absolute;left:16%;right:16%;bottom:6px;height:4px;border-radius:3px;background:#eac469;transform:scaleX(var(--spray-progress));transform-origin:left;pointer-events:none;}
+#race-keyboard-actions [data-spray-phase] {padding-bottom:14px;}
+#race-kit #race-controls #race-action-pad [data-spray-phase="armed"] {opacity:1;border-color:#eac469;}
+#race-keyboard-actions [data-spray-phase="armed"] {border-color:#eac469;color:#f8e8c4;}
+[data-spray-phase="ready"]::after {background:#dcffad;height:5px;}
+#race-kit #race-controls #race-action-pad [data-spray-phase="armed"] .race-action-badge {background:#eac469;border-color:#f8e8c4;color:#302414;}
+#race-kit[data-item-mode="false"] #race-keyboard-actions [data-key-action="item"] {display:none;}
+@media(max-width:900px) {#race-keyboard-actions>span {padding:6px;gap:4px;}#race-keyboard-actions .race-key-drive {display:none;}}
+
+/* Primary path: pick the car/course, then drive. Keep the existing showroom
+ * and free/earned ownership; no new lobby or pay-to-win upgrade layer. */
+#race-kit[data-phase="ready"] #race-stage-goal {color:#b9ccd5;font-weight:500;margin:7px 0;}
+#race-kit[data-phase="ready"] #race-start {min-width:160px;letter-spacing:1px;}
+#race-kit[data-phase="ready"] #race-fuel-info {font-size:10px;color:#acc1cd;}
+#race-kit[data-phase="ready"] #race-car-note {color:#c9dbe5;line-height:1.4;}
+#race-kit[data-car-owned="false"] #race-car-status {color:#ffdb92;}
+
+/* Actual current finish first. Historic records and all telemetry remain
+ * available, but cannot displace retry/next or impersonate this race's stars. */
+html[data-race-phase="finished"] #hud {visibility:hidden;}
+html[data-race-mobile][data-race-platform] #race-kit[data-phase="finished"] #race-panel {height:auto;min-height:0;padding:22px 24px;}
+#race-kit[data-phase="finished"] #race-panel>.race-eyebrow {order:0;color:#afc8d8;}
+#race-kit[data-phase="finished"] #race-heading {order:1;font-size:36px;margin:8px 0 2px;}
+#race-kit[data-phase="finished"][data-result="podium"] #race-heading {color:#ffe1a1;}
+#race-kit[data-phase="finished"] #race-result-stars {order:2;}
+#race-kit[data-phase="finished"] #race-result-stars small {font-size:10px;color:#9db6c7;}
+#race-kit[data-phase="finished"] #race-result-hero {order:3;display:grid;grid-template-columns:1.1fr 1fr;gap:10px;margin:14px 0 10px;padding:12px 0;border-top:1px solid #afcfe426;border-bottom:1px solid #afcfe426;text-align:left;}
+#race-result-hero>div {display:flex;flex-direction:column;gap:5px;}
+#race-result-hero small {font-size:10px;letter-spacing:1px;color:#9db9cd;}
+#race-result-hero strong {font:800 clamp(21px,2.3vw,30px)/1.1 system-ui;font-variant-numeric:tabular-nums;color:#f3f8ff;}
+#race-kit[data-phase="finished"] #race-result-copy {order:4;color:#def0ee;margin:0 0 12px;font-size:13px;}
+#race-kit[data-phase="finished"] #race-fuel-box {order:5;}
+#race-kit[data-phase="finished"] #race-fuel-box:not(.empty):not(.notice) {display:none;}
+#race-kit[data-phase="finished"] .race-actions {order:6;display:flex;flex-wrap:wrap;margin:0;gap:8px;}
+#race-kit[data-phase="finished"] .race-actions button {min-height:46px;flex:1 1 40%;}
+#race-kit[data-phase="finished"] .race-actions button:not(.race-secondary):not([hidden]) {order:-1;flex-basis:100%;font-size:16px;}
+#race-kit[data-phase="finished"] .race-actions #race-lobby {background:transparent;}
+#race-kit[data-phase="finished"] #race-result-details {order:8;margin-top:12px;border-top:1px solid #afcfe426;text-align:left;}
+#race-result-details summary {display:flex;align-items:center;justify-content:space-between;min-height:44px;cursor:pointer;color:#adc5d6;font-size:11px;list-style:none;}
+#race-result-details summary::-webkit-details-marker {display:none;}
+#race-result-details[open] summary span {transform:rotate(180deg);}
+#race-kit[data-phase="finished"] #race-note {order:7;}
+#race-kit[data-phase="finished"] #race-results {max-height:140px;}
+@media(max-height:450px) and (orientation:landscape) {
+  html[data-race-mobile][data-race-platform] #race-kit[data-phase="finished"] #race-panel {padding:12px 15px;max-height:calc(100% - 22px);}
+  #race-kit[data-phase="finished"] #race-heading {font-size:28px;margin-top:5px;}
+  #race-kit[data-phase="finished"] #race-result-hero {margin:7px 0;padding:8px 0;}
+  #race-result-hero strong {font-size:22px;}
+  #race-kit[data-phase="finished"] #race-result-copy {font-size:12px;margin-bottom:9px;}
+  #race-kit[data-phase="finished"] .race-actions {gap:6px;}
+  #race-kit[data-phase="finished"] .race-actions button {min-height:44px;}
+  #race-kit[data-phase="finished"] #race-result-details {margin-top:6px;}
+  #race-result-details summary {min-height:44px;}
+}
+
+/* RC25: normal fuel stays a quiet label near Start; show the six-block
+ * meter only when fuel is scarce, empty, or an ad outcome needs emphasis.
+ * No extra overlay, shader pass, backdrop blur or driving obstruction. */
+#race-kit[data-phase="ready"] #race-fuel-box:not(.low):not(.empty):not(.notice) {
+  justify-content:flex-start;gap:6px;margin:1px 0 6px;
+}
+#race-kit[data-phase="ready"] #race-fuel-box:not(.low):not(.empty):not(.notice) #race-fuel-gauge {
+  display:none!important;
+}
+#race-kit[data-phase="ready"] #race-fuel-box.low:not(.empty) #race-fuel-info {
+  color:#ffe0a4;font-weight:700;
+}
+#race-kit[data-phase="ready"] #race-fuel-box.empty #race-fuel-info {
+  color:#ffe3ce;font-weight:800;
+}
+
+/* RC26: physical overtakes and reversals subtly change the existing speed
+ * HUD border for 650ms. No new DOM nodes, tutorials or full-screen effects. */
+#race-kit[data-phase="race"][data-race-duel="skill"] #race-speed{
+  border-color:#80f8d5;
+  box-shadow:0 0 0 2px #66f1be55,0 4px 14px #062b31a8;
+}
+#race-kit[data-phase="race"][data-race-duel="threat"] #race-speed{
+  border-color:#ffb280;
+  box-shadow:0 0 0 2px #f39b6a50,0 4px 14px #331b16a8;
 }

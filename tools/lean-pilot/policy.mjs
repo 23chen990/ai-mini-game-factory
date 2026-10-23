@@ -1,5 +1,6 @@
 /* global URL */
 import { createHash } from 'node:crypto';
+import { Buffer } from 'node:buffer';
 import { lstat, realpath, open } from 'node:fs/promises';
 import { constants } from 'node:fs';
 import { isIP } from 'node:net';
@@ -11,8 +12,8 @@ const integer = value => Number.isSafeInteger(value) && value >= 0;
 const text = value => typeof value === 'string' && value.trim().length > 0 && value.length <= 10000;
 const record = value => value !== null && typeof value === 'object' && !Array.isArray(value);
 
-/** Read an existing run-relative regular file without accepting symlinks or traversal. */
-export async function safeRead(root, relative, maxBytes = 4 * 1024 * 1024) {
+/** Open an existing run-relative regular file; the caller must close the handle. */
+export async function safeOpen(root, relative) {
   if (!text(relative) || relative.includes('\\') || relative.includes('\0') || path.isAbsolute(relative) ||
     relative.split('/').some(part => !part || part === '.' || part === '..')) throw new Error('unsafe-path');
   const rootPath = path.resolve(root); const rootStat = await lstat(rootPath);
@@ -25,8 +26,38 @@ export async function safeRead(root, relative, maxBytes = 4 * 1024 * 1024) {
   }
   const handle = await open(current, constants.O_RDONLY | (constants.O_NOFOLLOW ?? 0));
   try {
+    if (!(await handle.stat()).isFile()) throw new Error('unsafe-file');
+    return handle;
+  } catch (error) { await handle.close(); throw error; }
+}
+
+/** Read small configuration/evidence files without accepting symlinks or traversal. */
+export async function safeRead(root, relative, maxBytes = 4 * 1024 * 1024) {
+  const handle = await safeOpen(root, relative);
+  try {
     const stat = await handle.stat(); if (!stat.isFile() || stat.size > maxBytes) throw new Error('file-size-limit');
     const bytes = await handle.readFile(); if (bytes.length > maxBytes) throw new Error('file-size-limit'); return bytes;
+  } finally { await handle.close(); }
+}
+
+/** Hash every byte of a stable file with a single reusable 64 KiB buffer. */
+export async function safeFileHash(root, relative) {
+  const handle = await safeOpen(root, relative);
+  try {
+    const before = await handle.stat({ bigint: true });
+    if (before.size > BigInt(Number.MAX_SAFE_INTEGER)) throw new Error('file-size-limit');
+    const size = Number(before.size), buffer = Buffer.alloc(64 * 1024), hash = createHash('sha256');
+    // Stop at the initial size, so an appending writer cannot make hashing unbounded.
+    let position = 0;
+    while (position < size) {
+      const { bytesRead } = await handle.read(buffer, 0, Math.min(buffer.length, size - position), position);
+      if (!bytesRead) throw new Error('file-changed-during-hash');
+      hash.update(buffer.subarray(0, bytesRead)); position += bytesRead;
+    }
+    const after = await handle.stat({ bigint: true });
+    if (after.size !== before.size || after.mtimeNs !== before.mtimeNs || after.ctimeNs !== before.ctimeNs)
+      throw new Error('file-changed-during-hash');
+    return hash.digest('hex');
   } finally { await handle.close(); }
 }
 function publicUrl(value) {

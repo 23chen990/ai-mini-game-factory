@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "cwd": "/workspace/scratch/29547c23d820/racing-unified",
+  "argv": [
+    "node",
+    "tools/lean-pilot/racing-delivery-verify.mjs",
+    "/workspace/scratch/29547c23d820/racing-unified/runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt12/delivery-manifest.json"
+  ],
+  "startedAt": "2026-10-18T16:36:40.901794Z",
+  "finishedAt": "2026-10-18T16:36:41.798870Z",
+  "exitCode": 0,
+  "manifestSha256": "dbae399ed6e62b65fa68992dc4a73c3935691c0a6f48968ec267db4ffae688e8",
+  "verifierSha256": "f37f364b3206286d2626913116970c5729c4e09471de519e4182ae97ae3920a8",
+  "stdoutSha256": "a3b0c2f61834625c65338db9642d77362d5599b807b0998664c5ae11ec6e3597",
+  "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

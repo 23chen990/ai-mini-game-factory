@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "label": "fingerprint",
+  "cwd": "/workspace/scratch/29547c23d820/racing-unified",
+  "argv": [
+    "node",
+    "--test",
+    "--test-isolation=none",
+    "tools/lean-pilot/racing-build-fingerprint-check.mjs"
+  ],
+  "environmentOverrides": {},
+  "startedAt": "2026-10-18T16:53:57.925478Z",
+  "finishedAt": "2026-10-18T16:53:58.541555Z",
+  "exitCode": 0,
+  "log": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-fingerprint.log",
+  "logBytes": 5128,
+  "logSha256": "4a583bb78abf674687022ca3746b613e8290024971ccda86addd7435b4e0abff"
+}

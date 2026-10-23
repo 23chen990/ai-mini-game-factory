@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "mode": "webkit",
+  "sourceCommit": "6196faa085e18ac38b484fcfc1d6909c2bf22882",
+  "buildHash": "811e05f4f6207050a63939680de93b4b3b262904663a103048d310f1466e37d6",
+  "inputHash": "448f0eaac44a2f89f5b54c6504d294e77f4e0d7018b07ea13d3d227033cf5f0d",
+  "servedRoot": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/runs/h5-qq-mobile-20261013/workspace/game",
+  "htmlSha256": "78ac91a51615608d8194402463f1004b16428ca59d86fd9428e92122b0290e23",
+  "physicalPhone": false,
+  "host": "darwin",
+  "rows": [
+    {
+      "case": "webkit-race-entry-not-iPhone-hardware",
+      "state": "race",
+      "phase": "race",
+      "raceTime": 0,
+      "steerAxis": 0,
+      "speed": 0,
+      "steer": 0,
+      "heading": 1.5707963705062866,
+      "drifting": false,
+      "quality": "low",
+      "pixelRatio": 1,
+      "buffer": [
+        844,
+        390
+      ],
+      "renderer": "Apple GPU",
+      "fpsEstimate": 45,
+      "geometries": 770,
+      "textures": 37,
+      "displayedCar": "starter",
+      "owned": [
+        "starter"
+      ],
+      "note": "",
+      "viewport": [
+        844,
+        390
+      ],
+      "screenshot": "webkit-race.png"
+    },
+    {
+      "case": "wall-clock-raf-sample",
+      "seconds": 5,
+      "frames": 302,
+      "p50Ms": 17,
+      "p95Ms": 18,
+      "state": "race",
+      "phase": "race",
+      "raceTime": 5.069999999999998,
+      "steerAxis": 0,
+      "speed": 145.74307273575377,
+      "steer": 0,
+      "heading": 1.833191456116216,
+      "drifting": false,
+      "quality": "low",
+      "pixelRatio": 1,
+      "buffer": [
+        844,
+        390
+      ],
+      "renderer": "Apple GPU",
+      "fpsEstimate": 60,
+      "geometries": 775,
+      "textures": 37,
+      "displayedCar": "starter",
+      "owned": [
+        "starter"
+      ],
+      "note": "",
+      "viewport": [
+        844,
+        390
+      ]
+    }
+  ],
+  "errors": [],
+  "passed": true,
+  "browser": "26.5"
+}

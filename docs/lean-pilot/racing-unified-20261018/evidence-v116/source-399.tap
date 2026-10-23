@@ -1,0 +1,2404 @@
+TAP version 13
+# Subtest: unverified H5 permission never creates an ad instance
+ok 1 - unverified H5 permission never creates an ad instance
+  ---
+  duration_ms: 4.439856
+  type: 'test'
+  ...
+# Subtest: isEnded true completes exactly once and removes handlers
+ok 2 - isEnded true completes exactly once and removes handlers
+  ---
+  duration_ms: 0.694678
+  type: 'test'
+  ...
+# Subtest: cancel followed by a stale complete callback remains cancelled
+ok 3 - cancel followed by a stale complete callback remains cancelled
+  ---
+  duration_ms: 0.149575
+  type: 'test'
+  ...
+# Subtest: load or show failure restores play without a reward
+ok 4 - load or show failure restores play without a reward
+  ---
+  duration_ms: 0.346713
+  type: 'test'
+  ...
+# Subtest: missing close is bounded and late completion is ignored
+ok 5 - missing close is bounded and late completion is ignored
+  ---
+  duration_ms: 20.132002
+  type: 'test'
+  ...
+# Subtest: double tap cannot start two concurrent ad shows
+ok 6 - double tap cannot start two concurrent ad shows
+  ---
+  duration_ms: 21.204819
+  type: 'test'
+  ...
+# Subtest: the pinned race uses finish, and countdown remains part of the playable round
+ok 7 - the pinned race uses finish, and countdown remains part of the playable round
+  ---
+  duration_ms: 0.419813
+  type: 'test'
+  ...
+# Subtest: FPS bridge reads actual actor stats and releases every held movement/fire input
+ok 8 - FPS bridge reads actual actor stats and releases every held movement/fire input
+  ---
+  duration_ms: 0.453555
+  type: 'test'
+  ...
+# Subtest: clock has a complete start, pause, resume, terminal and replay lifecycle
+ok 9 - clock has a complete start, pause, resume, terminal and replay lifecycle
+  ---
+  duration_ms: 0.507956
+  type: 'test'
+  ...
+# Subtest: earned supplies buy one concrete next-round fish-following assist, not an empty currency counter
+ok 10 - earned supplies buy one concrete next-round fish-following assist, not an empty currency counter
+  ---
+  duration_ms: 0.214373
+  type: 'test'
+  ...
+# Subtest: source terminal can settle early and cancellation never doubles supplies
+ok 11 - source terminal can settle early and cancellation never doubles supplies
+  ---
+  duration_ms: 0.234584
+  type: 'test'
+  ...
+# Subtest: progress is versioned, per-game, robust to corrupt storage and preserves reward idempotency
+ok 12 - progress is versioned, per-game, robust to corrupt storage and preserves reward idempotency
+  ---
+  duration_ms: 0.951265
+  type: 'test'
+  ...
+# Subtest: no ad on first round, first sixty seconds, mid-action or after reward
+ok 13 - no ad on first round, first sixty seconds, mid-action or after reward
+  ---
+  duration_ms: 0.162104
+  type: 'test'
+  ...
+# Subtest: racing fuel changes to 30 capacity, five per race and one per minute
+ok 14 - racing fuel changes to 30 capacity, five per race and one per minute
+  ---
+  duration_ms: 0.089445
+  type: 'test'
+  ...
+# Subtest: 30 fuel gives exactly six races, seventh waits for 5 recovered points
+ok 15 - 30 fuel gives exactly six races, seventh waits for 5 recovered points
+  ---
+  duration_ms: 0.292982
+  type: 'test'
+  ...
+# Subtest: partial 1 minute recharge does not restart on another race
+ok 16 - partial 1 minute recharge does not restart on another race
+  ---
+  duration_ms: 0.140712
+  type: 'test'
+  ...
+# Subtest: regeneration after offline recovery is capped and backward-clock exploit is rejected
+ok 17 - regeneration after offline recovery is capped and backward-clock exploit is rejected
+  ---
+  duration_ms: 0.176376
+  type: 'test'
+  ...
+# Subtest: ad reward clock rollback keeps cooldown and recharge anchor
+ok 18 - ad reward clock rollback keeps cooldown and recharge anchor
+  ---
+  duration_ms: 0.256376
+  type: 'test'
+  ...
+# Subtest: cancelled, timed out, duplicated and already-full ad do not grant fuel
+ok 19 - cancelled, timed out, duplicated and already-full ad do not grant fuel
+  ---
+  duration_ms: 0.197508
+  type: 'test'
+  ...
+# Subtest: partial ad top-up preserves next-minute recharge progress
+ok 20 - partial ad top-up preserves next-minute recharge progress
+  ---
+  duration_ms: 0.262146
+  type: 'test'
+  ...
+# Subtest: fuel advertisements never auto-appear without real round, session and adapter
+ok 21 - fuel advertisements never auto-appear without real round, session and adapter
+  ---
+  duration_ms: 0.330819
+  type: 'test'
+  ...
+# Subtest: persisted V2 survives reload, old V1 tank migrates without losing saved fuel
+ok 22 - persisted V2 survives reload, old V1 tank migrates without losing saved fuel
+  ---
+  duration_ms: 0.29167
+  type: 'test'
+  ...
+# Subtest: rolled-back clock cannot move full tank recharge origin into the past
+ok 23 - rolled-back clock cannot move full tank recharge origin into the past
+  ---
+  duration_ms: 0.096296
+  type: 'test'
+  ...
+# Subtest: advert cooldown persists across repeated clock rollback and races
+ok 24 - advert cooldown persists across repeated clock rollback and races
+  ---
+  duration_ms: 0.162235
+  type: 'test'
+  ...
+# Subtest: next single fuel point countdown never becomes a five-minute wait
+ok 25 - next single fuel point countdown never becomes a five-minute wait
+  ---
+  duration_ms: 0.135865
+  type: 'test'
+  ...
+# Subtest: full Chromium changes only QA executable channel, never GPU flags or timeout
+ok 26 - full Chromium changes only QA executable channel, never GPU flags or timeout
+  ---
+  duration_ms: 0.217518
+  type: 'test'
+  ...
+# Subtest: explicit executables, channels and headed choices remain authoritative
+ok 27 - explicit executables, channels and headed choices remain authoritative
+  ---
+  duration_ms: 0.081363
+  type: 'test'
+  ...
+# Subtest: new-headless QA configuration is idempotent without clock/frame-rate switches
+ok 28 - new-headless QA configuration is idempotent without clock/frame-rate switches
+  ---
+  duration_ms: 0.109755
+  type: 'test'
+  ...
+# Subtest: 淘汰可视提示显示真实赛段进度、末位危险；过点和换关清除，不改动比赛
+ok 29 - 淘汰可视提示显示真实赛段进度、末位危险；过点和换关清除，不改动比赛
+  ---
+  duration_ms: 2.30708
+  type: 'test'
+  ...
+# Subtest: failure diagnosis distinguishes authentic rank, technique and boss losses without awarding a pass
+ok 30 - failure diagnosis distinguishes authentic rank, technique and boss losses without awarding a pass
+  ---
+  duration_ms: 1.822358
+  type: 'test'
+  ...
+# Subtest: 30 staged challenges use four biome worlds and eight distinct objectives
+ok 31 - 30 staged challenges use four biome worlds and eight distinct objectives
+  ---
+  duration_ms: 0.122575
+  type: 'test'
+  ...
+# Subtest: all thirty stages are rank-only: first 3 stars, second 2, third 1
+ok 32 - all thirty stages are rank-only: first 3 stars, second 2, third 1
+  ---
+  duration_ms: 0.450179
+  type: 'test'
+  ...
+# Subtest: an actual bronze finish immediately unlocks the next challenge
+ok 33 - an actual bronze finish immediately unlocks the next challenge
+  ---
+  duration_ms: 0.248786
+  type: 'test'
+  ...
+# Subtest: valid drift counts real driftEnd above .22 seconds
+ok 34 - valid drift counts real driftEnd above .22 seconds
+  ---
+  duration_ms: 0.169075
+  type: 'test'
+  ...
+# Subtest: special race types still use native timed and elimination gameplay; podium stars depend on finish place
+ok 35 - special race types still use native timed and elimination gameplay; podium stars depend on finish place
+  ---
+  duration_ms: 0.180492
+  type: 'test'
+  ...
+# Subtest: new car paints require permanent ownership; old star-era saves keep earned paints
+ok 36 - new car paints require permanent ownership; old star-era saves keep earned paints
+  ---
+  duration_ms: 0.717171
+  type: 'test'
+  ...
+# Subtest: checkpoints only activate when crossing real multi-lap progress
+ok 37 - checkpoints only activate when crossing real multi-lap progress
+  ---
+  duration_ms: 0.082584
+  type: 'test'
+  ...
+# Subtest: item box thinning creates real lateral steering choices
+ok 38 - item box thinning creates real lateral steering choices
+  ---
+  duration_ms: 0.229426
+  type: 'test'
+  ...
+# Subtest: automatic item use waits for relevant player context and cooldown
+ok 39 - automatic item use waits for relevant player context and cooldown
+  ---
+  duration_ms: 0.341545
+  type: 'test'
+  ...
+# Subtest: real corner overtakes need rank gains and curvature, cannot award repeated rewards
+ok 40 - real corner overtakes need rank gains and curvature, cannot award repeated rewards
+  ---
+  duration_ms: 0.270438
+  type: 'test'
+  ...
+# Subtest: elimination removes AI model and stands but never removes the player
+ok 41 - elimination removes AI model and stands but never removes the player
+  ---
+  duration_ms: 0.189316
+  type: 'test'
+  ...
+# Subtest: career still deducts five fuel even when there is no rewarded ad SDK
+ok 42 - career still deducts five fuel even when there is no rewarded ad SDK
+  ---
+  duration_ms: 0.5633
+  type: 'test'
+  ...
+# Subtest: AI reaching finish first does not end a two-lap race after 10 seconds
+ok 43 - AI reaching finish first does not end a two-lap race after 10 seconds
+  ---
+  duration_ms: 0.275836
+  type: 'test'
+  ...
+# Subtest: relay pads are counted only when spaced and give real clock extension
+ok 44 - relay pads are counted only when spaced and give real clock extension
+  ---
+  duration_ms: 0.251058
+  type: 'test'
+  ...
+# Subtest: each race clears telemetry; a loss does not unlock another stage
+ok 45 - each race clears telemetry; a loss does not unlock another stage
+  ---
+  duration_ms: 0.39818
+  type: 'test'
+  ...
+# Subtest: invalid drift endings, including wall collisions, cannot unlock the drift challenge
+ok 46 - invalid drift endings, including wall collisions, cannot unlock the drift challenge
+  ---
+  duration_ms: 0.480164
+  type: 'test'
+  ...
+# Subtest: career UI objectives reflect real progress, not dummy counters
+ok 47 - career UI objectives reflect real progress, not dummy counters
+  ---
+  duration_ms: 0.196186
+  type: 'test'
+  ...
+# Subtest: high-pressure stage01 failures do not block voluntary low-fuel ad recovery
+ok 48 - high-pressure stage01 failures do not block voluntary low-fuel ad recovery
+  ---
+  duration_ms: 0.219872
+  type: 'test'
+  ...
+# Subtest: a full item queue eventually resolves instead of blocking future pickups
+ok 49 - a full item queue eventually resolves instead of blocking future pickups
+  ---
+  duration_ms: 0.234614
+  type: 'test'
+  ...
+# Subtest: real corner-exit pass is accepted but late straight or AI ranking changes are rejected
+ok 50 - real corner-exit pass is accepted but late straight or AI ranking changes are rejected
+  ---
+  duration_ms: 0.246992
+  type: 'test'
+  ...
+# Subtest: corner-pass gift cannot counterfeit a required physical item-box pickup
+ok 51 - corner-pass gift cannot counterfeit a required physical item-box pickup
+  ---
+  duration_ms: 0.333793
+  type: 'test'
+  ...
+# Subtest: offline daily stage rotates by local date and stays locked until chapter one is complete
+ok 52 - offline daily stage rotates by local date and stays locked until chapter one is complete
+  ---
+  duration_ms: 0.79546
+  type: 'test'
+  ...
+# Subtest: daily wins update best and streak once per day but never grant story stars or skins
+ok 53 - daily wins update best and streak once per day but never grant story stars or skins
+  ---
+  duration_ms: 0.810833
+  type: 'test'
+  ...
+# Subtest: 雪地末位淘汰：正常赛道进度触发一次预警，末位淘汰不会悄悄发生
+ok 54 - 雪地末位淘汰：正常赛道进度触发一次预警，末位淘汰不会悄悄发生
+  ---
+  duration_ms: 2.449965
+  type: 'test'
+  ...
+# Subtest: 完整奖励视频后发生存档故障：临时补油但不虚报永久保存，玩家本次可自由参赛
+ok 55 - 完整奖励视频后发生存档故障：临时补油但不虚报永久保存，玩家本次可自由参赛
+  ---
+  duration_ms: 1.184166
+  type: 'test'
+  ...
+# Subtest: replaying item mode disposes unique item GPUs exactly once without double-disposing shared materials
+ok 56 - replaying item mode disposes unique item GPUs exactly once without double-disposing shared materials
+  ---
+  duration_ms: 0.311851
+  type: 'test'
+  ...
+# Subtest: thinned native item routes dispose deleted box geometries, leave shared skins intact
+ok 57 - thinned native item routes dispose deleted box geometries, leave shared skins intact
+  ---
+  duration_ms: 0.419974
+  type: 'test'
+  ...
+# Subtest: V4.6 native item rivals hold the fixed pre-race pace band without faking progress
+ok 58 - V4.6 native item rivals hold the fixed pre-race pace band without faking progress
+  ---
+  duration_ms: 0.773456
+  type: 'test'
+  ...
+# Subtest: V4.6 overtaking rivals form a varied field with a contesting ace
+ok 59 - V4.6 overtaking rivals form a varied field with a contesting ace
+  ---
+  duration_ms: 0.387604
+  type: 'test'
+  ...
+# Subtest: career retains the submitted expert field speeds while boss and middle field still escalate
+ok 60 - career retains the submitted expert field speeds while boss and middle field still escalate
+  ---
+  duration_ms: 0.518782
+  type: 'test'
+  ...
+# Subtest: V4.6 expert opponent remains a physical ace with no progress edits
+ok 61 - V4.6 expert opponent remains a physical ace with no progress edits
+  ---
+  duration_ms: 0.455997
+  type: 'test'
+  ...
+# Subtest: 自动救援只影响完美三星，不额外扣油，不会误判为过弯超车
+ok 62 - 自动救援只影响完美三星，不额外扣油，不会误判为过弯超车
+  ---
+  duration_ms: 0.498432
+  type: 'test'
+  ...
+# Subtest: 双键道具：背包只剩一件没有目标的护盾，超过18秒自动使用而非一直闲置
+ok 63 - 双键道具：背包只剩一件没有目标的护盾，超过18秒自动使用而非一直闲置
+  ---
+  duration_ms: 0.287183
+  type: 'test'
+  ...
+# Subtest: boss goals disclose rank + opponent gates; beating rival at sixth is not victory
+ok 64 - boss goals disclose rank + opponent gates; beating rival at sixth is not victory
+  ---
+  duration_ms: 0.274123
+  type: 'test'
+  ...
+# Subtest: special objective counters remain real but do not modify stars after a completed race
+ok 65 - special objective counters remain real but do not modify stars after a completed race
+  ---
+  duration_ms: 0.128954
+  type: 'test'
+  ...
+# Subtest: V4.8 final boss and podium become significantly harder without touching race results
+ok 66 - V4.8 final boss and podium become significantly harder without touching race results
+  ---
+  duration_ms: 1.417067
+  type: 'test'
+  ...
+# Subtest: V4.8 stage01 is NOT a tutorial pass: demands two full laps, rank and a true strong AI
+ok 67 - V4.8 stage01 is NOT a tutorial pass: demands two full laps, rank and a true strong AI
+  ---
+  duration_ms: 0.330989
+  type: 'test'
+  ...
+# Subtest: V6.0 no easy rank gates remain across the thirty stages
+ok 68 - V6.0 no easy rank gates remain across the thirty stages
+  ---
+  duration_ms: 0.239732
+  type: 'test'
+  ...
+# Subtest: failed rank/objective earns exactly one free same-stage replay, even at zero fuel
+ok 69 - failed rank/objective earns exactly one free same-stage replay, even at zero fuel
+  ---
+  duration_ms: 0.395687
+  type: 'test'
+  ...
+# Subtest: stage/daily switch cannot transfer a free retry; wins never grant one
+ok 70 - stage/daily switch cannot transfer a free retry; wins never grant one
+  ---
+  duration_ms: 0.398141
+  type: 'test'
+  ...
+# Subtest: short IAA session: one real loss may voluntarily earn a single *manual* race nitro
+ok 71 - short IAA session: one real loss may voluntarily earn a single *manual* race nitro
+  ---
+  duration_ms: 0.650751
+  type: 'test'
+  ...
+# Subtest: ads are unavailable in offline/free mode, on wins, before 60s, and after cancellation
+ok 72 - ads are unavailable in offline/free mode, on wins, before 60s, and after cancellation
+  ---
+  duration_ms: 0.555287
+  type: 'test'
+  ...
+# Subtest: late ad callback after another stage or run cannot credit a different result
+ok 73 - late ad callback after another stage or run cannot credit a different result
+  ---
+  duration_ms: 0.419062
+  type: 'test'
+  ...
+# Subtest: bronze -> silver -> gold upgrades the saved medal and never decreases it
+ok 74 - bronze -> silver -> gold upgrades the saved medal and never decreases it
+  ---
+  duration_ms: 0.287093
+  type: 'test'
+  ...
+# Subtest: best medal records remain stage-specific and first three ranks are integers
+ok 75 - best medal records remain stage-specific and first three ranks are integers
+  ---
+  duration_ms: 0.162665
+  type: 'test'
+  ...
+# Subtest: stage menu and results show retained medals without mutating native input
+ok 76 - stage menu and results show retained medals without mutating native input
+  ---
+  duration_ms: 14.406686
+  type: 'test'
+  ...
+# Subtest: six authored career checkpoints demand cumulative medal record, not any specific old level
+ok 77 - six authored career checkpoints demand cumulative medal record, not any specific old level
+  ---
+  duration_ms: 0.711603
+  type: 'test'
+  ...
+# Subtest: old saved unlocked chapter must not get relocked by the rollout
+ok 78 - old saved unlocked chapter must not get relocked by the rollout
+  ---
+  duration_ms: 0.379212
+  type: 'test'
+  ...
+# Subtest: completed rewarded gate ad unlocks only the selected checkpoint and never gives stars or fuel
+ok 79 - completed rewarded gate ad unlocks only the selected checkpoint and never gives stars or fuel
+  ---
+  duration_ms: 3.647792
+  type: 'test'
+  ...
+# Subtest: cancelled, failed and incomplete gate videos never unlock or mint stars
+ok 80 - cancelled, failed and incomplete gate videos never unlock or mint stars
+  ---
+  duration_ms: 0.585773
+  type: 'test'
+  ...
+# Subtest: late ad result, double-tap and failed disk write cannot claim permanent stage access
+ok 81 - late ad result, double-tap and failed disk write cannot claim permanent stage access
+  ---
+  duration_ms: 0.645944
+  type: 'test'
+  ...
+# Subtest: checkpoints with no official reward SDK remain playable through earned star medals
+ok 82 - checkpoints with no official reward SDK remain playable through earned star medals
+  ---
+  duration_ms: 0.380554
+  type: 'test'
+  ...
+# Subtest: single joystick thumb controls both signs without two binary direction buttons
+ok 83 - single joystick thumb controls both signs without two binary direction buttons
+  ---
+  duration_ms: 0.397529
+  type: 'test'
+  ...
+# Subtest: drift hold and small spray do not share input; short taps survive release
+ok 84 - drift hold and small spray do not share input; short taps survive release
+  ---
+  duration_ms: 0.560184
+  type: 'test'
+  ...
+# Subtest: race and item boosts are separate edges, cancel and pause clear touch
+ok 85 - race and item boosts are separate edges, cancel and pause clear touch
+  ---
+  duration_ms: 0.298901
+  type: 'test'
+  ...
+# Subtest: native patch rejects unknown pinned vehicle, preserves physical yaw and does not duplicate transforms
+ok 86 - native patch rejects unknown pinned vehicle, preserves physical yaw and does not duplicate transforms
+  ---
+  duration_ms: 0.963183
+  type: 'test'
+  ...
+# Subtest: item mode special nitro edge is consumed only by first native physics step
+ok 87 - item mode special nitro edge is consumed only by first native physics step
+  ---
+  duration_ms: 0.177377
+  type: 'test'
+  ...
+# Subtest: straight and wide bends retain normal touch auto-throttle
+ok 88 - straight and wide bends retain normal touch auto-throttle
+  ---
+  duration_ms: 0.349206
+  type: 'test'
+  ...
+# Subtest: dangerous bends select native brake then coast without any player mutation
+ok 89 - dangerous bends select native brake then coast without any player mutation
+  ---
+  duration_ms: 0.287454
+  type: 'test'
+  ...
+# Subtest: greater curvature leads to lower target speed, never automatic reverse
+ok 90 - greater curvature leads to lower target speed, never automatic reverse
+  ---
+  duration_ms: 0.153561
+  type: 'test'
+  ...
+# Subtest: brake intent never overrides rescue, spin, drift, collision recovery or airborne state
+ok 91 - brake intent never overrides rescue, spin, drift, collision recovery or airborne state
+  ---
+  duration_ms: 0.209035
+  type: 'test'
+  ...
+# Subtest: missing or invalid native geometry cannot invent a brake command
+ok 92 - missing or invalid native geometry cannot invent a brake command
+  ---
+  duration_ms: 0.190157
+  type: 'test'
+  ...
+# Subtest: joystick-only driving never invokes deprecated automatic curvature braking
+ok 93 - joystick-only driving never invokes deprecated automatic curvature braking
+  ---
+  duration_ms: 0.242405
+  type: 'test'
+  ...
+# Subtest: starter is free and five registered user models start locked without changing the eight paint policy
+ok 94 - starter is free and five registered user models start locked without changing the eight paint policy
+  ---
+  duration_ms: 0.330829
+  type: 'test'
+  ...
+# Subtest: old 6-star owner keeps previously earned colors but new stars never grant extras
+ok 95 - old 6-star owner keeps previously earned colors but new stars never grant extras
+  ---
+  duration_ms: 0.394355
+  type: 'test'
+  ...
+# Subtest: completed official ad unlocks one color permanently, without minting stars/fuel
+ok 96 - completed official ad unlocks one color permanently, without minting stars/fuel
+  ---
+  duration_ms: 0.950513
+  type: 'test'
+  ...
+# Subtest: cancellation and failures never earn a permanent color
+ok 97 - cancellation and failures never earn a permanent color
+  ---
+  duration_ms: 0.230668
+  type: 'test'
+  ...
+# Subtest: ad busy blocks replay, selection and duplicate ad; successful reward cannot be duplicated
+ok 98 - ad busy blocks replay, selection and duplicate ad; successful reward cannot be duplicated
+  ---
+  duration_ms: 0.197608
+  type: 'test'
+  ...
+# Subtest: a completed video with failing persistence must not grant cosmetics
+ok 99 - a completed video with failing persistence must not grant cosmetics
+  ---
+  duration_ms: 0.189847
+  type: 'test'
+  ...
+# Subtest: an absent official ad SDK never unlocks paint
+ok 100 - an absent official ad SDK never unlocks paint
+  ---
+  duration_ms: 0.160682
+  type: 'test'
+  ...
+# Subtest: car save migration keeps known permanent models, removes unknown IDs and rejects unowned equipment
+ok 101 - car save migration keeps known permanent models, removes unknown IDs and rejects unowned equipment
+  ---
+  duration_ms: 0.37759
+  type: 'test'
+  ...
+# Subtest: custom-01 completed ad grants permanent ownership, then explicit equipment survives refresh
+ok 102 - custom-01 completed ad grants permanent ownership, then explicit equipment survives refresh
+  ---
+  duration_ms: 0.6499
+  type: 'test'
+  ...
+# Subtest: custom-02 completed ad grants permanent ownership, then explicit equipment survives refresh
+ok 103 - custom-02 completed ad grants permanent ownership, then explicit equipment survives refresh
+  ---
+  duration_ms: 0.333362
+  type: 'test'
+  ...
+# Subtest: custom-03 completed ad grants permanent ownership, then explicit equipment survives refresh
+ok 104 - custom-03 completed ad grants permanent ownership, then explicit equipment survives refresh
+  ---
+  duration_ms: 0.294524
+  type: 'test'
+  ...
+# Subtest: custom-04 completed ad grants permanent ownership, then explicit equipment survives refresh
+ok 105 - custom-04 completed ad grants permanent ownership, then explicit equipment survives refresh
+  ---
+  duration_ms: 0.322356
+  type: 'test'
+  ...
+# Subtest: custom-05 completed ad grants permanent ownership, then explicit equipment survives refresh
+ok 106 - custom-05 completed ad grants permanent ownership, then explicit equipment survives refresh
+  ---
+  duration_ms: 0.30478
+  type: 'test'
+  ...
+# Subtest: locked or unknown selected cars cannot configure or start a race
+ok 107 - locked or unknown selected cars cannot configure or start a race
+  ---
+  duration_ms: 0.278951
+  type: 'test'
+  ...
+# Subtest: car cancellation, failure, timeout, missing completion and provider exceptions never persist ownership
+ok 108 - car cancellation, failure, timeout, missing completion and provider exceptions never persist ownership
+  ---
+  duration_ms: 2.291086
+  type: 'test'
+  ...
+# Subtest: missing SDK and unknown cars cannot request a rewarded video
+ok 109 - missing SDK and unknown cars cannot request a rewarded video
+  ---
+  duration_ms: 0.499583
+  type: 'test'
+  ...
+# Subtest: pending car video shares the paint mutex and cannot equip, start or duplicate the named reward
+ok 110 - pending car video shares the paint mutex and cannot equip, start or duplicate the named reward
+  ---
+  duration_ms: 0.246161
+  type: 'test'
+  ...
+# Subtest: late car completion after begin and return without a settled round is stale
+ok 111 - late car completion after begin and return without a settled round is stale
+  ---
+  duration_ms: 0.346743
+  type: 'test'
+  ...
+# Subtest: active race, stage changes, settled rounds and invalidated storage reject late car completions
+ok 112 - active race, stage changes, settled rounds and invalidated storage reject late car completions
+  ---
+  duration_ms: 0.415857
+  type: 'test'
+  ...
+# Subtest: car entitlement or equipment write failure keeps the prior durable ownership and selection
+ok 113 - car entitlement or equipment write failure keeps the prior durable ownership and selection
+  ---
+  duration_ms: 0.747207
+  type: 'test'
+  ...
+# Subtest: every equipped model uses the same configuration, five fuel cost and actual rank settlement
+ok 114 - every equipped model uses the same configuration, five fuel cost and actual rank settlement
+  ---
+  duration_ms: 0.68321
+  type: 'test'
+  ...
+# Subtest: repeated long render stalls can lower graphics before the race begins
+ok 115 - repeated long render stalls can lower graphics before the race begins
+  ---
+  duration_ms: 0.524491
+  type: 'test'
+  ...
+# Subtest: countdown protection retains the native renderer and does not advance the game
+ok 116 - countdown protection retains the native renderer and does not advance the game
+  ---
+  duration_ms: 0.193272
+  type: 'test'
+  ...
+# Subtest: normal frame cadence and an isolated stall leave selected graphics unchanged
+ok 117 - normal frame cadence and an isolated stall leave selected graphics unchanged
+  ---
+  duration_ms: 0.34463
+  type: 'test'
+  ...
+# Subtest: pause and return do not combine unrelated stalls into a downgrade
+ok 118 - pause and return do not combine unrelated stalls into a downgrade
+  ---
+  duration_ms: 0.122855
+  type: 'test'
+  ...
+# Subtest: race/menu/finished states keep the existing quality owner
+ok 119 - race/menu/finished states keep the existing quality owner
+  ---
+  duration_ms: 0.542338
+  type: 'test'
+  ...
+# Subtest: installation is idempotent and invalid rendering interfaces are ignored
+ok 120 - installation is idempotent and invalid rendering interfaces are ignored
+  ---
+  duration_ms: 1.935719
+  type: 'test'
+  ...
+# Subtest: severe continuous low FPS can step high to mid to low without changing preference
+ok 121 - severe continuous low FPS can step high to mid to low without changing preference
+  ---
+  duration_ms: 0.999989
+  type: 'test'
+  ...
+# Subtest: actual runtime FX setup installs the countdown guard even when no particle pools exist
+ok 122 - actual runtime FX setup installs the countdown guard even when no particle pools exist
+  ---
+  duration_ms: 0.236356
+  type: 'test'
+  ...
+# Subtest: persistent foreground lag at low quality reduces drawing pixels within a bounded budget
+ok 123 - persistent foreground lag at low quality reduces drawing pixels within a bounded budget
+  ---
+  duration_ms: 0.683841
+  type: 'test'
+  ...
+# Subtest: ordinary cadence and one expensive frame keep full low-quality resolution
+ok 124 - ordinary cadence and one expensive frame keep full low-quality resolution
+  ---
+  duration_ms: 0.548217
+  type: 'test'
+  ...
+# Subtest: native renderer method behavior is unchanged until a budget is earned and installation stays idempotent
+ok 125 - native renderer method behavior is unchanged until a budget is earned and installation stays idempotent
+  ---
+  duration_ms: 0.444
+  type: 'test'
+  ...
+# Subtest: sustained near-12-FPS low-quality rendering also has a bounded fallback
+ok 126 - sustained near-12-FPS low-quality rendering also has a bounded fallback
+  ---
+  duration_ms: 0.283748
+  type: 'test'
+  ...
+# Subtest: render-budget fallback preserves native render, game state, camera, viewport and storage
+ok 127 - render-budget fallback preserves native render, game state, camera, viewport and storage
+  ---
+  duration_ms: 0.438522
+  type: 'test'
+  ...
+# Subtest: a hidden interval without animation frames discards earlier low-quality stall samples
+ok 128 - a hidden interval without animation frames discards earlier low-quality stall samples
+  ---
+  duration_ms: 2.426379
+  type: 'test'
+  ...
+# Subtest: paused frames and resuming a race cannot combine unrelated stall intervals
+ok 129 - paused frames and resuming a race cannot combine unrelated stall intervals
+  ---
+  duration_ms: 0.193161
+  type: 'test'
+  ...
+# Subtest: invalid or backwards elapsed time resets low-quality samples
+ok 130 - invalid or backwards elapsed time resets low-quality samples
+  ---
+  duration_ms: 0.705304
+  type: 'test'
+  ...
+# Subtest: native resize and low-quality setup retain a required effective pixel budget
+ok 131 - native resize and low-quality setup retain a required effective pixel budget
+  ---
+  duration_ms: 0.147883
+  type: 'test'
+  ...
+# Subtest: explicit higher quality remains authoritative and later low setup retains the safe budget
+ok 132 - explicit higher quality remains authoritative and later low setup retains the safe budget
+  ---
+  duration_ms: 0.204649
+  type: 'test'
+  ...
+# Subtest: actual race rendering can degrade low pixels without taking over other quality settings
+ok 133 - actual race rendering can degrade low pixels without taking over other quality settings
+  ---
+  duration_ms: 0.124408
+  type: 'test'
+  ...
+# Subtest: single-run audit cannot sample the invisible closing road
+ok 134 - single-run audit cannot sample the invisible closing road
+  ---
+  duration_ms: 7.825272
+  type: 'test'
+  ...
+# Subtest: one-way end/start cannot be joined into a fictitious continuous straight
+ok 135 - one-way end/start cannot be joined into a fictitious continuous straight
+  ---
+  duration_ms: 1.0806
+  type: 'test'
+  ...
+# Subtest: a curve still requires steering; do not call it no-input time
+ok 136 - a curve still requires steering; do not call it no-input time
+  ---
+  duration_ms: 2.02512
+  type: 'test'
+  ...
+# Subtest: screening seconds are assumptions, not measured race duration
+ok 137 - screening seconds are assumptions, not measured race duration
+  ---
+  duration_ms: 1.284177
+  type: 'test'
+  ...
+# Subtest: invalid distances and malformed native samples fail closed
+ok 138 - invalid distances and malformed native samples fail closed
+  ---
+  duration_ms: 0.356077
+  type: 'test'
+  ...
+# Subtest: only explicit player drift press starts drift; automatic throttle continues
+ok 139 - only explicit player drift press starts drift; automatic throttle continues
+  ---
+  duration_ms: 0.586224
+  type: 'test'
+  ...
+# Subtest: joystick value is preserved as continuous native steering across immediate countersteer
+ok 140 - joystick value is preserved as continuous native steering across immediate countersteer
+  ---
+  duration_ms: 0.159841
+  type: 'test'
+  ...
+# Subtest: pause, countdown and finished state cannot propel the player or replay old actions
+ok 141 - pause, countdown and finished state cannot propel the player or replay old actions
+  ---
+  duration_ms: 0.397039
+  type: 'test'
+  ...
+# Subtest: automatic starting acceleration edge happens once per car and only with a physics step
+ok 142 - automatic starting acceleration edge happens once per car and only with a physics step
+  ---
+  duration_ms: 0.249837
+  type: 'test'
+  ...
+# Subtest: tap survives a frame without physics, is consumed once and cannot repeat
+ok 143 - tap survives a frame without physics, is consumed once and cannot repeat
+  ---
+  duration_ms: 0.620006
+  type: 'test'
+  ...
+# Subtest: item race has manual item and independent earned nitro edges, never auto-items
+ok 144 - item race has manual item and independent earned nitro edges, never auto-items
+  ---
+  duration_ms: 0.229536
+  type: 'test'
+  ...
+# Subtest: abort pointer cancels pending spray or nitro; blur-style clear removes every hold
+ok 145 - abort pointer cancels pending spray or nitro; blur-style clear removes every hold
+  ---
+  duration_ms: 0.229876
+  type: 'test'
+  ...
+# Subtest: pre-exit spray buffer is bounded, no free small boost outside a real native window
+ok 146 - pre-exit spray buffer is bounded, no free small boost outside a real native window
+  ---
+  duration_ms: 0.193552
+  type: 'test'
+  ...
+# Subtest: wrong-way full speed uses native slowdown, without steering for the player
+ok 147 - wrong-way full speed uses native slowdown, without steering for the player
+  ---
+  duration_ms: 0.245681
+  type: 'test'
+  ...
+# Subtest: input layer exports no old automatic steering class or binary key controller
+ok 148 - input layer exports no old automatic steering class or binary key controller
+  ---
+  duration_ms: 0.206111
+  type: 'test'
+  ...
+# Subtest: opponent physically crosses the player by meters before a reversal is counted
+ok 149 - opponent physically crosses the player by meters before a reversal is counted
+  ---
+  duration_ms: 0.87561
+  type: 'test'
+  ...
+# Subtest: non-race, negative progress reset, and near ties cannot fabricate an overtake
+ok 150 - non-race, negative progress reset, and near ties cannot fabricate an overtake
+  ---
+  duration_ms: 0.140572
+  type: 'test'
+  ...
+# Subtest: approach/corner/exit gives real native speed loss and crash evidence
+ok 151 - approach/corner/exit gives real native speed loss and crash evidence
+  ---
+  duration_ms: 0.131708
+  type: 'test'
+  ...
+# Subtest: replay shows near miss only from measured native race position, never false seconds
+ok 152 - replay shows near miss only from measured native race position, never false seconds
+  ---
+  duration_ms: 0.390439
+  type: 'test'
+  ...
+# Subtest: replay cues prioritize actual mission deficit and rank pressure
+ok 153 - replay cues prioritize actual mission deficit and rank pressure
+  ---
+  duration_ms: 0.235585
+  type: 'test'
+  ...
+# Subtest: anonymous replay snapshot is local, per actual race, bounded and crash-safe
+ok 154 - anonymous replay snapshot is local, per actual race, bounded and crash-safe
+  ---
+  duration_ms: 0.41153
+  type: 'test'
+  ...
+# Subtest: hard-corner advice is signed native geometry, compact and only inside existing HUD
+ok 155 - hard-corner advice is signed native geometry, compact and only inside existing HUD
+  ---
+  duration_ms: 0.160743
+  type: 'test'
+  ...
+# Subtest: locked real-model previews never grant, equip, or permit a race
+ok 156 - locked real-model previews never grant, equip, or permit a race
+  ---
+  duration_ms: 0.508728
+  type: 'test'
+  ...
+# Subtest: completed ad grants exactly the previewed car and equips it durably without a second ad
+ok 157 - completed ad grants exactly the previewed car and equips it durably without a second ad
+  ---
+  duration_ms: 0.382617
+  type: 'test'
+  ...
+# Subtest: cancelled ads preserve the locked preview and let the player return to the free car
+ok 158 - cancelled ads preserve the locked preview and let the player return to the free car
+  ---
+  duration_ms: 0.257758
+  type: 'test'
+  ...
+# Subtest: only the latest async model selection can persist or enable racing
+ok 159 - only the latest async model selection can persist or enable racing
+  ---
+  duration_ms: 0.3376
+  type: 'test'
+  ...
+# Subtest: leaving the garage invalidates a pending preview without changing permanent selection
+ok 160 - leaving the garage invalidates a pending preview without changing permanent selection
+  ---
+  duration_ms: 0.188464
+  type: 'test'
+  ...
+# Subtest: failed model loading cannot sell or equip the missing appearance and can be retried
+ok 161 - failed model loading cannot sell or equip the missing appearance and can be retried
+  ---
+  duration_ms: 0.266672
+  type: 'test'
+  ...
+# Subtest: an equipment write failure restores the previously equipped native preview
+ok 162 - an equipment write failure restores the previously equipped native preview
+  ---
+  duration_ms: 0.202085
+  type: 'test'
+  ...
+# Subtest: ad mutex blocks changing the preview, and unavailable SDK never offers a model reward
+ok 163 - ad mutex blocks changing the preview, and unavailable SDK never offers a model reward
+  ---
+  duration_ms: 0.187863
+  type: 'test'
+  ...
+# Subtest: only a ready native result for the exact car may enable equipment or rewarded previews
+ok 164 - only a ready native result for the exact car may enable equipment or rewarded previews
+  ---
+  duration_ms: 0.728589
+  type: 'test'
+  ...
+# Subtest: restore after a failed equipment write also requires exact native ready identity
+ok 165 - restore after a failed equipment write also requires exact native ready identity
+  ---
+  duration_ms: 0.690441
+  type: 'test'
+  ...
+# Subtest: home, active race and ad availability apply to snapshot gates and new selections
+ok 166 - home, active race and ad availability apply to snapshot gates and new selections
+  ---
+  duration_ms: 0.266782
+  type: 'test'
+  ...
+# Subtest: lifecycle changes during a pending preview become stale without saving or compensating preview
+ok 167 - lifecycle changes during a pending preview become stale without saving or compensating preview
+  ---
+  duration_ms: 0.33838
+  type: 'test'
+  ...
+# Subtest: leaving home during the restore await cannot mark the old native car as displayed
+ok 168 - leaving home during the restore await cannot mark the old native car as displayed
+  ---
+  duration_ms: 0.275926
+  type: 'test'
+  ...
+# Subtest: completed ad plus failed model decoding keeps the permanent reward without equipment or another ad
+ok 169 - completed ad plus failed model decoding keeps the permanent reward without equipment or another ad
+  ---
+  duration_ms: 0.408236
+  type: 'test'
+  ...
+# Subtest: completed ad plus failed equipment persistence keeps reward and restores prior equipment
+ok 170 - completed ad plus failed equipment persistence keeps reward and restores prior equipment
+  ---
+  duration_ms: 0.273542
+  type: 'test'
+  ...
+# Subtest: leaving home during post-ad equipment loading preserves the completed grant without stale equipment
+ok 171 - leaving home during post-ad equipment loading preserves the completed grant without stale equipment
+  ---
+  duration_ms: 2.494632
+  type: 'test'
+  ...
+# Subtest: real question sprite renders above opaque 3D item diamond
+ok 172 - real question sprite renders above opaque 3D item diamond
+  ---
+  duration_ms: 1.296641
+  type: 'test'
+  ...
+# Subtest: item sprite source texture is recreated per race, upgrade stays idempotent
+ok 173 - item sprite source texture is recreated per race, upgrade stays idempotent
+  ---
+  duration_ms: 0.173432
+  type: 'test'
+  ...
+# Subtest: fixed wheel: real analogue angle, small corrections, direction reversal and centre release
+ok 174 - fixed wheel: real analogue angle, small corrections, direction reversal and centre release
+  ---
+  duration_ms: 0.166461
+  type: 'test'
+  ...
+# Subtest: second finger cannot steal joystick; unrelated pointercancel cannot clear control
+ok 175 - second finger cannot steal joystick; unrelated pointercancel cannot clear control
+  ---
+  duration_ms: 0.118889
+  type: 'test'
+  ...
+# Subtest: wheel sensitivity adjustment changes partial turn but not neutral; ignores vertical motion
+ok 176 - wheel sensitivity adjustment changes partial turn but not neutral; ignores vertical motion
+  ---
+  duration_ms: 0.120933
+  type: 'test'
+  ...
+# Subtest: manual driver passes real analogue steering and uses native wrong-way brake at speed
+ok 177 - manual driver passes real analogue steering and uses native wrong-way brake at speed
+  ---
+  duration_ms: 0.234293
+  type: 'test'
+  ...
+# Subtest: generated native engine consumes analogue fraction and normalizes drift direction
+ok 178 - generated native engine consumes analogue fraction and normalizes drift direction
+  ---
+  duration_ms: 0.353203
+  type: 'test'
+  ...
+# Subtest: countersteer yaw is actually negative against held left drift, and centre does not keep drift key held
+ok 179 - countersteer yaw is actually negative against held left drift, and centre does not keep drift key held
+  ---
+  duration_ms: 0.303969
+  type: 'test'
+  ...
+# Subtest: earned boost and item remain independent in item races; first physics step is the only edge
+ok 180 - earned boost and item remain independent in item races; first physics step is the only edge
+  ---
+  duration_ms: 0.372431
+  type: 'test'
+  ...
+# Subtest: build fingerprints joystick and UI binds captured pointer without retaining it across pauses
+ok 181 - build fingerprints joystick and UI binds captured pointer without retaining it across pauses
+  ---
+  duration_ms: 15.617723
+  type: 'test'
+  ...
+# Subtest: manual small-spray tap survives a brief pre-exit drift frame and never repeats
+ok 182 - manual small-spray tap survives a brief pre-exit drift frame and never repeats
+  ---
+  duration_ms: 0.353443
+  type: 'test'
+  ...
+# Subtest: very early small-spray tap expires and does not create a bonus after drift
+ok 183 - very early small-spray tap expires and does not create a bonus after drift
+  ---
+  duration_ms: 0.128183
+  type: 'test'
+  ...
+# Subtest: a held drift cannot automatically re-enter after countersteer exit or wall contact
+ok 184 - a held drift cannot automatically re-enter after countersteer exit or wall contact
+  ---
+  duration_ms: 0.343127
+  type: 'test'
+  ...
+# Subtest: a sub-frame drift tap is never swallowed when iPhone render/physics cadence differs
+ok 185 - a sub-frame drift tap is never swallowed when iPhone render/physics cadence differs
+  ---
+  duration_ms: 0.118208
+  type: 'test'
+  ...
+# Subtest: next-stage reward needs a real failed result and a usable completed-ad provider
+ok 186 - next-stage reward needs a real failed result and a usable completed-ad provider
+  ---
+  duration_ms: 0.538132
+  type: 'test'
+  ...
+# Subtest: completed reward opens only the adjacent level and preserves real medals, times and fuel
+ok 187 - completed reward opens only the adjacent level and preserves real medals, times and fuel
+  ---
+  duration_ms: 0.618282
+  type: 'test'
+  ...
+# Subtest: a second completed view cannot consume another ad or open another stage
+ok 188 - a second completed view cannot consume another ad or open another stage
+  ---
+  duration_ms: 0.308966
+  type: 'test'
+  ...
+# Subtest: cancelled reward never opens the next level
+ok 189 - cancelled reward never opens the next level
+  ---
+  duration_ms: 0.25922
+  type: 'test'
+  ...
+# Subtest: failed reward never opens the next level
+ok 190 - failed reward never opens the next level
+  ---
+  duration_ms: 0.125269
+  type: 'test'
+  ...
+# Subtest: timed-out reward never opens the next level
+ok 191 - timed-out reward never opens the next level
+  ---
+  duration_ms: 0.140703
+  type: 'test'
+  ...
+# Subtest: busy reward never opens the next level
+ok 192 - busy reward never opens the next level
+  ---
+  duration_ms: 0.111518
+  type: 'test'
+  ...
+# Subtest: unavailable reward never opens the next level
+ok 193 - unavailable reward never opens the next level
+  ---
+  duration_ms: 0.100081
+  type: 'test'
+  ...
+# Subtest: storage failure keeps the level locked and prevents another wasted ad
+ok 194 - storage failure keeps the level locked and prevents another wasted ad
+  ---
+  duration_ms: 0.32485
+  type: 'test'
+  ...
+# Subtest: parallel views and late callbacks after a new attempt cannot grant a level
+ok 195 - parallel views and late callbacks after a new attempt cannot grant a level
+  ---
+  duration_ms: 0.289086
+  type: 'test'
+  ...
+# Subtest: leave-and-return to the same level invalidates a pending reward ticket
+ok 196 - leave-and-return to the same level invalidates a pending reward ticket
+  ---
+  duration_ms: 0.222426
+  type: 'test'
+  ...
+# Subtest: sequential ad-opened stages can continue without fabricating passed stages or star-gate medals
+ok 197 - sequential ad-opened stages can continue without fabricating passed stages or star-gate medals
+  ---
+  duration_ms: 0.472963
+  type: 'test'
+  ...
+# Subtest: last stage and a successful podium never offer failure-based next-stage rewards
+ok 198 - last stage and a successful podium never offer failure-based next-stage rewards
+  ---
+  duration_ms: 0.274484
+  type: 'test'
+  ...
+# Subtest: stage-pass persistence whitelists the existing numbered career and rejects invented passes
+ok 199 - stage-pass persistence whitelists the existing numbered career and rejects invented passes
+  ---
+  duration_ms: 0.213231
+  type: 'test'
+  ...
+# Subtest: one-way results use the real finish, not the invisible return road
+ok 200 - one-way results use the real finish, not the invisible return road
+  ---
+  duration_ms: 0.364199
+  type: 'test'
+  ...
+# Subtest: normal lap progress, result rank and finish flag are not fabricated
+ok 201 - normal lap progress, result rank and finish flag are not fabricated
+  ---
+  duration_ms: 0.133471
+  type: 'test'
+  ...
+# Subtest: mobile composition and saved quality survive the pacing repair
+ok 202 - mobile composition and saved quality survive the pacing repair
+  ---
+  duration_ms: 0.26474
+  type: 'test'
+  ...
+# Subtest: pacing repair owns original early/mid-course nodes, not finish-return nodes
+ok 203 - pacing repair owns original early/mid-course nodes, not finish-return nodes
+  ---
+  duration_ms: 0.198259
+  type: 'test'
+  ...
+# Subtest: authored insertions are pure, finite and can be compared to the unmodified baseline
+ok 204 - authored insertions are pure, finite and can be compared to the unmodified baseline
+  ---
+  duration_ms: 0.933107
+  type: 'test'
+  ...
+# Subtest: all 30 authored tracks have unique rendered road shapes without remote assets
+ok 205 - all 30 authored tracks have unique rendered road shapes without remote assets
+  ---
+  duration_ms: 20.142667
+  type: 'test'
+  ...
+# Subtest: 07 and 22 thumbnails finish at real planar arclength, not a vertex-count fraction
+ok 206 - 07 and 22 thumbnails finish at real planar arclength, not a vertex-count fraction
+  ---
+  duration_ms: 0.76908
+  type: 'test'
+  ...
+# Subtest: rewarded next-stage status distinguishes cancellation, failure, timeout, stale and save failure
+ok 207 - rewarded next-stage status distinguishes cancellation, failure, timeout, stale and save failure
+  ---
+  duration_ms: 0.21258
+  type: 'test'
+  ...
+# Subtest: home rail centers the selected numbered stage and clamps at both ends
+ok 208 - home rail centers the selected numbered stage and clamps at both ends
+  ---
+  duration_ms: 0.207223
+  type: 'test'
+  ...
+# Subtest: progress display clamps to real native distance, not rank or synthetic timeline
+ok 209 - progress display clamps to real native distance, not rank or synthetic timeline
+  ---
+  duration_ms: 0.280223
+  type: 'test'
+  ...
+# Subtest: podium-only progression shows only real time limits, never obsolete medal tasks
+ok 210 - podium-only progression shows only real time limits, never obsolete medal tasks
+  ---
+  duration_ms: 1.238187
+  type: 'test'
+  ...
+# Subtest: compact HUD never invents a coach message or misstates corrupt telemetry
+ok 211 - compact HUD never invents a coach message or misstates corrupt telemetry
+  ---
+  duration_ms: 0.140312
+  type: 'test'
+  ...
+# Subtest: actual next-stage UI keeps free retry and loss visible after every unsuccessful provider outcome
+ok 212 - actual next-stage UI keeps free retry and loss visible after every unsuccessful provider outcome
+  ---
+  duration_ms: 10.802973
+  type: 'test'
+  ...
+# Subtest: actual completed UI selects only the confirmed adjacent level and returns home without starting a race
+ok 213 - actual completed UI selects only the confirmed adjacent level and returns home without starting a race
+  ---
+  duration_ms: 1.415495
+  type: 'test'
+  ...
+# Subtest: late and mismatched next-stage UI callbacks cannot reopen a result or jump multiple levels
+ok 214 - late and mismatched next-stage UI callbacks cannot reopen a result or jump multiple levels
+  ---
+  duration_ms: 2.240349
+  type: 'test'
+  ...
+# Subtest: rivals receive distinct stable personalities without changing native physics fields
+ok 215 - rivals receive distinct stable personalities without changing native physics fields
+  ---
+  duration_ms: 0.430058
+  type: 'test'
+  ...
+# Subtest: a chasing rival moves toward an available passing side only on a readable straight
+ok 216 - a chasing rival moves toward an available passing side only on a readable straight
+  ---
+  duration_ms: 2.072996
+  type: 'test'
+  ...
+# Subtest: rival does not weave toward a pass through a sharp corner
+ok 217 - rival does not weave toward a pass through a sharp corner
+  ---
+  duration_ms: 0.197718
+  type: 'test'
+  ...
+# Subtest: an ahead rival gets only a light inside-line defense, not a speed or progress change
+ok 218 - an ahead rival gets only a light inside-line defense, not a speed or progress change
+  ---
+  duration_ms: 0.252421
+  type: 'test'
+  ...
+# Subtest: pace tuning remains bounded and never touches bosses or final item race
+ok 219 - pace tuning remains bounded and never touches bosses or final item race
+  ---
+  duration_ms: 0.288555
+  type: 'test'
+  ...
+# Subtest: V4.2 sends five genuine opponents into a fixed, varied contest; never touches player state
+ok 220 - V4.2 sends five genuine opponents into a fixed, varied contest; never touches player state
+  ---
+  duration_ms: 0.329788
+  type: 'test'
+  ...
+# Subtest: all 30 stages including 01, 13, 16 and 30 spawn strong fixed rivals
+ok 221 - all 30 stages including 01, 13, 16 and 30 spawn strong fixed rivals
+  ---
+  duration_ms: 0.647576
+  type: 'test'
+  ...
+# Subtest: daily racing strength follows underlying course; original native menu rubber stays separate
+ok 222 - daily racing strength follows underlying course; original native menu rubber stays separate
+  ---
+  duration_ms: 0.210808
+  type: 'test'
+  ...
+# Subtest: rivals look for a safe pass around an ACTUAL other-AI blocker, not just the player
+ok 223 - rivals look for a safe pass around an ACTUAL other-AI blocker, not just the player
+  ---
+  duration_ms: 0.21884
+  type: 'test'
+  ...
+# Subtest: actual RacingCareer bridge removes leader slowdown but restores native behavior outside races
+ok 224 - actual RacingCareer bridge removes leader slowdown but restores native behavior outside races
+  ---
+  duration_ms: 0.298601
+  type: 'test'
+  ...
+# Subtest: V4.7 middle and late game contest the podium with three strong native racers
+ok 225 - V4.7 middle and late game contest the podium with three strong native racers
+  ---
+  duration_ms: 0.294064
+  type: 'test'
+  ...
+# Subtest: V4.8 even the opening rounds must present multiple podium threats
+ok 226 - V4.8 even the opening rounds must present multiple podium threats
+  ---
+  duration_ms: 0.363548
+  type: 'test'
+  ...
+# Subtest: committed native overtake lane is held through a real progress crossing, then released
+ok 227 - committed native overtake lane is held through a real progress crossing, then released
+  ---
+  duration_ms: 0.295636
+  type: 'test'
+  ...
+# Subtest: AI never commits a contact-risky new pass into a sharp corner
+ok 228 - AI never commits a contact-risky new pass into a sharp corner
+  ---
+  duration_ms: 0.189325
+  type: 'test'
+  ...
+# Subtest: 原生大厅只有AI演示赛车时即可启动，不等待尚未创建的玩家
+ok 229 - 原生大厅只有AI演示赛车时即可启动，不等待尚未创建的玩家
+  ---
+  duration_ms: 0.205239
+  type: 'test'
+  ...
+# Subtest: 切关加载失败或仍处于旧赛道时，禁止用错误赛道开新关并扣燃油
+ok 230 - 切关加载失败或仍处于旧赛道时，禁止用错误赛道开新关并扣燃油
+  ---
+  duration_ms: 1.034771
+  type: 'test'
+  ...
+# Subtest: 画质偏好：首次使用均衡，用户选流畅后刷新仍优先流畅
+ok 231 - 画质偏好：首次使用均衡，用户选流畅后刷新仍优先流畅
+  ---
+  duration_ms: 0.167162
+  type: 'test'
+  ...
+# Subtest: 暂停静音复用原生 WebAudio 总音量，支持启动前后调用与恢复
+ok 232 - 暂停静音复用原生 WebAudio 总音量，支持启动前后调用与恢复
+  ---
+  duration_ms: 0.287965
+  type: 'test'
+  ...
+# Subtest: 成绩读取真实玩家，不将AI冲线计为玩家完赛
+ok 233 - 成绩读取真实玩家，不将AI冲线计为玩家完赛
+  ---
+  duration_ms: 0.349167
+  type: 'test'
+  ...
+# Subtest: single-run settlement uses the actual 07/22 finish distance and does not mark a loss as finished
+ok 234 - single-run settlement uses the actual 07/22 finish distance and does not mark a loss as finished
+  ---
+  duration_ms: 0.783411
+  type: 'test'
+  ...
+# Subtest: 结算冻结原生模拟，重复调用不会从结算恢复模拟
+ok 235 - 结算冻结原生模拟，重复调用不会从结算恢复模拟
+  ---
+  duration_ms: 0.313843
+  type: 'test'
+  ...
+# Subtest: 输入释放同时清除触屏、键盘、两个边沿集合
+ok 236 - 输入释放同时清除触屏、键盘、两个边沿集合
+  ---
+  duration_ms: 0.176045
+  type: 'test'
+  ...
+# Subtest: V10手机镜头FOV有可感知的速度反馈且不超过88度
+ok 237 - V10手机镜头FOV有可感知的速度反馈且不超过88度
+  ---
+  duration_ms: 0.176245
+  type: 'test'
+  ...
+# Subtest: 手机特效保持原生粒子事件与寿命，限制近镜头遮挡；安装一次且键盘模式恢复原参数
+ok 238 - 手机特效保持原生粒子事件与寿命，限制近镜头遮挡；安装一次且键盘模式恢复原参数
+  ---
+  duration_ms: 0.409968
+  type: 'test'
+  ...
+# Subtest: 自适应只在持续低帧率后降一档；手选画质保留
+ok 239 - 自适应只在持续低帧率后降一档；手选画质保留
+  ---
+  duration_ms: 0.460134
+  type: 'test'
+  ...
+# Subtest: UI refresh at 30 Hz cannot throttle 120Hz physics or misread a backwards clock
+ok 240 - UI refresh at 30 Hz cannot throttle 120Hz physics or misread a backwards clock
+  ---
+  duration_ms: 0.293663
+  type: 'test'
+  ...
+# Subtest: phone quality drops on sustained <46FPS rather than isolated delayed frames
+ok 241 - phone quality drops on sustained <46FPS rather than isolated delayed frames
+  ---
+  duration_ms: 0.625313
+  type: 'test'
+  ...
+# Subtest: screen platform depends on input affordance, not CSS window width
+ok 242 - screen platform depends on input affordance, not CSS window width
+  ---
+  duration_ms: 0.147452
+  type: 'test'
+  ...
+# Subtest: phone follows closer car yet looks ahead on V9 technical bends
+ok 243 - phone follows closer car yet looks ahead on V9 technical bends
+  ---
+  duration_ms: 0.21872
+  type: 'test'
+  ...
+# Subtest: first mobile frame uses safe rendering budget, saved user preference still wins
+ok 244 - first mobile frame uses safe rendering budget, saved user preference still wins
+  ---
+  duration_ms: 0.102925
+  type: 'test'
+  ...
+# Subtest: phone downhill camera samples true road elevation, avoids airborne/fork guesses
+ok 245 - phone downhill camera samples true road elevation, avoids airborne/fork guesses
+  ---
+  duration_ms: 0.255285
+  type: 'test'
+  ...
+# Subtest: manual graphics cannot become unsteerable at sustained 14 FPS
+ok 246 - manual graphics cannot become unsteerable at sustained 14 FPS
+  ---
+  duration_ms: 0.11898
+  type: 'test'
+  ...
+# Subtest: input diagnostics are aggregate-only and do not claim display latency
+ok 247 - input diagnostics are aggregate-only and do not claim display latency
+  ---
+  duration_ms: 0.415036
+  type: 'test'
+  ...
+# Subtest: only real native Track.project activation can count a physical shortcut choice
+ok 248 - only real native Track.project activation can count a physical shortcut choice
+  ---
+  duration_ms: 0.546585
+  type: 'test'
+  ...
+# Subtest: incomplete or wrong-way exit never earns route saving; pause never ends route
+ok 249 - incomplete or wrong-way exit never earns route saving; pause never ends route
+  ---
+  duration_ms: 0.300232
+  type: 'test'
+  ...
+# Subtest: fake progress, malformed projections, spectator frames and changing courses fail closed
+ok 250 - fake progress, malformed projections, spectator frames and changing courses fail closed
+  ---
+  duration_ms: 2.271125
+  type: 'test'
+  ...
+# Subtest: shortcut registry has only permitted physical stage roads; default stages stay on long route
+ok 251 - shortcut registry has only permitted physical stage roads; default stages stay on long route
+  ---
+  duration_ms: 3.848664
+  type: 'test'
+  ...
+# Subtest: physical shortcut generates visible road, real optional projection and shorter distance
+ok 252 - physical shortcut generates visible road, real optional projection and shorter distance
+  ---
+  duration_ms: 34.163007
+  type: 'test'
+  ...
+# Subtest: stuck shortcut recovery stays on fork instead of teleporting to credited main distance
+ok 253 - stuck shortcut recovery stays on fork instead of teleporting to credited main distance
+  ---
+  duration_ms: 0.62365
+  type: 'test'
+  ...
+# Subtest: real fork-side paint signals entry early and narrows within the physical road
+ok 254 - real fork-side paint signals entry early and narrows within the physical road
+  ---
+  duration_ms: 0.714378
+  type: 'test'
+  ...
+# Subtest: stale shortcut projection releases after a real off-road or vertical miss
+ok 255 - stale shortcut projection releases after a real off-road or vertical miss
+  ---
+  duration_ms: 0.558001
+  type: 'test'
+  ...
+# Subtest: real displayed km/h uses native measured speed only
+ok 256 - real displayed km/h uses native measured speed only
+  ---
+  duration_ms: 0.362096
+  type: 'test'
+  ...
+# Subtest: boost and slowing are visible without changing car physics
+ok 257 - boost and slowing are visible without changing car physics
+  ---
+  duration_ms: 0.255295
+  type: 'test'
+  ...
+# Subtest: actual mobile HUD tracks race phases, current native km/h and fits below goal
+ok 258 - actual mobile HUD tracks race phases, current native km/h and fits below goal
+  ---
+  duration_ms: 44.165672
+  type: 'test'
+  ...
+# Subtest: stage03 has one real early steering choice, not a long automatic start
+ok 259 - stage03 has one real early steering choice, not a long automatic start
+  ---
+  duration_ms: 0.244048
+  type: 'test'
+  ...
+# Subtest: stage03 keeps its flyover skeleton and final return; only one entry sector is inserted
+ok 260 - stage03 keeps its flyover skeleton and final return; only one entry sector is inserted
+  ---
+  duration_ms: 0.700246
+  type: 'test'
+  ...
+# Subtest: one analogue steering thumb can immediately countersteer without second key
+ok 261 - one analogue steering thumb can immediately countersteer without second key
+  ---
+  duration_ms: 0.216627
+  type: 'test'
+  ...
+# Subtest: unrelated second finger never overrides current steering
+ok 262 - unrelated second finger never overrides current steering
+  ---
+  duration_ms: 0.09261
+  type: 'test'
+  ...
+# Subtest: pointercancel or lost capture clears stick instead of producing stale turn
+ok 263 - pointercancel or lost capture clears stick instead of producing stale turn
+  ---
+  duration_ms: 0.107072
+  type: 'test'
+  ...
+# Subtest: repeated alternating turns and sensitivity changes keep a single control
+ok 264 - repeated alternating turns and sensitivity changes keep a single control
+  ---
+  duration_ms: 0.127963
+  type: 'test'
+  ...
+# Subtest: race mobile HUD isolates three-lap elimination warning from the live speed badge
+ok 265 - race mobile HUD isolates three-lap elimination warning from the live speed badge
+  ---
+  duration_ms: 7.408273
+  type: 'test'
+  ...
+# Subtest: QQ-style uncluttered HUD never shows repeat coaching, player keeps full touch controls
+ok 266 - QQ-style uncluttered HUD never shows repeat coaching, player keeps full touch controls
+  ---
+  duration_ms: 1.87611
+  type: 'test'
+  ...
+# Subtest: clean HUD cannot leave stale DOM lookups that crash the animation frame
+ok 267 - clean HUD cannot leave stale DOM lookups that crash the animation frame
+  ---
+  duration_ms: 2.963389
+  type: 'test'
+  ...
+# Subtest: native finish gap needs real finished ranking times
+ok 268 - native finish gap needs real finished ranking times
+  ---
+  duration_ms: 0.35857
+  type: 'test'
+  ...
+# Subtest: starts, native grades, voluntary replays and ad callbacks are disjoint
+ok 269 - starts, native grades, voluntary replays and ad callbacks are disjoint
+  ---
+  duration_ms: 0.759526
+  type: 'test'
+  ...
+# Subtest: bounded local records, malformed storage and disabled storage never block racing
+ok 270 - bounded local records, malformed storage and disabled storage never block racing
+  ---
+  duration_ms: 7.756683
+  type: 'test'
+  ...
+# Subtest: opt-in local JSON export is parseable, anonymous and does not invent humans or revenue
+ok 271 - opt-in local JSON export is parseable, anonymous and does not invent humans or revenue
+  ---
+  duration_ms: 0.236907
+  type: 'test'
+  ...
+# Subtest: route savings are real native geometry only; local ledger survives legacy storage
+ok 272 - route savings are real native geometry only; local ledger survives legacy storage
+  ---
+  duration_ms: 0.391991
+  type: 'test'
+  ...
+# Subtest: corrupted fork metrics cannot create time savings or paid revenue
+ok 273 - corrupted fork metrics cannot create time savings or paid revenue
+  ---
+  duration_ms: 0.132771
+  type: 'test'
+  ...
+# Subtest: opposite wheel input commands faster actual wheel reversal without auto steering
+ok 274 - opposite wheel input commands faster actual wheel reversal without auto steering
+  ---
+  duration_ms: 0.150046
+  type: 'test'
+  ...
+# Subtest: countersteering REALLY reverses drift yaw in both symmetric directions
+ok 275 - countersteering REALLY reverses drift yaw in both symmetric directions
+  ---
+  duration_ms: 0.239402
+  type: 'test'
+  ...
+# Subtest: phone camera enlarges car, looks into upcoming bends, and tilts only subtly
+ok 276 - phone camera enlarges car, looks into upcoming bends, and tilts only subtly
+  ---
+  duration_ms: 0.45743
+  type: 'test'
+  ...
+# Subtest: high-speed and N2O speed perception is strong while static and low speed stay calm
+ok 277 - high-speed and N2O speed perception is strong while static and low speed stay calm
+  ---
+  duration_ms: 0.10556
+  type: 'test'
+  ...
+# Subtest: apex lookahead comes only from physical native path, never an assisted steering command
+ok 278 - apex lookahead comes only from physical native path, never an assisted steering command
+  ---
+  duration_ms: 0.151409
+  type: 'test'
+  ...
+# Subtest: fair AI skill means real native cornering budget, with narrower roads requiring braking
+ok 279 - fair AI skill means real native cornering budget, with narrower roads requiring braking
+  ---
+  duration_ms: 0.124638
+  type: 'test'
+  ...
+# Subtest: rival physically changes available side near a player, not standings or longitudinal progress
+ok 280 - rival physically changes available side near a player, not standings or longitudinal progress
+  ---
+  duration_ms: 0.169115
+  type: 'test'
+  ...
+# Subtest: AI conserves own earned nitro during risky branch, but has no global handicap
+ok 281 - AI conserves own earned nitro during risky branch, but has no global handicap
+  ---
+  duration_ms: 0.138169
+  type: 'test'
+  ...
+# Subtest: 30 individually choreographed V10 courses use physical extra sectors, preserve all source blueprints and V9 rollback
+ok 282 - 30 individually choreographed V10 courses use physical extra sectors, preserve all source blueprints and V9 rollback
+  ---
+  duration_ms: 63.478814
+  type: 'test'
+  ...
+# Subtest: authored dune and ice crests alter the REAL native road height instead of being overwritten
+ok 283 - authored dune and ice crests alter the REAL native road height instead of being overwritten
+  ---
+  duration_ms: 2.79087
+  type: 'test'
+  ...
+# Subtest: native road speed marks are one batched drawcall, follow real width and 3D elevation
+ok 284 - native road speed marks are one batched drawcall, follow real width and 3D elevation
+  ---
+  duration_ms: 1.075192
+  type: 'test'
+  ...
+# Subtest: unique stage silhouettes use actual native altitude and never occupy the main collision zone
+ok 285 - unique stage silhouettes use actual native altitude and never occupy the main collision zone
+  ---
+  duration_ms: 1.262374
+  type: 'test'
+  ...
+# Subtest: restored V11 route catalog exactly preserves all 30 original bundle designs
+ok 286 - restored V11 route catalog exactly preserves all 30 original bundle designs
+  ---
+  duration_ms: 0.504801
+  type: 'test'
+  ...
+# Subtest: restored geometry preserves original road controls, elevation, width profiles and identity
+ok 287 - restored geometry preserves original road controls, elevation, width profiles and identity
+  ---
+  duration_ms: 8.976187
+  type: 'test'
+  ...
+# Subtest: course consumers cannot mutate cached geometry used by another race or preview
+ok 288 - course consumers cannot mutate cached geometry used by another race or preview
+  ---
+  duration_ms: 0.440284
+  type: 'test'
+  ...
+# Subtest: point-to-point presentation excludes the return connector on stages 07 and 22
+ok 289 - point-to-point presentation excludes the return connector on stages 07 and 22
+  ---
+  duration_ms: 0.118078
+  type: 'test'
+  ...
+# Subtest: native V11 layout adapter matches the original bundle without duplicate shaping or scaling
+ok 290 - native V11 layout adapter matches the original bundle without duplicate shaping or scaling
+  ---
+  duration_ms: 14.258198
+  type: 'test'
+  ...
+# Subtest: V11 requires integrated support while explicit V9 updates and the c099 V10 baseline remain separate
+ok 291 - V11 requires integrated support while explicit V9 updates and the c099 V10 baseline remain separate
+  ---
+  duration_ms: 23.588385
+  type: 'test'
+  ...
+# Subtest: invalid road geometry fails explicitly before entering the native renderer
+ok 292 - invalid road geometry fails explicitly before entering the native renderer
+  ---
+  duration_ms: 0.415687
+  type: 'test'
+  ...
+# Subtest: a committed shortcut survives recoverable contact after crossing its nominal start
+ok 293 - a committed shortcut survives recoverable contact after crossing its nominal start
+  ---
+  duration_ms: 14.003579
+  type: 'test'
+  ...
+# Subtest: route choice is stable per lap and fully missed entrances do not steer across a closed side wall
+ok 294 - route choice is stable per lap and fully missed entrances do not steer across a closed side wall
+  ---
+  duration_ms: 3.857528
+  type: 'test'
+  ...
+# Subtest: native physical entry is followed even when a collision put a cautious rival on the fork
+ok 295 - native physical entry is followed even when a collision put a cautious rival on the fork
+  ---
+  duration_ms: 0.393673
+  type: 'test'
+  ...
+# Subtest: controller never grants speed, nitro, position or race progress and only emits legal native controls
+ok 296 - controller never grants speed, nitro, position or race progress and only emits legal native controls
+  ---
+  duration_ms: 2.452539
+  type: 'test'
+  ...
+# Subtest: physical AI delegates movement to PlayerCar and exposes measured projection for native lap accounting
+ok 297 - physical AI delegates movement to PlayerCar and exposes measured projection for native lap accounting
+  ---
+  duration_ms: 0.841549
+  type: 'test'
+  ...
+# Subtest: native V11 05: two complete race laps physically enter and leave the actual fork
+ok 298 - native V11 05: two complete race laps physically enter and leave the actual fork
+  ---
+  duration_ms: 358.404277
+  type: 'test'
+  ...
+# Subtest: native V11 05: real entrance-wall impact costs time and preserves a reachable fork commitment
+ok 299 - native V11 05: real entrance-wall impact costs time and preserves a reachable fork commitment
+  ---
+  duration_ms: 31.857895
+  type: 'test'
+  ...
+# Subtest: native V11 05: contact after crossing the entrance can still recover through the actual portal
+ok 300 - native V11 05: contact after crossing the entrance can still recover through the actual portal
+  ---
+  duration_ms: 28.36577
+  type: 'test'
+  ...
+# Subtest: native V11 10: two complete race laps physically enter and leave the actual fork
+ok 301 - native V11 10: two complete race laps physically enter and leave the actual fork
+  ---
+  duration_ms: 315.688373
+  type: 'test'
+  ...
+# Subtest: native V11 10: real entrance-wall impact costs time and preserves a reachable fork commitment
+ok 302 - native V11 10: real entrance-wall impact costs time and preserves a reachable fork commitment
+  ---
+  duration_ms: 28.932132
+  type: 'test'
+  ...
+# Subtest: native V11 10: contact after crossing the entrance can still recover through the actual portal
+ok 303 - native V11 10: contact after crossing the entrance can still recover through the actual portal
+  ---
+  duration_ms: 20.649432
+  type: 'test'
+  ...
+# Subtest: native V11 12: two complete race laps physically enter and leave the actual fork
+ok 304 - native V11 12: two complete race laps physically enter and leave the actual fork
+  ---
+  duration_ms: 303.954673
+  type: 'test'
+  ...
+# Subtest: native V11 12: real entrance-wall impact costs time and preserves a reachable fork commitment
+ok 305 - native V11 12: real entrance-wall impact costs time and preserves a reachable fork commitment
+  ---
+  duration_ms: 21.997735
+  type: 'test'
+  ...
+# Subtest: native V11 12: contact after crossing the entrance can still recover through the actual portal
+ok 306 - native V11 12: contact after crossing the entrance can still recover through the actual portal
+  ---
+  duration_ms: 13.706391
+  type: 'test'
+  ...
+# Subtest: native V11 13: two complete race laps physically enter and leave the actual fork
+ok 307 - native V11 13: two complete race laps physically enter and leave the actual fork
+  ---
+  duration_ms: 257.652183
+  type: 'test'
+  ...
+# Subtest: native V11 13: real entrance-wall impact costs time and preserves a reachable fork commitment
+ok 308 - native V11 13: real entrance-wall impact costs time and preserves a reachable fork commitment
+  ---
+  duration_ms: 20.873669
+  type: 'test'
+  ...
+# Subtest: native V11 13: contact after crossing the entrance can still recover through the actual portal
+ok 309 - native V11 13: contact after crossing the entrance can still recover through the actual portal
+  ---
+  duration_ms: 14.947412
+  type: 'test'
+  ...
+# Subtest: native V11 16: two complete race laps physically enter and leave the actual fork
+ok 310 - native V11 16: two complete race laps physically enter and leave the actual fork
+  ---
+  duration_ms: 196.665404
+  type: 'test'
+  ...
+# Subtest: native V11 16: real entrance-wall impact costs time and preserves a reachable fork commitment
+ok 311 - native V11 16: real entrance-wall impact costs time and preserves a reachable fork commitment
+  ---
+  duration_ms: 17.881457
+  type: 'test'
+  ...
+# Subtest: native V11 16: contact after crossing the entrance can still recover through the actual portal
+ok 312 - native V11 16: contact after crossing the entrance can still recover through the actual portal
+  ---
+  duration_ms: 16.382837
+  type: 'test'
+  ...
+# Subtest: native V11 18: two complete race laps physically enter and leave the actual fork
+ok 313 - native V11 18: two complete race laps physically enter and leave the actual fork
+  ---
+  duration_ms: 230.304911
+  type: 'test'
+  ...
+# Subtest: native V11 18: real entrance-wall impact costs time and preserves a reachable fork commitment
+ok 314 - native V11 18: real entrance-wall impact costs time and preserves a reachable fork commitment
+  ---
+  duration_ms: 20.319815
+  type: 'test'
+  ...
+# Subtest: native V11 18: contact after crossing the entrance can still recover through the actual portal
+ok 315 - native V11 18: contact after crossing the entrance can still recover through the actual portal
+  ---
+  duration_ms: 13.286999
+  type: 'test'
+  ...
+# Subtest: native V11 22: actual single-run finish plus two diagnostic loop traversals
+ok 316 - native V11 22: actual single-run finish plus two diagnostic loop traversals
+  ---
+  duration_ms: 452.090022
+  type: 'test'
+  ...
+# Subtest: native V11 22: real entrance-wall impact costs time and preserves a reachable fork commitment
+ok 317 - native V11 22: real entrance-wall impact costs time and preserves a reachable fork commitment
+  ---
+  duration_ms: 24.949927
+  type: 'test'
+  ...
+# Subtest: native V11 22: contact after crossing the entrance can still recover through the actual portal
+ok 318 - native V11 22: contact after crossing the entrance can still recover through the actual portal
+  ---
+  duration_ms: 20.331072
+  type: 'test'
+  ...
+# Subtest: native V11 25: two complete race laps physically enter and leave the actual fork
+ok 319 - native V11 25: two complete race laps physically enter and leave the actual fork
+  ---
+  duration_ms: 230.941226
+  type: 'test'
+  ...
+# Subtest: native V11 25: real entrance-wall impact costs time and preserves a reachable fork commitment
+ok 320 - native V11 25: real entrance-wall impact costs time and preserves a reachable fork commitment
+  ---
+  duration_ms: 19.672954
+  type: 'test'
+  ...
+# Subtest: native V11 25: contact after crossing the entrance can still recover through the actual portal
+ok 321 - native V11 25: contact after crossing the entrance can still recover through the actual portal
+  ---
+  duration_ms: 15.043857
+  type: 'test'
+  ...
+# Subtest: native V11 27: two complete race laps physically enter and leave the actual fork
+ok 322 - native V11 27: two complete race laps physically enter and leave the actual fork
+  ---
+  duration_ms: 243.61226
+  type: 'test'
+  ...
+# Subtest: native V11 27: real entrance-wall impact costs time and preserves a reachable fork commitment
+ok 323 - native V11 27: real entrance-wall impact costs time and preserves a reachable fork commitment
+  ---
+  duration_ms: 22.775627
+  type: 'test'
+  ...
+# Subtest: native V11 27: contact after crossing the entrance can still recover through the actual portal
+ok 324 - native V11 27: contact after crossing the entrance can still recover through the actual portal
+  ---
+  duration_ms: 14.428861
+  type: 'test'
+  ...
+# Subtest: native V11 30: two complete race laps physically enter and leave the actual fork
+ok 325 - native V11 30: two complete race laps physically enter and leave the actual fork
+  ---
+  duration_ms: 248.328777
+  type: 'test'
+  ...
+# Subtest: native V11 30: real entrance-wall impact costs time and preserves a reachable fork commitment
+ok 326 - native V11 30: real entrance-wall impact costs time and preserves a reachable fork commitment
+  ---
+  duration_ms: 18.763998
+  type: 'test'
+  ...
+# Subtest: native V11 30: contact after crossing the entrance can still recover through the actual portal
+ok 327 - native V11 30: contact after crossing the entrance can still recover through the actual portal
+  ---
+  duration_ms: 21.368917
+  type: 'test'
+  ...
+# Subtest: 四图用固定源码控制点重新生成S弯，保留四种场景且不新增分支导航
+ok 328 - 四图用固定源码控制点重新生成S弯，保留四种场景且不新增分支导航
+  ---
+  duration_ms: 4.046943
+  type: 'test'
+  ...
+# Subtest: desert technical pass adds two independently anchored chicanes without touching original jump heights
+ok 329 - desert technical pass adds two independently anchored chicanes without touching original jump heights
+  ---
+  duration_ms: 1.886354
+  type: 'test'
+  ...
+# Subtest: V3.5 four distinctive track families preserve pinned tunnel and bridge anchors
+ok 330 - V3.5 four distinctive track families preserve pinned tunnel and bridge anchors
+  ---
+  duration_ms: 1.433853
+  type: 'test'
+  ...
+# Subtest: 源码坐标变动不能悄悄应用到别人的地图
+ok 331 - 源码坐标变动不能悄悄应用到别人的地图
+  ---
+  duration_ms: 0.601257
+  type: 'test'
+  ...
+# Subtest: V3.3 uses nonoverlapping descending native index cuts, preserves all four original anchors
+ok 332 - V3.3 uses nonoverlapping descending native index cuts, preserves all four original anchors
+  ---
+  duration_ms: 0.199491
+  type: 'test'
+  ...
+# Subtest: 方向错误超过阈值自动回正，不增加任何按钮、不移动赛道进度
+ok 333 - 方向错误超过阈值自动回正，不增加任何按钮、不移动赛道进度
+  ---
+  duration_ms: 0.178078
+  type: 'test'
+  ...
+# Subtest: 完全停住但车头反向也能自动救援，不误判正常停住
+ok 334 - 完全停住但车头反向也能自动救援，不误判正常停住
+  ---
+  duration_ms: 0.123286
+  type: 'test'
+  ...
+# Subtest: 空中、暂停、结束和没有原生复位接口时均不复位
+ok 335 - 空中、暂停、结束和没有原生复位接口时均不复位
+  ---
+  duration_ms: 0.07977
+  type: 'test'
+  ...
+# Subtest: 地形导向只在真正要过弯时提示左右，不占用驾驶按钮
+ok 336 - 地形导向只在真正要过弯时提示左右，不占用驾驶按钮
+  ---
+  duration_ms: 0.406513
+  type: 'test'
+  ...
+# Subtest: 道具路线提醒只说左右车道，不伪称随机道具已确定
+ok 337 - 道具路线提醒只说左右车道，不伪称随机道具已确定
+  ---
+  duration_ms: 0.219271
+  type: 'test'
+  ...
+# Subtest: 道具车道提示使用真实仍可拾取的原生盒子坐标，不看随机道具内容
+ok 338 - 道具车道提示使用真实仍可拾取的原生盒子坐标，不看随机道具内容
+  ---
+  duration_ms: 0.281664
+  type: 'test'
+  ...
+# Subtest: 四图原生加速带不增加数量，偏移到合法左右车道形成真实路线抉择
+ok 339 - 四图原生加速带不增加数量，偏移到合法左右车道形成真实路线抉择
+  ---
+  duration_ms: 0.527245
+  type: 'test'
+  ...
+# Subtest: 左右加速带提示依照原生横向坐标，避免把右边说成左边
+ok 340 - 左右加速带提示依照原生横向坐标，避免把右边说成左边
+  ---
+  duration_ms: 0.142064
+  type: 'test'
+  ...
+# Subtest: 双键贴护栏持续无进展：先警告、6秒后原生脱困，不瞬移或改圈数
+ok 341 - 双键贴护栏持续无进展：先警告、6秒后原生脱困，不瞬移或改圈数
+  ---
+  duration_ms: 0.11935
+  type: 'test'
+  ...
+# Subtest: 正常通过慢弯或恢复前进时，不得错误判定被困
+ok 342 - 正常通过慢弯或恢复前进时，不得错误判定被困
+  ---
+  duration_ms: 0.149065
+  type: 'test'
+  ...
+# Subtest: 四张地图的路边转向标识采用曲率热点，每圈不超过7个且互不扎堆
+ok 343 - 四张地图的路边转向标识采用曲率热点，每圈不超过7个且互不扎堆
+  ---
+  duration_ms: 0.426884
+  type: 'test'
+  ...
+# Subtest: 弯道牌只建轻量 Sprite，换图时会释放图标材质/贴图而不修改物理
+ok 344 - 弯道牌只建轻量 Sprite，换图时会释放图标材质/贴图而不修改物理
+  ---
+  duration_ms: 0.831434
+  type: 'test'
+  ...
+# Subtest: V6.0 gives all 30 career stages an independent drivable spline identity
+ok 345 - V6.0 gives all 30 career stages an independent drivable spline identity
+  ---
+  duration_ms: 2.810057
+  type: 'test'
+  ...
+# Subtest: V6.0 keeps thirty FULL hand-authored outlines, not 4 routes with a few point edits
+ok 346 - V6.0 keeps thirty FULL hand-authored outlines, not 4 routes with a few point edits
+  ---
+  duration_ms: 2.888376
+  type: 'test'
+  ...
+# Subtest: V3.7 source-themed pickup placement follows REAL route, and native four-scene demo remains usable
+ok 347 - V3.7 source-themed pickup placement follows REAL route, and native four-scene demo remains usable
+  ---
+  duration_ms: 6.2361
+  type: 'test'
+  ...
+# Subtest: V4.2 numbered physical course gates and biome-specific tall props exist in actual 3D scene
+ok 348 - V4.2 numbered physical course gates and biome-specific tall props exist in actual 3D scene
+  ---
+  duration_ms: 2.036741
+  type: 'test'
+  ...
+# Subtest: V3.7 every career track has a distinct sky palette without changing demo scene config
+ok 349 - V3.7 every career track has a distinct sky palette without changing demo scene config
+  ---
+  duration_ms: 0.494386
+  type: 'test'
+  ...
+# Subtest: V3.8 each independent career course contains authored two-key S-bend sectors
+ok 350 - V3.8 each independent career course contains authored two-key S-bend sectors
+  ---
+  duration_ms: 2.203884
+  type: 'test'
+  ...
+# Subtest: native AI earns an opportunity only after a physically clean corner exit
+ok 351 - native AI earns an opportunity only after a physically clean corner exit
+  ---
+  duration_ms: 0.321094
+  type: 'test'
+  ...
+# Subtest: the same real corner produces the SAME AI capability whether player leads or trails
+ok 352 - the same real corner produces the SAME AI capability whether player leads or trails
+  ---
+  duration_ms: 0.179941
+  type: 'test'
+  ...
+# Subtest: clean native corner boost works in every speed race, including former tutorial and bosses
+ok 353 - clean native corner boost works in every speed race, including former tutorial and bosses
+  ---
+  duration_ms: 0.191349
+  type: 'test'
+  ...
+# Subtest: all four biomes support clean corner-line decisions, but spins prevent rewards
+ok 354 - all four biomes support clean corner-line decisions, but spins prevent rewards
+  ---
+  duration_ms: 0.127783
+  type: 'test'
+  ...
+# Subtest: sharp real corner warning beats speed reward; pad direction follows actual native lateral position
+ok 355 - sharp real corner warning beats speed reward; pad direction follows actual native lateral position
+  ---
+  duration_ms: 0.240373
+  type: 'test'
+  ...
+# Subtest: signed successive curves produce map-specific S warnings without any new driving controls
+ok 356 - signed successive curves produce map-specific S warnings without any new driving controls
+  ---
+  duration_ms: 0.186071
+  type: 'test'
+  ...
+# Subtest: random item cannot be announced as known; jump/bridge hints require actual native geometry
+ok 357 - random item cannot be announced as known; jump/bridge hints require actual native geometry
+  ---
+  duration_ms: 0.231389
+  type: 'test'
+  ...
+# Subtest: hints are disabled when not racing, airborne or wrong way
+ok 358 - hints are disabled when not racing, airborne or wrong way
+  ---
+  duration_ms: 0.111568
+  type: 'test'
+  ...
+# Subtest: V3.9 AI is one measured notch stronger in early real races, without an overpowered field
+ok 359 - V3.9 AI is one measured notch stronger in early real races, without an overpowered field
+  ---
+  duration_ms: 0.443819
+  type: 'test'
+  ...
+# Subtest: V3.9 boosts selected regular rivals but protects fragile goals, experts and bosses
+ok 360 - V3.9 boosts selected regular rivals but protects fragile goals, experts and bosses
+  ---
+  duration_ms: 0.427645
+  type: 'test'
+  ...
+# Subtest: Daily challenge uses the original course difficulty, never an arbitrary harder daily ID
+ok 361 - Daily challenge uses the original course difficulty, never an arbitrary harder daily ID
+  ---
+  duration_ms: 0.217999
+  type: 'test'
+  ...
+# Subtest: skill-based exit decision cannot be triggered by a stationary enemy or by a straight-only map
+ok 362 - skill-based exit decision cannot be triggered by a stationary enemy or by a straight-only map
+  ---
+  duration_ms: 0.100341
+  type: 'test'
+  ...
+# Subtest: career technical roads use true physical collider widths on the original spline
+ok 363 - career technical roads use true physical collider widths on the original spline
+  ---
+  duration_ms: 1.136454
+  type: 'test'
+  ...
+# Subtest: even the former tutorial now has a technical physical course and all 30 remain unique
+ok 364 - even the former tutorial now has a technical physical course and all 30 remain unique
+  ---
+  duration_ms: 1.144956
+  type: 'test'
+  ...
+# Subtest: 30 separate physical spline identities and 14 distinct advanced course blueprints
+ok 365 - 30 separate physical spline identities and 14 distinct advanced course blueprints
+  ---
+  duration_ms: 1.318449
+  type: 'test'
+  ...
+# Subtest: advanced circuits stay separated at road width and have meaningfully different silhouettes
+ok 366 - advanced circuits stay separated at road width and have meaningfully different silhouettes
+  ---
+  duration_ms: 5.322227
+  type: 'test'
+  ...
+# Subtest: chapters 5-8 increase rank, corner and race duration demand without fake winner data
+ok 367 - chapters 5-8 increase rank, corner and race duration demand without fake winner data
+  ---
+  duration_ms: 0.242126
+  type: 'test'
+  ...
+# Subtest: old saves and paid reward bookkeeping survive expansion; stage 17 unlocks only via stage 16
+ok 368 - old saves and paid reward bookkeeping survive expansion; stage 17 unlocks only via stage 16
+  ---
+  duration_ms: 0.208374
+  type: 'test'
+  ...
+# Subtest: AI uses an actual fork road rather than a rank or time warp
+ok 369 - AI uses an actual fork road rather than a rank or time warp
+  ---
+  duration_ms: 1.617239
+  type: 'test'
+  ...
+# Subtest: cautious AI can choose the main track and malformed data fails closed
+ok 370 - cautious AI can choose the main track and malformed data fails closed
+  ---
+  duration_ms: 0.379652
+  type: 'test'
+  ...
+# Subtest: V9 shortcut AI brakes according to genuine physical turn before and inside the fork
+ok 371 - V9 shortcut AI brakes according to genuine physical turn before and inside the fork
+  ---
+  duration_ms: 0.582088
+  type: 'test'
+  ...
+# Subtest: eight ranked item types have visible unique identities and balanced weights
+ok 372 - eight ranked item types have visible unique identities and balanced weights
+  ---
+  duration_ms: 0.151718
+  type: 'test'
+  ...
+# Subtest: shockwave only hits real nearby rivals on the same vertical layer
+ok 373 - shockwave only hits real nearby rivals on the same vertical layer
+  ---
+  duration_ms: 0.582128
+  type: 'test'
+  ...
+# Subtest: thunder warns first then strikes only when real target stays in range
+ok 374 - thunder warns first then strikes only when real target stays in range
+  ---
+  duration_ms: 0.422807
+  type: 'test'
+  ...
+# Subtest: barricade creates a real in-world obstacle in native collision queue
+ok 375 - barricade creates a real in-world obstacle in native collision queue
+  ---
+  duration_ms: 0.457951
+  type: 'test'
+  ...
+# Subtest: V8 defines thirty distinct finite loop-safe altitude signatures
+ok 376 - V8 defines thirty distinct finite loop-safe altitude signatures
+  ---
+  duration_ms: 1.05414
+  type: 'test'
+  ...
+# Subtest: V8 opt-in creates physically longer, terrain-diverse 30 stages without touching old baselines
+ok 377 - V8 opt-in creates physically longer, terrain-diverse 30 stages without touching old baselines
+  ---
+  duration_ms: 6.254952
+  type: 'test'
+  ...
+# Subtest: V8 geometry rejects accidental steep, nonfinite or degenerate roads
+ok 378 - V8 geometry rejects accidental steep, nonfinite or degenerate roads
+  ---
+  duration_ms: 0.195495
+  type: 'test'
+  ...
+# Subtest: v8 authored cliff grade materially differs from flat stage 01
+ok 379 - v8 authored cliff grade materially differs from flat stage 01
+  ---
+  duration_ms: 0.171359
+  type: 'test'
+  ...
+# Subtest: V9 corner markers must remain small, outside playable road and not overlap fork decisions
+ok 380 - V9 corner markers must remain small, outside playable road and not overlap fork decisions
+  ---
+  duration_ms: 0.259521
+  type: 'test'
+  ...
+# Subtest: V9 quiet sign changes are opt-in; legacy V8 placement and dimensions unchanged
+ok 381 - V9 quiet sign changes are opt-in; legacy V8 placement and dimensions unchanged
+  ---
+  duration_ms: 0.130527
+  type: 'test'
+  ...
+# Subtest: V9 can retain emergency corner cue if every technical bend is beside a fork
+ok 382 - V9 can retain emergency corner cue if every technical bend is beside a fork
+  ---
+  duration_ms: 0.128233
+  type: 'test'
+  ...
+# Subtest: all 30 courses use distinct original driving-beat sequences, including recovery sectors
+ok 383 - all 30 courses use distinct original driving-beat sequences, including recovery sectors
+  ---
+  duration_ms: 0.150527
+  type: 'test'
+  ...
+# Subtest: V8 native course construction uses authored V9 geometry; non-V8 compatibility preserved
+ok 384 - V8 native course construction uses authored V9 geometry; non-V8 compatibility preserved
+  ---
+  duration_ms: 24.490014
+  type: 'test'
+  ...
+# Subtest: V9 original beats are pure, bounded, do not move track anchors and reject bad sectors
+ok 385 - V9 original beats are pure, bounded, do not move track anchors and reject bad sectors
+  ---
+  duration_ms: 0.256276
+  type: 'test'
+  ...
+# Subtest: V9 width variation changes actual safe driving width, not only line paint
+ok 386 - V9 width variation changes actual safe driving width, not only line paint
+  ---
+  duration_ms: 15.541518
+  type: 'test'
+  ...
+# Subtest: formerly passive stages 02/07 add early long steering arcs; stage22 preserves its near-apex real shortcut
+ok 387 - formerly passive stages 02/07 add early long steering arcs; stage22 preserves its near-apex real shortcut
+  ---
+  duration_ms: 0.250237
+  type: 'test'
+  ...
+# Subtest: every late campaign map has a long sustained arc or linked countersteer sector
+ok 388 - every late campaign map has a long sustained arc or linked countersteer sector
+  ---
+  duration_ms: 0.21882
+  type: 'test'
+  ...
+# Subtest: authored long sweep bends use native centerline metres, with genuine two-sided steering complexity
+ok 389 - authored long sweep bends use native centerline metres, with genuine two-sided steering complexity
+  ---
+  duration_ms: 0.514886
+  type: 'test'
+  ...
+# Subtest: V9 terrain-themed numbered arch moves away from actual physical shortcut junction
+ok 390 - V9 terrain-themed numbered arch moves away from actual physical shortcut junction
+  ---
+  duration_ms: 0.19195
+  type: 'test'
+  ...
+# Subtest: rotary wheel gives genuine signed, analogue steering after angular movement
+ok 391 - rotary wheel gives genuine signed, analogue steering after angular movement
+  ---
+  duration_ms: 0.378931
+  type: 'test'
+  ...
+# Subtest: wheel ignores hub crossing and angular wrap has no 360 degree jump
+ok 392 - wheel ignores hub crossing and angular wrap has no 360 degree jump
+  ---
+  duration_ms: 0.215675
+  type: 'test'
+  ...
+# Subtest: second thumb and cancellation do not steal wheel, even with other actions held
+ok 393 - second thumb and cancellation do not steal wheel, even with other actions held
+  ---
+  duration_ms: 0.147202
+  type: 'test'
+  ...
+# Subtest: partial rotary steering passes to unchanged real native driver intents
+ok 394 - partial rotary steering passes to unchanged real native driver intents
+  ---
+  duration_ms: 0.177678
+  type: 'test'
+  ...
+# Subtest: production UI exposes one wheel and no QA mode selector
+ok 395 - production UI exposes one wheel and no QA mode selector
+  ---
+  duration_ms: 14.024311
+  type: 'test'
+  ...
+# Subtest: rotary wheel accepts held countdown input and exports only timing aggregates
+ok 396 - rotary wheel accepts held countdown input and exports only timing aggregates
+  ---
+  duration_ms: 0.824464
+  type: 'test'
+  ...
+# Subtest: countdown pre-grip is not misreported as slow input processing
+ok 397 - countdown pre-grip is not misreported as slow input processing
+  ---
+  duration_ms: 0.791493
+  type: 'test'
+  ...
+# Subtest: actual race adapter credits the player, independently of the AI leader
+ok 398 - actual race adapter credits the player, independently of the AI leader
+  ---
+  duration_ms: 3.52164
+  type: 'test'
+  ...
+# Subtest: race settlement pauses the native finish loop and preserves the player outcome
+ok 399 - race settlement pauses the native finish loop and preserves the player outcome
+  ---
+  duration_ms: 2.459819
+  type: 'test'
+  ...
+1..399
+# tests 399
+# suites 0
+# pass 399
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4082.203213

@@ -1,0 +1,58 @@
+✔ unverified H5 permission never creates an ad instance (0.930167ms)
+✔ isEnded true completes exactly once and removes handlers (1.13825ms)
+✔ cancel followed by a stale complete callback remains cancelled (0.10925ms)
+✔ load or show failure restores play without a reward (0.187375ms)
+✔ missing close is bounded and late completion is ignored (11.150083ms)
+✔ double tap cannot start two concurrent ad shows (20.835667ms)
+✔ a timed-out singleton cannot attribute its late close to a second reward request (7.73425ms)
+✔ verified TapTap H5 landscape metadata can request a rewarded video (0.247875ms)
+✖ a stale complete close during load cannot replace the current video cancellation (0.90975ms)
+✖ a complete callback cannot grant a reward when show rejects (0.29475ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 8
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 98.099417
+
+✖ failing tests:
+
+test at templates/web-lite/h5-source-mobile-v1/tests/ads.test.mjs:70:1
+✖ a stale complete close during load cannot replace the current video cancellation (0.90975ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'completed'
+  - 'cancelled'
+  
+      at TestContext.<anonymous> (file:///Users/kker/.codex/worktrees/racing-final-acceptance/%E5%A6%96%E6%80%AA%E5%A4%9C%E5%B8%82/templates/web-lite/h5-source-mobile-v1/tests/ads.test.mjs:73:10)
+      at async Test.run (node:internal/test_runner/test:1125:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'completed',
+    expected: 'cancelled',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at templates/web-lite/h5-source-mobile-v1/tests/ads.test.mjs:77:1
+✖ a complete callback cannot grant a reward when show rejects (0.29475ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'completed'
+  - 'failed'
+  
+      at TestContext.<anonymous> (file:///Users/kker/.codex/worktrees/racing-final-acceptance/%E5%A6%96%E6%80%AA%E5%A4%9C%E5%B8%82/templates/web-lite/h5-source-mobile-v1/tests/ads.test.mjs:83:10)
+      at async Test.run (node:internal/test_runner/test:1125:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'completed',
+    expected: 'failed',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

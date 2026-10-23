@@ -1,0 +1,1360 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "qq-speed / 极速飞驰",
+  "workspace": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/runs/h5-qq-mobile-20261013/workspace",
+  "axes": {
+    "objectTypes": [
+      "starter",
+      "custom-01",
+      "custom-02",
+      "custom-03",
+      "custom-04",
+      "custom-05",
+      "wheel-and-drift",
+      "nitro-and-item",
+      "physical-ai",
+      "reward-ownership"
+    ],
+    "lifecycleStateBranches": [
+      "home",
+      "race",
+      "pause-resume",
+      "settlement-replay",
+      "reward-complete-cancel-timeout-storage"
+    ],
+    "rendererPaths": [
+      "default Three.js + DOM overlay"
+    ],
+    "viewports": [
+      {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "starter-home-desktop",
+      "objectType": "starter",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "PASS",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Exact car preview rendered at full pixel ratio 1 with normal UI. This checks presentation presence, not final aesthetic/physical-phone approval.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-final-20261020/evidence/browser-gallery.json",
+          "sha256": "ae721261ae33dedf1b742ef518cc90580d1e17ed3626bd0e19aa1c7815228f1f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "starter-race-desktop",
+      "objectType": "starter",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "PASS",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Normal keyboard driving in actual Chromium/Metal final build; not full desktop race completion.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-final-20261020/evidence/browser-desktop.json",
+          "sha256": "9e22d4318c62fdf685a4ad63594277bafd8190321a00cec827b9606c41bc3155",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "starter-home-touch-landscape",
+      "objectType": "starter",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Exact car preview rendered at full pixel ratio 1 with normal UI. This checks presentation presence, not final aesthetic/physical-phone approval.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-final-20261020/evidence/browser-gallery.json",
+          "sha256": "ae721261ae33dedf1b742ef518cc90580d1e17ed3626bd0e19aa1c7815228f1f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "starter-race-touch-landscape",
+      "objectType": "starter",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Final-build natural visible-input race/settlement/replay; observed stages 01,02,03,04,05,06,07,08,09,10,11,12; failed . Not all-stage acceptance.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-final-20261020/evidence/natural-summary.json",
+          "sha256": "14c9fb4a418fb66d43ed5b998bebe13ad13d12119b8c4105516c1b3d48ff3661",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "starter-home-small-landscape",
+      "objectType": "starter",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "PASS",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Exact car preview rendered at full pixel ratio 1 with normal UI. This checks presentation presence, not final aesthetic/physical-phone approval.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-final-20261020/evidence/browser-gallery.json",
+          "sha256": "ae721261ae33dedf1b742ef518cc90580d1e17ed3626bd0e19aa1c7815228f1f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "starter-race-small-landscape",
+      "objectType": "starter",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "starter-home-portrait",
+      "objectType": "starter",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Exact car preview rendered at full pixel ratio 1 with normal UI. This checks presentation presence, not final aesthetic/physical-phone approval.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-final-20261020/evidence/browser-gallery.json",
+          "sha256": "ae721261ae33dedf1b742ef518cc90580d1e17ed3626bd0e19aa1c7815228f1f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "starter-race-portrait",
+      "objectType": "starter",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "custom-01-home-desktop",
+      "objectType": "custom-01",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "PASS",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Exact car preview rendered at full pixel ratio 1 with normal UI. This checks presentation presence, not final aesthetic/physical-phone approval.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-final-20261020/evidence/browser-gallery.json",
+          "sha256": "ae721261ae33dedf1b742ef518cc90580d1e17ed3626bd0e19aa1c7815228f1f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "custom-01-race-desktop",
+      "objectType": "custom-01",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "custom-01-home-touch-landscape",
+      "objectType": "custom-01",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Exact car preview rendered at full pixel ratio 1 with normal UI. This checks presentation presence, not final aesthetic/physical-phone approval.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-final-20261020/evidence/browser-gallery.json",
+          "sha256": "ae721261ae33dedf1b742ef518cc90580d1e17ed3626bd0e19aa1c7815228f1f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "custom-01-race-touch-landscape",
+      "objectType": "custom-01",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "custom-01-home-small-landscape",
+      "objectType": "custom-01",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "PASS",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Exact car preview rendered at full pixel ratio 1 with normal UI. This checks presentation presence, not final aesthetic/physical-phone approval.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-final-20261020/evidence/browser-gallery.json",
+          "sha256": "ae721261ae33dedf1b742ef518cc90580d1e17ed3626bd0e19aa1c7815228f1f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "custom-01-race-small-landscape",
+      "objectType": "custom-01",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "custom-01-home-portrait",
+      "objectType": "custom-01",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "custom-01-race-portrait",
+      "objectType": "custom-01",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "custom-02-home-desktop",
+      "objectType": "custom-02",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "PASS",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Exact car preview rendered at full pixel ratio 1 with normal UI. This checks presentation presence, not final aesthetic/physical-phone approval.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-final-20261020/evidence/browser-gallery.json",
+          "sha256": "ae721261ae33dedf1b742ef518cc90580d1e17ed3626bd0e19aa1c7815228f1f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "custom-02-race-desktop",
+      "objectType": "custom-02",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "custom-02-home-touch-landscape",
+      "objectType": "custom-02",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Exact car preview rendered at full pixel ratio 1 with normal UI. This checks presentation presence, not final aesthetic/physical-phone approval.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-final-20261020/evidence/browser-gallery.json",
+          "sha256": "ae721261ae33dedf1b742ef518cc90580d1e17ed3626bd0e19aa1c7815228f1f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "custom-02-race-touch-landscape",
+      "objectType": "custom-02",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "custom-02-home-small-landscape",
+      "objectType": "custom-02",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "PASS",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Exact car preview rendered at full pixel ratio 1 with normal UI. This checks presentation presence, not final aesthetic/physical-phone approval.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-final-20261020/evidence/browser-gallery.json",
+          "sha256": "ae721261ae33dedf1b742ef518cc90580d1e17ed3626bd0e19aa1c7815228f1f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "custom-02-race-small-landscape",
+      "objectType": "custom-02",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "custom-02-home-portrait",
+      "objectType": "custom-02",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "custom-02-race-portrait",
+      "objectType": "custom-02",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "custom-03-home-desktop",
+      "objectType": "custom-03",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "PASS",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Exact car preview rendered at full pixel ratio 1 with normal UI. This checks presentation presence, not final aesthetic/physical-phone approval.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-final-20261020/evidence/browser-gallery.json",
+          "sha256": "ae721261ae33dedf1b742ef518cc90580d1e17ed3626bd0e19aa1c7815228f1f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "custom-03-race-desktop",
+      "objectType": "custom-03",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "custom-03-home-touch-landscape",
+      "objectType": "custom-03",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Exact car preview rendered at full pixel ratio 1 with normal UI. This checks presentation presence, not final aesthetic/physical-phone approval.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-final-20261020/evidence/browser-gallery.json",
+          "sha256": "ae721261ae33dedf1b742ef518cc90580d1e17ed3626bd0e19aa1c7815228f1f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "custom-03-race-touch-landscape",
+      "objectType": "custom-03",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "custom-03-home-small-landscape",
+      "objectType": "custom-03",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "PASS",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Exact car preview rendered at full pixel ratio 1 with normal UI. This checks presentation presence, not final aesthetic/physical-phone approval.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-final-20261020/evidence/browser-gallery.json",
+          "sha256": "ae721261ae33dedf1b742ef518cc90580d1e17ed3626bd0e19aa1c7815228f1f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "custom-03-race-small-landscape",
+      "objectType": "custom-03",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "custom-03-home-portrait",
+      "objectType": "custom-03",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "custom-03-race-portrait",
+      "objectType": "custom-03",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "custom-04-home-desktop",
+      "objectType": "custom-04",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "PASS",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Exact car preview rendered at full pixel ratio 1 with normal UI. This checks presentation presence, not final aesthetic/physical-phone approval.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-final-20261020/evidence/browser-gallery.json",
+          "sha256": "ae721261ae33dedf1b742ef518cc90580d1e17ed3626bd0e19aa1c7815228f1f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "custom-04-race-desktop",
+      "objectType": "custom-04",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "custom-04-home-touch-landscape",
+      "objectType": "custom-04",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Exact car preview rendered at full pixel ratio 1 with normal UI. This checks presentation presence, not final aesthetic/physical-phone approval.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-final-20261020/evidence/browser-gallery.json",
+          "sha256": "ae721261ae33dedf1b742ef518cc90580d1e17ed3626bd0e19aa1c7815228f1f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "custom-04-race-touch-landscape",
+      "objectType": "custom-04",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "custom-04-home-small-landscape",
+      "objectType": "custom-04",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "PASS",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Exact car preview rendered at full pixel ratio 1 with normal UI. This checks presentation presence, not final aesthetic/physical-phone approval.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-final-20261020/evidence/browser-gallery.json",
+          "sha256": "ae721261ae33dedf1b742ef518cc90580d1e17ed3626bd0e19aa1c7815228f1f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "custom-04-race-small-landscape",
+      "objectType": "custom-04",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "custom-04-home-portrait",
+      "objectType": "custom-04",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "custom-04-race-portrait",
+      "objectType": "custom-04",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "custom-05-home-desktop",
+      "objectType": "custom-05",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "PASS",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Exact car preview rendered at full pixel ratio 1 with normal UI. This checks presentation presence, not final aesthetic/physical-phone approval.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-final-20261020/evidence/browser-gallery.json",
+          "sha256": "ae721261ae33dedf1b742ef518cc90580d1e17ed3626bd0e19aa1c7815228f1f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "custom-05-race-desktop",
+      "objectType": "custom-05",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "custom-05-home-touch-landscape",
+      "objectType": "custom-05",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Exact car preview rendered at full pixel ratio 1 with normal UI. This checks presentation presence, not final aesthetic/physical-phone approval.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-final-20261020/evidence/browser-gallery.json",
+          "sha256": "ae721261ae33dedf1b742ef518cc90580d1e17ed3626bd0e19aa1c7815228f1f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "custom-05-race-touch-landscape",
+      "objectType": "custom-05",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "custom-05-home-small-landscape",
+      "objectType": "custom-05",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "PASS",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Exact car preview rendered at full pixel ratio 1 with normal UI. This checks presentation presence, not final aesthetic/physical-phone approval.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-final-20261020/evidence/browser-gallery.json",
+          "sha256": "ae721261ae33dedf1b742ef518cc90580d1e17ed3626bd0e19aa1c7815228f1f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "custom-05-race-small-landscape",
+      "objectType": "custom-05",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "custom-05-home-portrait",
+      "objectType": "custom-05",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "custom-05-race-portrait",
+      "objectType": "custom-05",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "wheel-and-drift-race-desktop",
+      "objectType": "wheel-and-drift",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "wheel-and-drift-pause-resume-desktop",
+      "objectType": "wheel-and-drift",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "wheel-and-drift-race-touch-landscape",
+      "objectType": "wheel-and-drift",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Trusted multi-touch: left drift, opposite wheel input, native steer reverses and drift ends, release returns axis 0; screenshots captured.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-final-20261020/evidence/browser-touch.json",
+          "sha256": "8acd6831b88061104c1a632394f7cc094b7597ac730ca5ea8445d837281ab00b",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "wheel-and-drift-pause-resume-touch-landscape",
+      "objectType": "wheel-and-drift",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "wheel-and-drift-race-small-landscape",
+      "objectType": "wheel-and-drift",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "wheel-and-drift-pause-resume-small-landscape",
+      "objectType": "wheel-and-drift",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "wheel-and-drift-race-portrait",
+      "objectType": "wheel-and-drift",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "wheel-and-drift-pause-resume-portrait",
+      "objectType": "wheel-and-drift",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "nitro-and-item-race-desktop",
+      "objectType": "nitro-and-item",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "nitro-and-item-pause-resume-desktop",
+      "objectType": "nitro-and-item",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "nitro-and-item-race-touch-landscape",
+      "objectType": "nitro-and-item",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "nitro-and-item-pause-resume-touch-landscape",
+      "objectType": "nitro-and-item",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "nitro-and-item-race-small-landscape",
+      "objectType": "nitro-and-item",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "nitro-and-item-pause-resume-small-landscape",
+      "objectType": "nitro-and-item",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "nitro-and-item-race-portrait",
+      "objectType": "nitro-and-item",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "nitro-and-item-pause-resume-portrait",
+      "objectType": "nitro-and-item",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "physical-ai-race-desktop",
+      "objectType": "physical-ai",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "physical-ai-pause-resume-desktop",
+      "objectType": "physical-ai",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "physical-ai-race-touch-landscape",
+      "objectType": "physical-ai",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "physical-ai-pause-resume-touch-landscape",
+      "objectType": "physical-ai",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "physical-ai-race-small-landscape",
+      "objectType": "physical-ai",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "physical-ai-pause-resume-small-landscape",
+      "objectType": "physical-ai",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "physical-ai-race-portrait",
+      "objectType": "physical-ai",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "physical-ai-pause-resume-portrait",
+      "objectType": "physical-ai",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "reward-ownership-reward-complete-cancel-timeout-storage-desktop",
+      "objectType": "reward-ownership",
+      "lifecycleStateBranch": "reward-complete-cancel-timeout-storage",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "reward-ownership-reward-complete-cancel-timeout-storage-touch-landscape",
+      "objectType": "reward-ownership",
+      "lifecycleStateBranch": "reward-complete-cancel-timeout-storage",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "reward-ownership-reward-complete-cancel-timeout-storage-small-landscape",
+      "objectType": "reward-ownership",
+      "lifecycleStateBranch": "reward-complete-cancel-timeout-storage",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "reward-ownership-reward-complete-cancel-timeout-storage-portrait",
+      "objectType": "reward-ownership",
+      "lifecycleStateBranch": "reward-complete-cancel-timeout-storage",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "This exact object/state/viewport branch lacks final natural + perceptual evidence; fixture/sibling coverage cannot close it.",
+      "evidence": []
+    }
+  ],
+  "confirmedFindings": [
+    "All six cars have distinct actual previews at three landscape viewports; no UI-over-car intersection observed in reviewed captures",
+    "Five imported GLBs still have static merged wheel meshes; no fake independent animation claim",
+    "Trusted wheel countersteer ends the observed drift; real OS background not emitted by this automation browser",
+    "SDK fixture premature/late/cancel/error branches are engineering evidence only"
+  ],
+  "remainingGaps": [
+    "Physical Android/iPhone and real H5 SDK",
+    "Unobserved natural stages: 13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30",
+    "Early-stage competitive pressure and full visual quality approval"
+  ],
+  "createdAt": "2026-10-20T06:02:29.195Z"
+}

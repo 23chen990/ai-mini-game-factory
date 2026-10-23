@@ -1,0 +1,67 @@
+$ eslint .
+
+/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/docs/lean-pilot/racing-unified-20261018/evidence-v116-render-fix/high-quality-bootstrap-probe.mjs
+   33:112  error  'console' is not defined           no-undef
+   38:13   error  'window' is not defined            no-undef
+   41:16   error  'performance' is not defined       no-undef
+   41:84   error  'document' is not defined          no-undef
+   42:49   error  'document' is not defined          no-undef
+   43:29   error  'localStorage' is not defined      no-undef
+   44:19   error  'document' is not defined          no-undef
+   45:23   error  'innerWidth' is not defined        no-undef
+   45:41   error  'innerHeight' is not defined       no-undef
+   45:57   error  'devicePixelRatio' is not defined  no-undef
+   58:48   error  'document' is not defined          no-undef
+   58:81   error  'document' is not defined          no-undef
+   96:34   error  'document' is not defined          no-undef
+   96:98   error  'window' is not defined            no-undef
+   97:51   error  'window' is not defined            no-undef
+   97:72   error  'window' is not defined            no-undef
+   97:101  error  'window' is not defined            no-undef
+   97:141  error  'window' is not defined            no-undef
+   97:166  error  'window' is not defined            no-undef
+  106:34   error  'window' is not defined            no-undef
+  106:65   error  'document' is not defined          no-undef
+  114:37   error  'window' is not defined            no-undef
+  114:68   error  'window' is not defined            no-undef
+  115:5    error  'document' is not defined          no-undef
+  115:62   error  'window' is not defined            no-undef
+  116:5    error  'window' is not defined            no-undef
+  137:62   error  'process' is not defined           no-undef
+  140:82   error  'process' is not defined           no-undef
+  155:3    error  'console' is not defined           no-undef
+
+/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/docs/lean-pilot/racing-unified-20261018/evidence-v116-render-fix/high-quality-probe.mjs
+   33:112  error  'console' is not defined           no-undef
+   38:13   error  'window' is not defined            no-undef
+   41:16   error  'performance' is not defined       no-undef
+   41:84   error  'document' is not defined          no-undef
+   42:49   error  'document' is not defined          no-undef
+   43:29   error  'localStorage' is not defined      no-undef
+   44:19   error  'document' is not defined          no-undef
+   45:23   error  'innerWidth' is not defined        no-undef
+   45:41   error  'innerHeight' is not defined       no-undef
+   45:57   error  'devicePixelRatio' is not defined  no-undef
+   58:48   error  'document' is not defined          no-undef
+   58:81   error  'document' is not defined          no-undef
+   95:34   error  'document' is not defined          no-undef
+   95:98   error  'window' is not defined            no-undef
+   96:51   error  'window' is not defined            no-undef
+   96:72   error  'window' is not defined            no-undef
+   96:101  error  'window' is not defined            no-undef
+   96:141  error  'window' is not defined            no-undef
+   96:166  error  'window' is not defined            no-undef
+  105:34   error  'window' is not defined            no-undef
+  105:65   error  'document' is not defined          no-undef
+  113:37   error  'window' is not defined            no-undef
+  113:68   error  'window' is not defined            no-undef
+  114:5    error  'document' is not defined          no-undef
+  114:62   error  'window' is not defined            no-undef
+  115:5    error  'window' is not defined            no-undef
+  136:62   error  'process' is not defined           no-undef
+  139:82   error  'process' is not defined           no-undef
+  154:3    error  'console' is not defined           no-undef
+
+✖ 58 problems (58 errors, 0 warnings)
+
+[ELIFECYCLE] Command failed with exit code 1.

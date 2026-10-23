@@ -1,4 +1,5 @@
-import { CAREER_KEY, STAGES, newCareer, loadCareer, dailyStage, localDayKey, stageUnlocked, skinUnlocked, recordStage, validDrift, fractionPassed } from './career.mjs';
+import { CAREER_KEY, STAGES, newCareer, loadCareer, dailyStage, localDayKey, stageUnlocked, starGateStatus, skinUnlocked, carUnlocked, recordStage, validDrift, fractionPassed } from './career.mjs';
+import { grantCosmetic } from './cosmetics.mjs';
 import { AutoItems, OvertakeTracker, ITEM_LABELS, thinItemBoxes, installItemCleanup, awardCornerPass, removeEliminatedAi } from './items.mjs';
 import { FUEL_KEY, FUEL_RULES, newFuelState, loadFuel, saveFuel, syncFuel, spendRaceFuel, fuelTimeLeft, fuelAdEligible, fuelPlatformReady, grantAdvertFuel } from '../fuel.mjs';
 import { requestRewardedVideo } from '../themes.mjs';
@@ -15,24 +16,28 @@ export class RacingCareer {
     } catch {
       this.progress = newCareer();this.fuel = newFuelState();this.storageOK = false;
     }
-    this.index = STAGES.findIndex((_, i) => !stageUnlocked(this.progress, i));
-    this.index = this.index < 0 ? STAGES.length - 1 : Math.max(0, this.index - 1);
+    // Rewarded level passes can create valid progress without a medal on the
+    // preceding level. Resume the newest open level instead of stopping at
+    // the first historical gap in the medal list.
+    this.index = STAGES.reduce((last,_,i)=>stageUnlocked(this.progress,i)?i:last,0);
     this.dailySnapshot = null;
     this.auto = new AutoItems();this.passes = new OvertakeTracker();this.recovery = new WrongWayRecovery();this.pressure = new RivalPressure();
-    this.config = null;this.tap = null;this.fuelEnabled = false;this.adBusy = false;this.attempt = 0;
-    // One earned free replay per stage/session after an actual failed result.
-    // Never mutate native vehicle, rank or reward callbacks.
-    this.freeReplayStageId = null;this.usedFreeReplays = new Set();
+    this.config = null;this.tap = null;this.fuelEnabled = false;this.adReady = false;this.adBusy = false;this.attempt = 0;
+    // A settled loss earns another same-stage attempt in this live session.
+    // The initial entry costs fuel; no quit or skipped stage mints a credit.
+    this.freeReplayStageId = null;
     // A short-session optional rewarded boost, NOT a paywall or fake in-race revive.
     this.retryOfferRound = -1;this.retryAdAttempts = 0;
     this.retryAdLastAt = 0;this.bonusNitroStageId = null;
     this.rewardedProvider = requestRewardedVideo;
-    this.startedAt = Date.now();this.active = false;this.notice = [];this.boss = null;
+    this.stageAdEpoch = 0;this.nextStageAdRound = -1;
+    this.startedAt = Date.now();this.active = false;this.activeStageId = null;this.notice = [];this.boss = null;
     this.metrics = this.freshMetrics();
   }
   get stage() { return this.dailySnapshot ?? STAGES[this.index]; }
   canDaily() { return (this.progress.stars['04'] ?? 0) > 0; }
   setDaily(date = new Date()) { if (!this.canDaily()) return false;
+    this.stageAdEpoch++;this.nextStageAdRound=-1;
     if (this.freeReplayStageId !== dailyStage(date).id) this.freeReplayStageId = null;
     this.dailySnapshot = dailyStage(date);return true; }
   freshMetrics() { return { pickups: 0, bonusItems: 0, rescues: 0, pursuitWarnings: 0, cleanDrifts: 0, cleanPasses: 0, padCount: 0, gateSpeed: 0, survived: 0, eliminated: false, timedOut: false, beatBoss: false, lastPadAt: -100, previousProgress: 0, checkedSpeed: 0, checkpoints: 0, knockoutWarnings: 0, timeAllowance: 0 }; }
@@ -41,30 +46,168 @@ export class RacingCareer {
       this.storage.setItem(CAREER_KEY, JSON.stringify(this.progress));
       this.storage.setItem(FUEL_KEY, saveFuel(this.fuel));
       return true;
-    } catch { this.storageOK = false;this.fuelEnabled = false;return false; }
+    } catch { this.storageOK = false;this.fuelEnabled = false;this.adReady = false;return false; }
   }
   setStage(index) { if (!stageUnlocked(this.progress, index)) return false;
+    this.stageAdEpoch++;this.nextStageAdRound=-1;
     if (this.stage.id !== STAGES[index].id) {
       this.freeReplayStageId = null;
       this.retryOfferRound = -1;
     }
     this.index = index;this.dailySnapshot = null;return true; }
-  setSkin(index) { if (!skinUnlocked(this.progress, index)) return false;this.progress.skin = index;this.save();return true; }
+  /** Selecting an already-owned look must persist before it is shown as saved. */
+  setSkin(index) {
+    if (!skinUnlocked(this.progress,index) || this.adBusy || this.active) return false;
+    if (this.progress.skin === index) return true;
+    const updated={...this.progress,skin:index};
+    try { this.storage.setItem(CAREER_KEY,JSON.stringify(updated)); }
+    catch { this.storageOK=false;this.adReady=false;this.fuelEnabled=false;return false; }
+    this.progress=updated;return true;
+  }
+  /** Only a registered, permanently owned model can become the saved car. */
+  setCar(id) {
+    if (!carUnlocked(this.progress,id) || this.adBusy || this.active) return false;
+    if (this.progress.car === id) return true;
+    const updated={...this.progress,car:id};
+    try { this.storage.setItem(CAREER_KEY,JSON.stringify(updated)); }
+    catch { this.storageOK=false;this.adReady=false;this.fuelEnabled=false;return false; }
+    this.progress=updated;return true;
+  }
   nextStage() { return !this.dailySnapshot && this.index + 1 < STAGES.length && stageUnlocked(this.progress, this.index + 1) ? this.index + 1 : this.index; }
   configure(game) {
+    if (!carUnlocked(this.progress,this.progress.car)) return false;
     const s = this.stage;
-    Object.assign(game.settings, { map: s.map, course: s.course, mode: s.mode, laps: s.laps, diff: s.diff, skin: this.progress.skin });
+    Object.assign(game.settings, { map: s.map, course: s.course, mode: s.mode, laps: s.laps, diff: s.diff, skin: this.progress.skin, car: this.progress.car });
     game.save();
+    return true;
   }
-  setupAd(config, tap) { this.config = config;this.tap = tap;this.fuelEnabled = this.storageOK && fuelPlatformReady(config, tap);return this.fuelEnabled; }
+  setupAd(config,tap) {
+    this.config=config;this.tap=tap;
+    this.adReady=this.storageOK&&fuelPlatformReady(config,tap);
+    // Fuel runs identically on mobile and desktop, even if the platform has
+    // NO rewarded ad adapter. SDK availability only controls ad buttons.
+    this.fuelEnabled=this.storageOK;
+    return this.adReady;
+  }
+  /** Only an installed official ad unit may offer a cosmetic reward; all ads
+   * share the existing session mutex with fuel, pass and retry rewards. */
+  canOfferCosmeticAd(kind,id) {
+    return this.storageOK && this.adReady && !this.adBusy && !this.active &&
+      grantCosmetic(this.progress,kind,id)!==null;
+  }
+  canOfferSkinAd(index) { return this.canOfferCosmeticAd('skin',index); }
+  canOfferCarAd(id) { return this.canOfferCosmeticAd('car',id); }
+  async watchCosmeticAd(kind,id) {
+    if (!this.canOfferCosmeticAd(kind,id)) return {status:'unavailable'};
+    const rounds=this.progress.rounds,epoch=this.stageAdEpoch;
+    this.adBusy=true;
+    try {
+      const out=await this.rewardedProvider({tap:this.tap,config:this.config});
+      if(out?.status!=='completed')return {status:out?.status??'failed'};
+      // A race may begin and return to the lobby without settling a round.
+      // Its old video must not grant a reward after that lifecycle change.
+      if(this.active || !this.storageOK || !this.adReady || this.stageAdEpoch!==epoch ||
+        this.progress.rounds!==rounds) return {status:'stale'};
+      const updated=grantCosmetic(this.progress,kind,id);
+      if(!updated)return {status:'stale'};
+      // The reward is permanent only if the existing save key accepts the write.
+      // Never award an unsaved entitlement, even when the video finished.
+      try { this.storage.setItem(CAREER_KEY,JSON.stringify(updated)); }
+      catch {
+        this.storageOK=false;this.adReady=false;this.fuelEnabled=false;
+        return {status:'save-failed'};
+      }
+      this.progress=updated;
+      return {status:'completed',kind,id};
+    } catch { return {status:'failed'}; }
+    finally { this.adBusy=false; }
+  }
+  watchSkinAd(index) { return this.watchCosmeticAd('skin',index); }
+  watchCarAd(id) { return this.watchCosmeticAd('car',id); }
+  /** A real failed race may open exactly the adjacent next level. This is a
+   * separate entitlement from earned medals and checkpoint-star waivers. */
+  canOfferNextStageAd() {
+    const next=this.index+1;
+    return this.storageOK && this.adReady && !this.adBusy && !this.active &&
+      !this.dailySnapshot && next<STAGES.length &&
+      this.nextStageAdRound>0 && this.nextStageAdRound===this.progress.rounds &&
+      stageUnlocked(this.progress,this.index) && !stageUnlocked(this.progress,next);
+  }
+  async watchNextStageAd() {
+    if(!this.canOfferNextStageAd())return {status:'unavailable'};
+    const targetIndex=this.index+1,stageId=STAGES[targetIndex].id;
+    const fromStageId=this.stage.id,round=this.progress.rounds,epoch=this.stageAdEpoch;
+    this.adBusy=true;
+    try {
+      const out=await this.rewardedProvider({tap:this.tap,config:this.config});
+      if(out?.status!=='completed')return {status:out?.status??'failed'};
+      if(this.active || this.dailySnapshot || !this.storageOK ||
+        this.stageAdEpoch!==epoch || this.stage.id!==fromStageId ||
+        this.progress.rounds!==round || this.nextStageAdRound!==round ||
+        stageUnlocked(this.progress,targetIndex))return {status:'stale'};
+      const updated={...this.progress,stagePasses:{...this.progress.stagePasses,[stageId]:'ad'}};
+      try { this.storage.setItem(CAREER_KEY,JSON.stringify(updated)); }
+      catch {
+        this.storageOK=false;this.adReady=false;this.fuelEnabled=false;
+        return {status:'save-failed'};
+      }
+      this.progress=updated;this.nextStageAdRound=-1;
+      return {status:'completed',stageId,targetIndex};
+    } catch { return {status:'failed'}; }
+    finally { this.adBusy=false; }
+  }
+  gateStatus(index) { return starGateStatus(this.progress,index); }
+  canOfferGateAd(index) {
+    const gate=this.gateStatus(index);
+    return this.storageOK && this.adReady && !this.adBusy && !this.active &&
+      gate.starLocked && gate.required>0;
+  }
+  /** Official completion + synchronous durable local write are both required.
+   * An ad cannot mint stars, unlock a skipped prior stage or grant race fuel.
+   */
+  async watchGateAd(index) {
+    if(!this.canOfferGateAd(index))return {status:'unavailable'};
+    const gate=this.gateStatus(index),currentId=this.stage.id,rounds=this.progress.rounds;
+    this.adBusy=true;
+    try{
+      const out=await this.rewardedProvider({tap:this.tap,config:this.config});
+      if(out?.status!=='completed')return {status:out?.status??'failed'};
+      if(this.stage.id!==currentId||this.progress.rounds!==rounds||
+        !this.gateStatus(index).starLocked) return {status:'stale'};
+      const updated={...this.progress,gatePasses:{
+        ...this.progress.gatePasses,[gate.stageId]:'ad'
+      }};
+      try{
+        this.storage.setItem(CAREER_KEY,JSON.stringify(updated));
+      }catch{
+        // A failing storage cannot claim a permanent rewarded unlock.
+        // Disable further ads so the player cannot waste another video.
+        this.storageOK=false;this.adReady=false;this.fuelEnabled=false;
+        return {status:'save-failed'};
+      }
+      this.progress=updated;
+      return {status:'completed',stageId:gate.stageId,required:gate.required};
+    }catch{return {status:'failed'};}
+    finally{this.adBusy=false;}
+  }
   canStart() {
-    if (this.adBusy || (this.dailySnapshot ? !this.canDaily() : !stageUnlocked(this.progress, this.index))) return false;
+    if (this.adBusy || !carUnlocked(this.progress,this.progress.car) ||
+      (this.dailySnapshot ? !this.canDaily() : !stageUnlocked(this.progress, this.index))) return false;
     if (!this.fuelEnabled) return true;
     this.fuel = syncFuel(this.fuel);
     return this.freeReplayStageId === this.stage.id || this.fuel.amount >= FUEL_RULES.raceCost;
   }
-  begin(game) {
-    this.active = true;this.boss = null;this.bossName = '';this.notice = [];this.metrics = this.freshMetrics();
+  /** A pause-menu restart reuses the fuel debit of the current live attempt.
+   * Explicit stage identity and active-run checks prevent a quit/new stage from
+   * receiving a free entry. Do not apply to a finished race. */
+  canRestartCurrentEntry() {
+    return this.active && !this.adBusy && this.activeStageId === this.stage.id;
+  }
+  begin(game, { reuseCurrentEntry = false } = {}) {
+    const keepExistingDebit = reuseCurrentEntry && this.canRestartCurrentEntry();
+    this.stageAdEpoch++;this.nextStageAdRound=-1;
+    this.active = true;this.activeStageId = this.stage.id;
+    this.boss = null;this.bossName = '';this.notice = [];this.metrics = this.freshMetrics();
     this.metrics.timeAllowance = this.stage.kind === 'relay' ? this.stage.baseTime : this.stage.kind === 'time' ? this.stage.target : 0;
     this.auto.reset();this.passes.reset();this.recovery.reset();this.pressure.reset();
     this.passes.previous = game.standings.indexOf(game.player) + 1;
@@ -101,11 +244,10 @@ export class RacingCareer {
           this.stage.id==='16'?2.10:Math.max(this.boss.skill,2.04);
       }
     }
-    if (this.fuelEnabled) {
-      // Claim only AFTER native countdown has successfully begun. This must
-      // never become extra fuel or transfer to a different stage.
+    if (this.fuelEnabled && !keepExistingDebit) {
+      // Claim only AFTER native countdown has successfully begun. A pause
+      // restart reuses its already-consumed debit; no bonus fuel is minted.
       if (this.freeReplayStageId === this.stage.id) {
-        this.usedFreeReplays.add(this.stage.id);
         this.freeReplayStageId = null;
       } else {
         const spent = spendRaceFuel(this.fuel);
@@ -272,7 +414,7 @@ export class RacingCareer {
   drainNotices() { return this.notice.splice(0, this.notice.length); }
   finalize(game, result) {
     if (!this.active) return null;
-    this.active = false;
+    this.active = false;this.activeStageId = null;
     if (this.boss) this.metrics.beatBoss = game.standings.indexOf(game.player) < game.standings.indexOf(this.boss);
     const stage = this.stage, outcome = recordStage(this.progress, stage, result, this.metrics);
     let best = outcome.career.times[stage.id] ?? null;
@@ -296,11 +438,12 @@ export class RacingCareer {
       best = daily.best || null;
     }
     this.progress = outcome.career;
+    this.nextStageAdRound = !this.dailySnapshot && outcome.stars===0 ? this.progress.rounds : -1;
     this.retryOfferRound = outcome.stars === 0 ? this.progress.rounds : -1;
-    // One free retry after failure only. No resets on subsequent losses;
-    // tickets do not persist to the next browser session.
-    this.freeReplayStageId = outcome.stars === 0 && this.fuelEnabled &&
-      !this.usedFreeReplays.has(stage.id) ? stage.id : null;
+    // Consecutive settled losses keep the same-stage skill loop open.
+    // Winning, switching stages and a new browser session remove the ticket.
+    // This never grants fuel, speed, medals or advertisement entitlements.
+    this.freeReplayStageId = outcome.stars === 0 && this.fuelEnabled ? stage.id : null;
     this.save();
     return { ...outcome, best, metric: { ...this.metrics } };
   }
@@ -312,7 +455,7 @@ export class RacingCareer {
    */
   canOfferRetryBoost() {
     const elapsed=Date.now()-this.startedAt;
-    return this.fuelEnabled && !this.adBusy &&
+    return this.fuelEnabled && this.adReady && !this.adBusy &&
       this.retryOfferRound === this.progress.rounds &&
       this.retryOfferRound > 0 && this.retryAdAttempts < 2 &&
       elapsed >= 60_000 && this.canStart() &&
@@ -336,17 +479,17 @@ export class RacingCareer {
   }
   fuelText() {
     if (!this.storageOK) return '本地存储不可用 · 试玩不限油，关卡进度可能不会保留';
-    if (!this.fuelEnabled) return '油量系统未开通 · 当前不限油试玩';
+    if (!this.fuelEnabled) return '本机存档不可用 · 当前不限油试玩';
     this.fuel = syncFuel(this.fuel);
     const left = fuelTimeLeft(this.fuel);
     const mm = left ? ' · 下次恢复 ' + Math.ceil(left / 60000) + ' 分钟' : '';
-    return '⛽ ' + this.fuel.amount + '/' + FUEL_RULES.max + ' · 每场 -1' + mm;
+    return '⛽ ' + this.fuel.amount + '/' + FUEL_RULES.max + ' · 每局 -5 · 每分钟 +1' + mm;
   }
   canOfferAd() {
     // With a hard first stage, do not softlock failed players out of voluntary
     // fuel recovery. fuelAdEligible itself requires a real recorded round,
     // session time, low balance and cooldown; ad never changes race outcomes.
-    return this.fuelEnabled && !this.adBusy && fuelAdEligible(this.fuel, {
+    return this.fuelEnabled && this.adReady && !this.adBusy && fuelAdEligible(this.fuel, {
       rounds: this.progress.rounds, sessionMs: Date.now() - this.startedAt, adReady: true,
     });
   }
@@ -355,7 +498,7 @@ export class RacingCareer {
     this.adBusy = true;
     const ticket = 'racing-ad-' + Date.now() + '-' + (++this.attempt);
     try {
-      const outcome = await requestRewardedVideo({ tap: this.tap, config: this.config });
+      const outcome = await this.rewardedProvider({ tap: this.tap, config: this.config });
       const granted = grantAdvertFuel(this.fuel, outcome.status, ticket);
       if (granted.ok) {
         this.fuel = granted.state;

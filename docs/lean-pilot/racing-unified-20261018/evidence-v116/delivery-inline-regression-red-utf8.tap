@@ -1,0 +1,30 @@
+✖ real verifyDelivery preserves both script bodies with a 14 MiB inline asset payload (614.309765ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 744.527052
+
+✖ failing tests:
+
+test at tools/lean-pilot/racing-delivery-verify.test.mjs:152:1
+✖ real verifyDelivery preserves both script bodies with a 14 MiB inline asset payload (614.309765ms)
+  Error: Command failed: /opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node --input-type=module -e import {verifyDelivery} from "file:///workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-delivery-verify.mjs";try{console.log(JSON.stringify(await verifyDelivery(process.argv[1])));}catch(error){console.error(error.message);process.exitCode=1;} /tmp/racing-delivery-contract-A9b4Hu/runs/h5-qq-mobile-20261013/fixture-manifest.json
+  Maximum call stack size exceeded
+  
+      at genericNodeError (node:internal/errors:985:15)
+      at wrappedFn (node:internal/errors:539:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:509:28)
+      at maybeClose (node:internal/child_process:1141:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:306:5) {
+    code: 1,
+    killed: false,
+    signal: null,
+    cmd: '/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node --input-type=module -e import {verifyDelivery} from "file:///workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-delivery-verify.mjs";try{console.log(JSON.stringify(await verifyDelivery(process.argv[1])));}catch(error){console.error(error.message);process.exitCode=1;} /tmp/racing-delivery-contract-A9b4Hu/runs/h5-qq-mobile-20261013/fixture-manifest.json',
+    stdout: '',
+    stderr: 'Maximum call stack size exceeded\n'
+  }

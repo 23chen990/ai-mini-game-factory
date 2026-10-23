@@ -1,6 +1,7 @@
-/* global console, process, Buffer, setTimeout, clearTimeout, URL */
+/* global console, process, setTimeout, clearTimeout, URL */
 import { mkdir, writeFile, rename, rm, open, lstat } from 'node:fs/promises';
 import { createServer } from 'node:http';
+import { pipeline } from 'node:stream/promises';
 import { spawn } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -9,7 +10,7 @@ import {networkInterfaces} from 'node:os';
 import {isIPv4} from 'node:net';
 import { candidateSpec } from './candidates.mjs';
 import { evaluateClinicPlaytest } from './clinic-review.mjs';
-import { sha256, safeRead, verifyEvidence, evaluateBudget, evaluatePlaytest, DEFAULT_BUDGET } from './policy.mjs';
+import { sha256, safeOpen, safeRead, safeFileHash, verifyEvidence, evaluateBudget, evaluatePlaytest, DEFAULT_BUDGET } from './policy.mjs';
 
 const ROOT = fileURLToPath(new URL('../../',import.meta.url));
 export const GAME_FILES = Object.freeze(['candidate.json','engine.mjs','index.html','main.mjs','style.css','themes.mjs']);
@@ -71,7 +72,7 @@ async function writeJson(root, name, value) {
 export async function buildHash(gameRoot) {
   const entries=[];
   const candidate=await json(gameRoot,'candidate.json');
-  for (const name of [...GAME_FILES,...(candidateSpec(candidate.templateId).runtimeFiles??[])]) entries.push([name,sha256(await safeRead(gameRoot,name))]);
+  for (const name of [...GAME_FILES,...(candidateSpec(candidate.templateId).runtimeFiles??[])]) entries.push([name,await safeFileHash(gameRoot,name)]);
   return sha256(JSON.stringify(entries));
 }
 export async function loadRun(base,id) {
@@ -205,8 +206,17 @@ export async function serveRun(base,id,port=4173,{bindAddress='127.0.0.1'}={}) {
       if(raw==='/build.json')return end(200,JSON.stringify({runId:id,buildHash:await buildHash(game),theme:run.theme}),'application/json');
       const name=raw==='/'?'index.html':raw.startsWith('/')?raw.slice(1):'';
       if(!allowed.has(name))return end(404,'Not found');
-      const bytes=await safeRead(game,name);return end(200,req.method==='HEAD'?Buffer.alloc(0):bytes,types[path.extname(name)]);
-    } catch{return end(400,'Invalid request');}
+      const handle=await safeOpen(game,name);
+      try {
+        const stat=await handle.stat();
+        if(!Number.isSafeInteger(stat.size)||stat.size<0)throw new Error('file-size-limit');
+        res.writeHead(200,{...headers,'Content-Type':types[path.extname(name)],'Content-Length':stat.size});
+        if(req.method==='HEAD'||stat.size===0){res.end();return;}
+        // The verified handle, fixed end position and stream backpressure bound the
+        // transfer without applying the small configuration/evidence read budget.
+        await pipeline(handle.createReadStream({start:0,end:stat.size-1,highWaterMark:64*1024,autoClose:false}),res);
+      } finally {await handle.close();}
+    } catch(error){if(res.headersSent){res.destroy(error);return;}return end(400,'Invalid request');}
   });
   await new Promise((resolve,reject)=>{server.once('error',reject);server.listen(port,bindAddress,()=>{server.off('error',reject);resolve();});});
   return server;

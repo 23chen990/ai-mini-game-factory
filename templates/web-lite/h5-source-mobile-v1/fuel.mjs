@@ -3,14 +3,15 @@
  * fuel loops; this is a fresh implementation, not extracted commercial code.
  */
 export const FUEL_RULES = Object.freeze({
-  max: 10,
-  regenMs: 5 * 60_000,
-  raceCost: 1,
-  adGrant: 2,
+  max: 30,
+  regenMs: 60_000,
+  raceCost: 5,
+  // Preserve the old incentive: a fully completed video funds two races.
+  adGrant: 10,
   adCooldownMs: 30_000,
   firstAdAfterMs: 60_000,
   firstAdAfterRounds: 1,
-  offerAtOrBelow: 5,
+  offerAtOrBelow: 15,
 });
 
 export const FUEL_KEY = 'h5-mobile:qq-speed:fuel:v1';
@@ -18,7 +19,7 @@ const integer = (value) => Number.isSafeInteger(value) && value >= 0;
 const clock = (now) => integer(now) ? now : 0;
 
 export function newFuelState(now = Date.now()) {
-  return { version: 1, amount: FUEL_RULES.max, updatedAt: clock(now), lastAdAt: 0, lastAdId: '' };
+  return { version: 2, amount: FUEL_RULES.max, updatedAt: clock(now), lastAdAt: 0, lastAdId: '' };
 }
 
 /** No time-based catch-up at full capacity, no regeneration in a backward clock. */
@@ -75,7 +76,7 @@ export function fuelAdEligible(state, { rounds = 0, sessionMs = 0, adReady = fal
 
 export function fuelPlatformReady(config, tap) {
   return config?.status === 1 && config?.source === 'check_ads_status' && !!config.appId &&
-    config.screenOrientation === 1 && typeof config.spaceId === 'string' && !!config.spaceId &&
+    [0, 1].includes(config.screenOrientation) && typeof config.spaceId === 'string' && !!config.spaceId &&
     typeof tap?.createRewardedVideoAd === 'function';
 }
 
@@ -83,10 +84,15 @@ export function loadFuel(raw, now = Date.now()) {
   try {
     if (typeof raw !== 'string' || raw.length > 700) return null;
     const s = JSON.parse(raw);
-    if (s?.version !== 1 || !integer(s.amount) || s.amount > FUEL_RULES.max ||
+    const legacy=s?.version===1,modern=s?.version===2;
+    if ((!legacy && !modern) || !integer(s.amount) ||
+      s.amount > (legacy ? 10 : FUEL_RULES.max) ||
       !integer(s.updatedAt) || !integer(s.lastAdAt) ||
       typeof s.lastAdId !== 'string' || s.lastAdId.length > 128) return null;
-    return syncFuel(s, now);
+    // Existing fuel is not wiped by an update: 10/10 becomes 30/30;
+    // an old 4/10 becomes 12/30. Keep recharge/ad cooldown timestamps.
+    const upgraded=legacy?{...s,version:2,amount:s.amount*3}:s;
+    return syncFuel(upgraded,now);
   } catch { return null; }
 }
 

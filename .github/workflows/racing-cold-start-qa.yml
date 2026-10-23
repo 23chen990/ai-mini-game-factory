@@ -1,0 +1,74 @@
+name: Racing independent cold-start QA
+on:
+  pull_request:
+    paths:
+      - 'templates/web-lite/h5-source-mobile-v1/racing/**'
+      - 'tools/lean-pilot/racing-cold-start-qa.mjs'
+      - 'tools/lean-pilot/racing-browser-config.mjs'
+      - 'tools/lean-pilot/racing-real-browser-preload.mjs'
+      - 'tools/lean-pilot/racing-context-isolation.mjs'
+      - '.github/workflows/racing-cold-start-qa.yml'
+permissions:
+  contents: read
+concurrency:
+  group: racing-cold-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  cold-start:
+    if: github.event.pull_request.head.repo.full_name == github.repository && (github.event.pull_request.head.ref == 'chatgpt/racing-v91-playable-pacing-20261017' || github.event.pull_request.head.ref == 'chatgpt/racing-unified-20261018')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [desktop, touch, context]
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.x'
+      - name: Locked dependencies and focused syntax
+        run: |
+          npm install --global pnpm@11.19.0 --ignore-scripts --no-audit --no-fund
+          pnpm install --frozen-lockfile --ignore-scripts
+          node --test templates/web-lite/h5-source-mobile-v1/tests/racing-browser-config.test.mjs
+          pnpm exec eslint tools/lean-pilot/racing-cold-start-qa.mjs tools/lean-pilot/racing-browser-config.mjs tools/lean-pilot/racing-real-browser-preload.mjs tools/lean-pilot/racing-context-isolation.mjs
+      - name: Same approved pinned native engine as primary racing CI
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/racing-source"
+          git -C "$RUNNER_TEMP/racing-source" init -q
+          git -C "$RUNNER_TEMP/racing-source" remote add origin https://github.com/riba2534/claude-opus-5-5-demo.git
+          git -C "$RUNNER_TEMP/racing-source" fetch --no-tags --depth=1 origin 54adc1fb64155f9dd7c1c90ecae7b8185ac540b8
+          git -C "$RUNNER_TEMP/racing-source" checkout -q FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/racing-source" rev-parse HEAD)" = '54adc1fb64155f9dd7c1c90ecae7b8185ac540b8'
+      - name: Build exact PR runtime without publishing
+        env:
+          H5_PINNED_SOURCE_ROOT: ${{ runner.temp }}/racing-source
+        run: node tools/lean-pilot/racing-mobile-build.mjs
+      # ubuntu-24.04 GitHub runners already ship Chromium's runtime libraries.
+      # --with-deps repeatedly downloaded 25.9 MB of extra system fonts via a
+      # throttled apt mirror, cancelling touch/context before their assertions.
+      # Install the same Playwright-managed browser but skip that apt upgrade;
+      # keep actual launch, software-WebGL and cold-start limits unchanged.
+      - name: Matching complete Chromium browser
+        run: pnpm exec playwright install chromium
+      - name: Original cold-start assertions in complete Chromium - no timeout changes
+        if: matrix.mode != 'context'
+        run: node --import ./tools/lean-pilot/racing-real-browser-preload.mjs tools/lean-pilot/racing-cold-start-qa.mjs ${{ matrix.mode }}
+      - name: Diagnostic GPU queue and HUD isolation - never a production pass
+        if: matrix.mode == 'context'
+        run: node tools/lean-pilot/racing-context-isolation.mjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: racing-cold-${{ matrix.mode }}-${{ github.event.pull_request.head.sha }}
+          path: |
+            runs/h5-qq-mobile-20261013/artifacts/cold-start-${{ matrix.mode }}/*
+            runs/h5-qq-mobile-20261013/artifacts/build-racing.json
+          retention-days: 7
+          if-no-files-found: warn

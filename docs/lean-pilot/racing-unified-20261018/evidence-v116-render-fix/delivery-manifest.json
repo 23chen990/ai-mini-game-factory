@@ -1,0 +1,377 @@
+{
+  "schemaVersion": 1,
+  "runId": "h5-qq-mobile-20261013",
+  "gameId": "qq-speed",
+  "sourceCommit": "b0dfe56f171930165cb04ef9cce8773ba339d31d",
+  "inputHash": "51c7e3422c5aee56309bc8f7b3c8579ad66d60cccd1ca5e0c7d3018506b93b8b",
+  "buildHash": "3a1bd6000047d8310718ca3ee39c7602b311a07eb5c2d2c08e950fee399cadf5",
+  "draft": true,
+  "publishable": false,
+  "artifacts": [
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/racing-v116-h5.zip",
+      "bytes": 8378083,
+      "sha256": "60261206365f03bea88cfd30321a6d55831f598462587013f4bc5cc8001c68be",
+      "role": "h5-zip"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/racing-v116-playtest.html",
+      "bytes": 13339105,
+      "sha256": "6e5d09159c71f34517177d6eacbfaa281337b90717309051e3b6f6803041f6d1",
+      "role": "standalone-html"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/build-command.json",
+      "bytes": 897,
+      "sha256": "22c6757ea000f30ded10e96d48c4a26f72e19243ad145cbdcc392d19c46e9604",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/build-receipt.json",
+      "bytes": 11465,
+      "sha256": "c70471b656c3f6e16e6e2c69c475aa7dad13aa795391b12801f27ee0fdfbcd40",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/build.log",
+      "bytes": 11465,
+      "sha256": "c70471b656c3f6e16e6e2c69c475aa7dad13aa795391b12801f27ee0fdfbcd40",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/component-invariance.json",
+      "bytes": 1399,
+      "sha256": "86502281232ca8e256497228621057fe840a3579089b41632a0f7807768ead95",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/desktop-cold-start.png",
+      "bytes": 854751,
+      "sha256": "b14823828125e22f026620b47a9846a367d153fd4b96c53fc628a813e9cc3a7d",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/desktop-command.json",
+      "bytes": 880,
+      "sha256": "1d4634c46add54d0955116de3f4767c1d2fc52392ebe6a4e14a593fcb0c6c770",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/desktop-last-state.png",
+      "bytes": 875557,
+      "sha256": "6861599fcb8b7402f679403078462d60cfe7209dde1bb79b5db177eb9750b77a",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/desktop-report.json",
+      "bytes": 15289,
+      "sha256": "16fc693c4754badc869a31f8c00d9e887afeb00d7b4382dcd05000e2bacb962d",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/desktop.log",
+      "bytes": 15358,
+      "sha256": "7e78040882f291f4877cb805293d20efea64c242cdc50dbda198e7a39e5747bc",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/fingerprint-2.log",
+      "bytes": 5128,
+      "sha256": "4a583bb78abf674687022ca3746b613e8290024971ccda86addd7435b4e0abff",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/fingerprint-command.json",
+      "bytes": 569,
+      "sha256": "8f7ba3ea0d4dd56108c4cba4135be3a966ac702cc3fcee8ece64a34a6ea9b6d6",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/fixer-handoff.json",
+      "bytes": 29123,
+      "sha256": "2260eedf4948b20731b314613fb275586fc9a5a0365aa4e1425adcc85e4ea982",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/high-quality-bootstrap-archive.json",
+      "bytes": 1557,
+      "sha256": "877332c3c8e05dfe2078ffc6d866f2b30d461a54ad841ff52d10c381bcb25d85",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/high-quality-bootstrap-command.json",
+      "bytes": 918,
+      "sha256": "df3acd3a9ed50dd2118457a81ccdefde1efb19f3ee44a437c9f4c76e0b475c0c",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/high-quality-bootstrap-probe.mjs",
+      "bytes": 13640,
+      "sha256": "2c436c5c422af8f08d7a7d6cef66d1dca26d8122ca349e535531c5f029cb92ff",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/high-quality-bootstrap-qa.json",
+      "bytes": 2507,
+      "sha256": "4cd41b8d93b7cc16cb2c820d64395e75fe1e7c12466d3149fc13b479128c379a",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/high-quality-bootstrap.log",
+      "bytes": 2659,
+      "sha256": "eac21d0b0082b1de18cd48ea4c98025de89d2762dae6d87253f101e72492cb4c",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/high-quality-command.json",
+      "bytes": 919,
+      "sha256": "543ff1aa6b81d643a93921c90606ddc4358c827aebb9b101c2239d68cd06809e",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/high-quality-probe.mjs",
+      "bytes": 13668,
+      "sha256": "66a97bdaef26f3e219004b19a6897e5eaea8bb78e98feb704eeae09348c07ca2",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/high-quality-qa.json",
+      "bytes": 16441,
+      "sha256": "20b5e46c84b85c1259b689ff1e6bea414811a51d5f06eab9e8460fc91f5ad190",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/high-quality.log",
+      "bytes": 17006,
+      "sha256": "d659015d4b0bef464cc0185fe710876e2ae799c698fb411161a4c9b34da4fdce",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/high-quality.png",
+      "bytes": 891003,
+      "sha256": "83c4850c94ea099434bb8469aa45464ff55e02aa09be27b3727334fcc396543e",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/independent-qa.json",
+      "bytes": 15691,
+      "sha256": "d9918d3fce687ba80bff2c7562270f09d09bed32dfa5d8cd24bc94c765b6605a",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/independent-source-review.json",
+      "bytes": 4066,
+      "sha256": "afa13ccc41d8aba4d6df279ac2521c4d0ee16064f64a20c70de5cd594ac79fe7",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/natural-coverage-not-run.json",
+      "bytes": 771,
+      "sha256": "73fbfcde015ee7b35ded300a643b33755bebf391ec5d629f60361aa8ba63338f",
+      "role": "natural-report"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/previous-ci-cold-summary.json",
+      "bytes": 18738,
+      "sha256": "689132f5532a62ff07b1ec2f6c25226e6112604115f9b17dadec3a41d6a89c4d",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/previous-ci-context-diagnostic-report.json",
+      "bytes": 3395,
+      "sha256": "b1a64d87e3108bb9b6b74bfb3b2bed69bf3d1477291ae3b8b01d7d36831d3193",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/previous-ci-desktop-failure.log",
+      "bytes": 132903,
+      "sha256": "2cbc235cd70fe398b4d32c95f786918e6e8969bf60d8d7831eace7b3433ce2e7",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/previous-ci-desktop-report.json",
+      "bytes": 28708,
+      "sha256": "faf5c0c4a19de2e1e4e3ffbf1b09affb6100f47ae1041f5f1cf072ac645265a4",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/previous-ci-main-artifact-contents.json",
+      "bytes": 14463,
+      "sha256": "46b571d98f9601f066759611756d496cafb6087298df7b6c6916f29ce5dafa15",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/previous-ci-main-build.json",
+      "bytes": 11464,
+      "sha256": "d8d5caafc83b1a59c694dd4077eaa2475f39d8f3c1afdfbf8f83472810e73c90",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/previous-ci-main-failure.log",
+      "bytes": 180473,
+      "sha256": "04aa717d56d20e1a14ffb9467f98d22424a497028cff00226c1979fece353666",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/previous-ci-main-jobs.json",
+      "bytes": 6666,
+      "sha256": "5870cc092f75a8c52a28278e1e59318e240477613718fde65083107716f02bb6",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/previous-ci-main-run.json",
+      "bytes": 13978,
+      "sha256": "14f99312c86f89207b378e103bf1b44abc9a43ea5dd4148a49a2925867d40eae",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/previous-ci-main-smoke.json",
+      "bytes": 23533,
+      "sha256": "95e635e0543bea80fc9aab56b859c64ca5163126421dc700ed02691d45528578",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/previous-ci-main-summary.json",
+      "bytes": 17437,
+      "sha256": "d17ad04c7ec763395b86a34e87f59c0d95abb49f6f22963b172c61adbb5675e7",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/previous-ci-touch-report.json",
+      "bytes": 18185,
+      "sha256": "ab3f0f92c6154549beb80ab176ca7d63d16d3d46e9cb6d9d0f8e66d973fdf604",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/previous-ci-touch.log",
+      "bytes": 109719,
+      "sha256": "1c685607b8a3235892395b9fdc7fcddd223b89561d86bfb8d841ee2287adb911",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/previous-no-msaa-diagnostic-command.json",
+      "bytes": 1046,
+      "sha256": "f5a6161143b4d2f125be23d335d59c7ca3ab9720a42e1e6f4d75a8675ec45121",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/previous-no-msaa-diagnostic-report.json",
+      "bytes": 15323,
+      "sha256": "043ae54c05cc8aaa1d525ced9097e04b40b96acc49f7a2a9af79491aabd34612",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/previous-no-msaa-diagnostic.log",
+      "bytes": 15392,
+      "sha256": "cfe8e1eba580f74fb0c866106324ce3b3741ba787a8cd3e696e3caa8da4aca2c",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/render-rca.json",
+      "bytes": 20126,
+      "sha256": "0864ef536398b788502112e47702d45441e50b72b916a7572257633531d8f2c4",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/root-qa-acceptance.json",
+      "bytes": 725,
+      "sha256": "e7ac288a577fe5f810a6a00e25199aa09e2a3de3c5afdd5d853049c1a678b6ec",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/root-source-acceptance.json",
+      "bytes": 2791,
+      "sha256": "1017c599426c1ecde4bcac630f694b028516612a1e8b545d449b21da267901d2",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/source-builder-syntax.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/source-commit.json",
+      "bytes": 845,
+      "sha256": "2d43493e9ee594280b3cb2b8c199634c822c31036f8b88f02bc2085e20c79040",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/source-contracts-71.log",
+      "bytes": 6963,
+      "sha256": "f1ce63d416181522ad515b2ed938f4b719eab434efa2111d1b0d572064e74e6a",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/source-freeze.json",
+      "bytes": 1233,
+      "sha256": "e2522e1f123e9653fac0af0bffe677831b6cda5a74bf4e7b635b99a930a6b1a0",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/source-lint.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/source-regressions-before.log",
+      "bytes": 9793,
+      "sha256": "080044671a3ba40aeb41174ac7c12a38c4031ca1a77ae8301ff51a231e41c22a",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/source-tests-syntax.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/touch-cold-start.png",
+      "bytes": 321933,
+      "sha256": "3ddf3d797566215a47562477012765f239daae199822861d9dbaab53f75adc02",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/touch-command.json",
+      "bytes": 874,
+      "sha256": "c2e28ac0f40482e2f9633b0a036ce9b10aa9fd788a0a7701869b0422fb4186e3",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/touch-last-state.png",
+      "bytes": 326669,
+      "sha256": "76caa1d4cec3fd8a7cfc78a4fdfc383523a9fc1e758a06ea8a6111213605456d",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/touch-report.json",
+      "bytes": 10752,
+      "sha256": "c930a4bf29000844bc9a2cc5edc77a269994113feefca3baaea497a1125835f6",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/touch.log",
+      "bytes": 10821,
+      "sha256": "9b12238d3cd9517b65d8a3f4ab12dc5c1d6f22555d3211d34bd2a6948623b56c",
+      "role": "engineering-evidence"
+    },
+    {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/verification-summary.json",
+      "bytes": 4118,
+      "sha256": "9e99264f74fe1efb3b2e24dd6f012d9c4715d843475ff64cd931cbd707243886",
+      "role": "engineering-evidence"
+    }
+  ],
+  "naturalReport": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116-attempt13/evidence/natural-coverage-not-run.json",
+  "gates": {
+    "natural": "BLOCKED",
+    "perceptual": "BLOCKED",
+    "engineering": "BLOCKED",
+    "physicalAndroid": "BLOCKED",
+    "physicalIphone": "BLOCKED",
+    "liveAds": "BLOCKED",
+    "commercial": "BLOCKED"
+  },
+  "checkedAt": "2026-10-18T17:01:42.737113Z"
+}

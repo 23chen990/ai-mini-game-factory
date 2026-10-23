@@ -1,0 +1,339 @@
+{
+  "schemaVersion": 1,
+  "type": "independent-local-cold-qa",
+  "issueId": "V116-COLD-DESKTOP-DEFAULT-FRAMEBUFFER-MSAA",
+  "reviewer": "/root/car_source_review",
+  "status": "PASS_SCOPED_LOCAL_PRODUCTION_MODES",
+  "fixAcceptance": "PENDING_REMOTE_PRODUCTION_QA",
+  "checkedAt": "2026-10-18T16:56:00.669Z",
+  "target": {
+    "gameId": "qq-speed",
+    "runId": "h5-qq-mobile-20261013",
+    "workspace": "/workspace/scratch/29547c23d820/racing-unified/runs/h5-qq-mobile-20261013/workspace/game",
+    "sourceParentCommit": "4746f395815ea8986d438e2dee6437b81fa76fa9"
+  },
+  "build": {
+    "attempt": 13,
+    "buildHash": "3a1bd6000047d8310718ca3ee39c7602b311a07eb5c2d2c08e950fee399cadf5",
+    "inputHash": "51c7e3422c5aee56309bc8f7b3c8579ad66d60cccd1ca5e0c7d3018506b93b8b",
+    "recomputedBuildHash": "3a1bd6000047d8310718ca3ee39c7602b311a07eb5c2d2c08e950fee399cadf5",
+    "receipt": {
+      "path": "/workspace/scratch/29547c23d820/racing-unified/runs/h5-qq-mobile-20261013/artifacts/build-racing.json",
+      "bytes": 11465,
+      "sha256": "c70471b656c3f6e16e6e2c69c475aa7dad13aa795391b12801f27ee0fdfbcd40"
+    },
+    "buildCommand": {
+      "path": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-build-command.json",
+      "bytes": 897,
+      "sha256": "22c6757ea000f30ded10e96d48c4a26f72e19243ad145cbdcc392d19c46e9604"
+    },
+    "buildLog": {
+      "path": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-build.log",
+      "bytes": 11465,
+      "sha256": "c70471b656c3f6e16e6e2c69c475aa7dad13aa795391b12801f27ee0fdfbcd40"
+    },
+    "trial": {
+      "path": "/workspace/scratch/29547c23d820/racing-unified/runs/h5-qq-mobile-20261013/racing-two-button-3a1bd6000047.html",
+      "bytes": 13339105,
+      "sha256": "6e5d09159c71f34517177d6eacbfaa281337b90717309051e3b6f6803041f6d1"
+    },
+    "sourceFreeze": {
+      "path": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-source-freeze.json",
+      "bytes": 1233,
+      "sha256": "e2522e1f123e9653fac0af0bffe677831b6cda5a74bf4e7b635b99a930a6b1a0"
+    },
+    "sourceReview": {
+      "path": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-source-review.json",
+      "bytes": 4066,
+      "sha256": "afa13ccc41d8aba4d6df279ac2521c4d0ee16064f64a20c70de5cd594ac79fe7"
+    },
+    "sourceBinding": "Frozen local source hashes and parent commit bind this build. This receipt does not invent a later source/evidence commit or certify remote ref state."
+  },
+  "originalQa": {
+    "files": [
+      {
+        "path": "/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-cold-start-qa.mjs",
+        "bytes": 6919,
+        "sha256": "c2a8ff62cac8bae7f45abae22dbfba2bb4793b95fc29c81e3ddfa23c8e3724ad"
+      },
+      {
+        "path": "/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-browser-config.mjs",
+        "bytes": 493,
+        "sha256": "f4ffa8c804fd464904d07fb00d43239853060d297488bc831c59807067a1dc77"
+      },
+      {
+        "path": "/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-real-browser-preload.mjs",
+        "bytes": 581,
+        "sha256": "3a163584a251b3cc0286677bc354bfae1a0af0a7db1103eea87be42fdc0b69c9"
+      }
+    ],
+    "allHashesUnchanged": true,
+    "raceDeadlineMs": 45000,
+    "keyboardDeadlineMs": 18000,
+    "onlyProductionModes": true
+  },
+  "invariance": {
+    "receipt": {
+      "path": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-component-invariance.json",
+      "bytes": 1399,
+      "sha256": "86502281232ca8e256497228621057fe840a3579089b41632a0f7807768ead95"
+    },
+    "previousBuildReceipt": {
+      "path": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-before-build.json",
+      "bytes": 11465,
+      "sha256": "d65df26b382346e57587450b4aa0136a5cb4227457985e7308a584b20fcd80d9"
+    },
+    "unchangedFields": [
+      "originalPhysicsSha256",
+      "driftEventVehicleSha256",
+      "originalAiSha256",
+      "generatedAiSha256",
+      "generatedVehicleSha256",
+      "generatedTrackSha256",
+      "trackGeometrySha256",
+      "itemVisualSourceSha256",
+      "userCarManifestSha256",
+      "models",
+      "genuinePhysicalShortcutStages"
+    ],
+    "allEqual": true,
+    "models": 6,
+    "beforeNativeMain": {
+      "path": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-before-main.js",
+      "bytes": 48400,
+      "sha256": "c4c10c3ccabd3c2ff9ce157d60773ad0a071c971ecc64cc92af1c72f22aeaff8"
+    },
+    "afterNativeMain": {
+      "path": "/workspace/scratch/29547c23d820/racing-unified/runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/main.js",
+      "bytes": 48396,
+      "sha256": "940423d0e7d29e10aaacc4f51e80bc94b0884b9f983edeeba57eb9e540c9f851"
+    },
+    "onlyNativeMainChange": "Exactly one antialias: !IS_TOUCH -> antialias: false replacement.",
+    "allOtherNativeMainBytesIdentical": true,
+    "highOffscreenRequestedSamples4Preserved": true,
+    "scope": "Independent comparison of real generated main bytes and eleven build-receipt fields; previous runtime reports are not relabeled as new execution."
+  },
+  "runtime": [
+    {
+      "mode": "desktop",
+      "passed": true,
+      "report": {
+        "path": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-qa/runs/h5-qq-mobile-20261013/artifacts/cold-start-desktop/report.json",
+        "bytes": 15289,
+        "sha256": "16fc693c4754badc869a31f8c00d9e887afeb00d7b4382dcd05000e2bacb962d"
+      },
+      "commandReceipt": {
+        "path": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-desktop-command.json",
+        "bytes": 880,
+        "sha256": "1d4634c46add54d0955116de3f4767c1d2fc52392ebe6a4e14a593fcb0c6c770"
+      },
+      "rawLog": {
+        "path": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-desktop.log",
+        "bytes": 15358,
+        "sha256": "7e78040882f291f4877cb805293d20efea64c242cdc50dbda198e7a39e5747bc"
+      },
+      "commandExitCode": 0,
+      "startedAt": "2026-10-18T16:52:09.884341Z",
+      "finishedAt": "2026-10-18T16:52:44.599119Z",
+      "productionGate": true,
+      "experiment": null,
+      "logHashAndBytesMatch": true,
+      "rawLogEqualsReport": true,
+      "allObservedStatesVisibleFocusedAndAntialiasFalse": true,
+      "snapshotCount": 17,
+      "firstPostClickObservationToRaceSeconds": 18.3439,
+      "readyToRaceSeconds": 18.7568,
+      "firstFloorSeconds": 14.3205,
+      "raceDeadlineMs": 45000,
+      "keyboardDeadlineMs": 18000,
+      "keyboardResult": "PASSED_ARROW_UP_AND_LEFT",
+      "lastNativeSpeed": 1.1998763749041974,
+      "lastNativeSteer": 0.698805788087798,
+      "speedUnits": "native player.s, not displayed KM/H",
+      "finalPixelRatio": 0.35,
+      "finalAntialias": false,
+      "finalDrawingBuffer": [
+        478,
+        268
+      ],
+      "cssCases": 12,
+      "cssUniqueCases": 12,
+      "cssCoverageAndValuesCorrect": true,
+      "stage01ItemControlHidden": true,
+      "touchDrivingCertified": false,
+      "scope": "Actual cold start and original native keyboard speed/steer response assertion."
+    },
+    {
+      "mode": "touch",
+      "passed": true,
+      "report": {
+        "path": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-qa/runs/h5-qq-mobile-20261013/artifacts/cold-start-touch/report.json",
+        "bytes": 10752,
+        "sha256": "c930a4bf29000844bc9a2cc5edc77a269994113feefca3baaea497a1125835f6"
+      },
+      "commandReceipt": {
+        "path": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-touch-command.json",
+        "bytes": 874,
+        "sha256": "c2e28ac0f40482e2f9633b0a036ce9b10aa9fd788a0a7701869b0422fb4186e3"
+      },
+      "rawLog": {
+        "path": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-touch.log",
+        "bytes": 10821,
+        "sha256": "9b12238d3cd9517b65d8a3f4ab12dc5c1d6f22555d3211d34bd2a6948623b56c"
+      },
+      "commandExitCode": 0,
+      "startedAt": "2026-10-18T16:53:03.042473Z",
+      "finishedAt": "2026-10-18T16:53:24.241296Z",
+      "productionGate": true,
+      "experiment": null,
+      "logHashAndBytesMatch": true,
+      "rawLogEqualsReport": true,
+      "allObservedStatesVisibleFocusedAndAntialiasFalse": true,
+      "snapshotCount": 11,
+      "firstPostClickObservationToRaceSeconds": 9.1541,
+      "readyToRaceSeconds": 10.758,
+      "firstFloorSeconds": 7.1398,
+      "raceDeadlineMs": 45000,
+      "keyboardDeadlineMs": null,
+      "keyboardResult": "NOT_RUN_TOUCH_MODE",
+      "lastNativeSpeed": 18.300547266598063,
+      "lastNativeSteer": 0,
+      "speedUnits": "native player.s, not displayed KM/H",
+      "finalPixelRatio": 0.35,
+      "finalAntialias": false,
+      "finalDrawingBuffer": [
+        295,
+        136
+      ],
+      "cssCases": 12,
+      "cssUniqueCases": 12,
+      "cssCoverageAndValuesCorrect": true,
+      "stage01ItemControlHidden": true,
+      "touchDrivingCertified": false,
+      "scope": "Actual cold start, controls and CSS only; no touch steering or drift driving was exercised."
+    }
+  ],
+  "execution": {
+    "browserOwner": "/root",
+    "buildBeforeDesktopBeforeTouch": true,
+    "qaOutputRoot": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-qa/runs/h5-qq-mobile-20261013/artifacts",
+    "gameInputPath": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-qa/runs/h5-qq-mobile-20261013/workspace/game",
+    "gameInputTarget": "/workspace/scratch/29547c23d820/racing-unified/runs/h5-qq-mobile-20261013/workspace/game",
+    "receiptInputPath": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-qa/runs/h5-qq-mobile-20261013/artifacts/build-racing.json",
+    "receiptInputTarget": "/workspace/scratch/29547c23d820/racing-unified/runs/h5-qq-mobile-20261013/artifacts/build-racing.json",
+    "isolationScope": "Output paths are isolated; game and build-receipt inputs link to the frozen generated attempt13 workspace.",
+    "reviewerBrowserRuns": 0,
+    "reviewerBuildRuns": 0,
+    "reviewerTestRuns": 0
+  },
+  "fingerprint": {
+    "command": {
+      "path": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-fingerprint-command.json",
+      "bytes": 569,
+      "sha256": "8f7ba3ea0d4dd56108c4cba4135be3a966ac702cc3fcee8ece64a34a6ea9b6d6"
+    },
+    "log": {
+      "path": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-fingerprint.log",
+      "bytes": 5128,
+      "sha256": "4a583bb78abf674687022ca3746b613e8290024971ccda86addd7435b4e0abff"
+    },
+    "exitCode": 0,
+    "total": 2,
+    "passed": 2,
+    "failed": 0,
+    "shaAndBytesVerified": true,
+    "scope": "One actual-H5 fingerprint command covers runtime-source binding and all-30-course activity reports; it is separate from the 71 source tests and browser checks."
+  },
+  "visualReview": [
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-qa/runs/h5-qq-mobile-20261013/artifacts/cold-start-desktop/cold-start.png",
+      "bytes": 854751,
+      "sha256": "b14823828125e22f026620b47a9846a367d153fd4b96c53fc628a813e9cc3a7d",
+      "mode": "desktop",
+      "name": "cold-start.png",
+      "dimensions": [
+        1366,
+        768
+      ],
+      "independentlyViewed": true,
+      "observations": [
+        "Full start scene, player and rival car models are visible; touch controls are absent.",
+        "The .35 3D image remains coarse with visible jagged edges; HUD remains legible."
+      ]
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-qa/runs/h5-qq-mobile-20261013/artifacts/cold-start-desktop/last-state.png",
+      "bytes": 875557,
+      "sha256": "6861599fcb8b7402f679403078462d60cfe7209dde1bb79b5db177eb9750b77a",
+      "mode": "desktop",
+      "name": "last-state.png",
+      "dimensions": [
+        1366,
+        768
+      ],
+      "independentlyViewed": true,
+      "observations": [
+        "Full start scene, player and rival car models are visible; touch controls are absent.",
+        "The .35 3D image remains coarse with visible jagged edges; HUD remains legible.",
+        "The nearby rival name 氮气小王子 is enlarged in the lower foreground and occupies screen space above the boost meter, with a rival car visible at the bottom; retain as visual acceptance work."
+      ]
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-qa/runs/h5-qq-mobile-20261013/artifacts/cold-start-touch/cold-start.png",
+      "bytes": 321933,
+      "sha256": "3ddf3d797566215a47562477012765f239daae199822861d9dbaab53f75adc02",
+      "mode": "touch",
+      "name": "cold-start.png",
+      "dimensions": [
+        844,
+        390
+      ],
+      "independentlyViewed": true,
+      "observations": [
+        "Full start scene and player are visible with steering wheel, nitro, small boost and drift controls.",
+        "The .35 3D image remains coarse; HUD and controls are legible. Movement in these images does not prove touch steering."
+      ]
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-qa/runs/h5-qq-mobile-20261013/artifacts/cold-start-touch/last-state.png",
+      "bytes": 326669,
+      "sha256": "76caa1d4cec3fd8a7cfc78a4fdfc383523a9fc1e758a06ea8a6111213605456d",
+      "mode": "touch",
+      "name": "last-state.png",
+      "dimensions": [
+        844,
+        390
+      ],
+      "independentlyViewed": true,
+      "observations": [
+        "Full start scene and player are visible with steering wheel, nitro, small boost and drift controls.",
+        "The .35 3D image remains coarse; HUD and controls are legible. Movement in these images does not prove touch steering."
+      ]
+    }
+  ],
+  "highQualityUiScope": "SEPARATE_REVIEW_NOT_INCLUDED_IN_COLD_PASS",
+  "timingInterpretation": "Race timings are recorded performance.now snapshot offsets after the first post-click observation (or ready snapshot), not exact click or key latency. The unchanged original 45-second and 18-second assertions establish passage.",
+  "nonBlockingVisualObservation": {
+    "evidence": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-qa/runs/h5-qq-mobile-20261013/artifacts/cold-start-desktop/last-state.png",
+    "observation": "The rival name 氮气小王子 is large in the lower foreground and occupies visible playfield space above the boost meter.",
+    "status": "VISUAL_ACCEPTANCE_OPEN; not a failure of the scoped cold-start/keyboard assertions.",
+    "rootCauseStatus": "Not diagnosed here; no claim that the constructor change introduced it, and it has not been hidden or removed for the test."
+  },
+  "remaining": [
+    "A current-build remote production desktop cold result is required before closing the default-framebuffer MSAA issue. Local passage does not erase the prior independent remote desktop failure on attempt12/4746.",
+    "The earlier desktop-no-msaa test is diagnostic only and is not counted in this production-mode pass.",
+    "Touch checks cover cold start and controls/CSS only, with no touch steering or drift driving journey.",
+    "Explicit high-quality UI, offscreen sample request and any related screenshot are reviewed separately by the parent team; no such result is included here.",
+    "The .35 rendering budget remains visibly coarse and lacks default-framebuffer AA; broader visual acceptance, physical phones and sustained handling remain open.",
+    "No natural full-race completion, 30-stage/daily natural coverage, real advertising SDK, platform package or commercial release gate is certified."
+  ],
+  "blockedWithinLocalColdScope": false,
+  "publishable": false,
+  "writtenArtifact": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-independent-qa.json",
+  "validation": {
+    "engine": "Zod",
+    "schemaId": "cold-render-msaa-independent-qa/v1",
+    "validatedBeforeWrite": true,
+    "validatedAfterReadBack": true
+  }
+}

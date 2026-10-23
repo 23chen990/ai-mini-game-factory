@@ -1,0 +1,309 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "极速飞驰 / qq-speed",
+  "workspace": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/runs/h5-qq-mobile-20261013/workspace",
+  "axes": {
+    "objectTypes": [
+      "starter-camera",
+      "action-buttons",
+      "result",
+      "garage"
+    ],
+    "lifecycleStateBranches": [
+      "race",
+      "finished",
+      "ready"
+    ],
+    "rendererPaths": [
+      "native Three.js + DOM"
+    ],
+    "viewports": [
+      {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      {
+        "label": "phone",
+        "width": 844,
+        "height": 390
+      },
+      {
+        "label": "small-phone",
+        "width": 667,
+        "height": 375
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "starter-camera-desktop",
+      "objectType": "starter-camera",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "native Three.js + DOM",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Phone camera improves vehicle readability at 844x390 and 667x375; desktop native camera coefficients remain byte-identical. No simulation, AI, course, rank, fuel or ad grant changes.",
+      "observed": "Independent viewport capture required; phone evidence cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "action-buttons-desktop",
+      "objectType": "action-buttons",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "native Three.js + DOM",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Live action identity, resource count and ready state are inside fixed buttons; no duplicate sublabels, no new advice banners, no automatic action consumption.",
+      "observed": "Independent viewport capture required; phone evidence cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "result-desktop",
+      "objectType": "result",
+      "lifecycleStateBranch": "finished",
+      "rendererPath": "native Three.js + DOM",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Desktop item races: Space consumes earned nitro only, Ctrl consumes item only; keyboard help matches the actual native keys.",
+      "observed": "Independent viewport capture required; phone evidence cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "garage-desktop",
+      "objectType": "garage",
+      "lifecycleStateBranch": "ready",
+      "rendererPath": "native Three.js + DOM",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Desktop item races: Space consumes earned nitro only, Ctrl consumes item only; keyboard help matches the actual native keys.",
+      "observed": "Independent viewport capture required; phone evidence cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "starter-camera-phone",
+      "objectType": "starter-camera",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "native Three.js + DOM",
+      "viewport": {
+        "label": "phone",
+        "width": 844,
+        "height": 390
+      },
+      "status": "REPRODUCED",
+      "expected": "Phone camera improves vehicle readability at 844x390 and 667x375; desktop native camera coefficients remain byte-identical. No simulation, AI, course, rank, fuel or ad grant changes.",
+      "observed": "Exact RC19 capture and corresponding active branch inspected.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/materials/screenshot-driving.png",
+          "sha256": "56b75d6a2873a2dc1f94c1415c78ca8ddcbb87e1a777f7b05c7eb085bbf3882b",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/materials/screenshot-settlement.png",
+          "sha256": "c424bd63dd176b4c6bc6dbaf8503e672b7c53d043d1d454a2871438b688ecbef",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/materials/screenshot-garage.png",
+          "sha256": "d5da03ad17527f9a69d23edbb8fb47acca3d38decef32d060aae6cff727f6c49",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "action-buttons-phone",
+      "objectType": "action-buttons",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "native Three.js + DOM",
+      "viewport": {
+        "label": "phone",
+        "width": 844,
+        "height": 390
+      },
+      "status": "REPRODUCED",
+      "expected": "Live action identity, resource count and ready state are inside fixed buttons; no duplicate sublabels, no new advice banners, no automatic action consumption.",
+      "observed": "Exact RC19 capture and corresponding active branch inspected.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/materials/screenshot-driving.png",
+          "sha256": "56b75d6a2873a2dc1f94c1415c78ca8ddcbb87e1a777f7b05c7eb085bbf3882b",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/materials/screenshot-settlement.png",
+          "sha256": "c424bd63dd176b4c6bc6dbaf8503e672b7c53d043d1d454a2871438b688ecbef",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/materials/screenshot-garage.png",
+          "sha256": "d5da03ad17527f9a69d23edbb8fb47acca3d38decef32d060aae6cff727f6c49",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "result-phone",
+      "objectType": "result",
+      "lifecycleStateBranch": "finished",
+      "rendererPath": "native Three.js + DOM",
+      "viewport": {
+        "label": "phone",
+        "width": 844,
+        "height": 390
+      },
+      "status": "REPRODUCED",
+      "expected": "Desktop item races: Space consumes earned nitro only, Ctrl consumes item only; keyboard help matches the actual native keys.",
+      "observed": "Exact RC19 capture and corresponding active branch inspected.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/materials/screenshot-driving.png",
+          "sha256": "56b75d6a2873a2dc1f94c1415c78ca8ddcbb87e1a777f7b05c7eb085bbf3882b",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/materials/screenshot-settlement.png",
+          "sha256": "c424bd63dd176b4c6bc6dbaf8503e672b7c53d043d1d454a2871438b688ecbef",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/materials/screenshot-garage.png",
+          "sha256": "d5da03ad17527f9a69d23edbb8fb47acca3d38decef32d060aae6cff727f6c49",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "garage-phone",
+      "objectType": "garage",
+      "lifecycleStateBranch": "ready",
+      "rendererPath": "native Three.js + DOM",
+      "viewport": {
+        "label": "phone",
+        "width": 844,
+        "height": 390
+      },
+      "status": "REPRODUCED",
+      "expected": "Desktop item races: Space consumes earned nitro only, Ctrl consumes item only; keyboard help matches the actual native keys.",
+      "observed": "Exact RC19 capture and corresponding active branch inspected.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/materials/screenshot-driving.png",
+          "sha256": "56b75d6a2873a2dc1f94c1415c78ca8ddcbb87e1a777f7b05c7eb085bbf3882b",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/materials/screenshot-settlement.png",
+          "sha256": "c424bd63dd176b4c6bc6dbaf8503e672b7c53d043d1d454a2871438b688ecbef",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/materials/screenshot-garage.png",
+          "sha256": "d5da03ad17527f9a69d23edbb8fb47acca3d38decef32d060aae6cff727f6c49",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "starter-camera-small-phone",
+      "objectType": "starter-camera",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "native Three.js + DOM",
+      "viewport": {
+        "label": "small-phone",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Phone camera improves vehicle readability at 844x390 and 667x375; desktop native camera coefficients remain byte-identical. No simulation, AI, course, rank, fuel or ad grant changes.",
+      "observed": "Independent viewport capture required; phone evidence cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "action-buttons-small-phone",
+      "objectType": "action-buttons",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "native Three.js + DOM",
+      "viewport": {
+        "label": "small-phone",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Live action identity, resource count and ready state are inside fixed buttons; no duplicate sublabels, no new advice banners, no automatic action consumption.",
+      "observed": "Independent viewport capture required; phone evidence cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "result-small-phone",
+      "objectType": "result",
+      "lifecycleStateBranch": "finished",
+      "rendererPath": "native Three.js + DOM",
+      "viewport": {
+        "label": "small-phone",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Desktop item races: Space consumes earned nitro only, Ctrl consumes item only; keyboard help matches the actual native keys.",
+      "observed": "Independent viewport capture required; phone evidence cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "garage-small-phone",
+      "objectType": "garage",
+      "lifecycleStateBranch": "ready",
+      "rendererPath": "native Three.js + DOM",
+      "viewport": {
+        "label": "small-phone",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Desktop item races: Space consumes earned nitro only, Ctrl consumes item only; keyboard help matches the actual native keys.",
+      "observed": "Independent viewport capture required; phone evidence cannot close this cell.",
+      "evidence": []
+    }
+  ],
+  "confirmedFindings": [
+    "RC19 phone racing capture: vehicle silhouette is small relative to the bright exhaust; live phone FOV reaches 88 degrees. Desktop uses a separate native camera and must not inherit a phone zoom.",
+    "RC19 touch nitro/item buttons repeat their names below the button in 9px labels; current item identity is not the main button icon.",
+    "RC19 result shows QA export, fuel rule text, four metric columns and a scrolling leaderboard before the player actions.",
+    "Six locked cars can already be previewed; all share native physics. Reward presentation must not imply a paid speed advantage or cross-device ownership.",
+    "Desktop input.frame maps both Space and Ctrl to the same nitroPressed flag; the item-race world consumes that flag as item use. Earned nitro has a separate touch-only edge. Split Space nitro / Ctrl item before native edge clearing; retain keyboard acceleration and steering."
+  ],
+  "remainingGaps": [
+    "Final-build visible dual-platform retest",
+    "Physical phones and human ad preference remain unverified"
+  ],
+  "createdAt": "2026-10-20T12:12:39.275Z"
+}

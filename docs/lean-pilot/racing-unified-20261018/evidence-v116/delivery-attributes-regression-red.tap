@@ -1,0 +1,113 @@
+TAP version 13
+# Subtest: real verifyDelivery enforces HTML script attributes and uppercase entry counts
+    # Subtest: spaced src assignment
+    not ok 1 - spaced src assignment
+      ---
+      duration_ms: 241.866052
+      type: 'test'
+      location: '/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-delivery-verify.test.mjs:169:14'
+      failureType: 'testCodeFailure'
+      error: 'Missing expected rejection.'
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected:
+      operator: 'rejects'
+      stack: |-
+        async Test.run (node:internal/test_runner/test:1389:7)
+        async TestContext.<anonymous> (file:///workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-delivery-verify.test.mjs:169:6)
+        async Test.run (node:internal/test_runner/test:1389:7)
+        async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+      ...
+    # Subtest: uppercase SRC attribute
+    not ok 2 - uppercase SRC attribute
+      ---
+      duration_ms: 245.116432
+      type: 'test'
+      location: '/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-delivery-verify.test.mjs:169:14'
+      failureType: 'testCodeFailure'
+      error: 'Missing expected rejection.'
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected:
+      operator: 'rejects'
+      stack: |-
+        async Test.run (node:internal/test_runner/test:1389:7)
+        async TestContext.<anonymous> (file:///workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-delivery-verify.test.mjs:169:6)
+        async Test.run (node:internal/test_runner/test:1389:7)
+        async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+      ...
+    # Subtest: extra uppercase external script
+    not ok 3 - extra uppercase external script
+      ---
+      duration_ms: 229.720008
+      type: 'test'
+      location: '/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-delivery-verify.test.mjs:169:14'
+      failureType: 'testCodeFailure'
+      error: 'Missing expected rejection.'
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected:
+      operator: 'rejects'
+      stack: |-
+        async Test.run (node:internal/test_runner/test:1389:7)
+        async TestContext.<anonymous> (file:///workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-delivery-verify.test.mjs:169:6)
+        async Test.run (node:internal/test_runner/test:1389:7)
+        async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+      ...
+    # Subtest: extra uppercase inline script
+    not ok 4 - extra uppercase inline script
+      ---
+      duration_ms: 255.662415
+      type: 'test'
+      location: '/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-delivery-verify.test.mjs:169:14'
+      failureType: 'testCodeFailure'
+      error: 'Missing expected rejection.'
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected:
+      operator: 'rejects'
+      stack: |-
+        async Test.run (node:internal/test_runner/test:1389:7)
+        async TestContext.<anonymous> (file:///workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-delivery-verify.test.mjs:169:6)
+        async Test.run (node:internal/test_runner/test:1389:7)
+        async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+      ...
+    1..4
+not ok 1 - real verifyDelivery enforces HTML script attributes and uppercase entry counts
+  ---
+  duration_ms: 973.925904
+  type: 'test'
+  location: '/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-delivery-verify.test.mjs:163:1'
+  failureType: 'subtestsFailed'
+  error: '4 subtests failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: real verifyDelivery preserves bodies with mixed-case HTML script tags
+not ok 2 - real verifyDelivery preserves bodies with mixed-case HTML script tags
+  ---
+  duration_ms: 188.715245
+  type: 'test'
+  location: '/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-delivery-verify.test.mjs:173:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Command failed: /opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node --input-type=module -e import {verifyDelivery} from "file:///workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-delivery-verify.mjs";try{console.log(JSON.stringify(await verifyDelivery(process.argv[1])));}catch(error){console.error(error.message);process.exitCode=1;} /tmp/racing-delivery-contract-xVeX5R/runs/h5-qq-mobile-20261013/fixture-manifest.json
+    Unexpected default runtime entry or missing Three.js notice
+    
+  code: 1
+  stack: |-
+    genericNodeError (node:internal/errors:985:15)
+    wrappedFn (node:internal/errors:539:14)
+    ChildProcess.exithandler (node:child_process:417:12)
+    ChildProcess.emit (node:events:509:28)
+    maybeClose (node:internal/child_process:1141:16)
+    ChildProcess._handle.onexit (node:internal/child_process:306:5)
+  ...
+1..2
+# tests 6
+# suites 0
+# pass 0
+# fail 6
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1299.336626

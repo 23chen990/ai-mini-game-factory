@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "label": "touch",
+  "cwd": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-qa",
+  "argv": [
+    "node",
+    "--import",
+    "/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-real-browser-preload.mjs",
+    "/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-cold-start-qa.mjs",
+    "touch"
+  ],
+  "environmentOverrides": {
+    "PLAYWRIGHT_BROWSERS_PATH": "/workspace/scratch/29547c23d820/recovery/playwright-browsers",
+    "FONTCONFIG_FILE": "/workspace/scratch/29547c23d820/recovery/fonts.conf"
+  },
+  "startedAt": "2026-10-18T16:53:03.042473Z",
+  "finishedAt": "2026-10-18T16:53:24.241296Z",
+  "exitCode": 0,
+  "log": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-touch.log",
+  "logBytes": 10821,
+  "logSha256": "9b12238d3cd9517b65d8a3f4ab12dc5c1d6f22555d3211d34bd2a6948623b56c"
+}

@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "parentCommit": "4746f395815ea8986d438e2dee6437b81fa76fa9",
+  "baseTreeSha": "60169d6190b0e9710ab367541b739df98300b41d",
+  "entries": [
+    {
+      "path": "/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-mobile-build.mjs",
+      "relativePath": "tools/lean-pilot/racing-mobile-build.mjs",
+      "bytes": 79330,
+      "sha256": "5eba23cd03246b83dd6e78faded2ba1a5584e9acb90c7c67273039f3ac6d4586",
+      "gitBlobSha": "5d68408d55c224c8fdcf69685f1d19324c3e126b",
+      "encoding": "utf-8"
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/tests/racing-build.test.mjs",
+      "relativePath": "tools/lean-pilot/tests/racing-build.test.mjs",
+      "bytes": 30979,
+      "sha256": "68a19a830c56dadcc9715b56ab6a5c186425bc6ec56dd9deebf93db7ec53945e",
+      "gitBlobSha": "94bc9faee35c47b5565fec933882331817837d2c",
+      "encoding": "utf-8"
+    }
+  ],
+  "buildHash": "3a1bd6000047d8310718ca3ee39c7602b311a07eb5c2d2c08e950fee399cadf5",
+  "inputHash": "51c7e3422c5aee56309bc8f7b3c8579ad66d60cccd1ca5e0c7d3018506b93b8b",
+  "handoffSha256": "2260eedf4948b20731b314613fb275586fc9a5a0365aa4e1425adcc85e4ea982",
+  "frozenAt": "2026-10-18T16:54:14.747772Z"
+}

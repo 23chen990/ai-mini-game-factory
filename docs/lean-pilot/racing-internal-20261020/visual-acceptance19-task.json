@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "task": "visual-acceptance19",
+  "root": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市",
+  "workspace": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/runs/h5-qq-mobile-20261013/workspace",
+  "route": "formal-fixer",
+  "ownership": "Read-only visual/source diagnosis; write ONLY the output JSON in the docs folder. No workspace/template changes or builds.",
+  "inputEvidence": [
+    "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery.json",
+    "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/docs/lean-pilot/racing-internal-20261020/visual-acceptance18.json",
+    "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/runs/h5-qq-mobile-20261013/evidence/rc19-natural-retry04-look16/05-terminal.png",
+    "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/runs/h5-qq-mobile-20261013/evidence/rc19-natural-retry04-look16/05-nitro.png",
+    "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/runs/h5-qq-mobile-20261013/evidence/rc19-natural-retry06-gain15/06-smallBoost.png"
+  ],
+  "questions": [
+    "Observed failure: attempt 16 six-car gallery has incoherent shiny/baked imported cars and faceted scenery; inspect exact screenshots to refine, not an imagined design risk.",
+    "Causal alternatives: distinguish baked texture/model geometry from material/lighting/camera/environment using current loader and actual pixels; no image-derived Figma measurements.",
+    "Simpler alternative: keep working camera/layout; propose smallest existing-module correction before remodel/new asset pipeline. Read-only isolated review avoids simultaneous source writes and repeated context.",
+    "Experiment: before/after exact six models and 1366×768/844×390/667×375, full pixel ratio. Retain only visible improvement without hiding detail, clipping, UI overlap or performance regression. Limit review to one pass and no new architecture."
+  ],
+  "instructions": [
+    "You are not alone in the codebase. Do not revert others or edit source, tests, generated game or old evidence.",
+    "Read the named target screenshots with view_image and source implementing their exact branch.",
+    "Return evidence-backed concrete low-cost patches with file/function locations; separate observation, hypothesis and unknown. Do not declare player perception pass.",
+    "All agent exchange is this Zod-validated structured artifact. Write output and validate via Zod before returning JSON only with its absolute path and SHA-256.",
+    "Review final attempt19 actual screenshots, compare attempt16/17 only for causal change. Check all six cars at all three landscape viewports. Root applied smooth tree normals, env contribution0.45 and private mapped-roughness floors (starter0.30/custom0.38, custom metalness0.55). Do not assume improvement; inspect exact pixels. Static imported wheels remain a disclosed asset constraint, not a false animation claim.",
+    "Return concrete P0/P1 blocking issues only if supported by screenshots. Separate remaining authored texture style/polish from severe readability/overlap/layout failures. No global no-problem or physical-phone claims. Read-only: do NOT launch another browser while the natural campaign runs.",
+    "Exact final runtime6196faa085e18ac38b484fcfc1d6909c2bf22882, build811e05f4f6207050a63939680de93b4b3b262904663a103048d310f1466e37d6. Review the final19 actual pixels, not source equivalence alone. Also inspect the three named driving/settlement images for P0/P1 visibility or controls problems. Do not run a browser, mutate game, launch other tools or expand scope. Return only the validated artifact path/hash."
+  ],
+  "acceptance": [
+    "Inspect all18 final landscape captures via view_image",
+    "Cite exact model/viewport for every finding",
+    "Distinguish asset limits, improvement and regressions from unseen gameplay/human preferences",
+    "Output must satisfy the same Zod worker-result schema as prior task; no source/build edits"
+  ],
+  "output": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/docs/lean-pilot/racing-internal-20261020/visual-acceptance19.json"
+}

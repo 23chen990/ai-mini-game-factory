@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "task": "git-integration",
+  "root": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市",
+  "targetGame": "qq-speed / 极速飞驰",
+  "workspace": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/runs/h5-qq-mobile-20261013/workspace",
+  "readOnly": true,
+  "scope": [
+    "Full history of unified branch, PR 68 base chain, main divergence and historical racing PRs",
+    "Use gh and git read-only, compare via existing sibling repository /Users/kker/Documents/ChatGPT/ai-mini-game-factory for historical refs",
+    "Identify genuinely missing compatible capabilities, not obsolete two-button/practice paths"
+  ],
+  "acceptance": [
+    "Exact commits and dependency graph",
+    "Safe non-destructive main integration plan with conflict/other-game scope",
+    "Concrete needed omissions only; evidence of diffs for recommendations"
+  ],
+  "output": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/docs/lean-pilot/racing-final-20261020/git-integration.json",
+  "constraints": [
+    "You are not alone in the codebase. Do not revert other edits. Do not modify source or generated workspace.",
+    "No Git mutations, commits, pushes or thread messages. Existing QA role only; no new Agent/Gate/workflow.",
+    "Return only JSON: {schemaVersion:1,task:string,findings:[{id:string,severity:\"P0\"|\"P1\"|\"P2\"|\"INFO\",observation:string,evidence:string[],recommendation:string}],blockers:string[],commands:string[]}. Validate this output using zod before final. Write your own output JSON only.",
+    "Separate observation, hypothesis and unknowns. Do not call fixtures natural play or licensing assumptions permissions."
+  ]
+}

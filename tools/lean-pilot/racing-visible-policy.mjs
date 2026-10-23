@@ -1,3 +1,5 @@
+import { STAGES, dailyStage, localDayKey } from '../../templates/web-lite/h5-source-mobile-v1/racing/career.mjs';
+
 /** Only framebuffer colors/shape, never item coordinates or racer state. */
 export function needsVisibleItemPickup(goal) {
   const count = goal.match(/已拾取道具 (\d+)\/(\d+)/u);
@@ -14,11 +16,85 @@ export function earnedResumeOrigin(report, storage, buildHash) {
   if (!saved || exact.length !== 1 || !/^http:\/\/127\.0\.0\.1:\d+$/u.test(exact[0].origin)) throw Error('Resume requires one exact earned local origin');
   return exact[0].origin;
 }
+/** A separately labelled upgrade test, never proof of new-build earlier wins.
+ * The source is an actual previous natural run, not a fabricated campaign fixture. */
+export function earnedUpgradeOrigin(report, storage, archivedBuild, nextBuildHash) {
+  if (report.buildHash !== archivedBuild.buildHash || report.buildHash === nextBuildHash ||
+      report.naturalInputsOnly !== true || report.seededCampaign !== false)
+    throw Error('Upgrade requires a matching archived natural build and unmodified earned origin');
+  return earnedResumeOrigin(report, storage, archivedBuild.buildHash);
+}
 export function warningVisible(element) {
   return !!element && !element.hidden && !element.classList.contains('hidden') && element.getClientRects().length > 0;
 }
+/** Resolve the daily start date from read-only browser clocks and native config. */
+export function dailyRaceDayFromStart(evidence) {
+  const { before, after } = evidence ?? {};
+  if (!before || !after || after.nativeState !== 'race') return null;
+  const validStamp = stamp => ['wallMs', 'monotonicMs', 'timeOrigin', 'timezoneOffsetMinutes']
+    .every(key => Number.isFinite(stamp[key])) && stamp.monotonicMs >= 0 &&
+    Number.isInteger(stamp.timezoneOffsetMinutes) && Math.abs(stamp.timezoneOffsetMinutes) <= 1440;
+  if (!validStamp(before) || !validStamp(after) || before.timeOrigin !== after.timeOrigin ||
+      before.timezoneOffsetMinutes !== after.timezoneOffsetMinutes) return null;
+  const wallElapsed = after.wallMs - before.wallMs, elapsed = after.monotonicMs - before.monotonicMs;
+  // This bounds evidence only; the runner's existing entry wait is unchanged.
+  // Compare both clocks so a forward wall-clock jump cannot invent another day.
+  if (wallElapsed < 0 || elapsed < 0 || wallElapsed > 180000 || elapsed > 180000 ||
+      Math.abs(wallElapsed - elapsed) > 100) return null;
+  const localTimes = [before, after].map(stamp => stamp.wallMs - stamp.timezoneOffsetMinutes * 60000);
+  if (localTimes.some(ms => !Number.isFinite(new Date(ms).getTime()))) return null;
+  const days = localTimes.map(ms => Math.floor(ms / 86400000));
+  if (days[1] < days[0] || days[1] - days[0] > 1) return null;
+  const candidates = [...new Set(localTimes.map(ms => new Date(ms).toISOString().slice(0, 10)))];
+  const matching = candidates.filter(day => {
+    if (!/^\d{4}-\d{2}-\d{2}$/u.test(day)) return false;
+    const stage = dailyStage(new Date(day + 'T12:00:00'));
+    return ['course', 'map', 'laps', 'diff', 'mode'].every(key => after[key] === stage[key]);
+  });
+  // A month boundary can assign the same course to both dates. Never guess.
+  return matching.length === 1 ? matching[0] : null;
+}
 export function qualifiedVisibleFinish(terminal, savedStars) {
-  return terminal.finished === true && savedStars > 0 && terminal.heading.startsWith('挑战成功！');
+  if (terminal?.phase !== 'finished' || terminal.finished !== true ||
+      !Number.isInteger(terminal.place) || terminal.place < 1 || terminal.place > 3 ||
+      !Number.isFinite(terminal.finishTime) || terminal.finishTime <= 0 ||
+      !Number.isFinite(terminal.progress) || terminal.progress <= 0 ||
+      terminal.heading !== `第 ${terminal.place} 名` ||
+      !Number.isInteger(savedStars) || savedStars < 4 - terminal.place || savedStars > 3) return false;
+
+  const daily = terminal.stage === 'daily';
+  let stage;
+  if (daily) {
+    const startDay = dailyRaceDayFromStart(terminal.dailyStart);
+    if (!startDay || startDay !== terminal.raceDay || ['course', 'map', 'laps', 'diff', 'mode']
+      .some(key => terminal.dailyStart.after[key] !== terminal[key])) return false;
+    if (!/^\d{4}-\d{2}-\d{2}$/u.test(terminal.raceDay ?? '')) return false;
+    const date = new Date(terminal.raceDay + 'T12:00:00');
+    if (!Number.isFinite(date.getTime()) || localDayKey(date) !== terminal.raceDay) return false;
+    stage = dailyStage(date);
+  } else stage = STAGES.find(candidate => candidate.id === terminal.stage);
+  if (!stage || ['course', 'map', 'laps', 'diff', 'mode'].some(key => terminal[key] !== stage[key])) return false;
+
+  // The headline alone can be left over from another run. Bind the visible
+  // result's place/time to this native finish, then check its actual save key.
+  const seconds = terminal.finishTime;
+  const visibleTime = `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${(seconds % 60).toFixed(2).padStart(5, '0')}`;
+  const resultPrefix = `${daily ? '每日挑战成功 · ' : ''}第 ${terminal.place} 名 · ${visibleTime} · `;
+  if(terminal.resultCard){
+    // New product layout renders time/stars in their own visible fields.
+    // Keep old report validation intact; neither path accepts stale medals.
+    if(terminal.resultCard.time!==visibleTime ||
+      !terminal.resultCard.stars?.startsWith(`本场 ${4-terminal.place} 星 · `))return false;
+  }else if (typeof terminal.result !== 'string' || !terminal.result.startsWith(resultPrefix)) return false;
+  let saved;
+  try { saved = JSON.parse(terminal.saved); } catch { return false; }
+  if (saved?.version !== 1 || !Number.isInteger(saved.rounds) || saved.rounds < 1) return false;
+  if (daily && (saved.daily?.date !== terminal.raceDay || saved.daily?.lastWonDate !== terminal.raceDay)) return false;
+  const storedStars = daily ? saved.daily?.stars : saved.stars?.[stage.id];
+  const bestTime = daily ? saved.daily?.best : saved.times?.[stage.id];
+  // Best medals/time persist across replays. A better historical record is
+  // legitimate, but it never substitutes for this run's native podium finish.
+  return storedStars === savedStars && Number.isFinite(bestTime) && bestTime > 0 && bestTime <= seconds;
 }
 /** Remember only the rendered arrow/road. No native car/track/item state is read. */
 export function recoverVisibleHeading(policy, memory, now) {

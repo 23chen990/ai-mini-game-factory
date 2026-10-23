@@ -1,0 +1,57 @@
+✖ warm rebuild refreshes the compatibility bridge without changing frozen acceptance (6.841625ms)
+✔ 赛车源补丁保留原输入、物理和AI流程，只约束手机镜头与渲染 (1.856167ms)
+✔ 未知源版本不能静默套用补丁 (0.550875ms)
+✔ V11.6 pre-race quality follows the live renderer and warms up only in visible ready phase (2.633375ms)
+✔ registered build includes live career, items, runtime and fuel dependencies (2.367959ms)
+✔ race text labels remove known third-party signboards in build output (0.250042ms)
+✔ instrument clean native drift without changing dynamics, and reject unknown source (0.208958ms)
+✔ recognizable character balloons are replaced with generic scene assets (0.131167ms)
+✔ actual esbuild script injection keeps valid $& tokens and exactly one closing body (0.194417ms)
+✔ V3.1 build adds pinned geometry and question-box source patches once, rejects unknown shapes (0.356917ms)
+✔ V3.1 model and spline modules are hashed into H5 build and kept scoped to racing (1.487292ms)
+✔ desert dune relief edits only the original generated sand base, never native physics (0.424834ms)
+✔ native stage-specific course selection is strict, idempotent and does not rewrite driving physics (0.132292ms)
+✔ native fork adapters are exact, idempotent and preserve original acceleration/AI (1.465167ms)
+✔ stage-scenery pipeline changes only sky/props, never native car or track physics (1.096208ms)
+✔ fixed desert monument safety keeps pyramid models away from new racing surfaces (0.116542ms)
+✔ V8 native AI hook is strict and avoids checkpoint/progress surgery (0.441458ms)
+✔ V11 build adapter preserves AI names and instantiates the native PlayerCar subclass (4.19425ms)
+✔ V11 world adapter projects physical rivals and applies real impulses without taking player ownership (0.527083ms)
+✔ V8 one-way finish hooks preserve native progress and onLap bookkeeping (0.142208ms)
+✔ phone and desktop camera differences preserve native car/road physics (0.126375ms)
+✔ native eight-item HUD matches V8 pickups and never crashes on a new item ID (0.398375ms)
+✔ V6.2 graphics safety is re-integrated into native generated WebGL with fail-closed anchors (0.20275ms)
+✔ V11.6 default framebuffer avoids MSAA on desktop and touch while preserving saved quality (1.001042ms)
+✔ V11.6 explicit high retains four-sample offscreen rendering before native low direct rendering (0.307667ms)
+✔ V11.6 mid keeps desktop offscreen zero samples and the existing touch budget (0.180958ms)
+✔ V11.6 initial render adapter rejects partial and changed native constructor anchors (0.17675ms)
+✔ V11.8 urban foliage and grass palette mute saturation with no new geometry or AI edits (0.168459ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 27
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 96.728625
+
+✖ failing tests:
+
+test at tools/lean-pilot/tests/racing-build.test.mjs:8:1
+✖ warm rebuild refreshes the compatibility bridge without changing frozen acceptance (6.841625ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at TestContext.<anonymous> (file:///Users/kker/.codex/worktrees/racing-final-acceptance/%E5%A6%96%E6%80%AA%E5%A4%9C%E5%B8%82/tools/lean-pilot/tests/racing-build.test.mjs:15:10)
+      at async Test.run (node:internal/test_runner/test:1125:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:358:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

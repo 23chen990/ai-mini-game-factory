@@ -1,0 +1,242 @@
+{
+  "schemaVersion": 1,
+  "baseCommit": "a66b20e79f7fff05de4d84b670625ced7eda1b09",
+  "previousSourceCommit": "47fbd17d703b74203df47bbf02991c8f280a2c69",
+  "entries": [
+    {
+      "path": ".github/workflows/racing-cold-start-qa.yml",
+      "bytes": 3592,
+      "sha256": "7651a27627a8aa060823f43e85ba8a5087e0c7ba65b3398bdc9bd5c66003668a",
+      "gitBlobSha": "7bcee5c597e2b64e4fd7e43fb00704b97ebf7df1"
+    },
+    {
+      "path": ".github/workflows/racing-v3-smoke.yml",
+      "bytes": 16361,
+      "sha256": "0b4eb858bfe57878cc683c0837ef4eb4bb37874c25eccca90ace15a57f6cce42",
+      "gitBlobSha": "5e74b3bd7a955d1d8e6a51da92a4d4399ae7e79a"
+    },
+    {
+      "path": "templates/web-lite/h5-source-mobile-v1/racing/assets/custom-racer-01.glb",
+      "bytes": 2700636,
+      "sha256": "14e0536f803a360a7b6abf5d976dbff94885318bf77af0729d43498d14649fd1",
+      "gitBlobSha": "5e213665d3be6174b4b060586a78c16137a32674"
+    },
+    {
+      "path": "templates/web-lite/h5-source-mobile-v1/racing/assets/custom-racer-02.glb",
+      "bytes": 1381344,
+      "sha256": "7419803c3e1e404b4556b5b9c4c3284636d5be8f60c69eb49c64a4a4ace53f69",
+      "gitBlobSha": "bf88038632370ed9ccfb36467afe39e0dbeb2cdf"
+    },
+    {
+      "path": "templates/web-lite/h5-source-mobile-v1/racing/assets/custom-racer-03.glb",
+      "bytes": 1173568,
+      "sha256": "db9e3949d926cec74e1268917567d71848fcdb28e294fbd6120308fa052ecca8",
+      "gitBlobSha": "108e0d7a01550fbaed823438631764f4a64b60ee"
+    },
+    {
+      "path": "templates/web-lite/h5-source-mobile-v1/racing/assets/custom-racer-04.glb",
+      "bytes": 1129904,
+      "sha256": "475646dcfcbf3c4fbea5be0f418d98d961b53db1622f516783725b3c65e3c911",
+      "gitBlobSha": "a5f128bfaf5889c7622a0155ce1a7d99ecd8f566"
+    },
+    {
+      "path": "templates/web-lite/h5-source-mobile-v1/racing/assets/custom-racer-05.glb",
+      "bytes": 1407812,
+      "sha256": "bc82f0ebb80c246388c5561a1afcc54a648b18106daaeea9e702c5f6a993a323",
+      "gitBlobSha": "9a6cb1daea3c7dfc0bc2f3388a42b5d055810afb"
+    },
+    {
+      "path": "templates/web-lite/h5-source-mobile-v1/racing/assets/user-cars-manifest.json",
+      "bytes": 19835,
+      "sha256": "17f63f08818e0a7e7decdccc7f08fb79326c50fd06d61fc49e2fccf7b8f3c558",
+      "gitBlobSha": "4040e185152b15515f49947a709dffac2b568ad0"
+    },
+    {
+      "path": "templates/web-lite/h5-source-mobile-v1/racing/car-asset-cache.mjs",
+      "bytes": 5354,
+      "sha256": "1d28db43ce90f8a6fea89379528c912fddff8c331ac28c0fb41952584b61a8a3",
+      "gitBlobSha": "b54e9b25ecc055102ac5607c95d9dc65406cf6d9"
+    },
+    {
+      "path": "templates/web-lite/h5-source-mobile-v1/racing/car-thumbnails.mjs",
+      "bytes": 21083,
+      "sha256": "89fcb7d09c785a1d3da29b6c537ce35a49d0598bc164b10c2f1159d07ebc4169",
+      "gitBlobSha": "aabb4d9c808e0a718bfd33f3637b5f6e27403f37"
+    },
+    {
+      "path": "templates/web-lite/h5-source-mobile-v1/racing/cosmetics.mjs",
+      "bytes": 2279,
+      "sha256": "b0810946d2b72755f1ce30be477e2dfdb86624ab977c1557fdfef726fffe00eb",
+      "gitBlobSha": "ad4de2e152bcebdab7835bcd4c1156e6379fa7d2"
+    },
+    {
+      "path": "templates/web-lite/h5-source-mobile-v1/racing/garage.mjs",
+      "bytes": 3349,
+      "sha256": "d0aa26d173ae6addeb9ecac524cfa23f45bab3077ad3d0e860f125e30f1f8a43",
+      "gitBlobSha": "41eb34ee4d0201a75a377dc6e65aff76c017228c"
+    },
+    {
+      "path": "templates/web-lite/h5-source-mobile-v1/racing/mobile.css",
+      "bytes": 53240,
+      "sha256": "cfb13c92eb6012d115814ea24f08bac9a76c8dd1850b686572e4e966f9ee77eb",
+      "gitBlobSha": "c2d02d8656521265dff6ecb8c2d517eef706f19d"
+    },
+    {
+      "path": "templates/web-lite/h5-source-mobile-v1/racing/mobile.mjs",
+      "bytes": 57933,
+      "sha256": "9744b54f0e7976374bc2c75d002ddc39ca062230663ebd0b2f047d49c91b9597",
+      "gitBlobSha": "825775891048f3364892163b69b6aaa59ba9a580"
+    },
+    {
+      "path": "templates/web-lite/h5-source-mobile-v1/racing/runtime.mjs",
+      "bytes": 27035,
+      "sha256": "1d1f57a28fb91da491734c717b54329862ccb2c1c8c00b6f5acb4db52c409dc5",
+      "gitBlobSha": "26aec73f69afbd3825cfb29263c78e966c119dc5"
+    },
+    {
+      "path": "templates/web-lite/h5-source-mobile-v1/racing/session.mjs",
+      "bytes": 14917,
+      "sha256": "bc732a99a14318305bee540e9c370a173616235580e3c83e729e2511d88aeeef",
+      "gitBlobSha": "e4249f987d46fb35c45a7cc0d0261fcbf2642deb"
+    },
+    {
+      "path": "templates/web-lite/h5-source-mobile-v1/racing/user-car.mjs",
+      "bytes": 3220,
+      "sha256": "f750048436c81a885f0ed8bae0800a6c1ea73b0f2632a004ca2d89c6b778a5d0",
+      "gitBlobSha": "fc0d9d6724c68a2b62898cfd683842633081202c"
+    },
+    {
+      "path": "templates/web-lite/h5-source-mobile-v1/tests/racing-cosmetics.test.mjs",
+      "bytes": 12683,
+      "sha256": "9a8a1dcf44c2c8902bfb7f920d0a457fb1595b4932d819969e146fc400e18d81",
+      "gitBlobSha": "132be5f7c9c458c45200f2e95edd8297212d9501"
+    },
+    {
+      "path": "templates/web-lite/h5-source-mobile-v1/tests/racing-countdown-quality.test.mjs",
+      "bytes": 10349,
+      "sha256": "878b8ebc1e09d485b6bbf3861eea98001f039dc49abf774b02dca0d58dad7bea",
+      "gitBlobSha": "250487238f9e8f38bf9e215037fecb74222c69f7"
+    },
+    {
+      "path": "templates/web-lite/h5-source-mobile-v1/tests/racing-garage.test.mjs",
+      "bytes": 12234,
+      "sha256": "42ed09b195fcbc34eaadf064c6802ebff0138aef77c94f4f1f6183640374e365",
+      "gitBlobSha": "632b7e4ff01e09bd6b99e7cb907d30f1ef3090e2"
+    },
+    {
+      "path": "tools/lean-pilot/policy.mjs",
+      "bytes": 11280,
+      "sha256": "69e7f4ebef776f2a5ed2e0dad3d6c6b79db8059ebaea4e49e43f8e9aa37901e8",
+      "gitBlobSha": "69d3eeacca3111f68fa45f07cd6a33a4d7180aa3"
+    },
+    {
+      "path": "tools/lean-pilot/racing-ai-pace-audit.mjs",
+      "bytes": 22057,
+      "sha256": "561d468fcb5d1fc3c48693974006976305cbce40b9cda1fcd7810f029c851e2b",
+      "gitBlobSha": "69a2431ab1e1f6851fb1d72b36b3cb2e56ac2d4c"
+    },
+    {
+      "path": "tools/lean-pilot/racing-build-fingerprint-check.mjs",
+      "bytes": 3519,
+      "sha256": "292812d4f8b8abec7bc83d22e3a0e0e2dadf2d2b9012de871dc25cd34b489117",
+      "gitBlobSha": "527f96911837f2e3cb18c9e0a81df45ecd6ea4a5"
+    },
+    {
+      "path": "tools/lean-pilot/racing-car-garage-qa.mjs",
+      "bytes": 21053,
+      "sha256": "1acb3c6d514a8d04085411c9242e114673de2d50261c7eb052c954b5e8dfe741",
+      "gitBlobSha": "7552e097498255065adb645fe326aa38d06ac320"
+    },
+    {
+      "path": "tools/lean-pilot/racing-car-physics-probe.mjs",
+      "bytes": 8967,
+      "sha256": "12b8a58524de87ba062bba2625ddf01ee0a69127c691a207d0ae89caa97b14a6",
+      "gitBlobSha": "24f2c9aa6ea43a6f13ee64290f535d866a094e93"
+    },
+    {
+      "path": "tools/lean-pilot/racing-delivery-verify.mjs",
+      "bytes": 9112,
+      "sha256": "f37f364b3206286d2626913116970c5729c4e09471de519e4182ae97ae3920a8",
+      "gitBlobSha": "99c1b573c8b4b4a239ef06e28f831d8c6b49c080"
+    },
+    {
+      "path": "tools/lean-pilot/racing-delivery-verify.test.mjs",
+      "bytes": 14264,
+      "sha256": "1094d59bbc044a4ba519029afaf4955d425be865cdf2fe877a79aa50e5c430e3",
+      "gitBlobSha": "50dd35fda1eb07cf12e9259fca17bc9000da45d2"
+    },
+    {
+      "path": "tools/lean-pilot/racing-fuel-lifecycle-qa.mjs",
+      "bytes": 12006,
+      "sha256": "79d25157320f33f694ffca946aab6a4a514a482d57f2c1b52e38982bcebcfe59",
+      "gitBlobSha": "830090c78edbfc9c45d36df2c358a7736ab1833e"
+    },
+    {
+      "path": "tools/lean-pilot/racing-mobile-build.mjs",
+      "bytes": 79241,
+      "sha256": "0c6a66fd1868e241a6b2ba7ce3d96e2a84b2960e45f66cd31cfde804a30bcb80",
+      "gitBlobSha": "8746f85bcff1e1fe46b3b699cb7eba8e45cb8274"
+    },
+    {
+      "path": "tools/lean-pilot/racing-native-player-v11-qa.mjs",
+      "bytes": 11347,
+      "sha256": "cdf93ec33578bdc2415fff1c3377f57543e9a61be3d431e3008ae7e995dd085c",
+      "gitBlobSha": "8e348efc26cd4e66c38e92ff1b289f00f45a99e9"
+    },
+    {
+      "path": "tools/lean-pilot/racing-prepare-user-cars.mjs",
+      "bytes": 13518,
+      "sha256": "c9ca7897fa637068daa3fb9cd6198a0d7d753f0b92bf6b21c3c781d1083fc77e",
+      "gitBlobSha": "6ce0f4bc816428134b6421a046ffe902be2e496d"
+    },
+    {
+      "path": "tools/lean-pilot/racing-v3-smoke.mjs",
+      "bytes": 56701,
+      "sha256": "af0cf03d27bf2f487692fe2c1b111b1b968aa179133fcaeb3f19b4659135f8fb",
+      "gitBlobSha": "266b424a6f531d8d657323da62b971abfd3a8e88"
+    },
+    {
+      "path": "tools/lean-pilot/runner.mjs",
+      "bytes": 20374,
+      "sha256": "525755ae0ce7f45cb8417171e8af55513068be66235a7b1c5e56d584a9c18403",
+      "gitBlobSha": "bb80cc40a2d9e40a5e692349aba96677dafabaaa"
+    },
+    {
+      "path": "tools/lean-pilot/tests/racing-ai-pace-audit.test.mjs",
+      "bytes": 7185,
+      "sha256": "ad8e3faf04ab8daf75a8591b6a6ccf8e51a47a634eaa64d597fa132a34a2902a",
+      "gitBlobSha": "dcfde3cdf4ad51e8541146e3f232049ea8dd15a3"
+    },
+    {
+      "path": "tools/lean-pilot/tests/racing-car-qa-instrumentation.node.mjs",
+      "bytes": 8485,
+      "sha256": "f5ef0063d97e2f186b2b77549b4eaecc59d5152578e5f0c05497c6c40bd07eab",
+      "gitBlobSha": "8dfc0ba679297647ba0887611d0d568d5f26eb4b"
+    },
+    {
+      "path": "tools/lean-pilot/tests/racing-home-presentation.node.mjs",
+      "bytes": 7176,
+      "sha256": "e789a905f1be76e314e2fcfe68e51b1b6b0869563abba38fd281501524760e11",
+      "gitBlobSha": "52792b6ec3126f7184ada6dd654360cb7cda4de4"
+    },
+    {
+      "path": "tools/lean-pilot/tests/racing-large-build-hash.node.mjs",
+      "bytes": 11160,
+      "sha256": "95f7ea63de6aa2504faa7251625469c39e1804eb73231638115ca158ac613285",
+      "gitBlobSha": "a7300e8275dd6ab298ae750e63ccb28f6908ed19"
+    },
+    {
+      "path": "tools/lean-pilot/tests/racing-user-car-build.node.mjs",
+      "bytes": 12078,
+      "sha256": "00f68d3583747caa81a17af4acca22792ef15dbf05e11a128c4dcebf164b8f15",
+      "gitBlobSha": "c8aaccfc5275e4581a2cd5972daf931a1136e0b8"
+    },
+    {
+      "path": "tools/lean-pilot/tests/racing-user-car-runtime.mjs",
+      "bytes": 15297,
+      "sha256": "bb2f100f1aa1bd9fda02466b361f3f0d4b473c00c65a4b24a916b76b51958eb8",
+      "gitBlobSha": "027de10cf1a64d4434790422c932a4144c31e50d"
+    }
+  ],
+  "stagedTree": "2e27824445593e79dd9dda61d02e2924a81698f5"
+}

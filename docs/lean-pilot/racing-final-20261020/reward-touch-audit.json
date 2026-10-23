@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "task": "reward-touch-audit",
+  "findings": [
+    {
+      "id": "INFO-REWARD-LIFECYCLE-EVIDENCE",
+      "severity": "INFO",
+      "observation": "Observation: no reproducible reward-flow defect found in the audited implementation. The adapter uses a one-shot finish path, clears its timeout/listeners, and bounds load/close waits; career reward paths re-check relevant lifecycle state and require synchronous persistence before permanent cosmetic/stage grants. Existing tests cover cancel, timeout, stale/late callbacks, duplicate requests, save failure, and reload persistence. Hypothesis: none established. Unknown: provider tests use fixtures, not a live TapTap SDK/runtime session.",
+      "evidence": [
+        "templates/web-lite/h5-source-mobile-v1/themes.mjs:23-40 — idempotent finish, listener cleanup, load and close timeouts.",
+        "templates/web-lite/h5-source-mobile-v1/tests/ads.test.mjs:5-6,26-48 — explicitly fixture-only adapter tests for completion, cancellation, failure, timeout/late callback, and concurrent duplicate request.",
+        "templates/web-lite/h5-source-mobile-v1/racing/runtime.mjs:100-123,136-158,168-191,458-503 — cosmetic, next-stage, gate, retry and fuel reward lifecycle/persistence code.",
+        "templates/web-lite/h5-source-mobile-v1/tests/racing-career.test.mjs:657-719; tests/racing-next-stage-ad.test.mjs:46-90; tests/racing-cosmetics.test.mjs:49-68,116-179 — grant scope, persistence, cancellation, duplicate and stale callback cases.",
+        "Targeted command completed: 147 tests passed, 0 failed."
+      ],
+      "recommendation": "No source change is supported by this audit. Keep live SDK behavior as an explicit unknown; if it must be closed, verify one real completion, cancellation, and missing-close timeout on the target H5 runtime and confirm durable reload state."
+    },
+    {
+      "id": "INFO-TOUCH-LIFECYCLE-INTEGRATION-GAP",
+      "severity": "INFO",
+      "observation": "Observation: unit coverage exercises wheel release/cancel, an unrelated second pointer, buffered action release/cancel, and paused/non-race input clearing. Production code wires pointer capture fallback and clears input on pause, blur, hidden visibility, and portrait orientation. No reproducible touch defect was established. Hypothesis: browser/WebView-specific pointer-capture or background event ordering could differ, but this is untested rather than an observed failure. Unknown: no target-device/browser integration run dispatched actual DOM pointer and lifecycle events.",
+      "evidence": [
+        "templates/web-lite/h5-source-mobile-v1/racing/mobile.mjs:335-340,369-375,723-793 — input release, pause/resume, pointer capture/fallback, pointer cancel, blur, visibility and orientation wiring.",
+        "templates/web-lite/h5-source-mobile-v1/racing/driver.mjs:15-45,53-91 — action pointer bookkeeping, cancellation, expiry, and paused-state clearing.",
+        "templates/web-lite/h5-source-mobile-v1/tests/racing-driver.test.mjs:39-88; tests/racing-touch-steering.test.mjs:7-36; tests/racing-wheel-steering.test.mjs:23-29,40-58 — pure state tests plus source-pattern checks; they do not dispatch real browser lifecycle events."
+      ],
+      "recommendation": "Treat this as an integration evidence gap, not a code bug. A narrow discriminating check is a fresh mobile browser/WebView run that holds steering and an action across pointer release/cancel, pause, background/foreground, and a second-finger action; record visible input returning to neutral before resuming."
+    }
+  ],
+  "blockers": [],
+  "commands": [
+    "node --test templates/web-lite/h5-source-mobile-v1/tests/ads.test.mjs templates/web-lite/h5-source-mobile-v1/tests/fuel.test.mjs templates/web-lite/h5-source-mobile-v1/tests/racing-career.test.mjs templates/web-lite/h5-source-mobile-v1/tests/racing-cosmetics.test.mjs templates/web-lite/h5-source-mobile-v1/tests/racing-garage.test.mjs templates/web-lite/h5-source-mobile-v1/tests/racing-next-stage-ad.test.mjs templates/web-lite/h5-source-mobile-v1/tests/racing-wheel-steering.test.mjs templates/web-lite/h5-source-mobile-v1/tests/racing-touch-steering.test.mjs templates/web-lite/h5-source-mobile-v1/tests/racing-driver.test.mjs — 147 passed, 0 failed."
+  ]
+}

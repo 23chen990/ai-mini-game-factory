@@ -1,0 +1,715 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "qq-speed / 极速飞驰",
+  "cars": [
+    {
+      "id": "custom-01",
+      "displayName": "银紫超跑",
+      "file": "custom-racer-01.glb",
+      "sha256": "14e0536f803a360a7b6abf5d976dbff94885318bf77af0729d43498d14649fd1",
+      "bytes": 2700636,
+      "triangles": 63998,
+      "vertices": 65267,
+      "bounds": {
+        "min": [
+          -1.2987256050109863,
+          0,
+          -2.4000000953674316
+        ],
+        "max": [
+          1.2987256050109863,
+          1.2871825695037842,
+          2.4000000953674316
+        ]
+      },
+      "normalization": {
+        "baked": true,
+        "axes": "+Y-up/+Z-nose",
+        "groundY": 0,
+        "length": 4.8,
+        "runtimeScale": 1,
+        "runtimeYawRadians": 0,
+        "sourceWorldBounds": {
+          "min": [
+            -0.29820600152015686,
+            3.543177129472497e-8,
+            -0.4942690432071686
+          ],
+          "max": [
+            0.2964699864387512,
+            0.2945270538330078,
+            0.6041690707206726
+          ]
+        },
+        "sourceWorldOrigin": [
+          -0.0008680075407028198,
+          3.543177129472497e-8,
+          0.054950013756752014
+        ],
+        "sourceUniformScale": 4.369841085389834,
+        "postSimplificationOrigin": [
+          -0.0004260540008544922,
+          0.0002621907915454358,
+          -0.00029921531677246094
+        ],
+        "postSimplificationUniformScale": 1.0003888330209332,
+        "sourceFrontVerifiedByRender": "+Z after original node X90 rotation",
+        "up": "+Y",
+        "forward": "+Z",
+        "centerXZ": [
+          0,
+          0
+        ],
+        "lengthM": 4.8
+      },
+      "wheelMode": "static-source-mesh",
+      "paintable": false,
+      "limits": {
+        "maxTriangles": 64000,
+        "maxBytes": 3670016,
+        "maxTexture": 1024
+      },
+      "textures": [
+        {
+          "name": "texture_pbr_20250901_normal",
+          "mimeType": "image/jpeg",
+          "width": 1024,
+          "height": 1024,
+          "bytes": 108071,
+          "sha256": "c23b54d306933beae4d1c53d5d7843b2f9dd1a4c5faf12a801faac83f2435322"
+        },
+        {
+          "name": "texture_pbr_20250901",
+          "mimeType": "image/jpeg",
+          "width": 1024,
+          "height": 1024,
+          "bytes": 286476,
+          "sha256": "9777650313a9160555e8bea99a2761a27db524f120e86a56a4dc84ef2955c831"
+        },
+        {
+          "name": "texture_pbr_20250901_metallic-texture_pbr_20250901_roughness",
+          "mimeType": "image/jpeg",
+          "width": 1024,
+          "height": 1024,
+          "bytes": 353436,
+          "sha256": "3bab34d3e6d99bd83310206c415e9e73d1278ad4b81dae9970fa67fec0754d88"
+        }
+      ],
+      "source": {
+        "file": "1b92ee2529bb8003391d3ad46c5cb742.glb",
+        "sha256": "1f584e61eb0f1a19117ea7672dfdb93ee903c4184e13fc5f559cfe081e486566",
+        "bytes": 92992820,
+        "triangles": 1496778,
+        "vertices": 952024
+      },
+      "quantization": {
+        "enabled": true,
+        "extension": "KHR_mesh_quantization",
+        "position": "FLOAT32",
+        "normal": "INT16_NORMALIZED",
+        "texcoord": "UINT16_NORMALIZED",
+        "maxNormalComponentError": 0.000015259251099908333,
+        "maxUVError": 0.000007629510948348184,
+        "maxUVErrorAt1024Pixels": 0.00781261921110854
+      },
+      "simplification": {
+        "targetTriangles": 64000,
+        "errorLimit": 0.02,
+        "reportedError": 0.001724607078358531,
+        "attributeWeights": [
+          0.25,
+          0.25,
+          0.25,
+          1,
+          1
+        ],
+        "flags": [],
+        "attempts": [
+          {
+            "flags": [],
+            "triangles": 63998,
+            "error": 0.001724607078358531
+          }
+        ],
+        "retainedSourceSurfaces": true,
+        "artificialWheels": false
+      },
+      "budgetDecision": "Reviewed source/18k/24k/32k/64k/96k renders support a 64k fidelity exception; gameplay/performance QA thresholds are unchanged.",
+      "material": {
+        "originalPBRMapsRetained": true,
+        "materialCount": 1,
+        "doubleSided": true,
+        "extensions": [
+          "KHR_materials_specular"
+        ]
+      }
+    },
+    {
+      "id": "custom-02",
+      "displayName": "荧光跑车",
+      "file": "custom-racer-02.glb",
+      "sha256": "7419803c3e1e404b4556b5b9c4c3284636d5be8f60c69eb49c64a4a4ace53f69",
+      "bytes": 1381344,
+      "triangles": 18000,
+      "vertices": 18795,
+      "bounds": {
+        "min": [
+          -1.251115083694458,
+          0,
+          -2.4000000953674316
+        ],
+        "max": [
+          1.251115083694458,
+          1.3380991220474243,
+          2.4000000953674316
+        ]
+      },
+      "normalization": {
+        "baked": true,
+        "axes": "+Y-up/+Z-nose",
+        "groundY": 0,
+        "length": 4.8,
+        "runtimeScale": 1,
+        "runtimeYawRadians": 0,
+        "sourceWorldBounds": {
+          "min": [
+            -0.29662999510765076,
+            -4.2899976904209325e-8,
+            -0.5286310315132141
+          ],
+          "max": [
+            0.2860119938850403,
+            0.3117751181125641,
+            0.5889500379562378
+          ]
+        },
+        "sourceWorldOrigin": [
+          -0.005309000611305237,
+          -4.2899976904209325e-8,
+          0.03015950322151184
+        ],
+        "sourceUniformScale": 4.294990431681792,
+        "postSimplificationOrigin": [
+          0.0000966787338256836,
+          0,
+          0.0005089044570922852
+        ],
+        "postSimplificationUniformScale": 1.0004323304375644,
+        "sourceFrontVerifiedByRender": "+Z after original node X90 rotation",
+        "up": "+Y",
+        "forward": "+Z",
+        "centerXZ": [
+          0,
+          0
+        ],
+        "lengthM": 4.8
+      },
+      "wheelMode": "static-source-mesh",
+      "paintable": false,
+      "limits": {
+        "maxTriangles": 18000,
+        "maxBytes": 1572864,
+        "maxTexture": 1024
+      },
+      "textures": [
+        {
+          "name": "texture_pbr_20250901_normal",
+          "mimeType": "image/jpeg",
+          "width": 1024,
+          "height": 1024,
+          "bytes": 129944,
+          "sha256": "87aee5c09574989b3fe8dd72ae353077f6b832f5550106eb13b65139d829fefc"
+        },
+        {
+          "name": "texture_pbr_20250901",
+          "mimeType": "image/jpeg",
+          "width": 1024,
+          "height": 1024,
+          "bytes": 267969,
+          "sha256": "5dd109af73723c63a0cc3b181191d452b9f88c0ab9186537257c18d7b0c7ecb1"
+        },
+        {
+          "name": "texture_pbr_20250901_metallic-texture_pbr_20250901_roughness",
+          "mimeType": "image/jpeg",
+          "width": 1024,
+          "height": 1024,
+          "bytes": 271851,
+          "sha256": "58fa1ed5a845e77742ce734f06e69a8df3044272c85897e0ac6ad03e9e0794a7"
+        }
+      ],
+      "source": {
+        "file": "614902d6b59a245a9b86708fb2659633.glb",
+        "sha256": "54b9b8167e7aac0d58c837b7a62785ce54577d1f0a3771ce534f3bd1515b6bed",
+        "bytes": 45915312,
+        "triangles": 49964,
+        "vertices": 39759
+      },
+      "quantization": {
+        "enabled": false,
+        "position": "FLOAT32",
+        "normal": "FLOAT32",
+        "texcoord": "FLOAT32"
+      },
+      "simplification": {
+        "targetTriangles": 18000,
+        "errorLimit": 0.01,
+        "reportedError": 0.002629200927913189,
+        "attributeWeights": [
+          0.25,
+          0.25,
+          0.25,
+          1,
+          1
+        ],
+        "flags": [],
+        "attempts": [
+          {
+            "flags": [],
+            "triangles": 18000,
+            "error": 0.002629200927913189
+          }
+        ],
+        "retainedSourceSurfaces": true,
+        "artificialWheels": false
+      },
+      "budgetDecision": "Original requested 18k geometry budget.",
+      "material": {
+        "originalPBRMapsRetained": true,
+        "materialCount": 1,
+        "doubleSided": true,
+        "extensions": [
+          "KHR_materials_specular"
+        ]
+      }
+    },
+    {
+      "id": "custom-03",
+      "displayName": "黄金方程式",
+      "file": "custom-racer-03.glb",
+      "sha256": "db9e3949d926cec74e1268917567d71848fcdb28e294fbd6120308fa052ecca8",
+      "bytes": 1173568,
+      "triangles": 18000,
+      "vertices": 18842,
+      "bounds": {
+        "min": [
+          -1.310964584350586,
+          0,
+          -2.4000000953674316
+        ],
+        "max": [
+          1.310964584350586,
+          1.4491381645202637,
+          2.4000000953674316
+        ]
+      },
+      "normalization": {
+        "baked": true,
+        "axes": "+Y-up/+Z-nose",
+        "groundY": 0,
+        "length": 4.8,
+        "runtimeScale": 1,
+        "runtimeYawRadians": 0,
+        "sourceWorldBounds": {
+          "min": [
+            -0.3094939887523651,
+            4.051604918231533e-8,
+            -0.49597203731536865
+          ],
+          "max": [
+            0.3098269999027252,
+            0.3429650664329529,
+            0.6378520727157593
+          ]
+        },
+        "sourceWorldOrigin": [
+          0.0001665055751800537,
+          4.051604918231533e-8,
+          0.07094001770019531
+        ],
+        "sourceUniformScale": 4.233460867107704,
+        "postSimplificationOrigin": [
+          -0.00002753734588623047,
+          0.0013081346405670047,
+          -0.0001035928726196289
+        ],
+        "postSimplificationUniformScale": 1.0000431258202511,
+        "sourceFrontVerifiedByRender": "+Z after original node X90 rotation",
+        "up": "+Y",
+        "forward": "+Z",
+        "centerXZ": [
+          0,
+          0
+        ],
+        "lengthM": 4.8
+      },
+      "wheelMode": "static-source-mesh",
+      "paintable": false,
+      "limits": {
+        "maxTriangles": 18000,
+        "maxBytes": 1572864,
+        "maxTexture": 1024
+      },
+      "textures": [
+        {
+          "name": "texture_pbr_20250901_normal",
+          "mimeType": "image/jpeg",
+          "width": 1024,
+          "height": 1024,
+          "bytes": 76533,
+          "sha256": "4b27d4e5d900efe1b7d124a296f415a8c57438200cfebc24b40a6c47502497cb"
+        },
+        {
+          "name": "texture_pbr_20250901",
+          "mimeType": "image/jpeg",
+          "width": 1024,
+          "height": 1024,
+          "bytes": 226546,
+          "sha256": "e0d70f91c1b569672a2d91677ae1d851f6c94534dd3fc034a53d2d5716ef6d16"
+        },
+        {
+          "name": "texture_pbr_20250901_metallic-texture_pbr_20250901_roughness",
+          "mimeType": "image/jpeg",
+          "width": 1024,
+          "height": 1024,
+          "bytes": 157406,
+          "sha256": "441da76e7a8222334149eca8f4579400189d78cae8cdc3c1b8976d08be9e376d"
+        }
+      ],
+      "source": {
+        "file": "7c328ebcef61fba065dac57cac892617.glb",
+        "sha256": "ae2569ddf9efb7860db9d33645e3199d889dde0a2c0ceb106e7c740d76018dbe",
+        "bytes": 33337688,
+        "triangles": 50000,
+        "vertices": 39687
+      },
+      "quantization": {
+        "enabled": false,
+        "position": "FLOAT32",
+        "normal": "FLOAT32",
+        "texcoord": "FLOAT32"
+      },
+      "simplification": {
+        "targetTriangles": 18000,
+        "errorLimit": 0.01,
+        "reportedError": 0.0030880023259669542,
+        "attributeWeights": [
+          0.25,
+          0.25,
+          0.25,
+          1,
+          1
+        ],
+        "flags": [],
+        "attempts": [
+          {
+            "flags": [],
+            "triangles": 18000,
+            "error": 0.0030880023259669542
+          }
+        ],
+        "retainedSourceSurfaces": true,
+        "artificialWheels": false
+      },
+      "budgetDecision": "Original requested 18k geometry budget.",
+      "material": {
+        "originalPBRMapsRetained": true,
+        "materialCount": 1,
+        "doubleSided": true,
+        "extensions": [
+          "KHR_materials_specular"
+        ]
+      }
+    },
+    {
+      "id": "custom-04",
+      "displayName": "赤焰超跑",
+      "file": "custom-racer-04.glb",
+      "sha256": "475646dcfcbf3c4fbea5be0f418d98d961b53db1622f516783725b3c65e3c911",
+      "bytes": 1129904,
+      "triangles": 18000,
+      "vertices": 18624,
+      "bounds": {
+        "min": [
+          -1.3331763744354248,
+          0,
+          -2.4000000953674316
+        ],
+        "max": [
+          1.3331763744354248,
+          1.3121647834777832,
+          2.4000000953674316
+        ]
+      },
+      "normalization": {
+        "baked": true,
+        "axes": "+Y-up/+Z-nose",
+        "groundY": 0,
+        "length": 4.8,
+        "runtimeScale": 1,
+        "runtimeYawRadians": 0,
+        "sourceWorldBounds": {
+          "min": [
+            -0.3075290024280548,
+            -5.002180358815167e-8,
+            -0.498710036277771
+          ],
+          "max": [
+            0.30918899178504944,
+            0.30378007888793945,
+            0.611513078212738
+          ]
+        },
+        "sourceWorldOrigin": [
+          0.0008299946784973145,
+          -5.002180358815167e-8,
+          0.05640152096748352
+        ],
+        "sourceUniformScale": 4.323455292320014,
+        "postSimplificationOrigin": [
+          0,
+          0.0012148905079811811,
+          0
+        ],
+        "postSimplificationUniformScale": 0.9999999602635717,
+        "sourceFrontVerifiedByRender": "+Z after original node X90 rotation",
+        "up": "+Y",
+        "forward": "+Z",
+        "centerXZ": [
+          0,
+          0
+        ],
+        "lengthM": 4.8
+      },
+      "wheelMode": "static-source-mesh",
+      "paintable": false,
+      "limits": {
+        "maxTriangles": 18000,
+        "maxBytes": 1572864,
+        "maxTexture": 1024
+      },
+      "textures": [
+        {
+          "name": "texture_pbr_20250901_normal",
+          "mimeType": "image/jpeg",
+          "width": 1024,
+          "height": 1024,
+          "bytes": 88970,
+          "sha256": "e947b2b088bbe5d17c45a71333624254ddd764c823347a34cfcb0072678b8f35"
+        },
+        {
+          "name": "texture_pbr_20250901",
+          "mimeType": "image/jpeg",
+          "width": 1024,
+          "height": 1024,
+          "bytes": 224555,
+          "sha256": "c2ccb1bd31f10c5a7c6dda8fbd909d449233b23fe687d5ff11c3104f3337e8ae"
+        },
+        {
+          "name": "texture_pbr_20250901_metallic-texture_pbr_20250901_roughness",
+          "mimeType": "image/jpeg",
+          "width": 1024,
+          "height": 1024,
+          "bytes": 110266,
+          "sha256": "7f2917d3570df7d8a5bd36c8945d87f372fe2109ef31eaefdd73cdb8059b322d"
+        }
+      ],
+      "source": {
+        "file": "695043a75e2c833f35a8456acc099569.glb",
+        "sha256": "3afa72252768c34fac1ebadc56cbc8e12f9e7ec343a15d4d1bf73c0869f077cc",
+        "bytes": 36924944,
+        "triangles": 49934,
+        "vertices": 39015
+      },
+      "quantization": {
+        "enabled": false,
+        "position": "FLOAT32",
+        "normal": "FLOAT32",
+        "texcoord": "FLOAT32"
+      },
+      "simplification": {
+        "targetTriangles": 18000,
+        "errorLimit": 0.01,
+        "reportedError": 0.002536509884521365,
+        "attributeWeights": [
+          0.25,
+          0.25,
+          0.25,
+          1,
+          1
+        ],
+        "flags": [],
+        "attempts": [
+          {
+            "flags": [],
+            "triangles": 18000,
+            "error": 0.002536509884521365
+          }
+        ],
+        "retainedSourceSurfaces": true,
+        "artificialWheels": false
+      },
+      "budgetDecision": "Original requested 18k geometry budget.",
+      "material": {
+        "originalPBRMapsRetained": true,
+        "materialCount": 1,
+        "doubleSided": true,
+        "extensions": [
+          "KHR_materials_specular"
+        ]
+      }
+    },
+    {
+      "id": "custom-05",
+      "displayName": "蓝白拉力",
+      "file": "custom-racer-05.glb",
+      "sha256": "bc82f0ebb80c246388c5561a1afcc54a648b18106daaeea9e702c5f6a993a323",
+      "bytes": 1407812,
+      "triangles": 18000,
+      "vertices": 15344,
+      "bounds": {
+        "min": [
+          -1.2511299848556519,
+          0,
+          -2.4000000953674316
+        ],
+        "max": [
+          1.2511299848556519,
+          1.7879513502120972,
+          2.4000000953674316
+        ]
+      },
+      "normalization": {
+        "baked": true,
+        "axes": "+Y-up/+Z-nose",
+        "groundY": 0,
+        "length": 4.8,
+        "runtimeScale": 1,
+        "runtimeYawRadians": 0,
+        "sourceWorldBounds": {
+          "min": [
+            -0.28996899724006653,
+            -4.344197890304713e-8,
+            -0.5201719999313354
+          ],
+          "max": [
+            0.28808701038360596,
+            0.41319605708122253,
+            0.5889370441436768
+          ]
+        },
+        "sourceWorldOrigin": [
+          -0.0009409934282302856,
+          -4.344197890304713e-8,
+          0.034382522106170654
+        ],
+        "sourceUniformScale": 4.32779808770125,
+        "postSimplificationOrigin": [
+          -0.00041115283966064453,
+          0.00011252255353610963,
+          -0.0009586811065673828
+        ],
+        "postSimplificationUniformScale": 1.0006631039879184,
+        "sourceFrontVerifiedByRender": "+Z after original node X90 rotation",
+        "up": "+Y",
+        "forward": "+Z",
+        "centerXZ": [
+          0,
+          0
+        ],
+        "lengthM": 4.8
+      },
+      "wheelMode": "static-source-mesh",
+      "paintable": false,
+      "limits": {
+        "maxTriangles": 18000,
+        "maxBytes": 1572864,
+        "maxTexture": 1024
+      },
+      "textures": [
+        {
+          "name": "texture_pbr_20250901_normal",
+          "mimeType": "image/jpeg",
+          "width": 1024,
+          "height": 1024,
+          "bytes": 128374,
+          "sha256": "7a6c03d829ac9bd3fad42743530f47462bf9e527174847fd9af6923e54bc88e5"
+        },
+        {
+          "name": "texture_pbr_20250901",
+          "mimeType": "image/jpeg",
+          "width": 1024,
+          "height": 1024,
+          "bytes": 362037,
+          "sha256": "a54310ec4d76e0e860d4072f05752717edd1b3864c04fdf6b04c19670f535e27"
+        },
+        {
+          "name": "texture_pbr_20250901_metallic-texture_pbr_20250901_roughness",
+          "mimeType": "image/jpeg",
+          "width": 1024,
+          "height": 1024,
+          "bytes": 316254,
+          "sha256": "984f3c8f901ef7374516ae864e63f677ff539d58b7fe6c115c93101bbf5c63c0"
+        }
+      ],
+      "source": {
+        "file": "6879fce5f010ad8727988f1b81efdd1b.glb",
+        "sha256": "2fa814d247ee1324a52080ccbaa561c3459b02e8f4a7a534666eaf4de90116c3",
+        "bytes": 94239244,
+        "triangles": 1499832,
+        "vertices": 912217
+      },
+      "quantization": {
+        "enabled": false,
+        "position": "FLOAT32",
+        "normal": "FLOAT32",
+        "texcoord": "FLOAT32"
+      },
+      "simplification": {
+        "targetTriangles": 18000,
+        "errorLimit": 0.01,
+        "reportedError": 0.0035872883163392544,
+        "attributeWeights": [
+          0.25,
+          0.25,
+          0.25,
+          1,
+          1
+        ],
+        "flags": [
+          "Permissive"
+        ],
+        "attempts": [
+          {
+            "flags": [],
+            "triangles": 28884,
+            "error": 0.009956206195056438
+          },
+          {
+            "flags": [
+              "Permissive"
+            ],
+            "triangles": 18000,
+            "error": 0.0035872883163392544
+          }
+        ],
+        "retainedSourceSurfaces": true,
+        "artificialWheels": false
+      },
+      "budgetDecision": "Original requested 18k geometry budget.",
+      "material": {
+        "originalPBRMapsRetained": true,
+        "materialCount": 1,
+        "doubleSided": true,
+        "extensions": [
+          "KHR_materials_specular"
+        ]
+      }
+    }
+  ],
+  "toolchain": {
+    "gltfTransform": "4.5.1",
+    "meshoptimizer": "1.2.0",
+    "sharp": "0.35.5"
+  },
+  "runtimeDependenciesAdded": 0
+}

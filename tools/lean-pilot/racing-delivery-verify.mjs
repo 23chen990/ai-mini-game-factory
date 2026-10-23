@@ -7,8 +7,8 @@ import { promisify } from 'node:util';
 import path from 'node:path';
 import { z } from 'zod';
 import { buildHash } from './runner.mjs';
-import { RACING_OWNED_NAMES } from './racing-mobile-build.mjs';
-import { STAGES } from '../../templates/web-lite/h5-source-mobile-v1/racing/career.mjs';
+import { RACING_OWNED_NAMES, racingCarAssetHashes } from './racing-mobile-build.mjs';
+import { STAGES, gradeStage } from '../../templates/web-lite/h5-source-mobile-v1/racing/career.mjs';
 import { qualifiedVisibleFinish } from './racing-visible-policy.mjs';
 
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
@@ -45,6 +45,7 @@ export async function currentRacingInputHash() {
   const inputs = await Promise.all(RACING_OWNED_NAMES.map(name => readFile(path.join(owned, 'racing', name), 'utf8')));
   inputs.push(...await Promise.all(['fuel.mjs', 'themes.mjs'].map(name => readFile(path.join(owned, name), 'utf8'))));
   inputs.push(await readFile('tools/lean-pilot/racing-mobile-build.mjs', 'utf8'));
+  inputs.push(...await racingCarAssetHashes(path.join(owned, 'racing')));
   return hash(inputs.join('\n'));
 }
 export async function verifyDelivery(manifestPath) {
@@ -64,7 +65,9 @@ export async function verifyDelivery(manifestPath) {
   if (!zip || !standalone || standalone.sha256 !== build.trialSha256) throw Error('Latest H5 ZIP/standalone pair missing or stale');
   const exec = promisify(execFile);
   for (const name of ['index.html', 'style.css', 'platform.json', 'LICENSE.three.txt']) {
-    const { stdout } = await exec('unzip', ['-p', path.resolve(zip.path), name], { encoding: 'buffer', maxBuffer: 4 * 1024 * 1024 });
+    // Six embedded car binaries make the actual offline HTML larger than the
+    // original one-car 4 MiB extraction ceiling; hashes below remain exact.
+    const { stdout } = await exec('unzip', ['-p', path.resolve(zip.path), name], { encoding: 'buffer', maxBuffer: 32 * 1024 * 1024 });
     if (hash(stdout) !== hash(await readFile(path.join(game, name)))) throw Error('ZIP payload differs from tested current H5: ' + name);
   }
   const bytes = await readFile(manifest.naturalReport);
@@ -73,23 +76,34 @@ export async function verifyDelivery(manifestPath) {
   const victories = natural.races.filter(r => r.status === 'PASS');
   for (const race of victories.filter(r => r.stage !== 'daily')) {
     const stage = STAGES.find(s => s.id === race.stage);
-    if (!stage || stage.map !== race.map || stage.laps !== race.laps || stage.diff !== race.diff || stage.mode !== race.mode || race.place > stage.rank) throw Error('Career race configuration or rank gate differs: ' + race.stage);
-    const count = label => Number(race.resultStats.match(new RegExp('(\\d+)' + label, 'u'))?.[1] ?? 0);
-    if (stage.kind === 'item' && count('拾取道具') < stage.target) throw Error('Physical pickups missing: ' + stage.id);
-    if (stage.kind === 'overtake' && count('弯道超车') < stage.target) throw Error('Real corner passes missing: ' + stage.id);
-    if (stage.kind === 'drift' && count('有效漂移') < stage.target) throw Error('Clean drifts missing');
-    if (stage.kind === 'time' && race.finishTime > stage.target) throw Error('Time objective missed');
-    if (stage.kind === 'speed' && Number(race.goal.match(/测速 (\d+)\//u)?.[1] ?? 0) < stage.target) throw Error('Speed gate missed');
-    if (stage.kind === 'elimination' && !race.goal.includes('已存活 2/2')) throw Error('Elimination survival missing');
+    if (!stage || stage.course !== race.course || stage.map !== race.map || stage.laps !== race.laps ||
+        stage.diff !== race.diff || stage.mode !== race.mode || gradeStage(stage, race) <= 0)
+      throw Error('Career race configuration or native podium result differs: ' + race.stage);
+    // Current career stars come only from a genuine finishing podium rank.
+    // Historical mission counters remain in the report as observations; they
+    // cannot revoke that award or replace the independent native physics gates.
   }
   if (natural.passed) for (const map of ['city', 'egypt', 'aegean', 'snow']) {
     if (!victories.some(r => r.map === map && r.laps >= 2) || !victories.some(r => r.map === map && r.diff === 2)) throw Error('Multi-lap/expert map coverage missing: ' + map);
   }
   const html = await readFile(path.join(game, 'index.html'), 'utf8');
-  const scripts = [...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gu)];
-  if (scripts.length !== 2 || /<script[^>]*src=/u.test(html) || !html.includes('Permission is hereby granted')) throw Error('Unexpected default runtime entry or missing Three.js notice');
+  // Match only opening tags: a whole-body Unicode regex can exhaust V8's
+  // regex stack on the localized H5 with its embedded multi-MiB car assets.
+  // This bounded scanner targets generated HTML, not HTML parser recovery,
+  // quoted '>' attribute values, or tag-like text in other HTML contexts.
+  const scripts = [], openingTag = /<script(?:\s[^>]*)?>/gi, closingTag = /<\/script\s*>/gi;
+  for (let match = openingTag.exec(html); match; match = openingTag.exec(html)) {
+    if (/\ssrc\s*=/i.test(match[0])) throw Error('Unexpected default runtime entry or missing Three.js notice');
+    const bodyStart = match.index + match[0].length;
+    closingTag.lastIndex = bodyStart;
+    const closing = closingTag.exec(html);
+    if (!closing) throw Error('Unexpected default runtime entry or missing Three.js notice');
+    scripts.push(html.slice(bodyStart, closing.index));
+    openingTag.lastIndex = closingTag.lastIndex;
+  }
+  if (scripts.length !== 2 || !html.includes('Permission is hereby granted')) throw Error('Unexpected default runtime entry or missing Three.js notice');
   const temp = path.join(run, 'artifacts/delivery-script-check'); await mkdir(temp, { recursive: true });
-  for (const [i, script] of scripts.entries()) { const file = path.join(temp, 'inline-' + i + '.js'); await writeFile(file, script[1]); await exec(process.execPath, ['--check', file]); }
+  for (const [i, script] of scripts.entries()) { const file = path.join(temp, 'inline-' + i + '.js'); await writeFile(file, script); await exec(process.execPath, ['--check', file]); }
   return { passed: true, buildHash: manifest.buildHash, artifacts: manifest.artifacts.length, naturalVictories: victories.length,
     all16AndDaily: natural.passed, scriptSyntax: '2/2', publishable: false, remaining: Object.entries(manifest.gates).filter(([, status]) => status !== 'PASS').map(([gate]) => gate) };
 }

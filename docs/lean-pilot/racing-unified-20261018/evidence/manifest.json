@@ -1,0 +1,331 @@
+{
+  "schemaVersion": 1,
+  "gameId": "qq-speed",
+  "buildHash": "3d891ab2cef02f7a0e760038413bd2e7a53a36284fd866c23da61d446c5011d3",
+  "inputHash": "c5ca3d7e05988b16dbdcf652248f78cc5f007b00524ab2d41cfe7924d29484b3",
+  "taskSource": {
+    "path": "/workspace/scratch/74be31e29a0f/racing-evidence-pack-task.json",
+    "sha256": "63f81acde63b81edaef3cd1dbe733d660460d62af2fe0e2d6e04eea85ef92b9e"
+  },
+  "originalBytesPreserved": true,
+  "entries": [
+    {
+      "id": "build",
+      "path": "build-receipt.json",
+      "kind": "original-byte-copy",
+      "originalPath": "/workspace/scratch/74be31e29a0f/racing-unified/runs/h5-qq-mobile-20261013/artifacts/build-racing.json",
+      "sha256": "eb3432ab65cbf674eba28e6586d767167fd204c68a2b5450fe6c16738ffd331b",
+      "bytes": 4154,
+      "role": "Final production build receipt",
+      "format": "json",
+      "buildBinding": {
+        "buildHash": "3d891ab2cef02f7a0e760038413bd2e7a53a36284fd866c23da61d446c5011d3",
+        "method": "embedded-build-hash",
+        "evidenceIds": [],
+        "detail": "The original JSON embeds the exact final buildHash."
+      }
+    },
+    {
+      "id": "geometry",
+      "path": "geometry-30.json",
+      "kind": "original-byte-copy",
+      "originalPath": "/workspace/scratch/74be31e29a0f/racing-unified/runs/h5-qq-mobile-20261013/artifacts/racing-v3-smoke/geometry-career30.json",
+      "sha256": "0ef8b180187647cba8257d4a3b2d474de346b035a569dcff96ef5a857aa825df",
+      "bytes": 531477,
+      "role": "Actual generated V11 roads and physical shortcut static audit",
+      "format": "json",
+      "buildBinding": {
+        "buildHash": "3d891ab2cef02f7a0e760038413bd2e7a53a36284fd866c23da61d446c5011d3",
+        "method": "embedded-build-hash",
+        "evidenceIds": [],
+        "detail": "The original JSON embeds the exact final buildHash."
+      }
+    },
+    {
+      "id": "pacing",
+      "path": "pacing-30.json",
+      "kind": "original-byte-copy",
+      "originalPath": "/workspace/scratch/74be31e29a0f/racing-unified/runs/h5-qq-mobile-20261013/artifacts/racing-v3-smoke/course-activity.json",
+      "sha256": "3e759d7e8814a8949269a9ab88fe7e78454463f7f4856120735166882c2aeda5",
+      "bytes": 738648,
+      "role": "Actual native road activity with historical V9.1 comparison and unchanged limits",
+      "format": "json",
+      "buildBinding": {
+        "buildHash": "3d891ab2cef02f7a0e760038413bd2e7a53a36284fd866c23da61d446c5011d3",
+        "method": "embedded-build-hash",
+        "evidenceIds": [],
+        "detail": "The original JSON embeds the exact final buildHash."
+      }
+    },
+    {
+      "id": "ai35",
+      "path": "ai-35.json",
+      "kind": "original-byte-copy",
+      "originalPath": "/workspace/scratch/74be31e29a0f/ai-diagnostics/final-native-ai-gate-3d891ab2cef0.json",
+      "sha256": "78014fb6c3b044112fa60c03a1e887148455adeae7eead5a5f75f9f24252a634",
+      "bytes": 24102,
+      "role": "Deterministic physical AI shortcut scenarios",
+      "format": "json",
+      "buildBinding": {
+        "buildHash": "3d891ab2cef02f7a0e760038413bd2e7a53a36284fd866c23da61d446c5011d3",
+        "method": "embedded-build-hash",
+        "evidenceIds": [],
+        "detail": "The original JSON embeds the exact final buildHash."
+      }
+    },
+    {
+      "id": "ai35-tap",
+      "path": "ai-35.tap",
+      "kind": "original-byte-copy",
+      "originalPath": "/workspace/scratch/74be31e29a0f/ai-diagnostics/final-native-ai-gate-3d891ab2cef0.tap",
+      "sha256": "9458a609e8f33bf4536eee6c483c097c0d70f85df98e62295d3c086439da59ac",
+      "bytes": 8935,
+      "role": "35 AI tests rerun against the final native build; subset of source suite",
+      "format": "tap",
+      "buildBinding": {
+        "buildHash": "3d891ab2cef02f7a0e760038413bd2e7a53a36284fd866c23da61d446c5011d3",
+        "method": "gate-rebind-receipt",
+        "evidenceIds": [
+          "gate-rebind"
+        ],
+        "detail": "The final rebind receipt embeds this original file path and SHA-256."
+      }
+    },
+    {
+      "id": "player12",
+      "path": "player-12.json",
+      "kind": "original-byte-copy",
+      "originalPath": "/workspace/scratch/74be31e29a0f/racing-unified/runs/h5-qq-mobile-20261013/artifacts/racing-v115-native-player/native-player-physics-3d891ab2cef0.json",
+      "sha256": "3f2b0b113d374c37c40ed0d4cd21a752bf55d297294f8c79bf177989b398a28d",
+      "bytes": 6957,
+      "role": "12 native player physics checks using declared initial states and scripted input",
+      "format": "json",
+      "buildBinding": {
+        "buildHash": "3d891ab2cef02f7a0e760038413bd2e7a53a36284fd866c23da61d446c5011d3",
+        "method": "embedded-build-hash",
+        "evidenceIds": [],
+        "detail": "The original JSON embeds the exact final buildHash."
+      }
+    },
+    {
+      "id": "gate-rebind",
+      "path": "gate-rebind.json",
+      "kind": "original-byte-copy",
+      "originalPath": "/workspace/scratch/74be31e29a0f/ai-diagnostics/gate-rebind-3d891ab2cef0.json",
+      "sha256": "380742785c98cdf703f3a5b0bdbdd3bdc1a700131001e410d40b9e95e18b9894",
+      "bytes": 1821,
+      "role": "Final build receipt binding 35 AI tests and 12 player checks with original artifact hashes",
+      "format": "json",
+      "buildBinding": {
+        "buildHash": "3d891ab2cef02f7a0e760038413bd2e7a53a36284fd866c23da61d446c5011d3",
+        "method": "embedded-build-hash",
+        "evidenceIds": [],
+        "detail": "The original JSON embeds the exact final buildHash."
+      }
+    },
+    {
+      "id": "ai150",
+      "path": "ai-150.json",
+      "kind": "original-byte-copy",
+      "originalPath": "/workspace/scratch/74be31e29a0f/racing-unified/runs/h5-qq-mobile-20261013/artifacts/racing-v3-smoke/ai-pace-v115-3d891ab2cef0.json",
+      "sha256": "015c92e8f9dbf73d3418fe30e59f3670275cb1d0ef4844183582b1663412945b",
+      "bytes": 254865,
+      "role": "30 courses with five physical career rivals per course at 120 Hz",
+      "format": "json",
+      "buildBinding": {
+        "buildHash": "3d891ab2cef02f7a0e760038413bd2e7a53a36284fd866c23da61d446c5011d3",
+        "method": "embedded-build-hash",
+        "evidenceIds": [],
+        "detail": "The original JSON embeds the exact final buildHash."
+      }
+    },
+    {
+      "id": "source358",
+      "path": "source-358.log",
+      "kind": "original-byte-copy",
+      "originalPath": "/workspace/scratch/74be31e29a0f/racing-unified-tests-final-3d891ab2cef0.log",
+      "sha256": "70a76ffac04527b7a5fa07a091bb48ebd2e562c340979c3be095064e81bdfcbc",
+      "bytes": 34384,
+      "role": "Complete requested H5 template source suite including shared modules and 35 AI tests; original Node spec output",
+      "format": "node-spec-log",
+      "buildBinding": {
+        "buildHash": "3d891ab2cef02f7a0e760038413bd2e7a53a36284fd866c23da61d446c5011d3",
+        "method": "task-declared-final-source-run",
+        "evidenceIds": [
+          "build",
+          "gate-rebind"
+        ],
+        "detail": "The task identifies this exact final-run log; it has no embedded build hash. The receipt input hash was checked against the current unchanged production sources."
+      }
+    },
+    {
+      "id": "lint",
+      "path": "lint.log",
+      "kind": "original-byte-copy",
+      "originalPath": "/workspace/scratch/74be31e29a0f/racing-final-lint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "role": "Final lint command output; exit 0 attested by parent; the original log is empty",
+      "format": "command-log",
+      "buildBinding": {
+        "buildHash": "3d891ab2cef02f7a0e760038413bd2e7a53a36284fd866c23da61d446c5011d3",
+        "method": "parent-attested-final-command",
+        "evidenceIds": [
+          "build"
+        ],
+        "detail": "Parent /root requested this exact log and reported actual command exit 0 on branch revision 269286e1a51930a7225568ea04d634b8fd5ca94f (PR #68). It contains no embedded exit status or build hash. Its final-build association is parent-attested; current production inputs still match the final build receipt."
+      }
+    },
+    {
+      "id": "typecheck",
+      "path": "typecheck.log",
+      "kind": "original-byte-copy",
+      "originalPath": "/workspace/scratch/74be31e29a0f/racing-final-typecheck-complete-checkout.log",
+      "sha256": "8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92",
+      "bytes": 15,
+      "role": "Final typecheck output after completing the sparse checkout; exit 0 attested by parent",
+      "format": "command-log",
+      "buildBinding": {
+        "buildHash": "3d891ab2cef02f7a0e760038413bd2e7a53a36284fd866c23da61d446c5011d3",
+        "method": "parent-attested-final-command",
+        "evidenceIds": [
+          "build"
+        ],
+        "detail": "Parent /root requested this exact log and reported actual command exit 0 on branch revision 269286e1a51930a7225568ea04d634b8fd5ca94f (PR #68). It contains no embedded exit status or build hash. Its final-build association is parent-attested; current production inputs still match the final build receipt."
+      }
+    },
+    {
+      "id": "ads",
+      "path": "next-stage-ads.json",
+      "kind": "original-byte-copy",
+      "originalPath": "/workspace/scratch/74be31e29a0f/racing-unified/runs/h5-qq-mobile-20261013/artifacts/next-stage-ad-browser/report.json",
+      "sha256": "72135499eac2b328653dbd6a3c6ca65c41f35e994d9674ff20e864ab4cdf0cea",
+      "bytes": 51605,
+      "role": "Three actual built-H5 Chromium ad wiring cases with simulated SDK and injected DNF settlement",
+      "format": "json",
+      "buildBinding": {
+        "buildHash": "3d891ab2cef02f7a0e760038413bd2e7a53a36284fd866c23da61d446c5011d3",
+        "method": "embedded-build-hash",
+        "evidenceIds": [],
+        "detail": "The original JSON embeds the exact final buildHash."
+      }
+    },
+    {
+      "id": "ad-cancel",
+      "path": "ad-cancel.png",
+      "kind": "original-byte-copy",
+      "originalPath": "/workspace/scratch/74be31e29a0f/racing-unified/runs/h5-qq-mobile-20261013/artifacts/next-stage-ad-browser/cancel-stays-on-failed-stage.png",
+      "sha256": "0aca21e0eb9d295911082cf0ccf3355bcd885d6570ee1ea7cbdad075f2ae52e4",
+      "bytes": 291707,
+      "role": "Passing cancel case: homepage remains on stage 02",
+      "format": "png",
+      "buildBinding": {
+        "buildHash": "3d891ab2cef02f7a0e760038413bd2e7a53a36284fd866c23da61d446c5011d3",
+        "method": "ad-case-report",
+        "evidenceIds": [
+          "ads"
+        ],
+        "detail": "Passing case cancel-stays-on-failed-stage in next-stage-ads.json; PNG bytes are hashed here."
+      }
+    },
+    {
+      "id": "ad-complete",
+      "path": "ad-complete.png",
+      "kind": "original-byte-copy",
+      "originalPath": "/workspace/scratch/74be31e29a0f/racing-unified/runs/h5-qq-mobile-20261013/artifacts/next-stage-ad-browser/complete-adjacent-and-reload.png",
+      "sha256": "d5f922ec4761268c9d1442c4419fde6e1b964f01cf03445f925f508df7e6c1c3",
+      "bytes": 364440,
+      "role": "Passing completion case: only adjacent stage 03 unlocked and selected after reload",
+      "format": "png",
+      "buildBinding": {
+        "buildHash": "3d891ab2cef02f7a0e760038413bd2e7a53a36284fd866c23da61d446c5011d3",
+        "method": "ad-case-report",
+        "evidenceIds": [
+          "ads"
+        ],
+        "detail": "Passing case complete-adjacent-and-reload in next-stage-ads.json; PNG bytes are hashed here."
+      }
+    },
+    {
+      "id": "ad-no-sdk",
+      "path": "ad-no-sdk.png",
+      "kind": "original-byte-copy",
+      "originalPath": "/workspace/scratch/74be31e29a0f/racing-unified/runs/h5-qq-mobile-20261013/artifacts/next-stage-ad-browser/no-sdk-hides-next-stage-ad.png",
+      "sha256": "70cfa3bd3f4f305ace766ff4943b8eaf3f0b70201b71eaf0f2220ab8a7af1c45",
+      "bytes": 260895,
+      "role": "Passing no-SDK case: next-stage ad is absent from the unfinished result",
+      "format": "png",
+      "buildBinding": {
+        "buildHash": "3d891ab2cef02f7a0e760038413bd2e7a53a36284fd866c23da61d446c5011d3",
+        "method": "ad-case-report",
+        "evidenceIds": [
+          "ads"
+        ],
+        "detail": "Passing case no-sdk-hides-next-stage-ad in next-stage-ads.json; PNG bytes are hashed here."
+      }
+    },
+    {
+      "id": "engineering-verification",
+      "path": "engineering-verification.json",
+      "kind": "derived-summary",
+      "originalPath": null,
+      "sha256": "5187e1a9558312aaa1a57732cbdcfa69761a387c50b19f51120c8fce45853c91",
+      "bytes": 12507,
+      "role": "Typed summary with separate measures, proven test overlap and unresolved acceptance areas",
+      "format": "json",
+      "buildBinding": {
+        "buildHash": "3d891ab2cef02f7a0e760038413bd2e7a53a36284fd866c23da61d446c5011d3",
+        "method": "derived-from-copied-evidence",
+        "evidenceIds": [
+          "build",
+          "geometry",
+          "pacing",
+          "ai35",
+          "ai35-tap",
+          "player12",
+          "gate-rebind",
+          "ai150",
+          "source358",
+          "lint",
+          "typecheck",
+          "ads",
+          "ad-cancel",
+          "ad-complete",
+          "ad-no-sdk"
+        ],
+        "detail": "Derived from the copied source reports without running new tests or changing any limits."
+      }
+    }
+  ],
+  "preservedExistingDocumentation": [
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/initial-qa-report.json",
+      "sha256": "9db7706544cddc20ad1a731937728a92b8f0490dffb7bd63e553f45f41dfe87a"
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/recovery-triage.json",
+      "sha256": "724842e83f2ac81b0418b4a8251419ecb40fc7ad417e5bc87de4265409d56dc0"
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/reproduction-matrix.json",
+      "sha256": "faa668da99bbfbf5219a10803d680b61c551b54d9b1a65ff5c6bc0e1c1ec2bca"
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/README.zh-CN.md",
+      "sha256": "7cdf2a5029cf735cd4b95d5262da3eaefeef6825db6bdf8f50b788e35d492757"
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/v11-recovery-parity.json",
+      "sha256": "ee7888e22442397138f1e8f7aae11ab20084ad717703d5950193446d0a195d33"
+    }
+  ],
+  "failureHistoryPolicy": "Add-only packaging of final evidence. Initial QA, triage, reproduction matrix, README, recovery parity and earlier failure artifacts remain in their original locations and are not overwritten or erased.",
+  "validation": {
+    "schemaLibrary": "zod",
+    "manifestSchema": "PASS",
+    "verificationSchema": "PASS",
+    "copiedFileHashes": "PASS",
+    "finalBuildBindings": "PASS",
+    "aiSourceOverlap": 35
+  }
+}

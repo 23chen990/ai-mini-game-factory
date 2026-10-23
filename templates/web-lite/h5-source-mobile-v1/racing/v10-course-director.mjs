@@ -1,4 +1,4 @@
-import { V9_STAGE_RHYTHMS } from './v9-course-director.mjs';
+import { V10_BASELINE_RHYTHMS } from './v9-course-director.mjs';
 /**
  * V10 bespoke native driving sequences. Each beat is mapped to an explicit
  * ORIGINAL sketch edge (not a randomly generated bend at a progress ratio).
@@ -80,11 +80,14 @@ export function shapeV10SignatureSectors(original,shaped,originalSectors,id,base
   if(!plan||!Array.isArray(original)||!Array.isArray(shaped)||
      !Array.isArray(originalSectors)||!number(baseScale)||baseScale<=0||
      !number(stretch)||stretch<=0)throw Error('Missing V10 road choreography '+id);
-  const oldPlan=V9_STAGE_RHYTHMS[id];
+  const oldPlan=V10_BASELINE_RHYTHMS[id];
   if(!oldPlan||oldPlan.beats.length!==originalSectors.length)
     throw Error('Unmatched V9/V10 sector contract '+id);
   const expanded=(index)=>index+originalSectors.reduce((sum,[oldIndex],k)=>
     sum+(oldIndex<index&&oldPlan.beats[k]!==null?3:0),0);
+  if(shaped.length!==expanded(original.length)||original.some((point,index)=>
+      point.some((value,axis)=>value!==shaped[expanded(index)]?.[axis])))
+    throw Error('V10 requires its original three-point V9 baseline '+id);
   const segments=new Set(originalSectors.map(x=>x[0])),extras=new Set();
   const out=shaped.map(p=>p.slice()),elevationOffsets=new Array(shaped.length).fill(0);
   for(const [index,style,amplitude]of [...plan.beats].sort((a,b)=>b[0]-a[0])) {

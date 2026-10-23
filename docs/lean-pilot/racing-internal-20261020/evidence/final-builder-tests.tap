@@ -1,0 +1,37 @@
+✔ warm rebuild refreshes the compatibility bridge without changing frozen acceptance (5.913ms)
+✔ 赛车源补丁保留原输入、物理和AI流程，只约束手机镜头与渲染 (0.529667ms)
+✔ 未知源版本不能静默套用补丁 (0.27925ms)
+✔ V11.6 pre-race quality follows the live renderer and warms up only in visible ready phase (0.463667ms)
+✔ registered build includes live career, items, runtime and fuel dependencies (0.572292ms)
+✔ race text labels remove known third-party signboards in build output (0.112125ms)
+✔ instrument clean native drift without changing dynamics, and reject unknown source (0.111042ms)
+✔ recognizable character balloons are replaced with generic scene assets (0.067084ms)
+✔ actual esbuild script injection keeps valid $& tokens and exactly one closing body (0.114667ms)
+✔ V3.1 build adds pinned geometry and question-box source patches once, rejects unknown shapes (0.233334ms)
+✔ V3.1 model and spline modules are hashed into H5 build and kept scoped to racing (0.975416ms)
+✔ desert dune relief edits only the original generated sand base, never native physics (0.126667ms)
+✔ native stage-specific course selection is strict, idempotent and does not rewrite driving physics (0.07475ms)
+✔ native fork adapters are exact, idempotent and preserve original acceleration/AI (0.218167ms)
+✔ stage-scenery pipeline changes only sky/props, never native car or track physics (0.099084ms)
+✔ fixed desert monument safety keeps pyramid models away from new racing surfaces (0.055792ms)
+✔ V8 native AI hook is strict and avoids checkpoint/progress surgery (0.088375ms)
+✔ V11 build adapter preserves AI names and instantiates the native PlayerCar subclass (1.442625ms)
+✔ V11 world adapter projects physical rivals and applies real impulses without taking player ownership (0.355667ms)
+✔ V8 one-way finish hooks preserve native progress and onLap bookkeeping (0.072583ms)
+✔ phone and desktop camera differences preserve native car/road physics (0.095417ms)
+✔ native eight-item HUD matches V8 pickups and never crashes on a new item ID (0.247959ms)
+✔ V6.2 graphics safety is re-integrated into native generated WebGL with fail-closed anchors (0.149042ms)
+✔ V11.6 default framebuffer avoids MSAA on desktop and touch while preserving saved quality (1.306625ms)
+✔ V11.6 explicit high retains four-sample offscreen rendering before native low direct rendering (0.260666ms)
+✔ V11.6 mid keeps desktop offscreen zero samples and the existing touch budget (0.1405ms)
+✔ V11.6 initial render adapter rejects partial and changed native constructor anchors (0.13625ms)
+✔ V11.8 urban foliage and grass palette mute saturation with no new geometry or AI edits (0.162833ms)
+✔ tree crowns use existing smooth normals without extra geometry, draws or changing pine branches (0.0505ms)
+ℹ tests 29
+ℹ suites 0
+ℹ pass 29
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 77.849458

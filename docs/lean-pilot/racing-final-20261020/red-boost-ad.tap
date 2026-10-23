@@ -1,0 +1,97 @@
+✔ unverified H5 permission never creates an ad instance (0.630292ms)
+✔ isEnded true completes exactly once and removes handlers (0.305042ms)
+✔ cancel followed by a stale complete callback remains cancelled (0.459917ms)
+✔ load or show failure restores play without a reward (0.186584ms)
+✔ missing close is bounded and late completion is ignored (10.343625ms)
+✔ double tap cannot start two concurrent ad shows (21.759375ms)
+✖ a timed-out singleton cannot attribute its late close to a second reward request (6.949416ms)
+✔ native rivals get a bounded physical cornering pressure uplift, never direct speed (3.088666ms)
+✔ a committed shortcut survives recoverable contact after crossing its nominal start (6.364292ms)
+✔ route choice is stable per lap and fully missed entrances do not steer across a closed side wall (1.432542ms)
+✔ native physical entry is followed even when a collision put a cautious rival on the fork (0.195208ms)
+✔ controller never grants speed, nitro, position or race progress and only emits legal native controls (0.198083ms)
+✔ physical AI delegates movement to PlayerCar and exposes measured projection for native lap accounting (0.529417ms)
+﹣ native V11 05: two complete race laps physically enter and leave the actual fork (0.04825ms) # SKIP
+﹣ native V11 05: real entrance-wall impact costs time and preserves a reachable fork commitment (0.05575ms) # SKIP
+﹣ native V11 05: contact after crossing the entrance can still recover through the actual portal (0.064625ms) # SKIP
+﹣ native V11 10: two complete race laps physically enter and leave the actual fork (0.08725ms) # SKIP
+﹣ native V11 10: real entrance-wall impact costs time and preserves a reachable fork commitment (0.057459ms) # SKIP
+﹣ native V11 10: contact after crossing the entrance can still recover through the actual portal (0.033792ms) # SKIP
+﹣ native V11 12: two complete race laps physically enter and leave the actual fork (0.041625ms) # SKIP
+﹣ native V11 12: real entrance-wall impact costs time and preserves a reachable fork commitment (0.031875ms) # SKIP
+﹣ native V11 12: contact after crossing the entrance can still recover through the actual portal (0.020292ms) # SKIP
+﹣ native V11 13: two complete race laps physically enter and leave the actual fork (0.034416ms) # SKIP
+﹣ native V11 13: real entrance-wall impact costs time and preserves a reachable fork commitment (0.018125ms) # SKIP
+﹣ native V11 13: contact after crossing the entrance can still recover through the actual portal (0.018083ms) # SKIP
+﹣ native V11 16: two complete race laps physically enter and leave the actual fork (0.028958ms) # SKIP
+﹣ native V11 16: real entrance-wall impact costs time and preserves a reachable fork commitment (0.01825ms) # SKIP
+﹣ native V11 16: contact after crossing the entrance can still recover through the actual portal (0.044834ms) # SKIP
+﹣ native V11 18: two complete race laps physically enter and leave the actual fork (0.023375ms) # SKIP
+﹣ native V11 18: real entrance-wall impact costs time and preserves a reachable fork commitment (0.02ms) # SKIP
+﹣ native V11 18: contact after crossing the entrance can still recover through the actual portal (0.019292ms) # SKIP
+﹣ native V11 22: actual single-run finish plus two diagnostic loop traversals (0.022083ms) # SKIP
+﹣ native V11 22: real entrance-wall impact costs time and preserves a reachable fork commitment (0.017959ms) # SKIP
+﹣ native V11 22: contact after crossing the entrance can still recover through the actual portal (0.01775ms) # SKIP
+﹣ native V11 25: two complete race laps physically enter and leave the actual fork (0.021625ms) # SKIP
+﹣ native V11 25: real entrance-wall impact costs time and preserves a reachable fork commitment (0.017625ms) # SKIP
+﹣ native V11 25: contact after crossing the entrance can still recover through the actual portal (0.020583ms) # SKIP
+﹣ native V11 27: two complete race laps physically enter and leave the actual fork (0.028875ms) # SKIP
+﹣ native V11 27: real entrance-wall impact costs time and preserves a reachable fork commitment (0.018792ms) # SKIP
+﹣ native V11 27: contact after crossing the entrance can still recover through the actual portal (0.0295ms) # SKIP
+﹣ native V11 30: two complete race laps physically enter and leave the actual fork (0.02525ms) # SKIP
+﹣ native V11 30: real entrance-wall impact costs time and preserves a reachable fork commitment (0.025834ms) # SKIP
+﹣ native V11 30: contact after crossing the entrance can still recover through the actual portal (0.033792ms) # SKIP
+✔ skilled rivals initiate and release a legal native Shift drift on a readable bend (0.466917ms)
+✔ rival never drifts at a physical shortcut entrance or with impact (0.228ms)
+✖ physical rivals do not brake away an earned boost on a clear straight (0.925541ms)
+✔ physical rivals still brake for a corner during an earned boost (0.146125ms)
+ℹ tests 47
+ℹ suites 0
+ℹ pass 15
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 30
+ℹ todo 0
+ℹ duration_ms 111.466875
+
+✖ failing tests:
+
+test at templates/web-lite/h5-source-mobile-v1/tests/ads.test.mjs:51:1
+✖ a timed-out singleton cannot attribute its late close to a second reward request (6.949416ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'completed'
+  - 'unavailable'
+  
+      at TestContext.<anonymous> (file:///Users/kker/.codex/worktrees/racing-final-acceptance/%E5%A6%96%E6%80%AA%E5%A4%9C%E5%B8%82/templates/web-lite/h5-source-mobile-v1/tests/ads.test.mjs:59:10)
+      at async Test.run (node:internal/test_runner/test:1125:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'completed',
+    expected: 'unavailable',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at templates/web-lite/h5-source-mobile-v1/tests/racing-v11-physical-ai.test.mjs:295:1
+✖ physical rivals do not brake away an earned boost on a clear straight (0.925541ms)
+  AssertionError [ERR_ASSERTION]: earned native speed allowance must not trigger normal-speed braking
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///Users/kker/.codex/worktrees/racing-final-acceptance/%E5%A6%96%E6%80%AA%E5%A4%9C%E5%B8%82/templates/web-lite/h5-source-mobile-v1/tests/racing-v11-physical-ai.test.mjs:301:12)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+      at Test.postRun (node:internal/test_runner/test:1247:19)
+      at Test.run (node:internal/test_runner/test:1175:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

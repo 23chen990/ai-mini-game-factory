@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "task": "platform-license",
+  "root": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市",
+  "targetGame": "qq-speed / 极速飞驰",
+  "workspace": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/runs/h5-qq-mobile-20261013/workspace",
+  "readOnly": true,
+  "scope": [
+    "docs/platform-publishing-policy.md, examples/lean-pilot/three-h5/qq-speed, racing assets manifests, package locks",
+    "Current official TapTap H5 versus non-DOM mini-game docs: SDK, ad callbacks, lifecycle, resource limits, permissions, archive",
+    "Commercial rights: pinned upstream 54adc1fb64155f9dd7c1c90ecae7b8185ac540b8, six models, audio, trademarks and dependencies"
+  ],
+  "acceptance": [
+    "Primary official URLs with date and exact SDK interfaces; no fabricated App ID",
+    "Per-asset and upstream rights evidence/gaps; minimal replace or blocked conclusion",
+    "Smallest feasible adaptation paths distinct from confirmed platform RC"
+  ],
+  "output": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/docs/lean-pilot/racing-final-20261020/platform-license.json",
+  "constraints": [
+    "You are not alone in the codebase. Do not revert other edits. Do not modify source or generated workspace.",
+    "No Git mutations, commits, pushes or thread messages. Existing QA role only; no new Agent/Gate/workflow.",
+    "Return only JSON: {schemaVersion:1,task:string,findings:[{id:string,severity:\"P0\"|\"P1\"|\"P2\"|\"INFO\",observation:string,evidence:string[],recommendation:string}],blockers:string[],commands:string[]}. Validate this output using zod before final. Write your own output JSON only.",
+    "Separate observation, hypothesis and unknowns. Do not call fixtures natural play or licensing assumptions permissions."
+  ]
+}

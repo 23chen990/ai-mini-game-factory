@@ -239,7 +239,7 @@ export function applyRivalTactics(game,stage) {
  */
 export class RivalPressure {
   constructor() { this.reset(); }
-  reset() { this.corners=new WeakMap(); }
+  reset() { this.corners=new WeakMap();this.lastNotice=-1e5; }
   frame(game,stage) {
     applyRivalTactics(game,stage);
     if(!game||game.state!=='race'||!game.track||!game.player||
@@ -249,8 +249,12 @@ export class RivalPressure {
       return null;
     let observed=null;
     for(const rival of game.racers) {
-      if(!rival||rival.isPlayer||rival.finished||!Number.isFinite(rival.dist)||
-         !Number.isFinite(rival.s)||!Number.isFinite(rival.nitroCd))continue;
+      if(!rival||rival.isPlayer||rival.finished||
+         !Number.isFinite(rival.dist)||!Number.isFinite(rival.s))continue;
+      const physicalV11=!!rival.__V11_PHYSICAL_AI__;
+      // Keep the original on-rail AICar contract in legacy scenarios; the
+      // production V11 branch uses earned native nitroCount instead.
+      if(!physicalV11&&!Number.isFinite(rival.nitroCd))continue;
       const state=this.corners.get(rival)??{armed:false,last:-1e5};
       const bend=Math.abs(game.track.curvAhead(rival.dist,55));
       if(rival.s>=27&&bend>=.011&&!rival.airborne&&(rival.spin??0)<=0)
@@ -259,15 +263,31 @@ export class RivalPressure {
         // Resolve the physical arc, not a clock-based or player-gap trigger.
         state.armed=false;
         if(rival.s>=32 && !rival.drifting && !rival.airborne &&
-          (rival.spin??0)<=0 && (rival.slowTime??0)<=0 &&
-          (rival.nitroTime??0)<=0 && rival.nitroCd>2.5 &&
-          game.raceTime-state.last>=22){
-          rival.nitroCd=Math.min(rival.nitroCd,.85);
+          (rival.spin??0)<=0 && (rival.impact??0)<=0 &&
+          (rival.slowTime??0)<=0 && (rival.nitroTime??0)<=0 &&
+          (physicalV11 ? (rival.nitroCount??0)>0 : rival.nitroCd>2.5) &&
+          // The retired on-rail AI needs a 22s cooldown. A V11 PlayerCar
+          // already has a finite, physically earned nitro inventory, so
+          // keeping that legacy wait wastes repeated clean corner exits.
+          game.raceTime-state.last>=(physicalV11?8:22)){
+          if(physicalV11){
+            // V11 native PlayerCar cannot use the old AI cooldown. Only
+            // reserve a short safe window for stock it really owns.
+            rival.__V11_EXIT_BOOST_TTL__=Math.max(rival.__V11_EXIT_BOOST_TTL__??0,1.35);
+          }else{
+            // Preserve legacy on-rail AICar behavior outside the V11 game.
+            rival.nitroCd=Math.min(rival.nitroCd,.85);
+          }
           state.last=game.raceTime;
+          // The native AI may take more real boost opportunities than the
+          // UI announces. Never turn the extra decisions into toast spam.
           if(!observed&&Number.isFinite(rival.progress)&&
             Number.isFinite(game.player.progress)&&
-            Math.abs(rival.progress-game.player.progress)<=100)
+            Math.abs(rival.progress-game.player.progress)<=100 &&
+            game.raceTime-this.lastNotice>=22){
             observed={name:rival.name||'对手',cornerExit:true};
+            this.lastNotice=game.raceTime;
+          }
         }
       }
       this.corners.set(rival,state);

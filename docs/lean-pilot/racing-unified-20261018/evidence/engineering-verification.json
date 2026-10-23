@@ -1,0 +1,325 @@
+{
+  "schemaVersion": 1,
+  "gameId": "qq-speed",
+  "buildHash": "3d891ab2cef02f7a0e760038413bd2e7a53a36284fd866c23da61d446c5011d3",
+  "inputHash": "c5ca3d7e05988b16dbdcf652248f78cc5f007b00524ab2d41cfe7924d29484b3",
+  "status": "PASS_FOR_RECORDED_ENGINEERING_EVIDENCE",
+  "releaseCompletionClaim": false,
+  "gates": [
+    {
+      "id": "source-suite",
+      "status": "PASS",
+      "counts": [
+        {
+          "unit": "tests",
+          "total": 358,
+          "passed": 358,
+          "failed": 0,
+          "skipped": 0
+        }
+      ],
+      "scope": "Requested complete H5 template source suite, including shared modules, legacy compatibility and V11 tests. This is not 358 human or rendered racing trials.",
+      "evidenceIds": [
+        "source358",
+        "build"
+      ],
+      "counting": "separate-measure",
+      "subsetOf": null,
+      "rendered": false,
+      "humanEvidence": false,
+      "details": {
+        "uniqueNamedTests": 358,
+        "includesAiShortcutTests": 35,
+        "buildBinding": "Task-designated final log plus the current matching production input fingerprint"
+      }
+    },
+    {
+      "id": "ai-shortcut-tests",
+      "status": "PASS",
+      "counts": [
+        {
+          "unit": "tests",
+          "total": 35,
+          "passed": 35,
+          "failed": 0,
+          "skipped": 0
+        }
+      ],
+      "scope": "Declared native physical-AI fixtures for shortcut commitment, recoverable wall contact, exit, missed entries and lap bookkeeping.",
+      "evidenceIds": [
+        "ai35",
+        "ai35-tap",
+        "gate-rebind"
+      ],
+      "counting": "subset-of-source-suite",
+      "subsetOf": "source-suite",
+      "rendered": false,
+      "humanEvidence": false,
+      "details": {
+        "nativeScenarios": 41,
+        "standaloneFinalBuildRerun": true
+      }
+    },
+    {
+      "id": "native-player-physics",
+      "status": "PASS",
+      "counts": [
+        {
+          "unit": "checks",
+          "total": 12,
+          "passed": 12,
+          "failed": 0,
+          "skipped": 0
+        }
+      ],
+      "scope": "Native PlayerCar and manual-driver checks from declared initial states using scripted input; no human driving, rendered performance or natural campaign claim.",
+      "evidenceIds": [
+        "player12",
+        "gate-rebind"
+      ],
+      "counting": "separate-measure",
+      "subsetOf": null,
+      "rendered": false,
+      "humanEvidence": false,
+      "details": {
+        "physicsHz": 120,
+        "scriptedInput": true
+      }
+    },
+    {
+      "id": "native-ai-course-field",
+      "status": "PASS",
+      "counts": [
+        {
+          "unit": "courses",
+          "total": 30,
+          "passed": 30,
+          "failed": 0,
+          "skipped": 0
+        },
+        {
+          "unit": "racers",
+          "total": 150,
+          "passed": 150,
+          "failed": 0,
+          "skipped": 0
+        }
+      ],
+      "scope": "Five physical career rivals per course, generated native Track/AICar and World progress/traffic impulses. No player input or rendering; omitted systems remain listed in the raw report.",
+      "evidenceIds": [
+        "ai150"
+      ],
+      "counting": "separate-measure",
+      "subsetOf": null,
+      "rendered": false,
+      "humanEvidence": false,
+      "details": {
+        "physicsHz": 120,
+        "racersPerCourse": 5,
+        "observationLimitSeconds": 350,
+        "finishedRacers": 150
+      }
+    },
+    {
+      "id": "native-road-geometry",
+      "status": "PASS",
+      "counts": [
+        {
+          "unit": "roads",
+          "total": 30,
+          "passed": 30,
+          "failed": 0,
+          "skipped": 0
+        },
+        {
+          "unit": "forks",
+          "total": 10,
+          "passed": 10,
+          "failed": 0,
+          "skipped": 0
+        }
+      ],
+      "scope": "Static native V11 centerlines and physical shortcut construction/projection with the original geometric limits. No natural driving or phone-frame-rate conclusion.",
+      "evidenceIds": [
+        "geometry"
+      ],
+      "counting": "separate-measure",
+      "subsetOf": null,
+      "rendered": false,
+      "humanEvidence": false,
+      "details": {
+        "sameLevelClosePairs": 0,
+        "maximumSharpPct": 18,
+        "minimumMidForkClearanceM": 1.1
+      }
+    },
+    {
+      "id": "native-road-pacing",
+      "status": "PASS",
+      "counts": [
+        {
+          "unit": "courses",
+          "total": 30,
+          "passed": 30,
+          "failed": 0,
+          "skipped": 0
+        },
+        {
+          "unit": "checks",
+          "total": 5,
+          "passed": 5,
+          "failed": 0,
+          "skipped": 0
+        }
+      ],
+      "scope": "Finish-bounded native-road curvature measurements; full V11 routes are compared with historical V9.1 geometry, without isolated pacing-only attribution or human-engagement claims.",
+      "evidenceIds": [
+        "pacing"
+      ],
+      "counting": "separate-measure",
+      "subsetOf": null,
+      "rendered": false,
+      "humanEvidence": false,
+      "details": {
+        "baseline": "historical V9.1 geometry generator with pacing:false",
+        "comparison": "complete recovered V11 routes versus historical V9.1 geometry; not an isolated pacing-only change"
+      }
+    },
+    {
+      "id": "next-stage-ad-wiring",
+      "status": "PASS",
+      "counts": [
+        {
+          "unit": "cases",
+          "total": 3,
+          "passed": 3,
+          "failed": 0,
+          "skipped": 0
+        }
+      ],
+      "scope": "Actual built-H5 Chromium UI with a simulated rewarded SDK, injected unfinished-race settlement and replayed callback/DOM events; no live ad delivery or natural race outcome.",
+      "evidenceIds": [
+        "ads",
+        "ad-cancel",
+        "ad-complete",
+        "ad-no-sdk"
+      ],
+      "counting": "separate-measure",
+      "subsetOf": null,
+      "rendered": true,
+      "humanEvidence": false,
+      "details": {
+        "browser": "151.0.7922.34",
+        "simulatedSdk": true,
+        "seededSave": true,
+        "injectedDnf": true,
+        "liveSdk": false
+      }
+    }
+  ],
+  "commandRuns": [
+    {
+      "id": "lint",
+      "status": "PASS",
+      "exitCode": 0,
+      "resultProvenance": "parent-attested",
+      "reportedBy": "/root",
+      "reportedBranchRevision": "269286e1a51930a7225568ea04d634b8fd5ca94f",
+      "reportedPullRequest": 68,
+      "evidenceIds": [
+        "lint",
+        "build"
+      ],
+      "scope": "Existing final lint command; this packaging step did not rerun it or introduce a new gate.",
+      "detail": "Parent reported the actual command exit code 0. The preserved log is 0 bytes and does not itself encode an exit status or a build hash."
+    },
+    {
+      "id": "typecheck",
+      "status": "PASS",
+      "exitCode": 0,
+      "resultProvenance": "parent-attested",
+      "reportedBy": "/root",
+      "reportedBranchRevision": "269286e1a51930a7225568ea04d634b8fd5ca94f",
+      "reportedPullRequest": 68,
+      "evidenceIds": [
+        "typecheck",
+        "build"
+      ],
+      "scope": "Existing final tsc --noEmit command after restoring already-tracked dependency sources in the sparse checkout.",
+      "detail": "Parent reported actual exit code 0. An earlier attempt failed because tracked dependency source was absent from the sparse checkout; parent reported completing the checkout without other game source changes. This final log contains the command only, not an embedded exit status or build hash. The earlier failure is not overwritten."
+    }
+  ],
+  "countingPolicy": {
+    "combinedPassTotal": null,
+    "uniqueSourceTests": 358,
+    "aiTestsAlreadyIncluded": 35,
+    "matchedAiTestNames": [
+      "a committed shortcut survives recoverable contact after crossing its nominal start",
+      "route choice is stable per lap and fully missed entrances do not steer across a closed side wall",
+      "native physical entry is followed even when a collision put a cautious rival on the fork",
+      "controller never grants speed, nitro, position or race progress and only emits legal native controls",
+      "physical AI delegates movement to PlayerCar and exposes measured projection for native lap accounting",
+      "native V11 05: two complete race laps physically enter and leave the actual fork",
+      "native V11 05: real entrance-wall impact costs time and preserves a reachable fork commitment",
+      "native V11 05: contact after crossing the entrance can still recover through the actual portal",
+      "native V11 10: two complete race laps physically enter and leave the actual fork",
+      "native V11 10: real entrance-wall impact costs time and preserves a reachable fork commitment",
+      "native V11 10: contact after crossing the entrance can still recover through the actual portal",
+      "native V11 12: two complete race laps physically enter and leave the actual fork",
+      "native V11 12: real entrance-wall impact costs time and preserves a reachable fork commitment",
+      "native V11 12: contact after crossing the entrance can still recover through the actual portal",
+      "native V11 13: two complete race laps physically enter and leave the actual fork",
+      "native V11 13: real entrance-wall impact costs time and preserves a reachable fork commitment",
+      "native V11 13: contact after crossing the entrance can still recover through the actual portal",
+      "native V11 16: two complete race laps physically enter and leave the actual fork",
+      "native V11 16: real entrance-wall impact costs time and preserves a reachable fork commitment",
+      "native V11 16: contact after crossing the entrance can still recover through the actual portal",
+      "native V11 18: two complete race laps physically enter and leave the actual fork",
+      "native V11 18: real entrance-wall impact costs time and preserves a reachable fork commitment",
+      "native V11 18: contact after crossing the entrance can still recover through the actual portal",
+      "native V11 22: actual single-run finish plus two diagnostic loop traversals",
+      "native V11 22: real entrance-wall impact costs time and preserves a reachable fork commitment",
+      "native V11 22: contact after crossing the entrance can still recover through the actual portal",
+      "native V11 25: two complete race laps physically enter and leave the actual fork",
+      "native V11 25: real entrance-wall impact costs time and preserves a reachable fork commitment",
+      "native V11 25: contact after crossing the entrance can still recover through the actual portal",
+      "native V11 27: two complete race laps physically enter and leave the actual fork",
+      "native V11 27: real entrance-wall impact costs time and preserves a reachable fork commitment",
+      "native V11 27: contact after crossing the entrance can still recover through the actual portal",
+      "native V11 30: two complete race laps physically enter and leave the actual fork",
+      "native V11 30: real entrance-wall impact costs time and preserves a reachable fork commitment",
+      "native V11 30: contact after crossing the entrance can still recover through the actual portal"
+    ],
+    "explanation": "The 35 AI test names occur exactly in the 358-test source suite and are not 35 additional unique tests. Its 41 native scenarios are fixtures within those tests. Courses, racers, checks, roads, forks, browser cases and screenshots are different measures and must not be summed."
+  },
+  "unresolved": [
+    {
+      "area": "natural gameplay and race completion",
+      "status": "UNRESOLVED",
+      "scope": "Not advanced by this package. Parent owns final browser and natural-driving evidence."
+    },
+    {
+      "area": "desktop rendering and perceptual acceptance",
+      "status": "UNRESOLVED",
+      "scope": "Static and deterministic passes cannot resolve desktop/software-WebGL performance or perceptual acceptance. Parent owns subsequent evidence."
+    },
+    {
+      "area": "live rewarded-ad SDK",
+      "status": "NOT_RUN",
+      "scope": "The browser cases used an explicitly simulated SDK; no real advertisement was requested."
+    },
+    {
+      "area": "human handset and physical hardware QA",
+      "status": "NOT_RUN",
+      "scope": "No human phone session or physical-device timing is included."
+    }
+  ],
+  "packaging": {
+    "originalBytesPreserved": true,
+    "newTestRuns": 0,
+    "productionChanges": false,
+    "browserLaunches": 0,
+    "thresholdChanges": false,
+    "sourceLogFormat": "node-spec-log"
+  }
+}

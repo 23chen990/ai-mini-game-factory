@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "stage": "before any UI action",
+  "reason": "Chromium inspector response-body cache evicted the 13.3MB HTML; collector failure, not a high-quality gameplay failure",
+  "files": [
+    {
+      "originalPath": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-high-quality-qa.json",
+      "archivedPath": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-high-quality-bootstrap-qa.json",
+      "sha256": "4cd41b8d93b7cc16cb2c820d64395e75fe1e7c12466d3149fc13b479128c379a",
+      "bytes": 2507
+    },
+    {
+      "originalPath": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-high-quality-command.json",
+      "archivedPath": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-high-quality-bootstrap-command.json",
+      "sha256": "df3acd3a9ed50dd2118457a81ccdefde1efb19f3ee44a437c9f4c76e0b475c0c",
+      "bytes": 918
+    },
+    {
+      "originalPath": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-high-quality.log",
+      "archivedPath": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-high-quality-bootstrap.log",
+      "sha256": "eac21d0b0082b1de18cd48ea4c98025de89d2762dae6d87253f101e72492cb4c",
+      "bytes": 2659
+    },
+    {
+      "originalPath": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-high-quality-probe.mjs",
+      "archivedPath": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-high-quality-bootstrap-probe.mjs",
+      "sha256": "2c436c5c422af8f08d7a7d6cef66d1dca26d8122ca349e535531c5f029cb92ff",
+      "bytes": 13640
+    }
+  ]
+}

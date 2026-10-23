@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "mode": "desktop",
+  "sourceCommit": "042c21168f0ac433b721e7b95b01d2bcbfce64e1",
+  "buildHash": "40cf9871719d1154d7d855a805f157f5c00a88b23d6700f90c119717772c7542",
+  "inputHash": "8e09f4831d99d7ab35af02394e360b1f20429142dde8b8ae18578d84bed9efd5",
+  "servedRoot": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/runs/h5-qq-mobile-20261013/artifacts/final-20261020/extracted-web-payload",
+  "htmlSha256": "6949497a622678fe3e8ccd5d059a66894ce293020afcaf17fc7c42c31c1ca812",
+  "physicalPhone": false,
+  "host": "darwin",
+  "rows": [
+    {
+      "case": "keyboard-driving",
+      "state": "race",
+      "phase": "race",
+      "raceTime": 0.4408000000119212,
+      "steerAxis": 0,
+      "speed": 105.16569870172111,
+      "steer": 0.9999546000702375,
+      "heading": 2.1025912226298997,
+      "drifting": false,
+      "quality": "mid",
+      "pixelRatio": 1,
+      "buffer": [
+        1366,
+        768
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 120,
+      "geometries": 756,
+      "textures": 62,
+      "heapBytes": 133438548,
+      "displayedCar": "starter",
+      "owned": [
+        "starter"
+      ],
+      "note": "",
+      "viewport": [
+        1366,
+        768
+      ],
+      "screenshot": "desktop-driving.png"
+    },
+    {
+      "case": "wall-clock-raf-sample",
+      "seconds": 5,
+      "frames": 599,
+      "p50Ms": 8.300000000000182,
+      "p95Ms": 9.199999999999818,
+      "state": "race",
+      "phase": "race",
+      "raceTime": 5.724300000011917,
+      "steerAxis": 0,
+      "speed": 7.324427690934537,
+      "steer": 3.760623672273441e-74,
+      "heading": 1.570796370506613,
+      "drifting": false,
+      "quality": "mid",
+      "pixelRatio": 1,
+      "buffer": [
+        1366,
+        768
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 120,
+      "geometries": 762,
+      "textures": 63,
+      "heapBytes": 88110820,
+      "displayedCar": "starter",
+      "owned": [
+        "starter"
+      ],
+      "note": "",
+      "viewport": [
+        1366,
+        768
+      ]
+    }
+  ],
+  "errors": [],
+  "passed": true,
+  "browser": "151.0.7922.34"
+}

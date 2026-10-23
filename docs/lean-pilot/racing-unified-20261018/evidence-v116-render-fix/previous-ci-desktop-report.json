@@ -1,0 +1,1285 @@
+{
+  "mode": "desktop",
+  "productionGate": true,
+  "experiment": null,
+  "buildHash": "893226cc0792aaae4254b0a09fcdeb782d76efa5064f8703a810ca43eebe500d",
+  "scope": "Chromium software WebGL; not physical handset or human QA",
+  "styles": [
+    {
+      "width": 667,
+      "height": 320,
+      "platform": "touch",
+      "itemMode": false,
+      "visible": false
+    },
+    {
+      "width": 667,
+      "height": 320,
+      "platform": "touch",
+      "itemMode": true,
+      "visible": true
+    },
+    {
+      "width": 667,
+      "height": 320,
+      "platform": "desktop",
+      "itemMode": false,
+      "visible": false
+    },
+    {
+      "width": 667,
+      "height": 320,
+      "platform": "desktop",
+      "itemMode": true,
+      "visible": false
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "platform": "touch",
+      "itemMode": false,
+      "visible": false
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "platform": "touch",
+      "itemMode": true,
+      "visible": true
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "platform": "desktop",
+      "itemMode": false,
+      "visible": false
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "platform": "desktop",
+      "itemMode": true,
+      "visible": false
+    },
+    {
+      "width": 1366,
+      "height": 768,
+      "platform": "touch",
+      "itemMode": false,
+      "visible": false
+    },
+    {
+      "width": 1366,
+      "height": 768,
+      "platform": "touch",
+      "itemMode": true,
+      "visible": true
+    },
+    {
+      "width": 1366,
+      "height": 768,
+      "platform": "desktop",
+      "itemMode": false,
+      "visible": false
+    },
+    {
+      "width": 1366,
+      "height": 768,
+      "platform": "desktop",
+      "itemMode": true,
+      "visible": false
+    }
+  ],
+  "snapshots": [
+    {
+      "when": "ready",
+      "at": 23196.400000000023,
+      "state": "menu",
+      "phase": "ready",
+      "hasPlayer": false,
+      "raceTime": 0.05,
+      "gameTime": 0.13870000000001165,
+      "quality": "mid",
+      "pixelRatio": 1,
+      "composer": true,
+      "antialias": true,
+      "drawingBuffer": [
+        1366,
+        768
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": false,
+      "countdown": "",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ]
+    },
+    {
+      "when": "after-click",
+      "at": 26909.100000000006,
+      "state": "countdown",
+      "phase": "countdown",
+      "hasPlayer": true,
+      "cdT": 0,
+      "raceTime": 0,
+      "gameTime": 0.3211000000000349,
+      "quality": "mid",
+      "pixelRatio": 1,
+      "composer": true,
+      "antialias": true,
+      "drawingBuffer": [
+        1366,
+        768
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": true,
+      "countdown": "",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ],
+      "speed": 0,
+      "steer": 0
+    },
+    {
+      "when": "after-click",
+      "at": 27915.400000000023,
+      "state": "countdown",
+      "phase": "countdown",
+      "hasPlayer": true,
+      "cdT": 0,
+      "raceTime": 0,
+      "gameTime": 0.3211000000000349,
+      "quality": "mid",
+      "pixelRatio": 1,
+      "composer": true,
+      "antialias": true,
+      "drawingBuffer": [
+        1366,
+        768
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": true,
+      "countdown": "",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ],
+      "speed": 0,
+      "steer": 0
+    },
+    {
+      "when": "after-click",
+      "at": 28919.900000000023,
+      "state": "countdown",
+      "phase": "countdown",
+      "hasPlayer": true,
+      "cdT": 0,
+      "raceTime": 0,
+      "gameTime": 0.3211000000000349,
+      "quality": "mid",
+      "pixelRatio": 1,
+      "composer": true,
+      "antialias": true,
+      "drawingBuffer": [
+        1366,
+        768
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": true,
+      "countdown": "",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ],
+      "speed": 0,
+      "steer": 0
+    },
+    {
+      "when": "after-click",
+      "at": 37954.70000000001,
+      "state": "countdown",
+      "phase": "countdown",
+      "hasPlayer": true,
+      "cdT": 0.05,
+      "raceTime": 0,
+      "gameTime": 0.3711000000000349,
+      "quality": "mid",
+      "pixelRatio": 1,
+      "composer": true,
+      "antialias": true,
+      "drawingBuffer": [
+        1366,
+        768
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": true,
+      "countdown": "3",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ],
+      "speed": 0,
+      "steer": 0
+    },
+    {
+      "when": "after-click",
+      "at": 38961.600000000006,
+      "state": "countdown",
+      "phase": "countdown",
+      "hasPlayer": true,
+      "cdT": 0.11329999999998837,
+      "raceTime": 0,
+      "gameTime": 0.43440000000002327,
+      "quality": "mid",
+      "pixelRatio": 1,
+      "composer": true,
+      "antialias": true,
+      "drawingBuffer": [
+        1366,
+        768
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": true,
+      "countdown": "3",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ],
+      "speed": 0,
+      "steer": 0
+    },
+    {
+      "when": "after-click",
+      "at": 39965.100000000006,
+      "state": "countdown",
+      "phase": "countdown",
+      "hasPlayer": true,
+      "cdT": 0.16329999999998837,
+      "raceTime": 0,
+      "gameTime": 0.48440000000002326,
+      "quality": "mid",
+      "pixelRatio": 1,
+      "composer": true,
+      "antialias": true,
+      "drawingBuffer": [
+        1366,
+        768
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": true,
+      "countdown": "3",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ],
+      "speed": 0,
+      "steer": 0
+    },
+    {
+      "when": "after-click",
+      "at": 40971,
+      "state": "countdown",
+      "phase": "countdown",
+      "hasPlayer": true,
+      "cdT": 0.16329999999998837,
+      "raceTime": 0,
+      "gameTime": 0.48440000000002326,
+      "quality": "mid",
+      "pixelRatio": 1,
+      "composer": true,
+      "antialias": true,
+      "drawingBuffer": [
+        1366,
+        768
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": true,
+      "countdown": "3",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ],
+      "speed": 0,
+      "steer": 0
+    },
+    {
+      "when": "after-click",
+      "at": 41977,
+      "state": "countdown",
+      "phase": "countdown",
+      "hasPlayer": true,
+      "cdT": 0.2132999999999884,
+      "raceTime": 0,
+      "gameTime": 0.5344000000000233,
+      "quality": "mid",
+      "pixelRatio": 1,
+      "composer": true,
+      "antialias": true,
+      "drawingBuffer": [
+        1366,
+        768
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": true,
+      "countdown": "3",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ],
+      "speed": 0,
+      "steer": 0
+    },
+    {
+      "when": "after-click",
+      "at": 42983,
+      "state": "countdown",
+      "phase": "countdown",
+      "hasPlayer": true,
+      "cdT": 0.2132999999999884,
+      "raceTime": 0,
+      "gameTime": 0.5344000000000233,
+      "quality": "mid",
+      "pixelRatio": 1,
+      "composer": true,
+      "antialias": true,
+      "drawingBuffer": [
+        1366,
+        768
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": true,
+      "countdown": "3",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ],
+      "speed": 0,
+      "steer": 0
+    },
+    {
+      "when": "after-click",
+      "at": 43988.600000000006,
+      "state": "countdown",
+      "phase": "countdown",
+      "hasPlayer": true,
+      "cdT": 0.2632999999999884,
+      "raceTime": 0,
+      "gameTime": 0.5844000000000233,
+      "quality": "mid",
+      "pixelRatio": 1,
+      "composer": true,
+      "antialias": true,
+      "drawingBuffer": [
+        1366,
+        768
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": true,
+      "countdown": "3",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ],
+      "speed": 0,
+      "steer": 0
+    },
+    {
+      "when": "after-click",
+      "at": 44993.100000000006,
+      "state": "countdown",
+      "phase": "countdown",
+      "hasPlayer": true,
+      "cdT": 0.2632999999999884,
+      "raceTime": 0,
+      "gameTime": 0.5844000000000233,
+      "quality": "mid",
+      "pixelRatio": 1,
+      "composer": true,
+      "antialias": true,
+      "drawingBuffer": [
+        1366,
+        768
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": true,
+      "countdown": "3",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ],
+      "speed": 0,
+      "steer": 0
+    },
+    {
+      "when": "after-click",
+      "at": 50525.30000000002,
+      "state": "countdown",
+      "phase": "countdown",
+      "hasPlayer": true,
+      "cdT": 0.31329999999998837,
+      "raceTime": 0,
+      "gameTime": 0.6344000000000234,
+      "quality": "low",
+      "pixelRatio": 0.35,
+      "composer": false,
+      "antialias": true,
+      "drawingBuffer": [
+        478,
+        268
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": true,
+      "countdown": "3",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ],
+      "speed": 0,
+      "steer": 0
+    },
+    {
+      "when": "after-click",
+      "at": 51531.90000000002,
+      "state": "countdown",
+      "phase": "countdown",
+      "hasPlayer": true,
+      "cdT": 0.37170000000001163,
+      "raceTime": 0,
+      "gameTime": 0.6928000000000467,
+      "quality": "low",
+      "pixelRatio": 0.35,
+      "composer": false,
+      "antialias": true,
+      "drawingBuffer": [
+        478,
+        268
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": true,
+      "countdown": "3",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ],
+      "speed": 0,
+      "steer": 0
+    },
+    {
+      "when": "after-click",
+      "at": 52536.20000000001,
+      "state": "countdown",
+      "phase": "countdown",
+      "hasPlayer": true,
+      "cdT": 0.4217000000000116,
+      "raceTime": 0,
+      "gameTime": 0.7428000000000468,
+      "quality": "low",
+      "pixelRatio": 0.35,
+      "composer": false,
+      "antialias": true,
+      "drawingBuffer": [
+        478,
+        268
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": true,
+      "countdown": "3",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ],
+      "speed": 0,
+      "steer": 0
+    },
+    {
+      "when": "after-click",
+      "at": 53541.90000000002,
+      "state": "countdown",
+      "phase": "countdown",
+      "hasPlayer": true,
+      "cdT": 0.4717000000000116,
+      "raceTime": 0,
+      "gameTime": 0.7928000000000468,
+      "quality": "low",
+      "pixelRatio": 0.35,
+      "composer": false,
+      "antialias": true,
+      "drawingBuffer": [
+        478,
+        268
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": true,
+      "countdown": "3",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ],
+      "speed": 0,
+      "steer": 0
+    },
+    {
+      "when": "after-click",
+      "at": 54548,
+      "state": "countdown",
+      "phase": "countdown",
+      "hasPlayer": true,
+      "cdT": 0.5217000000000116,
+      "raceTime": 0,
+      "gameTime": 0.8428000000000468,
+      "quality": "low",
+      "pixelRatio": 0.35,
+      "composer": false,
+      "antialias": true,
+      "drawingBuffer": [
+        478,
+        268
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": true,
+      "countdown": "3",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ],
+      "speed": 0,
+      "steer": 0
+    },
+    {
+      "when": "after-click",
+      "at": 55552.5,
+      "state": "countdown",
+      "phase": "countdown",
+      "hasPlayer": true,
+      "cdT": 0.5717000000000116,
+      "raceTime": 0,
+      "gameTime": 0.8928000000000469,
+      "quality": "low",
+      "pixelRatio": 0.35,
+      "composer": false,
+      "antialias": true,
+      "drawingBuffer": [
+        478,
+        268
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": true,
+      "countdown": "3",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ],
+      "speed": 0,
+      "steer": 0
+    },
+    {
+      "when": "after-click",
+      "at": 56557.100000000006,
+      "state": "countdown",
+      "phase": "countdown",
+      "hasPlayer": true,
+      "cdT": 0.6217000000000117,
+      "raceTime": 0,
+      "gameTime": 0.9428000000000469,
+      "quality": "low",
+      "pixelRatio": 0.35,
+      "composer": false,
+      "antialias": true,
+      "drawingBuffer": [
+        478,
+        268
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": true,
+      "countdown": "3",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ],
+      "speed": 0,
+      "steer": 0
+    },
+    {
+      "when": "after-click",
+      "at": 57564.20000000001,
+      "state": "countdown",
+      "phase": "countdown",
+      "hasPlayer": true,
+      "cdT": 0.6717000000000117,
+      "raceTime": 0,
+      "gameTime": 0.992800000000047,
+      "quality": "low",
+      "pixelRatio": 0.35,
+      "composer": false,
+      "antialias": true,
+      "drawingBuffer": [
+        478,
+        268
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": true,
+      "countdown": "3",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ],
+      "speed": 0,
+      "steer": 0
+    },
+    {
+      "when": "after-click",
+      "at": 58568.100000000006,
+      "state": "countdown",
+      "phase": "countdown",
+      "hasPlayer": true,
+      "cdT": 0.7217000000000118,
+      "raceTime": 0,
+      "gameTime": 1.042800000000047,
+      "quality": "low",
+      "pixelRatio": 0.35,
+      "composer": false,
+      "antialias": true,
+      "drawingBuffer": [
+        478,
+        268
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": true,
+      "countdown": "3",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ],
+      "speed": 0,
+      "steer": 0
+    },
+    {
+      "when": "after-click",
+      "at": 59572.100000000006,
+      "state": "countdown",
+      "phase": "countdown",
+      "hasPlayer": true,
+      "cdT": 0.8217000000000119,
+      "raceTime": 0,
+      "gameTime": 1.1428000000000471,
+      "quality": "low",
+      "pixelRatio": 0.35,
+      "composer": false,
+      "antialias": true,
+      "drawingBuffer": [
+        478,
+        268
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": true,
+      "countdown": "3",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ],
+      "speed": 0,
+      "steer": 0
+    },
+    {
+      "when": "after-click",
+      "at": 60576.40000000002,
+      "state": "countdown",
+      "phase": "countdown",
+      "hasPlayer": true,
+      "cdT": 0.8717000000000119,
+      "raceTime": 0,
+      "gameTime": 1.1928000000000472,
+      "quality": "low",
+      "pixelRatio": 0.35,
+      "composer": false,
+      "antialias": true,
+      "drawingBuffer": [
+        478,
+        268
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": true,
+      "countdown": "3",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ],
+      "speed": 0,
+      "steer": 0
+    },
+    {
+      "when": "after-click",
+      "at": 61580.30000000002,
+      "state": "countdown",
+      "phase": "countdown",
+      "hasPlayer": true,
+      "cdT": 0.921700000000012,
+      "raceTime": 0,
+      "gameTime": 1.2428000000000472,
+      "quality": "low",
+      "pixelRatio": 0.35,
+      "composer": false,
+      "antialias": true,
+      "drawingBuffer": [
+        478,
+        268
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": true,
+      "countdown": "3",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ],
+      "speed": 0,
+      "steer": 0
+    },
+    {
+      "when": "after-click",
+      "at": 62585.90000000002,
+      "state": "countdown",
+      "phase": "countdown",
+      "hasPlayer": true,
+      "cdT": 0.971700000000012,
+      "raceTime": 0,
+      "gameTime": 1.2928000000000472,
+      "quality": "low",
+      "pixelRatio": 0.35,
+      "composer": false,
+      "antialias": true,
+      "drawingBuffer": [
+        478,
+        268
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": true,
+      "countdown": "3",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ],
+      "speed": 0,
+      "steer": 0
+    },
+    {
+      "when": "after-click",
+      "at": 63590.40000000002,
+      "state": "countdown",
+      "phase": "countdown",
+      "hasPlayer": true,
+      "cdT": 1.021700000000012,
+      "raceTime": 0,
+      "gameTime": 1.3428000000000473,
+      "quality": "low",
+      "pixelRatio": 0.35,
+      "composer": false,
+      "antialias": true,
+      "drawingBuffer": [
+        478,
+        268
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": true,
+      "countdown": "2",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ],
+      "speed": 0,
+      "steer": 0
+    },
+    {
+      "when": "after-click",
+      "at": 64595,
+      "state": "countdown",
+      "phase": "countdown",
+      "hasPlayer": true,
+      "cdT": 1.1217000000000121,
+      "raceTime": 0,
+      "gameTime": 1.4428000000000474,
+      "quality": "low",
+      "pixelRatio": 0.35,
+      "composer": false,
+      "antialias": true,
+      "drawingBuffer": [
+        478,
+        268
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": true,
+      "countdown": "2",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ],
+      "speed": 0,
+      "steer": 0
+    },
+    {
+      "when": "after-click",
+      "at": 65598.40000000002,
+      "state": "countdown",
+      "phase": "countdown",
+      "hasPlayer": true,
+      "cdT": 1.1717000000000122,
+      "raceTime": 0,
+      "gameTime": 1.4928000000000474,
+      "quality": "low",
+      "pixelRatio": 0.35,
+      "composer": false,
+      "antialias": true,
+      "drawingBuffer": [
+        478,
+        268
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": true,
+      "countdown": "2",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ],
+      "speed": 0,
+      "steer": 0
+    },
+    {
+      "when": "after-click",
+      "at": 66602.1,
+      "state": "countdown",
+      "phase": "countdown",
+      "hasPlayer": true,
+      "cdT": 1.2217000000000122,
+      "raceTime": 0,
+      "gameTime": 1.5428000000000475,
+      "quality": "low",
+      "pixelRatio": 0.35,
+      "composer": false,
+      "antialias": true,
+      "drawingBuffer": [
+        478,
+        268
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": true,
+      "countdown": "2",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ],
+      "speed": 0,
+      "steer": 0
+    },
+    {
+      "when": "after-click",
+      "at": 67605.5,
+      "state": "countdown",
+      "phase": "countdown",
+      "hasPlayer": true,
+      "cdT": 1.2717000000000123,
+      "raceTime": 0,
+      "gameTime": 1.5928000000000475,
+      "quality": "low",
+      "pixelRatio": 0.35,
+      "composer": false,
+      "antialias": true,
+      "drawingBuffer": [
+        478,
+        268
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": true,
+      "countdown": "2",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ],
+      "speed": 0,
+      "steer": 0
+    },
+    {
+      "when": "after-click",
+      "at": 68610.1,
+      "state": "countdown",
+      "phase": "countdown",
+      "hasPlayer": true,
+      "cdT": 1.3717000000000124,
+      "raceTime": 0,
+      "gameTime": 1.6928000000000476,
+      "quality": "low",
+      "pixelRatio": 0.35,
+      "composer": false,
+      "antialias": true,
+      "drawingBuffer": [
+        478,
+        268
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": true,
+      "countdown": "2",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ],
+      "speed": 0,
+      "steer": 0
+    },
+    {
+      "when": "after-click",
+      "at": 69614.1,
+      "state": "countdown",
+      "phase": "countdown",
+      "hasPlayer": true,
+      "cdT": 1.4217000000000124,
+      "raceTime": 0,
+      "gameTime": 1.7428000000000476,
+      "quality": "low",
+      "pixelRatio": 0.35,
+      "composer": false,
+      "antialias": true,
+      "drawingBuffer": [
+        478,
+        268
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": true,
+      "countdown": "2",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ],
+      "speed": 0,
+      "steer": 0
+    },
+    {
+      "when": "after-click",
+      "at": 70619.40000000002,
+      "state": "countdown",
+      "phase": "countdown",
+      "hasPlayer": true,
+      "cdT": 1.4717000000000124,
+      "raceTime": 0,
+      "gameTime": 1.7928000000000477,
+      "quality": "low",
+      "pixelRatio": 0.35,
+      "composer": false,
+      "antialias": true,
+      "drawingBuffer": [
+        478,
+        268
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": true,
+      "countdown": "2",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ],
+      "speed": 0,
+      "steer": 0
+    },
+    {
+      "when": "after-click",
+      "at": 71623.6,
+      "state": "countdown",
+      "phase": "countdown",
+      "hasPlayer": true,
+      "cdT": 1.5217000000000125,
+      "raceTime": 0,
+      "gameTime": 1.8428000000000477,
+      "quality": "low",
+      "pixelRatio": 0.35,
+      "composer": false,
+      "antialias": true,
+      "drawingBuffer": [
+        478,
+        268
+      ],
+      "visibility": "visible",
+      "focus": true,
+      "platform": "desktop",
+      "note": "",
+      "disabled": true,
+      "countdown": "2",
+      "life": [
+        {
+          "type": "pageshow",
+          "at": 3409.7000000000116,
+          "visibility": "visible",
+          "focus": true
+        }
+      ],
+      "speed": 0,
+      "steer": 0
+    }
+  ],
+  "errors": [
+    "AssertionError [ERR_ASSERTION]: Fresh desktop did not enter race: {\"when\":\"after-click\",\"at\":71623.6,\"state\":\"countdown\",\"phase\":\"countdown\",\"hasPlayer\":true,\"cdT\":1.5217000000000125,\"raceTime\":0,\"gameTime\":1.8428000000000477,\"quality\":\"low\",\"pixelRatio\":0.35,\"composer\":false,\"antialias\":true,\"drawingBuffer\":[478,268],\"visibility\":\"visible\",\"focus\":true,\"platform\":\"desktop\",\"note\":\"\",\"disabled\":true,\"countdown\":\"2\",\"life\":[{\"type\":\"pageshow\",\"at\":3409.7000000000116,\"visibility\":\"visible\",\"focus\":true}],\"speed\":0,\"steer\":0}\n    at file:///home/runner/work/ai-mini-game-factory/ai-mini-game-factory/tools/lean-pilot/racing-cold-start-qa.mjs:84:10"
+  ],
+  "passed": false,
+  "last": {
+    "at": 75915.70000000001,
+    "state": "countdown",
+    "phase": "countdown",
+    "hasPlayer": true,
+    "cdT": 1.7859000000000242,
+    "raceTime": 0,
+    "gameTime": 2.1070000000000593,
+    "quality": "low",
+    "pixelRatio": 0.35,
+    "composer": false,
+    "antialias": true,
+    "drawingBuffer": [
+      478,
+      268
+    ],
+    "visibility": "visible",
+    "focus": true,
+    "platform": "desktop",
+    "note": "",
+    "disabled": true,
+    "countdown": "2",
+    "life": [
+      {
+        "type": "pageshow",
+        "at": 3409.7000000000116,
+        "visibility": "visible",
+        "focus": true
+      }
+    ],
+    "speed": 0,
+    "steer": 0
+  }
+}

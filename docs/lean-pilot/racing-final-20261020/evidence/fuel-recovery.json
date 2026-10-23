@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "buildHash": "40cf9871719d1154d7d855a805f157f5c00a88b23d6700f90c119717772c7542",
+  "source": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/runs/h5-qq-mobile-20261013/evidence/rc16-natural-resume11",
+  "origin": "http://127.0.0.1:52494",
+  "savedFuel": {
+    "version": 2,
+    "amount": 0,
+    "updatedAt": 1792482139986,
+    "lastAdAt": 0,
+    "lastAdId": ""
+  },
+  "before": {
+    "wallMs": 1792482430449,
+    "fuel": "⛽ 4/30 · 每局 -5 · 每分钟 +1 · 下次恢复 1 分钟",
+    "startDisabled": true
+  },
+  "after": {
+    "wallMs": 1792482440474,
+    "fuel": "⛽ 5/30 · 每局 -5 · 每分钟 +1 · 下次恢复 1 分钟",
+    "startDisabled": false
+  },
+  "elapsedSinceEarnedFuelUpdateMs": 300488,
+  "passed": true,
+  "adsUsed": false,
+  "clockModified": false,
+  "storageEdited": false,
+  "limitation": "Genuine elapsed-time recovery, not an immediate free restart or a physical-phone test"
+}

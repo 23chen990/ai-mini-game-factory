@@ -4,16 +4,35 @@ on:
     paths:
       - 'templates/web-lite/h5-source-mobile-v1/**'
       - 'tools/lean-pilot/racing-mobile-build.mjs'
+      - 'tools/lean-pilot/racing-car-*.mjs'
+      - 'tools/lean-pilot/racing-wheel-qa-input.mjs'
+      - 'tools/lean-pilot/tests/racing-car-*.mjs'
+      - 'tools/lean-pilot/tests/racing-user-car-*.mjs'
+      - 'tools/lean-pilot/racing-build-fingerprint-check.mjs'
+      - 'tools/lean-pilot/policy.mjs'
+      - 'tools/lean-pilot/runner.mjs'
+      - 'tools/lean-pilot/tests/racing-large-build-hash.node.mjs'
+      - 'tools/lean-pilot/tests/racing-wheel-qa-input.node.mjs'
+      - 'tools/lean-pilot/tests/racing-home-presentation.node.mjs'
       - 'tools/lean-pilot/racing-v3-smoke.mjs'
+      - 'tools/lean-pilot/racing-browser-config.mjs'
+      - 'tools/lean-pilot/racing-real-browser-preload.mjs'
       - 'tools/lean-pilot/racing-geometry-audit.mjs'
       - 'tools/lean-pilot/racing-shortcut-cost.mjs'
       - 'tools/lean-pilot/tests/racing-shortcut-cost.test.mjs'
       - 'tools/lean-pilot/racing-ai-pace-audit.mjs'
       - 'tools/lean-pilot/racing-native-player-qa.mjs'
+      - 'tools/lean-pilot/racing-native-player-v11-qa.mjs'
+      - 'tools/lean-pilot/racing-next-stage-ad-browser-qa.mjs'
       - 'tools/lean-pilot/racing-fuel-lifecycle-qa.mjs'
       - 'tools/lean-pilot/racing-career-qa.mjs'
       - 'tools/lean-pilot/racing-integrated-campaign-audit.mjs'
       - 'tools/lean-pilot/racing-visible-policy.mjs'
+      - 'tools/lean-pilot/racing-visible-actions.mjs'
+      - 'tools/lean-pilot/racing-minimap-observer.mjs'
+      - 'tools/lean-pilot/tests/racing-visible-actions.node.mjs'
+      - 'tools/lean-pilot/tests/racing-earned-upgrade.node.mjs'
+      - 'tools/lean-pilot/tests/racing-minimap-observer.node.mjs'
       - 'tools/lean-pilot/racing-mobile-experience-qa.mjs'
       - 'tools/lean-pilot/racing-delivery-verify.mjs'
       - 'tools/lean-pilot/racing-delivery-verify.test.mjs'
@@ -32,9 +51,11 @@ concurrency:
   cancel-in-progress: true
 jobs:
   racing-v3:
-    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.ref == 'feat/racing-career-items-iaa-20261014' || github.event.pull_request.head.ref == 'feat/racing-v31-tracks-items-recovery-20261014' || github.event.pull_request.head.ref == 'chatgpt/racing-arcade-ux-20261016' || github.event.pull_request.head.ref == 'chatgpt/racing-rivals-map-verification-20261016' || github.event.pull_request.head.ref == 'chatgpt/racing-classic-countersteer-20261016' || github.event.pull_request.head.ref == 'chatgpt/racing-v46-challenge-20261017' || (github.event.pull_request.head.repo.full_name == github.repository && (startsWith(github.event.pull_request.head.ref, 'chatgpt/racing-v5') || (startsWith(github.event.pull_request.head.ref, 'feat/racing-v60-') || (startsWith(github.event.pull_request.head.ref, 'chatgpt/racing-v61-') || (startsWith(github.event.pull_request.head.ref, 'chatgpt/racing-v62-') || startsWith(github.event.pull_request.head.ref, 'chatgpt/racing-v70-') || startsWith(github.event.pull_request.head.ref, 'feat/racing-v8-') || startsWith(github.event.pull_request.head.ref, 'chatgpt/racing-v9-') || startsWith(github.event.pull_request.head.ref, 'chatgpt/racing-v10-'))))))
+    if: github.event_name == 'workflow_dispatch' || (github.event.pull_request.head.repo.full_name == github.repository && (startsWith(github.event.pull_request.head.ref, 'chatgpt/racing-') || startsWith(github.event.pull_request.head.ref, 'feat/racing-') || startsWith(github.event.pull_request.head.ref, 'codex/hunyuan-racer-')))
     runs-on: ubuntu-24.04
-    timeout-minutes: 26
+    # Allow the additional six-car browser suite plus the existing 10-minute
+    # non-gating campaign audit; individual gameplay waits stay unchanged.
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -48,12 +69,19 @@ jobs:
           pnpm install --frozen-lockfile --ignore-scripts
       - name: Locked racing code tests and TypeScript/lint
         run: |
-          node --test templates/web-lite/h5-source-mobile-v1/tests/*.test.mjs
-          node --test tools/lean-pilot/tests/racing-build.test.mjs
-          node --test tools/lean-pilot/tests/racing-shortcut-cost.test.mjs
-          node --test tools/lean-pilot/tests/racing-visible-policy.test.mjs
-          node --test tools/lean-pilot/racing-delivery-verify.test.mjs
-          pnpm exec eslint tools/lean-pilot/racing-shortcut-cost.mjs tools/lean-pilot/tests/racing-shortcut-cost.test.mjs tools/lean-pilot/racing-native-player-qa.mjs tools/lean-pilot/racing-ai-pace-audit.mjs tools/lean-pilot/racing-geometry-audit.mjs tools/lean-pilot/racing-mobile-build.mjs tools/lean-pilot/racing-v3-smoke.mjs tools/lean-pilot/racing-career-qa.mjs tools/lean-pilot/racing-visible-policy.mjs tools/lean-pilot/racing-mobile-experience-qa.mjs templates/web-lite/h5-source-mobile-v1/racing templates/web-lite/h5-source-mobile-v1/fuel.mjs
+          node --test --test-isolation=none templates/web-lite/h5-source-mobile-v1/tests/*.test.mjs
+          node --test --test-isolation=none tools/lean-pilot/tests/racing-build.test.mjs
+          node --test --test-isolation=none tools/lean-pilot/tests/racing-ai-pace-audit.test.mjs
+          node --test --test-isolation=none tools/lean-pilot/tests/racing-car-build.node.mjs tools/lean-pilot/tests/racing-car-prepare.node.mjs tools/lean-pilot/tests/racing-wheel-qa-input.node.mjs tools/lean-pilot/tests/racing-home-presentation.node.mjs
+          node --test --test-isolation=none tools/lean-pilot/tests/racing-user-car-build.node.mjs
+          node --test --test-isolation=none tools/lean-pilot/tests/racing-car-qa-instrumentation.node.mjs
+          node --test --test-isolation=none tools/lean-pilot/tests/racing-large-build-hash.node.mjs
+          node --test --test-isolation=none tools/lean-pilot/tests/racing-shortcut-cost.test.mjs
+          node --test --test-isolation=none tools/lean-pilot/tests/racing-visible-policy.test.mjs tools/lean-pilot/tests/racing-visible-actions.node.mjs tools/lean-pilot/tests/racing-earned-upgrade.node.mjs
+          node --test --test-isolation=none tools/lean-pilot/racing-delivery-verify.test.mjs
+          pnpm exec eslint tools/lean-pilot/racing-visible-actions.mjs tools/lean-pilot/racing-minimap-observer.mjs tools/lean-pilot/tests/racing-visible-actions.node.mjs tools/lean-pilot/tests/racing-minimap-observer.node.mjs tools/lean-pilot/racing-browser-config.mjs tools/lean-pilot/racing-real-browser-preload.mjs tools/lean-pilot/racing-shortcut-cost.mjs tools/lean-pilot/tests/racing-shortcut-cost.test.mjs tools/lean-pilot/racing-native-player-qa.mjs tools/lean-pilot/racing-ai-pace-audit.mjs tools/lean-pilot/racing-geometry-audit.mjs tools/lean-pilot/racing-mobile-build.mjs tools/lean-pilot/racing-v3-smoke.mjs tools/lean-pilot/racing-career-qa.mjs tools/lean-pilot/racing-visible-policy.mjs tools/lean-pilot/racing-mobile-experience-qa.mjs templates/web-lite/h5-source-mobile-v1/racing templates/web-lite/h5-source-mobile-v1/fuel.mjs
+          pnpm exec eslint tools/lean-pilot/racing-car-*.mjs tools/lean-pilot/racing-wheel-qa-input.mjs tools/lean-pilot/racing-native-player-v11-qa.mjs tools/lean-pilot/racing-next-stage-ad-browser-qa.mjs tools/lean-pilot/tests/racing-car-*.mjs tools/lean-pilot/tests/racing-wheel-qa-input.node.mjs tools/lean-pilot/tests/racing-home-presentation.node.mjs
+          pnpm exec eslint tools/lean-pilot/tests/racing-user-car-*.mjs tools/lean-pilot/racing-build-fingerprint-check.mjs tools/lean-pilot/racing-delivery-verify.mjs
           pnpm typecheck
       - name: Obtain the exact pinned public racing reference
         shell: bash
@@ -66,24 +94,33 @@ jobs:
           git -C "$RUNNER_TEMP/racing-source" checkout -q FETCH_HEAD
           test "$(git -C "$RUNNER_TEMP/racing-source" rev-parse HEAD)" = '54adc1fb64155f9dd7c1c90ecae7b8185ac540b8'
           git -C "$RUNNER_TEMP/racing-source" diff --exit-code
-      - name: Build V3 racing actual standalone and H5
+      - name: Build unified racing actual standalone and H5
         env:
           H5_PINNED_SOURCE_ROOT: ${{ runner.temp }}/racing-source
         run: node tools/lean-pilot/racing-mobile-build.mjs
+      - name: Verify real Three car materials, shared resources and independent pivots
+        run: RACE_THREE_MODULE="$PWD/runs/h5-qq-mobile-20261013/workspace/source/qq-speed/node_modules/three/build/three.module.js" node --test --test-isolation=none tools/lean-pilot/tests/racing-car-model-runtime.mjs tools/lean-pilot/tests/racing-user-car-runtime.mjs
+      - name: Verify physical AI laps and real entrance-wall recovery
+        run: RACE_NATIVE_PROJECT="$PWD/runs/h5-qq-mobile-20261013/workspace/source/qq-speed" node --test --test-isolation=none templates/web-lite/h5-source-mobile-v1/tests/racing-v11-physical-ai.test.mjs
       - name: Verify actual H5 build includes every racing runtime source
-        run: node --test tools/lean-pilot/racing-build-fingerprint-check.mjs
-      - name: Audit all four original/reshaped native centerlines
+        run: node --test --test-isolation=none tools/lean-pilot/racing-build-fingerprint-check.mjs
+      - name: Audit all 30 V11 native courses and 10 physical forks
         run: node tools/lean-pilot/racing-geometry-audit.mjs
-      - name: Compare two native AI laps on original and reshaped tracks
+      - name: Drive all 30 courses with five physical AI rivals and native contact
         run: node tools/lean-pilot/racing-ai-pace-audit.mjs
-      - name: Compare real pinned PlayerCar/Track physics under synthetic two-button steering
+      - name: Verify native player countersteer, drift, collision and pause contracts
         run: node tools/lean-pilot/racing-native-player-qa.mjs
       - name: Install matching Chromium browser
         run: pnpm exec playwright install --with-deps chromium
-      - name: Launch actual bundled WebGL racing in Chromium
+      - name: Verify six actual garage models and native start/result identity
+        run: node tools/lean-pilot/racing-car-garage-qa.mjs runs/h5-qq-mobile-20261013/workspace/game runs/h5-qq-mobile-20261013/artifacts/car-garage-ci
+      - name: Launch actual bundled WebGL racing in complete Chromium
         run: |
-          node --test tools/lean-pilot/racing-fuel-lifecycle-qa.mjs
-          node tools/lean-pilot/racing-v3-smoke.mjs runs/h5-qq-mobile-20261013/workspace/game runs/h5-qq-mobile-20261013/artifacts/racing-v3-smoke
+          node --test --test-isolation=none tools/lean-pilot/tests/racing-minimap-observer.node.mjs
+          node --test --test-isolation=none tools/lean-pilot/racing-fuel-lifecycle-qa.mjs
+          node --import ./tools/lean-pilot/racing-real-browser-preload.mjs tools/lean-pilot/racing-v3-smoke.mjs runs/h5-qq-mobile-20261013/workspace/game runs/h5-qq-mobile-20261013/artifacts/racing-v3-smoke
+      - name: Verify adjacent-stage ad callbacks in the actual built H5
+        run: node tools/lean-pilot/racing-next-stage-ad-browser-qa.mjs
       - name: One-stage natural visible-touch diagnostic (non-gating)
         if: github.event_name == 'workflow_dispatch' && inputs.natural_touch == true
         continue-on-error: true
@@ -127,6 +164,9 @@ jobs:
           path: |
             runs/h5-qq-mobile-20261013/artifacts/racing-v3-delivery/*
             runs/h5-qq-mobile-20261013/artifacts/racing-v3-smoke/*
+            runs/h5-qq-mobile-20261013/artifacts/next-stage-ad-browser/*
+            runs/h5-qq-mobile-20261013/artifacts/car-garage-ci/*
+            runs/h5-qq-mobile-20261013/artifacts/racing-v115-native-player/*
             runs/h5-qq-mobile-20261013/evidence/v32-natural-ci/*
           retention-days: 7
           if-no-files-found: warn
@@ -134,11 +174,11 @@ jobs:
   publish-qa-preview:
     name: Verified H5 phone preview (QA only)
     needs: racing-v3
-    if: github.event_name == 'pull_request' && (github.event.pull_request.head.ref == 'chatgpt/racing-v70-iaa-short-session-20261017' || github.event.pull_request.head.ref == 'feat/racing-v8-full-experience-20261017' || github.event.pull_request.head.ref == 'chatgpt/racing-v9-course-craft-20261017' || github.event.pull_request.head.ref == 'chatgpt/racing-v10-drive-feel-20261017') && github.event.pull_request.head.repo.full_name == github.repository
+    if: github.event_name == 'pull_request' && (github.event.pull_request.head.ref == 'chatgpt/racing-unified-20261018' || github.event.pull_request.head.ref == 'chatgpt/racing-v91-wheel-hud-20261017' || github.event.pull_request.head.ref == 'chatgpt/racing-v70-iaa-short-session-20261017' || github.event.pull_request.head.ref == 'feat/racing-v8-full-experience-20261017' || github.event.pull_request.head.ref == 'chatgpt/racing-v9-course-craft-20261017' || github.event.pull_request.head.ref == 'chatgpt/racing-v10-drive-feel-20261017') && github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-24.04
     timeout-minutes: 9
     env:
-      RACE_QA_BRANCH: ${{ github.event.pull_request.head.ref == 'chatgpt/racing-v10-drive-feel-20261017' && 'preview/racing-v100-integrated-20261017' || (github.event.pull_request.head.ref == 'chatgpt/racing-v9-course-craft-20261017' && 'preview/racing-v90-integrated-20261017' || (github.event.pull_request.head.ref == 'feat/racing-v8-full-experience-20261017' && 'preview/racing-v80-integrated-20261017' || 'preview/racing-v70-iaa-short-session-20261017')) }}
+      RACE_QA_BRANCH: ${{ github.event.pull_request.head.ref == 'chatgpt/racing-unified-20261018' && 'preview/racing-unified-20261018' || github.event.pull_request.head.ref == 'chatgpt/racing-v91-wheel-hud-20261017' && 'preview/racing-v91-wheel-hud-20261017' || github.event.pull_request.head.ref == 'chatgpt/racing-v10-drive-feel-20261017' && 'preview/racing-v100-integrated-20261017' || (github.event.pull_request.head.ref == 'chatgpt/racing-v9-course-craft-20261017' && 'preview/racing-v90-integrated-20261017' || (github.event.pull_request.head.ref == 'feat/racing-v8-full-experience-20261017' && 'preview/racing-v80-integrated-20261017' || 'preview/racing-v70-iaa-short-session-20261017')) }}
     permissions:
       contents: write
       actions: read
@@ -191,7 +231,7 @@ jobs:
               + 'HTML_SHA256=' + digest + '\n', encoding='utf8')
           print('QA_ARTIFACT_VERIFIED_HTML_SHA256=' + digest)
           PY
-      - name: Publish SHA-verified V7/V8/V9/V10 private playtest to correct isolated QA branch
+      - name: Publish SHA-verified racing playtest to its isolated QA branch
         shell: bash
         run: |
           set -euo pipefail

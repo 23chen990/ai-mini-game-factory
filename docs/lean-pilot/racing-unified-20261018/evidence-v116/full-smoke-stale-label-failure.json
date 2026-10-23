@@ -1,0 +1,86 @@
+{
+  "stage": "BUILT_H5_CHROMIUM_ENTRY_SMOKE",
+  "assertion": "source-level/real browser, not human natural victory",
+  "testStart": "2026-10-18T15:06:27.084Z",
+  "views": [
+    {
+      "name": "lobby-844x390",
+      "geometry": {
+        "panel": {
+          "x": 25.3125,
+          "y": 12.8828125,
+          "width": 337.59375,
+          "height": 266.234375,
+          "top": 12.8828125,
+          "right": 362.90625,
+          "bottom": 279.1171875,
+          "left": 25.3125
+        },
+        "clientHeight": 264,
+        "scrollHeight": 264,
+        "mapVisible": true,
+        "phase": "ready"
+      }
+    },
+    {
+      "name": "lobby-740x360",
+      "geometry": {
+        "panel": {
+          "x": 22.1875,
+          "y": 8.6796875,
+          "width": 296,
+          "height": 244.640625,
+          "top": 8.6796875,
+          "right": 318.1875,
+          "bottom": 253.3203125,
+          "left": 22.1875
+        },
+        "clientHeight": 243,
+        "scrollHeight": 243,
+        "mapVisible": true,
+        "phase": "ready"
+      }
+    }
+  ],
+  "errors": [
+    "01-city-hard-ranked: numbered features are not in the actual loaded 3D circuit: {\"course\":\"race-01\",\"exists\":true,\"arches\":2,\"scenery\":4,\"v10ArchClear\":true,\"midArchColor\":3163225,\"numberedMeshCount\":15,\"actualCourse\":\"race-01\",\"requestedCourse\":\"race-01\",\"actualTrackLength\":3182,\"revision\":\"V11.6\",\"uiRevision\":\"racing-v116-garage\"}",
+    "Error: 01-city-hard-ranked: numbered features are not in the actual loaded 3D circuit: {\"course\":\"race-01\",\"exists\":true,\"arches\":2,\"scenery\":4,\"v10ArchClear\":true,\"midArchColor\":3163225,\"numberedMeshCount\":15,\"actualCourse\":\"race-01\",\"requestedCourse\":\"race-01\",\"actualTrackLength\":3182,\"revision\":\"V11.6\",\"uiRevision\":\"racing-v116-garage\"}\n    at fail (file:///workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-v3-smoke.mjs:41:66)\n    at raceStart (file:///workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-v3-smoke.mjs:271:5)\n    at async file:///workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-v3-smoke.mjs:486:3"
+  ],
+  "seededCampaign": false,
+  "passed": false,
+  "initialControls": {
+    "mode": "wheel",
+    "wheel": true,
+    "sensitivity": "normal",
+    "noSwitch": true,
+    "noPhantomAd": true,
+    "noArrows": true,
+    "noAutoGuide": true,
+    "oneLineFirstGuide": true
+  },
+  "adSafety": {
+    "retryHidden": true,
+    "fuelHidden": true,
+    "noInterstitial": true,
+    "boostDoesNotAppearWithoutSDK": true
+  },
+  "fuelAtStart": {
+    "cap": "30",
+    "segments": 6,
+    "label": "⛽ 30/30 · 每局 -5 · 每分钟 +1",
+    "amount": "30",
+    "adHidden": true
+  },
+  "starGate": {
+    "quietUntilSelected": true,
+    "threshold": "5/8",
+    "nativeBypassBlocked": true,
+    "adsUnavailableInBrowser": true
+  },
+  "initialExport": {
+    "filename": "racing-v80-local-playtest.json",
+    "starts": 0,
+    "private": true
+  },
+  "testEnd": "2026-10-18T15:07:13.504Z"
+}

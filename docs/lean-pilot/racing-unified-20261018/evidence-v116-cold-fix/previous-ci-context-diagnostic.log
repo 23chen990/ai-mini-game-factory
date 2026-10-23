@@ -1,0 +1,882 @@
+﻿2026-10-18T16:14:55.0953119Z Current runner version: '2.337.0'
+2026-10-18T16:14:55.0978874Z ##[group]Runner Image Provisioner
+2026-10-18T16:14:55.0979951Z Hosted Compute Agent
+2026-10-18T16:14:55.0980714Z Version: 20261012.601
+2026-10-18T16:14:55.0981409Z Commit: f3dc54e1fb89da6852db922499a0233137369e1d
+2026-10-18T16:14:55.0982137Z Build Date: 2026-10-12T17:48:21Z
+2026-10-18T16:14:55.0982892Z Worker ID: {f3d5c994-4f4f-4dfe-abed-3449ddd6fd31}
+2026-10-18T16:14:55.0983608Z Region: eastus
+2026-10-18T16:14:55.0984219Z Cloud: Azure
+2026-10-18T16:14:55.0984796Z ##[endgroup]
+2026-10-18T16:14:55.0986363Z ##[group]Operating System
+2026-10-18T16:14:55.0987093Z Ubuntu
+2026-10-18T16:14:55.0987620Z 24.04.5
+2026-10-18T16:14:55.0988522Z LTS
+2026-10-18T16:14:55.0989169Z ##[endgroup]
+2026-10-18T16:14:55.0989731Z ##[group]Runner Image
+2026-10-18T16:14:55.0990405Z Image: ubuntu-24.04
+2026-10-18T16:14:55.0991013Z Version: 20261012.334.1
+2026-10-18T16:14:55.0992302Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-18T16:14:55.0993909Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+2026-10-18T16:14:55.0994912Z ##[endgroup]
+2026-10-18T16:14:55.0996034Z ##[group]GITHUB_TOKEN Permissions
+2026-10-18T16:14:55.0998746Z Contents: read
+2026-10-18T16:14:55.0999373Z Metadata: read
+2026-10-18T16:14:55.0999941Z ##[endgroup]
+2026-10-18T16:14:55.1002188Z Secret source: Actions
+2026-10-18T16:14:55.1003129Z Cache mode: write
+2026-10-18T16:14:55.1004251Z Prepare workflow directory
+2026-10-18T16:14:55.1389502Z Prepare all required actions
+2026-10-18T16:14:55.1439819Z Getting action download info
+2026-10-18T16:14:55.3852100Z Download action repository 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683' (SHA:11bd71901bbe5b1630ceea73d27597364c9af683)
+2026-10-18T16:14:55.5717268Z Download action repository 'actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2026-10-18T16:14:55.6779354Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-18T16:14:55.8859730Z Complete job name: cold-start (context)
+2026-10-18T16:14:55.9698836Z ##[group]Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+2026-10-18T16:14:55.9699976Z with:
+2026-10-18T16:14:55.9700463Z   ref: 99af424cf3584adc4f13fa607a837d56c1028c65
+2026-10-18T16:14:55.9701086Z   persist-credentials: false
+2026-10-18T16:14:55.9701706Z   repository: 23chen990/ai-mini-game-factory
+2026-10-18T16:14:55.9705520Z   token: ***
+2026-10-18T16:14:55.9705956Z   ssh-strict: true
+2026-10-18T16:14:55.9706393Z   ssh-user: git
+2026-10-18T16:14:55.9706822Z   clean: true
+2026-10-18T16:14:55.9707292Z   sparse-checkout-cone-mode: true
+2026-10-18T16:14:55.9708102Z   fetch-depth: 1
+2026-10-18T16:14:55.9708556Z   fetch-tags: false
+2026-10-18T16:14:55.9709004Z   show-progress: true
+2026-10-18T16:14:55.9709477Z   lfs: false
+2026-10-18T16:14:55.9709898Z   submodules: false
+2026-10-18T16:14:55.9710383Z   set-safe-directory: true
+2026-10-18T16:14:55.9711593Z ##[endgroup]
+2026-10-18T16:14:56.0782867Z Syncing repository: 23chen990/ai-mini-game-factory
+2026-10-18T16:14:56.0785751Z ##[group]Getting Git version info
+2026-10-18T16:14:56.0787216Z Working directory is '/home/runner/work/ai-mini-game-factory/ai-mini-game-factory'
+2026-10-18T16:14:56.0789319Z [command]/usr/bin/git version
+2026-10-18T16:14:56.0879389Z git version 2.55.0
+2026-10-18T16:14:56.0917022Z ##[endgroup]
+2026-10-18T16:14:56.0931672Z Temporarily overriding HOME='/home/runner/work/_temp/9ca4231d-33ce-4e9b-a7de-f357c259ae98' before making global git config changes
+2026-10-18T16:14:56.0934194Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-18T16:14:56.0936691Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/ai-mini-game-factory/ai-mini-game-factory
+2026-10-18T16:14:56.0994883Z Deleting the contents of '/home/runner/work/ai-mini-game-factory/ai-mini-game-factory'
+2026-10-18T16:14:56.1002969Z ##[group]Initializing the repository
+2026-10-18T16:14:56.1010154Z [command]/usr/bin/git init /home/runner/work/ai-mini-game-factory/ai-mini-game-factory
+2026-10-18T16:14:56.1126413Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-18T16:14:56.1128460Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-18T16:14:56.1129672Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-18T16:14:56.1130924Z hint: call:
+2026-10-18T16:14:56.1131854Z hint:
+2026-10-18T16:14:56.1132601Z hint: 	git config --global init.defaultBranch <name>
+2026-10-18T16:14:56.1133701Z hint:
+2026-10-18T16:14:56.1135000Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-18T16:14:56.1137087Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-18T16:14:56.1138972Z hint:
+2026-10-18T16:14:56.1140015Z hint: 	git branch -m <name>
+2026-10-18T16:14:56.1141149Z hint:
+2026-10-18T16:14:56.1142518Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-18T16:14:56.1144924Z Initialized empty Git repository in /home/runner/work/ai-mini-game-factory/ai-mini-game-factory/.git/
+2026-10-18T16:14:56.1149974Z [command]/usr/bin/git remote add origin https://github.com/23chen990/ai-mini-game-factory
+2026-10-18T16:14:56.1207364Z ##[endgroup]
+2026-10-18T16:14:56.1209316Z ##[group]Disabling automatic garbage collection
+2026-10-18T16:14:56.1213134Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-18T16:14:56.1252115Z ##[endgroup]
+2026-10-18T16:14:56.1254032Z ##[group]Setting up auth
+2026-10-18T16:14:56.1261539Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-18T16:14:56.1311734Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-18T16:14:56.1737145Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-18T16:14:56.1779766Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-18T16:14:56.2055831Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-18T16:14:56.2105983Z ##[endgroup]
+2026-10-18T16:14:56.2107523Z ##[group]Fetching the repository
+2026-10-18T16:14:56.2118041Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin 99af424cf3584adc4f13fa607a837d56c1028c65
+2026-10-18T16:14:58.6706342Z From https://github.com/23chen990/ai-mini-game-factory
+2026-10-18T16:14:58.6720329Z  * branch            99af424cf3584adc4f13fa607a837d56c1028c65 -> FETCH_HEAD
+2026-10-18T16:14:58.6725026Z ##[endgroup]
+2026-10-18T16:14:58.6726801Z ##[group]Determining the checkout info
+2026-10-18T16:14:58.6729020Z ##[endgroup]
+2026-10-18T16:14:58.6730079Z [command]/usr/bin/git sparse-checkout disable
+2026-10-18T16:14:58.6784659Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-18T16:14:58.6823344Z ##[group]Checking out the ref
+2026-10-18T16:14:58.6829720Z [command]/usr/bin/git checkout --progress --force 99af424cf3584adc4f13fa607a837d56c1028c65
+2026-10-18T16:14:59.0400982Z Note: switching to '99af424cf3584adc4f13fa607a837d56c1028c65'.
+2026-10-18T16:14:59.0401527Z 
+2026-10-18T16:14:59.0401855Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-18T16:14:59.0402481Z changes and commit them, and you can discard any commits you make in this
+2026-10-18T16:14:59.0403156Z state without impacting any branches by switching back to a branch.
+2026-10-18T16:14:59.0403530Z 
+2026-10-18T16:14:59.0403816Z If you want to create a new branch to retain commits you create, you may
+2026-10-18T16:14:59.0404780Z do so (now or later) by using -c with the switch command. Example:
+2026-10-18T16:14:59.0405117Z 
+2026-10-18T16:14:59.0405286Z   git switch -c <new-branch-name>
+2026-10-18T16:14:59.0407093Z 
+2026-10-18T16:14:59.0407288Z Or undo this operation with:
+2026-10-18T16:14:59.0408322Z 
+2026-10-18T16:14:59.0408502Z   git switch -
+2026-10-18T16:14:59.0408727Z 
+2026-10-18T16:14:59.0409624Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-18T16:14:59.0410480Z 
+2026-10-18T16:14:59.0411322Z HEAD is now at 99af424 docs(racing): archive V11.6 maps, models and exact verification evidence
+2026-10-18T16:14:59.0439000Z ##[endgroup]
+2026-10-18T16:14:59.0501892Z [command]/usr/bin/git log -1 --format=%H
+2026-10-18T16:14:59.0541189Z 99af424cf3584adc4f13fa607a837d56c1028c65
+2026-10-18T16:14:59.0553715Z ##[group]Removing auth
+2026-10-18T16:14:59.0629710Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-18T16:14:59.0639213Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-18T16:14:59.0845389Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-18T16:14:59.0880789Z http.https://github.com/.extraheader
+2026-10-18T16:14:59.0888365Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-18T16:14:59.0926672Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-18T16:14:59.1156953Z ##[endgroup]
+2026-10-18T16:14:59.1432738Z ##[group]Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+2026-10-18T16:14:59.1433307Z with:
+2026-10-18T16:14:59.1433591Z   node-version: 24.x
+2026-10-18T16:14:59.1433906Z   always-auth: false
+2026-10-18T16:14:59.1434229Z   check-latest: false
+2026-10-18T16:14:59.1437083Z   token: ***
+2026-10-18T16:14:59.1437374Z ##[endgroup]
+2026-10-18T16:14:59.2979032Z Found in cache @ /opt/hostedtoolcache/node/24.21.0/x64
+2026-10-18T16:14:59.2984756Z (node:2307) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-18T16:14:59.2985853Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-18T16:14:59.2987369Z ##[group]Environment details
+2026-10-18T16:14:59.7284624Z node: v24.21.0
+2026-10-18T16:14:59.7285764Z npm: 11.19.0
+2026-10-18T16:14:59.7286128Z yarn: 1.22.22
+2026-10-18T16:14:59.7287350Z ##[endgroup]
+2026-10-18T16:14:59.7438222Z ##[group]Run npm install --global pnpm@11.19.0 --ignore-scripts --no-audit --no-fund
+2026-10-18T16:14:59.7438985Z [36;1mnpm install --global pnpm@11.19.0 --ignore-scripts --no-audit --no-fund[0m
+2026-10-18T16:14:59.7439496Z [36;1mpnpm install --frozen-lockfile --ignore-scripts[0m
+2026-10-18T16:14:59.7440048Z [36;1mnode --test templates/web-lite/h5-source-mobile-v1/tests/racing-browser-config.test.mjs[0m
+2026-10-18T16:14:59.7441173Z [36;1mpnpm exec eslint tools/lean-pilot/racing-cold-start-qa.mjs tools/lean-pilot/racing-browser-config.mjs tools/lean-pilot/racing-real-browser-preload.mjs tools/lean-pilot/racing-context-isolation.mjs[0m
+2026-10-18T16:14:59.7715804Z shell: /usr/bin/bash -e {0}
+2026-10-18T16:14:59.7716162Z ##[endgroup]
+2026-10-18T16:15:01.6351765Z 
+2026-10-18T16:15:01.6360382Z added 1 package in 2s
+2026-10-18T16:15:02.4928058Z ? Verifying lockfile against supply-chain policies (232 entries)...
+2026-10-18T16:15:02.5017625Z Lockfile is up to date, resolution step is skipped
+2026-10-18T16:15:02.6150038Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-10-18T16:15:02.6515999Z Packages: +176
+2026-10-18T16:15:02.6517480Z ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2026-10-18T16:15:03.6171691Z Progress: resolved 176, reused 0, downloaded 47, added 0
+2026-10-18T16:15:03.8319529Z Packages are hard linked from the content-addressable store to the virtual store.
+2026-10-18T16:15:03.8379514Z   Content-addressable store is at: /home/runner/.local/share/pnpm/store/v11
+2026-10-18T16:15:03.8380641Z   Virtual store is at:             node_modules/.pnpm
+2026-10-18T16:15:04.6240222Z Progress: resolved 176, reused 0, downloaded 163, added 8
+2026-10-18T16:15:05.6279491Z Progress: resolved 176, reused 0, downloaded 174, added 174
+2026-10-18T16:15:06.6279644Z Progress: resolved 176, reused 0, downloaded 175, added 175
+2026-10-18T16:15:06.8140923Z ✓ Lockfile passes supply-chain policies (232 entries in 4.3s)
+2026-10-18T16:15:07.6066069Z Progress: resolved 176, reused 0, downloaded 176, added 176, done
+2026-10-18T16:15:07.8162684Z 
+2026-10-18T16:15:07.8163380Z dependencies:
+2026-10-18T16:15:07.8163984Z + @openai/agents 0.17.0
+2026-10-18T16:15:07.8164461Z + @openai/codex-sdk 0.151.0
+2026-10-18T16:15:07.8164885Z + openai 7.8.0
+2026-10-18T16:15:07.8165545Z + phaser 3.90.0
+2026-10-18T16:15:07.8166117Z + yaml 2.9.0
+2026-10-18T16:15:07.8166541Z + zod 4.4.3
+2026-10-18T16:15:07.8166758Z 
+2026-10-18T16:15:07.8167196Z devDependencies:
+2026-10-18T16:15:07.8167606Z + @eslint/js 9.39.5
+2026-10-18T16:15:07.8168274Z + @playwright/test 1.62.1
+2026-10-18T16:15:07.8168714Z + @types/node 24.13.3
+2026-10-18T16:15:07.8169152Z + eslint 9.39.5
+2026-10-18T16:15:07.8169501Z + tsx 4.23.12
+2026-10-18T16:15:07.8169868Z + typescript 5.9.3
+2026-10-18T16:15:07.8170291Z + typescript-eslint 8.68.0
+2026-10-18T16:15:07.8170748Z + vite 8.2.2
+2026-10-18T16:15:07.8171084Z + vitest 4.1.11
+2026-10-18T16:15:07.8171303Z 
+2026-10-18T16:15:07.9929060Z Done in 6.2s using pnpm v11.19.0
+2026-10-18T16:15:08.1770072Z ✔ full Chromium changes only QA executable channel, never GPU flags or timeout (1.674945ms)
+2026-10-18T16:15:08.1789456Z ✔ explicit executables, channels and headed choices remain authoritative (0.173835ms)
+2026-10-18T16:15:08.1809417Z ✔ new-headless QA configuration is idempotent without clock/frame-rate switches (0.207478ms)
+2026-10-18T16:15:08.1885870Z ℹ tests 3
+2026-10-18T16:15:08.1886696Z ℹ suites 0
+2026-10-18T16:15:08.1887657Z ℹ pass 3
+2026-10-18T16:15:08.1888729Z ℹ fail 0
+2026-10-18T16:15:08.1890499Z ℹ cancelled 0
+2026-10-18T16:15:08.1891210Z ℹ skipped 0
+2026-10-18T16:15:08.1891665Z ℹ todo 0
+2026-10-18T16:15:08.1892168Z ℹ duration_ms 75.94919
+2026-10-18T16:15:09.9231236Z ##[group]Run set -euo pipefail
+2026-10-18T16:15:09.9232278Z [36;1mset -euo pipefail[0m
+2026-10-18T16:15:09.9232873Z [36;1mmkdir -p "$RUNNER_TEMP/racing-source"[0m
+2026-10-18T16:15:09.9233259Z [36;1mgit -C "$RUNNER_TEMP/racing-source" init -q[0m
+2026-10-18T16:15:09.9234514Z [36;1mgit -C "$RUNNER_TEMP/racing-source" remote add origin https://github.com/riba2534/claude-opus-5-5-demo.git[0m
+2026-10-18T16:15:09.9235561Z [36;1mgit -C "$RUNNER_TEMP/racing-source" fetch --no-tags --depth=1 origin 54adc1fb64155f9dd7c1c90ecae7b8185ac540b8[0m
+2026-10-18T16:15:09.9236685Z [36;1mgit -C "$RUNNER_TEMP/racing-source" checkout -q FETCH_HEAD[0m
+2026-10-18T16:15:09.9237520Z [36;1mtest "$(git -C "$RUNNER_TEMP/racing-source" rev-parse HEAD)" = '54adc1fb64155f9dd7c1c90ecae7b8185ac540b8'[0m
+2026-10-18T16:15:09.9348482Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-18T16:15:09.9349441Z ##[endgroup]
+2026-10-18T16:15:10.1614619Z From https://github.com/riba2534/claude-opus-5-5-demo
+2026-10-18T16:15:10.1615740Z  * branch            54adc1fb64155f9dd7c1c90ecae7b8185ac540b8 -> FETCH_HEAD
+2026-10-18T16:15:10.1942557Z ##[group]Run node tools/lean-pilot/racing-mobile-build.mjs
+2026-10-18T16:15:10.1943036Z [36;1mnode tools/lean-pilot/racing-mobile-build.mjs[0m
+2026-10-18T16:15:10.2008639Z shell: /usr/bin/bash -e {0}
+2026-10-18T16:15:10.2008909Z env:
+2026-10-18T16:15:10.2009203Z   H5_PINNED_SOURCE_ROOT: /home/runner/work/_temp/racing-source
+2026-10-18T16:15:10.2009563Z ##[endgroup]
+2026-10-18T16:15:12.8661606Z {
+2026-10-18T16:15:12.8662074Z   "schemaVersion": 1,
+2026-10-18T16:15:12.8662551Z   "runId": "h5-qq-mobile-20261013",
+2026-10-18T16:15:12.8663003Z   "gameId": "qq-speed",
+2026-10-18T16:15:12.8663755Z   "route": "formal-fixer",
+2026-10-18T16:15:12.8664195Z   "version": "V11.6",
+2026-10-18T16:15:12.8664727Z   "uiRevision": "racing-v116-garage",
+2026-10-18T16:15:12.8665333Z   "aiMode": "native-playercar-physics",
+2026-10-18T16:15:12.8665834Z   "attempt": 3,
+2026-10-18T16:15:12.8666822Z   "inputHash": "9936cef6259c01abb7315dce82fd07a1bafa3e30e7dbdea862422c9a4e351855",
+2026-10-18T16:15:12.8667622Z   "generatedCar": {
+2026-10-18T16:15:12.8668296Z     "id": "original-racer-v1",
+2026-10-18T16:15:12.8668713Z     "carId": "starter",
+2026-10-18T16:15:12.8669391Z     "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+2026-10-18T16:15:12.8670211Z     "provider": "Tencent-Hunyuan-3.1-web",
+2026-10-18T16:15:12.8670777Z     "bytes": 1270084,
+2026-10-18T16:15:12.8671370Z     "triangles": 17473,
+2026-10-18T16:15:12.8671803Z     "materials": [
+2026-10-18T16:15:12.8672178Z       "BodyPaint",
+2026-10-18T16:15:12.8672494Z       "Glass",
+2026-10-18T16:15:12.8672876Z       "Tire",
+2026-10-18T16:15:12.8673239Z       "Rim",
+2026-10-18T16:15:12.8673632Z       "Headlight",
+2026-10-18T16:15:12.8674020Z       "Taillight",
+2026-10-18T16:15:12.8674458Z       "Trim"
+2026-10-18T16:15:12.8674807Z     ]
+2026-10-18T16:15:12.8675112Z   },
+2026-10-18T16:15:12.8675441Z   "models": [
+2026-10-18T16:15:12.8675794Z     {
+2026-10-18T16:15:12.8676197Z       "id": "original-racer-v1",
+2026-10-18T16:15:12.8676709Z       "carId": "starter",
+2026-10-18T16:15:12.8677628Z       "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+2026-10-18T16:15:12.8678727Z       "provider": "Tencent-Hunyuan-3.1-web",
+2026-10-18T16:15:12.8679353Z       "file": "original-racer.glb",
+2026-10-18T16:15:12.8679882Z       "bytes": 1270084,
+2026-10-18T16:15:12.8680257Z       "triangles": 17473,
+2026-10-18T16:15:12.8680704Z       "materials": [
+2026-10-18T16:15:12.8681088Z         "BodyPaint",
+2026-10-18T16:15:12.8681434Z         "Glass",
+2026-10-18T16:15:12.8681765Z         "Tire",
+2026-10-18T16:15:12.8682160Z         "Rim",
+2026-10-18T16:15:12.8682496Z         "Headlight",
+2026-10-18T16:15:12.8682829Z         "Taillight",
+2026-10-18T16:15:12.8683192Z         "Trim"
+2026-10-18T16:15:12.8683416Z       ],
+2026-10-18T16:15:12.8683617Z       "paintable": true,
+2026-10-18T16:15:12.8683889Z       "wheelMode": "articulated"
+2026-10-18T16:15:12.8684129Z     },
+2026-10-18T16:15:12.8684307Z     {
+2026-10-18T16:15:12.8684504Z       "id": "custom-01",
+2026-10-18T16:15:12.8684732Z       "carId": "custom-01",
+2026-10-18T16:15:12.8685153Z       "sha256": "14e0536f803a360a7b6abf5d976dbff94885318bf77af0729d43498d14649fd1",
+2026-10-18T16:15:12.8685611Z       "provider": "user-provided",
+2026-10-18T16:15:12.8685910Z       "file": "custom-racer-01.glb",
+2026-10-18T16:15:12.8686175Z       "bytes": 2700636,
+2026-10-18T16:15:12.8686399Z       "triangles": 63998,
+2026-10-18T16:15:12.8686624Z       "textures": [
+2026-10-18T16:15:12.8686861Z         {
+2026-10-18T16:15:12.8687059Z           "width": 1024,
+2026-10-18T16:15:12.8687286Z           "height": 1024,
+2026-10-18T16:15:12.8687544Z           "mimeType": "image/jpeg"
+2026-10-18T16:15:12.8688349Z         },
+2026-10-18T16:15:12.8688612Z         {
+2026-10-18T16:15:12.8688852Z           "width": 1024,
+2026-10-18T16:15:12.8689101Z           "height": 1024,
+2026-10-18T16:15:12.8689391Z           "mimeType": "image/jpeg"
+2026-10-18T16:15:12.8689702Z         },
+2026-10-18T16:15:12.8689886Z         {
+2026-10-18T16:15:12.8690352Z           "width": 1024,
+2026-10-18T16:15:12.8690641Z           "height": 1024,
+2026-10-18T16:15:12.8690904Z           "mimeType": "image/jpeg"
+2026-10-18T16:15:12.8691171Z         }
+2026-10-18T16:15:12.8691350Z       ],
+2026-10-18T16:15:12.8691541Z       "limits": {
+2026-10-18T16:15:12.8691781Z         "maxTriangles": 64000,
+2026-10-18T16:15:12.8692040Z         "maxBytes": 3670016,
+2026-10-18T16:15:12.8692308Z         "maxTextureSize": 1024
+2026-10-18T16:15:12.8692541Z       },
+2026-10-18T16:15:12.8692735Z       "paintable": false,
+2026-10-18T16:15:12.8693166Z       "wheelMode": "static-source-mesh",
+2026-10-18T16:15:12.8693464Z       "bounds": {
+2026-10-18T16:15:12.8693675Z         "min": [
+2026-10-18T16:15:12.8693910Z           -1.2987256050109863,
+2026-10-18T16:15:12.8694177Z           0,
+2026-10-18T16:15:12.8694384Z           -2.4000000953674316
+2026-10-18T16:15:12.8694618Z         ],
+2026-10-18T16:15:12.8694804Z         "max": [
+2026-10-18T16:15:12.8695016Z           1.2987256050109863,
+2026-10-18T16:15:12.8695253Z           1.2871825695037842,
+2026-10-18T16:15:12.8695479Z           2.4000000953674316
+2026-10-18T16:15:12.8695698Z         ]
+2026-10-18T16:15:12.8695879Z       },
+2026-10-18T16:15:12.8696104Z       "normalization": {
+2026-10-18T16:15:12.8696339Z         "up": "+Y",
+2026-10-18T16:15:12.8696554Z         "forward": "+Z",
+2026-10-18T16:15:12.8696796Z         "groundY": 0,
+2026-10-18T16:15:12.8697016Z         "centerXZ": [
+2026-10-18T16:15:12.8697218Z           0,
+2026-10-18T16:15:12.8697405Z           0
+2026-10-18T16:15:12.8697600Z         ],
+2026-10-18T16:15:12.8698082Z         "lengthM": 4.8,
+2026-10-18T16:15:12.8698492Z         "runtimeScale": 1
+2026-10-18T16:15:12.8698889Z       }
+2026-10-18T16:15:12.8699165Z     },
+2026-10-18T16:15:12.8699390Z     {
+2026-10-18T16:15:12.8699624Z       "id": "custom-02",
+2026-10-18T16:15:12.8699918Z       "carId": "custom-02",
+2026-10-18T16:15:12.8700426Z       "sha256": "7419803c3e1e404b4556b5b9c4c3284636d5be8f60c69eb49c64a4a4ace53f69",
+2026-10-18T16:15:12.8700890Z       "provider": "user-provided",
+2026-10-18T16:15:12.8701211Z       "file": "custom-racer-02.glb",
+2026-10-18T16:15:12.8701497Z       "bytes": 1381344,
+2026-10-18T16:15:12.8701739Z       "triangles": 18000,
+2026-10-18T16:15:12.8701965Z       "textures": [
+2026-10-18T16:15:12.8702196Z         {
+2026-10-18T16:15:12.8702403Z           "width": 1024,
+2026-10-18T16:15:12.8702626Z           "height": 1024,
+2026-10-18T16:15:12.8702900Z           "mimeType": "image/jpeg"
+2026-10-18T16:15:12.8703149Z         },
+2026-10-18T16:15:12.8703343Z         {
+2026-10-18T16:15:12.8703544Z           "width": 1024,
+2026-10-18T16:15:12.8703777Z           "height": 1024,
+2026-10-18T16:15:12.8704032Z           "mimeType": "image/jpeg"
+2026-10-18T16:15:12.8704270Z         },
+2026-10-18T16:15:12.8704468Z         {
+2026-10-18T16:15:12.8704659Z           "width": 1024,
+2026-10-18T16:15:12.8704899Z           "height": 1024,
+2026-10-18T16:15:12.8705172Z           "mimeType": "image/jpeg"
+2026-10-18T16:15:12.8705416Z         }
+2026-10-18T16:15:12.8705593Z       ],
+2026-10-18T16:15:12.8705772Z       "limits": {
+2026-10-18T16:15:12.8706005Z         "maxTriangles": 18000,
+2026-10-18T16:15:12.8706278Z         "maxBytes": 1572864,
+2026-10-18T16:15:12.8706540Z         "maxTextureSize": 1024
+2026-10-18T16:15:12.8706763Z       },
+2026-10-18T16:15:12.8706953Z       "paintable": false,
+2026-10-18T16:15:12.8707214Z       "wheelMode": "static-source-mesh",
+2026-10-18T16:15:12.8707478Z       "bounds": {
+2026-10-18T16:15:12.8737338Z         "min": [
+2026-10-18T16:15:12.8738047Z           -1.251115083694458,
+2026-10-18T16:15:12.8738593Z           0,
+2026-10-18T16:15:12.8739052Z           -2.4000000953674316
+2026-10-18T16:15:12.8739377Z         ],
+2026-10-18T16:15:12.8739617Z         "max": [
+2026-10-18T16:15:12.8739873Z           1.251115083694458,
+2026-10-18T16:15:12.8740161Z           1.3380991220474243,
+2026-10-18T16:15:12.8740442Z           2.4000000953674316
+2026-10-18T16:15:12.8740702Z         ]
+2026-10-18T16:15:12.8741229Z       },
+2026-10-18T16:15:12.8741486Z       "normalization": {
+2026-10-18T16:15:12.8741761Z         "up": "+Y",
+2026-10-18T16:15:12.8742022Z         "forward": "+Z",
+2026-10-18T16:15:12.8742307Z         "groundY": 0,
+2026-10-18T16:15:12.8742545Z         "centerXZ": [
+2026-10-18T16:15:12.8742807Z           0,
+2026-10-18T16:15:12.8743046Z           0
+2026-10-18T16:15:12.8743283Z         ],
+2026-10-18T16:15:12.8743525Z         "lengthM": 4.8,
+2026-10-18T16:15:12.8743824Z         "runtimeScale": 1
+2026-10-18T16:15:12.8744100Z       }
+2026-10-18T16:15:12.8744334Z     },
+2026-10-18T16:15:12.8744751Z     {
+2026-10-18T16:15:12.8745001Z       "id": "custom-03",
+2026-10-18T16:15:12.8745289Z       "carId": "custom-03",
+2026-10-18T16:15:12.8745858Z       "sha256": "db9e3949d926cec74e1268917567d71848fcdb28e294fbd6120308fa052ecca8",
+2026-10-18T16:15:12.8746465Z       "provider": "user-provided",
+2026-10-18T16:15:12.8746884Z       "file": "custom-racer-03.glb",
+2026-10-18T16:15:12.8747218Z       "bytes": 1173568,
+2026-10-18T16:15:12.8747511Z       "triangles": 18000,
+2026-10-18T16:15:12.8748172Z       "textures": [
+2026-10-18T16:15:12.8748455Z         {
+2026-10-18T16:15:12.8748691Z           "width": 1024,
+2026-10-18T16:15:12.8748955Z           "height": 1024,
+2026-10-18T16:15:12.8749279Z           "mimeType": "image/jpeg"
+2026-10-18T16:15:12.8749574Z         },
+2026-10-18T16:15:12.8749801Z         {
+2026-10-18T16:15:12.8750029Z           "width": 1024,
+2026-10-18T16:15:12.8750330Z           "height": 1024,
+2026-10-18T16:15:12.8750593Z           "mimeType": "image/jpeg"
+2026-10-18T16:15:12.8750872Z         },
+2026-10-18T16:15:12.8751076Z         {
+2026-10-18T16:15:12.8751271Z           "width": 1024,
+2026-10-18T16:15:12.8751520Z           "height": 1024,
+2026-10-18T16:15:12.8751810Z           "mimeType": "image/jpeg"
+2026-10-18T16:15:12.8752050Z         }
+2026-10-18T16:15:12.8752246Z       ],
+2026-10-18T16:15:12.8752449Z       "limits": {
+2026-10-18T16:15:12.8752687Z         "maxTriangles": 18000,
+2026-10-18T16:15:12.8752962Z         "maxBytes": 1572864,
+2026-10-18T16:15:12.8753249Z         "maxTextureSize": 1024
+2026-10-18T16:15:12.8753497Z       },
+2026-10-18T16:15:12.8753694Z       "paintable": false,
+2026-10-18T16:15:12.8753999Z       "wheelMode": "static-source-mesh",
+2026-10-18T16:15:12.8754300Z       "bounds": {
+2026-10-18T16:15:12.8754545Z         "min": [
+2026-10-18T16:15:12.8754755Z           -1.310964584350586,
+2026-10-18T16:15:12.8755010Z           0,
+2026-10-18T16:15:12.8755230Z           -2.4000000953674316
+2026-10-18T16:15:12.8755460Z         ],
+2026-10-18T16:15:12.8755674Z         "max": [
+2026-10-18T16:15:12.8755874Z           1.310964584350586,
+2026-10-18T16:15:12.8756117Z           1.4491381645202637,
+2026-10-18T16:15:12.8756338Z           2.4000000953674316
+2026-10-18T16:15:12.8756568Z         ]
+2026-10-18T16:15:12.8756746Z       },
+2026-10-18T16:15:12.8756965Z       "normalization": {
+2026-10-18T16:15:12.8757193Z         "up": "+Y",
+2026-10-18T16:15:12.8757425Z         "forward": "+Z",
+2026-10-18T16:15:12.8757680Z         "groundY": 0,
+2026-10-18T16:15:12.8758160Z         "centerXZ": [
+2026-10-18T16:15:12.8758369Z           0,
+2026-10-18T16:15:12.8758585Z           0
+2026-10-18T16:15:12.8758763Z         ],
+2026-10-18T16:15:12.8758973Z         "lengthM": 4.8,
+2026-10-18T16:15:12.8759196Z         "runtimeScale": 1
+2026-10-18T16:15:12.8759438Z       }
+2026-10-18T16:15:12.8759617Z     },
+2026-10-18T16:15:12.8759817Z     {
+2026-10-18T16:15:12.8760014Z       "id": "custom-04",
+2026-10-18T16:15:12.8760268Z       "carId": "custom-04",
+2026-10-18T16:15:12.8760726Z       "sha256": "475646dcfcbf3c4fbea5be0f418d98d961b53db1622f516783725b3c65e3c911",
+2026-10-18T16:15:12.8761232Z       "provider": "user-provided",
+2026-10-18T16:15:12.8761550Z       "file": "custom-racer-04.glb",
+2026-10-18T16:15:12.8761842Z       "bytes": 1129904,
+2026-10-18T16:15:12.8762096Z       "triangles": 18000,
+2026-10-18T16:15:12.8762322Z       "textures": [
+2026-10-18T16:15:12.8762552Z         {
+2026-10-18T16:15:12.8762743Z           "width": 1024,
+2026-10-18T16:15:12.8763132Z           "height": 1024,
+2026-10-18T16:15:12.8763422Z           "mimeType": "image/jpeg"
+2026-10-18T16:15:12.8763694Z         },
+2026-10-18T16:15:12.8763870Z         {
+2026-10-18T16:15:12.8764077Z           "width": 1024,
+2026-10-18T16:15:12.8764315Z           "height": 1024,
+2026-10-18T16:15:12.8764607Z           "mimeType": "image/jpeg"
+2026-10-18T16:15:12.8764904Z         },
+2026-10-18T16:15:12.8765130Z         {
+2026-10-18T16:15:12.8765359Z           "width": 1024,
+2026-10-18T16:15:12.8765633Z           "height": 1024,
+2026-10-18T16:15:12.8766094Z           "mimeType": "image/jpeg"
+2026-10-18T16:15:12.8766369Z         }
+2026-10-18T16:15:12.8766569Z       ],
+2026-10-18T16:15:12.8766795Z       "limits": {
+2026-10-18T16:15:12.8767096Z         "maxTriangles": 18000,
+2026-10-18T16:15:12.8767399Z         "maxBytes": 1572864,
+2026-10-18T16:15:12.8767715Z         "maxTextureSize": 1024
+2026-10-18T16:15:12.8768373Z       },
+2026-10-18T16:15:12.8768615Z       "paintable": false,
+2026-10-18T16:15:12.8768949Z       "wheelMode": "static-source-mesh",
+2026-10-18T16:15:12.8769290Z       "bounds": {
+2026-10-18T16:15:12.8769526Z         "min": [
+2026-10-18T16:15:12.8769789Z           -1.3331763744354248,
+2026-10-18T16:15:12.8770077Z           0,
+2026-10-18T16:15:12.8770315Z           -2.4000000953674316
+2026-10-18T16:15:12.8770593Z         ],
+2026-10-18T16:15:12.8770825Z         "max": [
+2026-10-18T16:15:12.8771064Z           1.3331763744354248,
+2026-10-18T16:15:12.8771363Z           1.3121647834777832,
+2026-10-18T16:15:12.8771631Z           2.4000000953674316
+2026-10-18T16:15:12.8771906Z         ]
+2026-10-18T16:15:12.8772130Z       },
+2026-10-18T16:15:12.8772366Z       "normalization": {
+2026-10-18T16:15:12.8772662Z         "up": "+Y",
+2026-10-18T16:15:12.8772918Z         "forward": "+Z",
+2026-10-18T16:15:12.8773181Z         "groundY": 0,
+2026-10-18T16:15:12.8773433Z         "centerXZ": [
+2026-10-18T16:15:12.8773681Z           0,
+2026-10-18T16:15:12.8773903Z           0
+2026-10-18T16:15:12.8774133Z         ],
+2026-10-18T16:15:12.8774396Z         "lengthM": 4.8,
+2026-10-18T16:15:12.8774681Z         "runtimeScale": 1
+2026-10-18T16:15:12.8774939Z       }
+2026-10-18T16:15:12.8775160Z     },
+2026-10-18T16:15:12.8775377Z     {
+2026-10-18T16:15:12.8775590Z       "id": "custom-05",
+2026-10-18T16:15:12.8775884Z       "carId": "custom-05",
+2026-10-18T16:15:12.8776397Z       "sha256": "bc82f0ebb80c246388c5561a1afcc54a648b18106daaeea9e702c5f6a993a323",
+2026-10-18T16:15:12.8776950Z       "provider": "user-provided",
+2026-10-18T16:15:12.8777309Z       "file": "custom-racer-05.glb",
+2026-10-18T16:15:12.8777633Z       "bytes": 1407812,
+2026-10-18T16:15:12.8778168Z       "triangles": 18000,
+2026-10-18T16:15:12.8778436Z       "textures": [
+2026-10-18T16:15:12.8778673Z         {
+2026-10-18T16:15:12.8778897Z           "width": 1024,
+2026-10-18T16:15:12.8779174Z           "height": 1024,
+2026-10-18T16:15:12.8779467Z           "mimeType": "image/jpeg"
+2026-10-18T16:15:12.8779772Z         },
+2026-10-18T16:15:12.8779988Z         {
+2026-10-18T16:15:12.8780220Z           "width": 1024,
+2026-10-18T16:15:12.8780500Z           "height": 1024,
+2026-10-18T16:15:12.8780820Z           "mimeType": "image/jpeg"
+2026-10-18T16:15:12.8781113Z         },
+2026-10-18T16:15:12.8781328Z         {
+2026-10-18T16:15:12.8781561Z           "width": 1024,
+2026-10-18T16:15:12.8781822Z           "height": 1024,
+2026-10-18T16:15:12.8782133Z           "mimeType": "image/jpeg"
+2026-10-18T16:15:12.8782424Z         }
+2026-10-18T16:15:12.8782637Z       ],
+2026-10-18T16:15:12.8782860Z       "limits": {
+2026-10-18T16:15:12.8783146Z         "maxTriangles": 18000,
+2026-10-18T16:15:12.8783447Z         "maxBytes": 1572864,
+2026-10-18T16:15:12.8783745Z         "maxTextureSize": 1024
+2026-10-18T16:15:12.8784044Z       },
+2026-10-18T16:15:12.8784275Z       "paintable": false,
+2026-10-18T16:15:12.8784604Z       "wheelMode": "static-source-mesh",
+2026-10-18T16:15:12.8784945Z       "bounds": {
+2026-10-18T16:15:12.8785183Z         "min": [
+2026-10-18T16:15:12.8785613Z           -1.2511299848556519,
+2026-10-18T16:15:12.8785921Z           0,
+2026-10-18T16:15:12.8786162Z           -2.4000000953674316
+2026-10-18T16:15:12.8786440Z         ],
+2026-10-18T16:15:12.8786661Z         "max": [
+2026-10-18T16:15:12.8786885Z           1.2511299848556519,
+2026-10-18T16:15:12.8787168Z           1.7879513502120972,
+2026-10-18T16:15:12.8787432Z           2.4000000953674316
+2026-10-18T16:15:12.8787699Z         ]
+2026-10-18T16:15:12.8788208Z       },
+2026-10-18T16:15:12.8788427Z       "normalization": {
+2026-10-18T16:15:12.8788706Z         "up": "+Y",
+2026-10-18T16:15:12.8789138Z         "forward": "+Z",
+2026-10-18T16:15:12.8789400Z         "groundY": 0,
+2026-10-18T16:15:12.8789675Z         "centerXZ": [
+2026-10-18T16:15:12.8789915Z           0,
+2026-10-18T16:15:12.8790114Z           0
+2026-10-18T16:15:12.8790329Z         ],
+2026-10-18T16:15:12.8790552Z         "lengthM": 4.8,
+2026-10-18T16:15:12.8790813Z         "runtimeScale": 1
+2026-10-18T16:15:12.8791083Z       }
+2026-10-18T16:15:12.8791311Z     }
+2026-10-18T16:15:12.8791510Z   ],
+2026-10-18T16:15:12.8792037Z   "userCarManifestSha256": "17f63f08818e0a7e7decdccc7f08fb79326c50fd06d61fc49e2fccf7b8f3c558",
+2026-10-18T16:15:12.8792803Z   "buildHash": "c60652cca51624b1efb8fbb4cc183e17a741c89e3e39c313113d7f9e74dab3f1",
+2026-10-18T16:15:12.8793363Z   "sourceRevision": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+2026-10-18T16:15:12.8794011Z   "originalPhysicsSha256": "667b7aae414b9c19822cef59021f2619fa83be837a00c3fd5ed98edb0e425104",
+2026-10-18T16:15:12.8794772Z   "driftEventVehicleSha256": "c99698dd31c5ad2c90720f129616e6b65185875cc4c85cbd9d4c7c54e7c8261f",
+2026-10-18T16:15:12.8795507Z   "originalAiSha256": "2a399dad5831ec9ac8c22b76d837b908ed171f66e7510e5ef80679ef19b78f7e",
+2026-10-18T16:15:12.8796212Z   "generatedAiSha256": "47377c07688e4023d57a8db1167eb3e70fced3b896b5786aca7f86f5ceb805c7",
+2026-10-18T16:15:12.8796944Z   "generatedVehicleSha256": "c99698dd31c5ad2c90720f129616e6b65185875cc4c85cbd9d4c7c54e7c8261f",
+2026-10-18T16:15:12.8797687Z   "generatedTrackSha256": "336c734656afaf5df0c33ec132743d1e8a3023bfee348db528ab050de31f85de",
+2026-10-18T16:15:12.8798470Z   "genuinePhysicalShortcutStages": [
+2026-10-18T16:15:12.8798764Z     "05",
+2026-10-18T16:15:12.8798947Z     "10",
+2026-10-18T16:15:12.8799145Z     "12",
+2026-10-18T16:15:12.8799321Z     "13",
+2026-10-18T16:15:12.8799510Z     "16",
+2026-10-18T16:15:12.8799679Z     "18",
+2026-10-18T16:15:12.8799868Z     "22",
+2026-10-18T16:15:12.8800041Z     "25",
+2026-10-18T16:15:12.8800213Z     "27",
+2026-10-18T16:15:12.8800409Z     "30"
+2026-10-18T16:15:12.8800605Z   ],
+2026-10-18T16:15:12.8801372Z   "trackGeometrySha256": "307e0ecf8a30214b98049576ac445abe1f7b15a81435d34916bf7afaf1ceb421",
+2026-10-18T16:15:12.8802338Z   "itemVisualSourceSha256": "5c0dd3178540d61a58938fb8e9c67f39481c2e0a4fceb6eb51b3a057799e471e",
+2026-10-18T16:15:12.8802870Z   "buildLog": "dist/index.html 12801 KB",
+2026-10-18T16:15:12.8803184Z   "runtimeEntrypoints": [
+2026-10-18T16:15:12.8803817Z     "workspace/source/qq-speed/src/main.js (Three.js racing)",
+2026-10-18T16:15:12.8804606Z     "workspace/source/qq-speed/src/carModel.js (selected model + preserved native effects)",
+2026-10-18T16:15:12.8805364Z     "workspace/source/qq-speed/src/race-car-loader.mjs (six embedded GLBs, lazy serialized decoding)",
+2026-10-18T16:15:12.8806272Z     "workspace/source/qq-speed/src/race-generated-car.mjs (starter materials and wheel pivots)",
+2026-10-18T16:15:12.8806967Z     "workspace/source/qq-speed/src/race-user-car.mjs (baked user models)",
+2026-10-18T16:15:12.8808382Z     "workspace/source/qq-speed/src/race-car-asset-cache.mjs (bounded shared resources and instance disposal)",
+2026-10-18T16:15:12.8809127Z     "workspace/source/qq-speed/src/ai.js (physical PlayerCar rivals)",
+2026-10-18T16:15:12.8809631Z     "workspace/source/qq-speed/src/race-v11-physical-ai.mjs",
+2026-10-18T16:15:12.8810113Z     "workspace/source/qq-speed/src/v11-course-director.mjs",
+2026-10-18T16:15:12.8810605Z     "templates/web-lite/h5-source-mobile-v1/racing/mobile.mjs",
+2026-10-18T16:15:12.8811352Z     "templates/web-lite/h5-source-mobile-v1/racing/garage.mjs",
+2026-10-18T16:15:12.8812098Z     "templates/web-lite/h5-source-mobile-v1/racing/car-thumbnails.mjs",
+2026-10-18T16:15:12.8812605Z     "templates/web-lite/h5-source-mobile-v1/racing/driver.mjs",
+2026-10-18T16:15:12.8813120Z     "templates/web-lite/h5-source-mobile-v1/racing/wheel-steering.mjs",
+2026-10-18T16:15:12.8813646Z     "templates/web-lite/h5-source-mobile-v1/racing/session.mjs",
+2026-10-18T16:15:12.8814128Z     "templates/web-lite/h5-source-mobile-v1/racing/career.mjs",
+2026-10-18T16:15:12.8814766Z     "templates/web-lite/h5-source-mobile-v1/racing/cosmetics.mjs",
+2026-10-18T16:15:12.8815408Z     "templates/web-lite/h5-source-mobile-v1/racing/items.mjs",
+2026-10-18T16:15:12.8816074Z     "templates/web-lite/h5-source-mobile-v1/racing/runtime.mjs",
+2026-10-18T16:15:12.8816577Z     "templates/web-lite/h5-source-mobile-v1/racing/recovery.mjs",
+2026-10-18T16:15:12.8817092Z     "templates/web-lite/h5-source-mobile-v1/racing/road-coach.mjs",
+2026-10-18T16:15:12.8817615Z     "templates/web-lite/h5-source-mobile-v1/racing/corner-speed.mjs",
+2026-10-18T16:15:12.8818509Z     "templates/web-lite/h5-source-mobile-v1/racing/speed-hud.mjs",
+2026-10-18T16:15:12.8819041Z     "templates/web-lite/h5-source-mobile-v1/racing/corner-signs.mjs",
+2026-10-18T16:15:12.8819551Z     "templates/web-lite/h5-source-mobile-v1/racing/track-design.mjs",
+2026-10-18T16:15:12.8820049Z     "templates/web-lite/h5-source-mobile-v1/racing/lane-design.mjs",
+2026-10-18T16:15:12.8820520Z     "templates/web-lite/h5-source-mobile-v1/racing/item-visuals.mjs",
+2026-10-18T16:15:12.8821056Z     "templates/web-lite/h5-source-mobile-v1/racing/shortcut-network.mjs",
+2026-10-18T16:15:12.8821618Z     "templates/web-lite/h5-source-mobile-v1/racing/shortcut-decisions.mjs",
+2026-10-18T16:15:12.8822093Z     "templates/web-lite/h5-source-mobile-v1/fuel.mjs",
+2026-10-18T16:15:12.8822528Z     "templates/web-lite/h5-source-mobile-v1/racing/mobile.css"
+2026-10-18T16:15:12.8823036Z   ],
+2026-10-18T16:15:12.8823373Z   "compatibilityOnly": [
+2026-10-18T16:15:12.8824069Z     "templates/web-lite/h5-source-mobile-v1/racing/joystick.mjs",
+2026-10-18T16:15:12.8826148Z     "workspace/source/qq-speed/src/race-v8-rival-ai.mjs (old on-rail AI adapter)",
+2026-10-18T16:15:12.8827065Z     "workspace/game/main.mjs",
+2026-10-18T16:15:12.8827517Z     "workspace/game/engine.mjs",
+2026-10-18T16:15:12.8828508Z     "workspace/game/themes.mjs (PR10 copies; absent from the new default HTML entry)"
+2026-10-18T16:15:12.8829180Z   ],
+2026-10-18T16:15:12.8829630Z   "trialName": "racing-two-button-c60652cca516.html",
+2026-10-18T16:15:12.8830519Z   "trialSha256": "d246537f3cdba7081350f1a5de3e4956e7a05c50be74659e40f003a5945f44ab",
+2026-10-18T16:15:12.8831282Z   "builtAt": "2026-10-18T16:15:12.864Z",
+2026-10-18T16:15:12.8831731Z   "publishable": false
+2026-10-18T16:15:12.8832075Z }
+2026-10-18T16:15:13.0563138Z ##[group]Run pnpm exec playwright install --with-deps chromium
+2026-10-18T16:15:13.0563926Z [36;1mpnpm exec playwright install --with-deps chromium[0m
+2026-10-18T16:15:13.0627471Z shell: /usr/bin/bash -e {0}
+2026-10-18T16:15:13.0627875Z ##[endgroup]
+2026-10-18T16:15:14.0682963Z Installing dependencies...
+2026-10-18T16:15:14.0769666Z Switching to root user to install dependencies...
+2026-10-18T16:15:14.1773399Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-10-18T16:15:14.2115462Z Hit:2 http://azure.archive.ubuntu.com/ubuntu noble InRelease
+2026-10-18T16:15:14.2118901Z Get:6 https://packages.microsoft.com/ubuntu/24.04/prod noble InRelease [3600 B]
+2026-10-18T16:15:14.2139867Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+2026-10-18T16:15:14.2189311Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+2026-10-18T16:15:14.2210756Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+2026-10-18T16:15:14.3479514Z Get:7 https://packages.microsoft.com/ubuntu/24.04/prod noble/main arm64 Packages [557 kB]
+2026-10-18T16:15:14.3610314Z Get:8 https://packages.microsoft.com/ubuntu/24.04/prod noble/main amd64 Packages [618 kB]
+2026-10-18T16:15:14.3658156Z Get:9 https://packages.microsoft.com/ubuntu/24.04/prod noble/main armhf Packages [12.4 kB]
+2026-10-18T16:15:14.4024497Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1397 kB]
+2026-10-18T16:15:14.4117335Z Get:11 http://azure.archive.ubuntu.com/ubuntu noble-updates/main Translation-en [308 kB]
+2026-10-18T16:15:14.4130166Z Get:12 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [1704 kB]
+2026-10-18T16:15:14.4228892Z Get:13 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe Translation-en [342 kB]
+2026-10-18T16:15:14.4236256Z Get:14 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Packages [1805 kB]
+2026-10-18T16:15:14.4331572Z Get:15 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted Translation-en [411 kB]
+2026-10-18T16:15:14.5121995Z Get:16 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 Packages [1144 kB]
+2026-10-18T16:15:14.5182994Z Get:17 http://azure.archive.ubuntu.com/ubuntu noble-security/main Translation-en [231 kB]
+2026-10-18T16:15:14.5201220Z Get:18 http://azure.archive.ubuntu.com/ubuntu noble-security/universe amd64 Packages [1222 kB]
+2026-10-18T16:15:14.5262610Z Get:19 http://azure.archive.ubuntu.com/ubuntu noble-security/universe Translation-en [246 kB]
+2026-10-18T16:15:14.5719722Z Get:20 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [1713 kB]
+2026-10-18T16:15:14.5805971Z Get:21 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted Translation-en [392 kB]
+2026-10-18T16:15:18.0432707Z Fetched 12.5 MB in 1s (9682 kB/s)
+2026-10-18T16:15:19.1177420Z Reading package lists...
+2026-10-18T16:15:19.1429860Z Reading package lists...
+2026-10-18T16:15:19.4061003Z Building dependency tree...
+2026-10-18T16:15:19.4068984Z Reading state information...
+2026-10-18T16:15:19.6342881Z libasound2t64 is already the newest version (1.2.11-1ubuntu0.3).
+2026-10-18T16:15:19.6343850Z libasound2t64 set to manually installed.
+2026-10-18T16:15:19.6344886Z libatk-bridge2.0-0t64 is already the newest version (2.52.0-1build1).
+2026-10-18T16:15:19.6345765Z libatk-bridge2.0-0t64 set to manually installed.
+2026-10-18T16:15:19.6346665Z libatk1.0-0t64 is already the newest version (2.52.0-1build1).
+2026-10-18T16:15:19.6347368Z libatk1.0-0t64 set to manually installed.
+2026-10-18T16:15:19.6348407Z libatspi2.0-0t64 is already the newest version (2.52.0-1build1).
+2026-10-18T16:15:19.6349123Z libatspi2.0-0t64 set to manually installed.
+2026-10-18T16:15:19.6349827Z libcairo2 is already the newest version (1.18.0-3build1).
+2026-10-18T16:15:19.6350310Z libcairo2 set to manually installed.
+2026-10-18T16:15:19.6350749Z libcups2t64 is already the newest version (2.4.7-1.2ubuntu7.14).
+2026-10-18T16:15:19.6351592Z libcups2t64 set to manually installed.
+2026-10-18T16:15:19.6352032Z libdbus-1-3 is already the newest version (1.14.10-4ubuntu4.1).
+2026-10-18T16:15:19.6352446Z libdbus-1-3 set to manually installed.
+2026-10-18T16:15:19.6353174Z libdrm2 is already the newest version (2.4.125-1ubuntu0.1~24.04.2).
+2026-10-18T16:15:19.6353596Z libdrm2 set to manually installed.
+2026-10-18T16:15:19.6353996Z libgbm1 is already the newest version (25.2.8-0ubuntu0.24.04.4).
+2026-10-18T16:15:19.6354383Z libgbm1 set to manually installed.
+2026-10-18T16:15:19.6354786Z libglib2.0-0t64 is already the newest version (2.80.0-6ubuntu3.9).
+2026-10-18T16:15:19.6355213Z libglib2.0-0t64 set to manually installed.
+2026-10-18T16:15:19.6355637Z libnspr4 is already the newest version (2:4.35-1.1build1).
+2026-10-18T16:15:19.6356260Z libnspr4 set to manually installed.
+2026-10-18T16:15:19.6356666Z libnss3 is already the newest version (2:3.98-1ubuntu0.2).
+2026-10-18T16:15:19.6357041Z libnss3 set to manually installed.
+2026-10-18T16:15:19.6357541Z libpango-1.0-0 is already the newest version (1.52.1+ds-1build1).
+2026-10-18T16:15:19.6358493Z libpango-1.0-0 set to manually installed.
+2026-10-18T16:15:19.6359231Z libx11-6 is already the newest version (2:1.8.7-1ubuntu0.1).
+2026-10-18T16:15:19.6359928Z libx11-6 set to manually installed.
+2026-10-18T16:15:19.6360615Z libxcb1 is already the newest version (1.15-1ubuntu2).
+2026-10-18T16:15:19.6361157Z libxcb1 set to manually installed.
+2026-10-18T16:15:19.6361606Z libxcomposite1 is already the newest version (1:0.4.5-1build3).
+2026-10-18T16:15:19.6362044Z libxcomposite1 set to manually installed.
+2026-10-18T16:15:19.6362474Z libxdamage1 is already the newest version (1:1.1.6-1build1).
+2026-10-18T16:15:19.6362873Z libxdamage1 set to manually installed.
+2026-10-18T16:15:19.6363557Z libxext6 is already the newest version (2:1.3.4-1build2).
+2026-10-18T16:15:19.6364254Z libxext6 set to manually installed.
+2026-10-18T16:15:19.6364991Z libxfixes3 is already the newest version (1:6.0.0-2build1).
+2026-10-18T16:15:19.6365723Z libxfixes3 set to manually installed.
+2026-10-18T16:15:19.6366157Z libxkbcommon0 is already the newest version (1.6.0-1build1).
+2026-10-18T16:15:19.6366582Z libxkbcommon0 set to manually installed.
+2026-10-18T16:15:19.6367010Z libxrandr2 is already the newest version (2:1.5.2-2build1).
+2026-10-18T16:15:19.6367952Z libxrandr2 set to manually installed.
+2026-10-18T16:15:19.6368756Z xvfb is already the newest version (2:21.1.12-1ubuntu1.8).
+2026-10-18T16:15:19.6369811Z fonts-noto-color-emoji is already the newest version (2.047-0ubuntu0.24.04.1).
+2026-10-18T16:15:19.6370913Z libfontconfig1 is already the newest version (2.15.0-1.1ubuntu2).
+2026-10-18T16:15:19.6371700Z libfontconfig1 set to manually installed.
+2026-10-18T16:15:19.6372547Z libfreetype6 is already the newest version (2.13.2+dfsg-1ubuntu0.2).
+2026-10-18T16:15:19.6373344Z libfreetype6 set to manually installed.
+2026-10-18T16:15:19.6374102Z fonts-liberation is already the newest version (1:2.1.5-3).
+2026-10-18T16:15:19.6374860Z fonts-liberation set to manually installed.
+2026-10-18T16:15:19.6375592Z The following additional packages will be installed:
+2026-10-18T16:15:19.6376237Z   xfonts-encodings xfonts-utils
+2026-10-18T16:15:19.6376749Z Recommended packages:
+2026-10-18T16:15:19.6377247Z   fonts-ipafont-mincho fonts-tlwg-loma
+2026-10-18T16:15:19.6588609Z The following NEW packages will be installed:
+2026-10-18T16:15:19.6589724Z   fonts-freefont-ttf fonts-ipafont-gothic fonts-tlwg-loma-otf fonts-unifont
+2026-10-18T16:15:19.6599430Z   fonts-wqy-zenhei xfonts-cyrillic xfonts-encodings xfonts-scalable
+2026-10-18T16:15:19.6600121Z   xfonts-utils
+2026-10-18T16:15:19.6839356Z 0 upgraded, 9 newly installed, 0 to remove and 44 not upgraded.
+2026-10-18T16:15:19.6840153Z Need to get 21.1 MB of archives.
+2026-10-18T16:15:19.6840977Z After this operation, 79.5 MB of additional disk space will be used.
+2026-10-18T16:15:19.6841893Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-10-18T16:15:19.7847245Z Get:2 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-ipafont-gothic all 00303-21ubuntu1 [3513 kB]
+2026-10-18T16:15:20.3754373Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 fonts-freefont-ttf all 20211204+svn4273-2 [5641 kB]
+2026-10-18T16:15:20.6091137Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-tlwg-loma-otf all 1:0.7.3-1 [107 kB]
+2026-10-18T16:15:20.6932988Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-unifont all 1:15.1.01-1build1 [2993 kB]
+2026-10-18T16:15:20.8515762Z Get:6 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-wqy-zenhei all 0.9.45-8 [7472 kB]
+2026-10-18T16:15:21.1291953Z Get:7 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 xfonts-encodings all 1:1.0.5-0ubuntu2 [578 kB]
+2026-10-18T16:15:21.2249941Z Get:8 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 xfonts-utils amd64 1:7.7+6build3 [94.4 kB]
+2026-10-18T16:15:21.3086738Z Get:9 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 xfonts-cyrillic all 1:1.0.5+nmu1 [384 kB]
+2026-10-18T16:15:21.3997623Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 xfonts-scalable all 1:1.0.3-1.3 [304 kB]
+2026-10-18T16:15:21.6862664Z Fetched 21.1 MB in 2s (12.2 MB/s)
+2026-10-18T16:15:21.7107357Z Selecting previously unselected package fonts-ipafont-gothic.
+2026-10-18T16:15:21.7392810Z (Reading database ... 
+2026-10-18T16:15:21.7393189Z (Reading database ... 5%
+2026-10-18T16:15:21.7393773Z (Reading database ... 10%
+2026-10-18T16:15:21.7394440Z (Reading database ... 15%
+2026-10-18T16:15:21.7395053Z (Reading database ... 20%
+2026-10-18T16:15:21.7395893Z (Reading database ... 25%
+2026-10-18T16:15:21.7397064Z (Reading database ... 30%
+2026-10-18T16:15:21.7397528Z (Reading database ... 35%
+2026-10-18T16:15:21.7398728Z (Reading database ... 40%
+2026-10-18T16:15:21.7399042Z (Reading database ... 45%
+2026-10-18T16:15:21.7399343Z (Reading database ... 50%
+2026-10-18T16:15:21.7438850Z (Reading database ... 55%
+2026-10-18T16:15:21.8544955Z (Reading database ... 60%
+2026-10-18T16:15:22.0470760Z (Reading database ... 65%
+2026-10-18T16:15:22.2516218Z (Reading database ... 70%
+2026-10-18T16:15:22.4534014Z (Reading database ... 75%
+2026-10-18T16:15:22.5986364Z (Reading database ... 80%
+2026-10-18T16:15:22.8450941Z (Reading database ... 85%
+2026-10-18T16:15:23.0043355Z (Reading database ... 90%
+2026-10-18T16:15:23.2022979Z (Reading database ... 95%
+2026-10-18T16:15:23.2023411Z (Reading database ... 100%
+2026-10-18T16:15:23.2023994Z (Reading database ... 203540 files and directories currently installed.)
+2026-10-18T16:15:23.2071441Z Preparing to unpack .../0-fonts-ipafont-gothic_00303-21ubuntu1_all.deb ...
+2026-10-18T16:15:23.2168688Z Unpacking fonts-ipafont-gothic (00303-21ubuntu1) ...
+2026-10-18T16:15:23.4555936Z Selecting previously unselected package fonts-freefont-ttf.
+2026-10-18T16:15:23.4686944Z Preparing to unpack .../1-fonts-freefont-ttf_20211204+svn4273-2_all.deb ...
+2026-10-18T16:15:23.4695731Z Unpacking fonts-freefont-ttf (20211204+svn4273-2) ...
+2026-10-18T16:15:23.5531355Z Selecting previously unselected package fonts-tlwg-loma-otf.
+2026-10-18T16:15:23.5665051Z Preparing to unpack .../2-fonts-tlwg-loma-otf_1%3a0.7.3-1_all.deb ...
+2026-10-18T16:15:23.5672250Z Unpacking fonts-tlwg-loma-otf (1:0.7.3-1) ...
+2026-10-18T16:15:23.5890824Z Selecting previously unselected package fonts-unifont.
+2026-10-18T16:15:23.6022569Z Preparing to unpack .../3-fonts-unifont_1%3a15.1.01-1build1_all.deb ...
+2026-10-18T16:15:23.6030277Z Unpacking fonts-unifont (1:15.1.01-1build1) ...
+2026-10-18T16:15:23.7081812Z Selecting previously unselected package fonts-wqy-zenhei.
+2026-10-18T16:15:23.7211825Z Preparing to unpack .../4-fonts-wqy-zenhei_0.9.45-8_all.deb ...
+2026-10-18T16:15:23.7316638Z Unpacking fonts-wqy-zenhei (0.9.45-8) ...
+2026-10-18T16:15:24.2008936Z Selecting previously unselected package xfonts-encodings.
+2026-10-18T16:15:24.2143996Z Preparing to unpack .../5-xfonts-encodings_1%3a1.0.5-0ubuntu2_all.deb ...
+2026-10-18T16:15:24.2160837Z Unpacking xfonts-encodings (1:1.0.5-0ubuntu2) ...
+2026-10-18T16:15:24.2513002Z Selecting previously unselected package xfonts-utils.
+2026-10-18T16:15:24.2646637Z Preparing to unpack .../6-xfonts-utils_1%3a7.7+6build3_amd64.deb ...
+2026-10-18T16:15:24.2653754Z Unpacking xfonts-utils (1:7.7+6build3) ...
+2026-10-18T16:15:24.3022803Z Selecting previously unselected package xfonts-cyrillic.
+2026-10-18T16:15:24.3156531Z Preparing to unpack .../7-xfonts-cyrillic_1%3a1.0.5+nmu1_all.deb ...
+2026-10-18T16:15:24.3163512Z Unpacking xfonts-cyrillic (1:1.0.5+nmu1) ...
+2026-10-18T16:15:24.3542012Z Selecting previously unselected package xfonts-scalable.
+2026-10-18T16:15:24.3676497Z Preparing to unpack .../8-xfonts-scalable_1%3a1.0.3-1.3_all.deb ...
+2026-10-18T16:15:24.3684454Z Unpacking xfonts-scalable (1:1.0.3-1.3) ...
+2026-10-18T16:15:24.4127374Z Setting up fonts-wqy-zenhei (0.9.45-8) ...
+2026-10-18T16:15:24.4252653Z Setting up fonts-freefont-ttf (20211204+svn4273-2) ...
+2026-10-18T16:15:24.4271948Z Setting up fonts-tlwg-loma-otf (1:0.7.3-1) ...
+2026-10-18T16:15:24.4291368Z Setting up xfonts-encodings (1:1.0.5-0ubuntu2) ...
+2026-10-18T16:15:24.4309498Z Setting up fonts-ipafont-gothic (00303-21ubuntu1) ...
+2026-10-18T16:15:24.4376352Z update-alternatives: using /usr/share/fonts/opentype/ipafont-gothic/ipag.ttf to provide /usr/share/fonts/truetype/fonts-japanese-gothic.ttf (fonts-japanese-gothic.ttf) in auto mode
+2026-10-18T16:15:24.4392709Z Setting up fonts-unifont (1:15.1.01-1build1) ...
+2026-10-18T16:15:24.4409888Z Setting up xfonts-utils (1:7.7+6build3) ...
+2026-10-18T16:15:24.4452121Z Setting up xfonts-cyrillic (1:1.0.5+nmu1) ...
+2026-10-18T16:15:24.4753322Z Setting up xfonts-scalable (1:1.0.3-1.3) ...
+2026-10-18T16:15:24.5040680Z Processing triggers for man-db (2.12.0-4build2) ...
+2026-10-18T16:15:24.5061905Z Not building database; man-db/auto-update is not 'true'.
+2026-10-18T16:15:24.5076494Z Processing triggers for fontconfig (2.15.0-1.1ubuntu2) ...
+2026-10-18T16:15:25.2459867Z 
+2026-10-18T16:15:25.2460838Z Running kernel seems to be up-to-date.
+2026-10-18T16:15:25.2461170Z 
+2026-10-18T16:15:25.2461400Z No services need to be restarted.
+2026-10-18T16:15:25.2461656Z 
+2026-10-18T16:15:25.2461847Z No containers need to be restarted.
+2026-10-18T16:15:25.2462090Z 
+2026-10-18T16:15:25.2462331Z No user sessions are running outdated binaries.
+2026-10-18T16:15:25.2462612Z 
+2026-10-18T16:15:25.2462995Z No VM guests are running outdated hypervisor (qemu) binaries on this host.
+2026-10-18T16:15:26.4027455Z Downloading Chrome for Testing 151.0.7922.34 (playwright chromium v1234) from https://cdn.playwright.dev/builds/cft/151.0.7922.34/linux64/chrome-linux64.zip
+2026-10-18T16:15:27.4059635Z |                                                                                |   0% of 184.3 MiB
+2026-10-18T16:15:27.6513664Z |■■■■■■■■                                                                        |  10% of 184.3 MiB
+2026-10-18T16:15:27.7527685Z |■■■■■■■■■■■■■■■■                                                                |  20% of 184.3 MiB
+2026-10-18T16:15:27.8433525Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 184.3 MiB
+2026-10-18T16:15:27.9296948Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 184.3 MiB
+2026-10-18T16:15:28.0028874Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 184.3 MiB
+2026-10-18T16:15:28.0695611Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 184.3 MiB
+2026-10-18T16:15:28.1544828Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 184.3 MiB
+2026-10-18T16:15:28.2336804Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 184.3 MiB
+2026-10-18T16:15:28.3258136Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 184.3 MiB
+2026-10-18T16:15:28.3939336Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 184.3 MiB
+2026-10-18T16:15:31.5884062Z Chrome for Testing 151.0.7922.34 (playwright chromium v1234) downloaded to /home/runner/.cache/ms-playwright/chromium-1234
+2026-10-18T16:15:31.5888631Z Downloading FFmpeg (playwright ffmpeg v1011) from https://cdn.playwright.dev/dbazure/download/playwright/builds/ffmpeg/1011/ffmpeg-linux.zip
+2026-10-18T16:15:32.5657546Z |                                                                                |   0% of 2.3 MiB
+2026-10-18T16:15:32.5691469Z |■■■■■■■■                                                                        |  10% of 2.3 MiB
+2026-10-18T16:15:32.5718495Z |■■■■■■■■■■■■■■■■                                                                |  20% of 2.3 MiB
+2026-10-18T16:15:32.5747093Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 2.3 MiB
+2026-10-18T16:15:32.5762170Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 2.3 MiB
+2026-10-18T16:15:32.5791507Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 2.3 MiB
+2026-10-18T16:15:32.5805434Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 2.3 MiB
+2026-10-18T16:15:32.5821068Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 2.3 MiB
+2026-10-18T16:15:32.5836981Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 2.3 MiB
+2026-10-18T16:15:32.5851073Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 2.3 MiB
+2026-10-18T16:15:32.5862609Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 2.3 MiB
+2026-10-18T16:15:32.6504433Z FFmpeg (playwright ffmpeg v1011) downloaded to /home/runner/.cache/ms-playwright/ffmpeg-1011
+2026-10-18T16:15:32.6508960Z Downloading Chrome Headless Shell 151.0.7922.34 (playwright chromium-headless-shell v1234) from https://cdn.playwright.dev/builds/cft/151.0.7922.34/linux64/chrome-headless-shell-linux64.zip
+2026-10-18T16:15:33.6496914Z |                                                                                |   0% of 114.7 MiB
+2026-10-18T16:15:33.7663447Z |■■■■■■■■                                                                        |  10% of 114.7 MiB
+2026-10-18T16:15:33.8585954Z |■■■■■■■■■■■■■■■■                                                                |  20% of 114.7 MiB
+2026-10-18T16:15:33.9065138Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 114.7 MiB
+2026-10-18T16:15:33.9612087Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 114.7 MiB
+2026-10-18T16:15:34.0321794Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 114.7 MiB
+2026-10-18T16:15:34.0713040Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 114.7 MiB
+2026-10-18T16:15:34.1144236Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 114.7 MiB
+2026-10-18T16:15:34.1739496Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 114.7 MiB
+2026-10-18T16:15:34.2155571Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 114.7 MiB
+2026-10-18T16:15:34.2784542Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 114.7 MiB
+2026-10-18T16:15:36.5303087Z Chrome Headless Shell 151.0.7922.34 (playwright chromium-headless-shell v1234) downloaded to /home/runner/.cache/ms-playwright/chromium_headless_shell-1234
+2026-10-18T16:15:36.5682631Z ##[group]Run node tools/lean-pilot/racing-context-isolation.mjs
+2026-10-18T16:15:36.5683150Z [36;1mnode tools/lean-pilot/racing-context-isolation.mjs[0m
+2026-10-18T16:15:36.5745449Z shell: /usr/bin/bash -e {0}
+2026-10-18T16:15:36.5745714Z ##[endgroup]
+2026-10-18T16:16:10.5692393Z CONTEXT_PROBE={"phase":"original","drainMs":0,"attributes":{"alpha":true,"antialias":true,"depth":true,"desynchronized":false,"failIfMajorPerformanceCaveat":false,"powerPreference":"high-performance","premultipliedAlpha":true,"preserveDrawingBuffer":false,"stencil":false,"xrCompatible":false},"target":null,"programs":52,"textures":51,"frames":1,"mean":2161.599999999995,"state":"countdown","quality":"mid","composer":true,"calls":1,"triangles":1}
+2026-10-18T16:16:16.5913054Z CONTEXT_PROBE={"phase":"no-hud","drainMs":0,"attributes":{"alpha":true,"antialias":true,"depth":true,"desynchronized":false,"failIfMajorPerformanceCaveat":false,"powerPreference":"high-performance","premultipliedAlpha":true,"preserveDrawingBuffer":false,"stencil":false,"xrCompatible":false},"target":null,"programs":57,"textures":61,"frames":4,"mean":1407.3250000000007,"state":"countdown","quality":"mid","composer":true,"calls":1,"triangles":1}
+2026-10-18T16:16:22.6035845Z CONTEXT_PROBE={"phase":"empty-after-finish","drainMs":0,"attributes":{"alpha":true,"antialias":true,"depth":true,"desynchronized":false,"failIfMajorPerformanceCaveat":false,"powerPreference":"high-performance","premultipliedAlpha":true,"preserveDrawingBuffer":false,"stencil":false,"xrCompatible":false},"target":null,"programs":57,"textures":61,"frames":22,"mean":272.78636363636343,"state":"countdown","quality":"mid","composer":true,"calls":0,"triangles":0}
+2026-10-18T16:16:28.6445107Z CONTEXT_PROBE={"phase":"new-renderer-empty","drainMs":0,"attributes":{"alpha":true,"antialias":true,"depth":true,"desynchronized":false,"failIfMajorPerformanceCaveat":false,"powerPreference":"high-performance","premultipliedAlpha":true,"preserveDrawingBuffer":false,"stencil":false,"xrCompatible":false},"target":null,"programs":57,"textures":61,"frames":362,"mean":16.543646408839788,"state":"race","quality":"mid","composer":true,"calls":0,"triangles":0}
+2026-10-18T16:16:34.6501633Z CONTEXT_PROBE={"phase":"restored","drainMs":0,"attributes":{"alpha":true,"antialias":true,"depth":true,"desynchronized":false,"failIfMajorPerformanceCaveat":false,"powerPreference":"high-performance","premultipliedAlpha":true,"preserveDrawingBuffer":false,"stencil":false,"xrCompatible":false},"target":null,"programs":57,"textures":61,"frames":6,"mean":993.8499999999985,"state":"race","quality":"mid","composer":true,"calls":1,"triangles":1}
+2026-10-18T16:16:36.7223719Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-10-18T16:16:36.7224159Z with:
+2026-10-18T16:16:36.7224469Z   name: racing-cold-context-99af424cf3584adc4f13fa607a837d56c1028c65
+2026-10-18T16:16:36.7225158Z   path: runs/h5-qq-mobile-20261013/artifacts/cold-start-context/*
+runs/h5-qq-mobile-20261013/artifacts/build-racing.json
+
+2026-10-18T16:16:36.7225730Z   retention-days: 7
+2026-10-18T16:16:36.7225955Z   if-no-files-found: warn
+2026-10-18T16:16:36.7226197Z   compression-level: 6
+2026-10-18T16:16:36.7226429Z   overwrite: false
+2026-10-18T16:16:36.7226644Z   include-hidden-files: false
+2026-10-18T16:16:36.7226884Z ##[endgroup]
+2026-10-18T16:16:36.8980232Z (node:3297) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-18T16:16:36.8981117Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-18T16:16:36.9055153Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-10-18T16:16:36.9058503Z The least common ancestor is /home/runner/work/ai-mini-game-factory/ai-mini-game-factory/runs/h5-qq-mobile-20261013/artifacts. This will be the root directory of the artifact
+2026-10-18T16:16:36.9060156Z With the provided path, there will be 2 files uploaded
+2026-10-18T16:16:36.9068552Z Artifact name is valid!
+2026-10-18T16:16:36.9069411Z Root directory input is valid!
+2026-10-18T16:16:37.1247238Z Beginning upload of artifact content to blob storage
+2026-10-18T16:16:37.1469538Z (node:3297) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-18T16:16:37.1978405Z Uploaded bytes 3359
+2026-10-18T16:16:37.2154895Z Finished uploading artifact content to blob storage!
+2026-10-18T16:16:37.2156225Z SHA256 digest of uploaded artifact zip is dd0698bdca6b7fd59d37967c50dbc0f1db342734c95e8a45ecc77788305f6f23
+2026-10-18T16:16:37.2157614Z Finalizing artifact upload
+2026-10-18T16:16:37.4293262Z Artifact racing-cold-context-99af424cf3584adc4f13fa607a837d56c1028c65.zip successfully finalized. Artifact ID 12141889396
+2026-10-18T16:16:37.4295011Z Artifact racing-cold-context-99af424cf3584adc4f13fa607a837d56c1028c65 has been successfully uploaded! Final size is 3359 bytes. Artifact ID is 12141889396
+2026-10-18T16:16:37.4300431Z Artifact download URL: https://github.com/23chen990/ai-mini-game-factory/actions/runs/39144127699/artifacts/12141889396
+2026-10-18T16:16:37.4488664Z Post job cleanup.
+2026-10-18T16:16:37.5774918Z (node:3310) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-18T16:16:37.5776068Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-18T16:16:37.5993383Z Post job cleanup.
+2026-10-18T16:16:37.6978605Z [command]/usr/bin/git version
+2026-10-18T16:16:37.7031272Z git version 2.55.0
+2026-10-18T16:16:37.7081208Z Temporarily overriding HOME='/home/runner/work/_temp/1424f4f4-5465-4a6a-9b41-23bf1d2403f9' before making global git config changes
+2026-10-18T16:16:37.7083099Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-18T16:16:37.7090622Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/ai-mini-game-factory/ai-mini-game-factory
+2026-10-18T16:16:37.7144116Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-18T16:16:37.7188197Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-18T16:16:37.7453687Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-18T16:16:37.7502420Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-18T16:16:37.7914704Z Cleaning up orphan processes
+2026-10-18T16:16:37.8395329Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683, actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

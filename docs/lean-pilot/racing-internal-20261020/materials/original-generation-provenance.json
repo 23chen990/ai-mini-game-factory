@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "asset": "cover-illustration-draft.png",
+  "tool": "built-in image_gen.imagegen",
+  "createdOn": "2026-10-20",
+  "status": "DRAFT_NOT_APPROVED_FOR_SUBMISSION",
+  "transparentBackground": false,
+  "sourcePath": "/Users/kker/.codex/generated_images/01a157e1-82fa-7283-8e0d-39ab9fc0aeb5/call_464cdc2e1deb46c38923cc00e8f12dae.png",
+  "prompt": "Create a finished 16:9 illustrated promotional cover for an original mobile arcade racing game titled exactly 极速飞驰. This is clearly a designed illustration, not a screenshot or a claim of in-game rendering quality. One original unbranded compact graphite-and-pearl track coupe, three-quarter rear angle on a sweeping elevated asphalt bend, a second smaller opponent ahead, cool blue-grey city/harbor silhouettes, warm pale afternoon sky, tasteful red-and-white curbs. The coupe must NOT resemble an identifiable real car brand; no badges, manufacturer emblems, real license plates, or borrowed racing franchise designs. Composed, crisp, restrained game key art: dynamic diagonal road, realistic material cues but painterly graphic treatment, no excessive neon, bloom, lens flares or particles. Leave the upper left visually quiet and put large clean legible white Chinese title 极速飞驰 there. This exact title is the ONLY text. No slogans, claims, download buttons, UI, ratings, watermarks, icons, borders or collage. Full opaque rectangular background, no transparency, no rounded corners. Commercial marketing draft for rights and platform review.",
+  "review": "Title legible; no visible brand badge. Rendering is more photographic than requested and is not the in-game model/environment: retain as draft, not a screenshot or quality claim. Product-match and rights review unresolved.",
+  "icon": {"source": "icon.svg", "creator": "repository-scoped Builder/Fixer", "method": "original SVG geometry, rasterized with Playwright", "output": "icon-512.png", "transparencyRequired": false}
+}

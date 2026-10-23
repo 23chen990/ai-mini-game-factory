@@ -1,0 +1,44 @@
+{
+  "status": "PASS",
+  "scope": "Final-build binding only; existing cases rerun without source changes or new scenarios.",
+  "buildHash": "3d891ab2cef02f7a0e760038413bd2e7a53a36284fd866c23da61d446c5011d3",
+  "inputHash": "c5ca3d7e05988b16dbdcf652248f78cc5f007b00524ab2d41cfe7924d29484b3",
+  "sourceUnchanged": true,
+  "ai": {
+    "tests": 35,
+    "pass": 35,
+    "fail": 0,
+    "skip": 0,
+    "nativeScenarios": 41
+  },
+  "manual": {
+    "checks": 12,
+    "pass": 12,
+    "fail": 0
+  },
+  "naturalInputsOnly": false,
+  "rendered": false,
+  "naturalPerceptualGate": "Not advanced by this deterministic rerun; remains owned by parent browser QA.",
+  "artifacts": [
+    {
+      "path": "/workspace/scratch/74be31e29a0f/ai-diagnostics/final-native-ai-gate-3d891ab2cef0.json",
+      "sha256": "78014fb6c3b044112fa60c03a1e887148455adeae7eead5a5f75f9f24252a634"
+    },
+    {
+      "path": "/workspace/scratch/74be31e29a0f/ai-diagnostics/final-native-ai-gate-3d891ab2cef0.tap",
+      "sha256": "9458a609e8f33bf4536eee6c483c097c0d70f85df98e62295d3c086439da59ac"
+    },
+    {
+      "path": "/workspace/scratch/74be31e29a0f/racing-unified/runs/h5-qq-mobile-20261013/artifacts/racing-v115-native-player/native-player-physics-3d891ab2cef0.json",
+      "sha256": "3f2b0b113d374c37c40ed0d4cd21a752bf55d297294f8c79bf177989b398a28d"
+    }
+  ],
+  "preservedPreviousBuild": {
+    "buildHash": "c544de7f8ccacd743bf4f044d5cc4907b8612b2789f6aa23918c72dae9a44297",
+    "artifacts": [
+      "/workspace/scratch/74be31e29a0f/ai-diagnostics/final-native-ai-gate-c544de7f8cca.json",
+      "/workspace/scratch/74be31e29a0f/ai-diagnostics/final-native-ai-gate-c544de7f8cca.tap",
+      "/workspace/scratch/74be31e29a0f/racing-unified/runs/h5-qq-mobile-20261013/artifacts/racing-v115-native-player/native-player-physics-c544de7f8cca.json"
+    ]
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "task": "platform-license",
+  "findings": [
+    {
+      "id": "TAPTAP_FAN_GAME_POLICY",
+      "severity": "P0",
+      "observation": "Observed: the target source self-identifies as a fan recreation (index.html title/text: “同人还原” and “非官方同人作品”), while the pinned upstream README identifies the source game as QQ 飞车 and says tracks follow official-map styles. TapTap's current MiniGame review standard expressly says fan-game derivative works are not collected (§1.6.4), and disallows fan/other-game materials (§6.3.1). This is a direct policy conflict for the candidate as currently represented, not a legal finding or prediction of a particular review decision. Hypothesis/unknown: whether a materially originalized game retaining only generic racing mechanics would pass review must be assessed separately.",
+      "evidence": [
+        "Observed local source: runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/index.html:6, 224, 254.",
+        "Pinned upstream README (revision 54adc1fb64155f9dd7c1c90ecae7b8185ac540b8) states QQ 飞车 recreation and tracks designed in official-map styles: [README](https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/README.md) (consulted 2026-10-20).",
+        "TapTap official [MiniGame review standards](https://developer.taptap.cn/minigameapidoc/tap-operation/operation-standards/review-standards/) §§1.6.4, 6.2, 6.3.1 (consulted 2026-10-20)."
+      ],
+      "recommendation": "Do not submit this fan-labelled/content-preserving candidate. For a publishable path, remove the franchise name, fan-work framing, franchise-derived maps/assets/audio/expression and source-derived expressive material; create original content, then reassess rights and policy. Generic racing mechanics alone do not establish infringement, but the present self-description is sufficient to trigger the explicit platform exclusion."
+    },
+    {
+      "id": "H5_ORIENTATION_ENUM",
+      "severity": "P1",
+      "observation": "Observed: root's read-only check of taptap-cli 2026.10.19 `upload-h5-package --help` reports `--screen-orientation int`: 0=landscape, 1=portrait. The run requests landscape, but `workspace/game/themes.mjs` gates readiness on `config.screenOrientation === 1`. Thus the code's current accepted value is portrait; if this config field represents the H5 upload enum, the landscape check is mismapped. Actual platform metadata is unknown: `game/platform.json` remains PENDING with screenOrientation null. Do not infer this numeric H5 CLI field from the separate standard MiniGame `game.json.deviceOrientation` string.",
+      "evidence": [
+        "Root-verified CLI 2026.10.19 output saved at /tmp/taptap-h5-upload-final.txt: `0=landscape, 1=portrait`; command was read-only and no upload was performed.",
+        "Observed local target: runs/h5-qq-mobile-20261013/input/request.json declares primaryOrientation=landscape; runs/h5-qq-mobile-20261013/workspace/game/themes.mjs rejects values other than 1; workspace/game/platform.json has status PENDING and screenOrientation null.",
+        "TapTap's standard MiniGame orientation string is separately documented as `game.json.deviceOrientation`, e.g. `portrait`: [MiniGame overview](https://developer.taptap.cn/minigameapidoc/dev/tutorial/overview/) (consulted 2026-10-20). This is not evidence for the H5 CLI numeric enum."
+      ],
+      "recommendation": "At the H5 upload boundary, map landscape to 0 and portrait to 1. If the internal field uses a different representation, add one explicit conversion there and keep the adapter's value in that representation. Confirm with a real H5 dry-run/read-back only after an authorized target app is identified; do not fabricate or fill the currently null platform metadata."
+    },
+    {
+      "id": "H5_API_AND_PACKAGE_CONTRACT",
+      "severity": "P1",
+      "observation": "Observed: TapTap distinguishes H5 (web content deployed on a platform domain; use the MiniGame MCP route) from the non-DOM Tap MiniGame JS VM. The H5 MCP setup says MCP currently supports H5; the H5 ad guide says H5 ads are supported and requires developer verification, a complete financial entity, and per-game ad enablement, but does not specify the H5 callable API, ad callbacks, lifecycle callbacks, archive internals, or H5 package-size limit. The current adapter calls `tap.createRewardedVideoAd`. The exact documented contract for `tap.createRewardedVideoAd({adUnitId})`, `show()` Promise, `load`, `onLoad`, `onError(err)`, `onClose(res)` and reward only when `res.isEnded === true`, plus `tap.onShow(listener)`, belongs to standard Tap MiniGame docs; its overview says that runtime has no BOM/DOM/window and lists a 60 MB total package cap. These MiniGame details cannot be treated as an H5 contract. The H5 CLI does document an H5 ZIP upload, but no H5 ZIP is present in this run. Unknown: H5 ad bridge/API, lifecycle, archive schema, and size limit.",
+      "evidence": [
+        "TapTap [AI developer guide](https://developer.taptap.cn/agents/) distinguishes H5 from Tap MiniGame and directs H5 to the MiniGame MCP, not APK SDK (consulted 2026-10-20).",
+        "[MCP setup](https://developer.taptap.cn/minigameapidoc/quick-start/mcp-guide/mcp-setup/) §scope and [ad integration guide](https://developer.taptap.cn/minigameapidoc/quick-start/mcp-guide/ad-integration-guide/) §§1-2 (consulted 2026-10-20).",
+        "Standard MiniGame-only API and environment: [overview](https://developer.taptap.cn/minigameapidoc/dev/tutorial/overview/) §§Tap API, global objects, package limits; [rewarded video API](https://developer.taptap.cn/minigameapidoc/dev/tutorial/open-capabilities/ad/rewarded-video-ad/); [tap.onShow lifecycle API](https://developer.taptap.cn/minigameapidoc/dev/api/base/app/life-cycle/tap.onShow/) (consulted 2026-10-20).",
+        "Current adapter: runs/h5-qq-mobile-20261013/workspace/game/themes.mjs. CLI help says `Upload an H5 zip and create an H5 version`; output `/tmp/taptap-h5-upload-final.txt`. No target-run `.zip` was found."
+      ],
+      "recommendation": "Keep the smallest-fit DOM/WebGL H5 route: package the current H5 build as an H5 ZIP and use the H5 MCP/account-generated contract for ads and lifecycle. Do not port to the non-DOM VM merely to reuse its API examples. Until H5-specific API/callbacks, required archive layout/size, and live H5 behavior are confirmed, keep ads/platform readiness unclaimed; run an authorized H5 live test before enabling the bridge."
+    },
+    {
+      "id": "UPSTREAM_SOURCE_AND_IP_RIGHTS",
+      "severity": "P1",
+      "observation": "Observed: the source is pinned to `riba2534/claude-opus-5-5-demo` revision `54adc1fb64155f9dd7c1c90ecae7b8185ac540b8`. Its qq-speed/package.json declares `license: ISC` and `private: true`, but the checked pinned tree has no root or qq-speed LICENSE/COPYING text (per the existing repository audit). The run's authorization artifact records user-confirmed original-author permission for this H5/IAA preparation scope, while the grant document is NOT_ARCHIVED_IN_REPOSITORY and no independently verified complete open-source license is recorded. The upstream README describes a QQ 飞车 homage, official-style maps, and procedurally generated audio; this is evidence of source/content scope, not a license. TapTap developer agreement §8.4 requires ownership or legal authorization and complete, true, valid, clear third-party authorization documents on request. Unknown: exact written grant scope, underlying franchise/IP authorization, and any independent audio/content grant.",
+      "evidence": [
+        "Pinned upstream [package.json](https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/qq-speed/package.json) and [README](https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/README.md) (consulted 2026-10-20).",
+        "Local user-confirmation record: docs/lean-pilot/three-h5-20261013/author-authorization.json (`authority: USER_CONFIRMATION`, `originalGrantDocument: NOT_ARCHIVED_IN_REPOSITORY`, `platformApproval: NOT_RUN`, `liveAdPermission: NOT_RUN`).",
+        "Existing bounded source audit: docs/race-career-20261014/V34_UPSTREAM_RIGHTS_AUDIT_20261015.md; local target package metadata: runs/h5-qq-mobile-20261013/workspace/source/qq-speed/package.json.",
+        "TapTap official [developer agreement](https://developer.taptap.cn/minigameapidoc/tap-operation/platform/development-agreement/) §8.4 (consulted 2026-10-20)."
+      ],
+      "recommendation": "Before commercial redistribution, archive an explicit grant covering source modification, packaging, commercial use, distribution, generated tracks/audio and attribution, and establish that the grantor controls those rights. The author confirmation alone does not establish Tencent/QQ trademark, game/map, or other underlying IP rights. If these cannot be documented, replace/reimplement the source-derived expressive content and keep the product/brand wholly original."
+    },
+    {
+      "id": "MODEL_ASSET_PROVENANCE",
+      "severity": "P1",
+      "observation": "Observed: six model binaries are base64-embedded in the target run's `source/qq-speed/src/race-car-loader.mjs`; a read-only SHA-256 audit matched every embedded output to the manifests, so the models are in the bundled source even though no loose GLBs were found under the run. The starter/Hunyuan output is SHA-256 d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083 (manifest source 8af8f5579f645017ba3d9120210579d2db20008c3f815de856cb44411e2a9171); its recorded source path is absent from the target workspace and the applicable Hunyuan web-service terms/version/acceptance are not archived. Five `user-provided` cars have no submitter identity or rights evidence in their manifest: custom-01 output 14e0536f803a360a7b6abf5d976dbff94885318bf77af0729d43498d14649fd1 / source 1f584e61eb0f1a19117ea7672dfdb93ee903c4184e13fc5f559cfe081e486566; custom-02 7419803c3e1e404b4556b5b9c4c3284636d5be8f60c69eb49c64a4a4ace53f69 / 54b9b8167e7aac0d58c837b7a62785ce54577d1f0a3771ce534f3bd1515b6bed; custom-03 db9e3949d926cec74e1268917567d71848fcdb28e294fbd6120308fa052ecca8 / ae2569ddf9efb7860db9d33645e3199d889dde0a2c0ceb106e7c740d76018dbe; custom-04 475646dcfcbf3c4fbea5be0f418d98d961b53db1622f516783725b3c65e3c911 / 3afa72252768c34fac1ebadc56cbc8e12f9e7ec343a15d4d1bf73c0869f077cc; custom-05 bc82f0ebb80c246388c5561a1afcc54a648b18106daaeea9e702c5f6a993a323 / 2fa814d247ee1324a52080ccbaa561c3459b02e8f4a7a534666eaf4de90116c3. Unknown: original creators/source provenance and commercial redistribution rights for those five models and the accepted terms governing the Hunyuan-generated output.",
+      "evidence": [
+        "Template manifests: templates/web-lite/h5-source-mobile-v1/racing/assets/original-racer.manifest.json and user-cars-manifest.json; original Hunyuan source path recorded there is missing from runs/h5-qq-mobile-20261013/workspace.",
+        "Embedded outputs: runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/race-car-loader.mjs; exact output SHA-256 values verified from decoded embedded bytes with a read-only Node script.",
+        "Official [Tencent Hunyuan 3D website](https://3d.hunyuan.tencent.com/) (consulted 2026-10-20); exact applicable web-service terms were not captured in the run, so no Hunyuan license conclusion is inferred.",
+        "TapTap official [review standards](https://developer.taptap.cn/minigameapidoc/tap-operation/operation-standards/review-standards/) §§6.2, 6.3.1 require traceable IP/material authorization (consulted 2026-10-20)."
+      ],
+      "recommendation": "For each of the six models, retain source file, creator/provider, hashes, applicable commercial-use and redistribution permission, and required attribution. For Hunyuan, record the exact web service terms applicable to the generation and source-image rights. Otherwise remove/replace the six models with original or licensed assets. `user-provided` and a regenerated/optimized output hash are not proof of rights."
+    },
+    {
+      "id": "NO_CONFIRMED_TAPTAP_H5_RC",
+      "severity": "P1",
+      "observation": "Observed: `game/platform.json` is PENDING with appId, screenOrientation and spaceId null and liveH5Test NOT_RUN; candidate status is CANDIDATE, runtime web-lite, commercial PLATFORM_QA_PENDING. `game/index.html` is 13,289,155 bytes but there is no H5 ZIP in the run. No live platform metadata, H5 upload, ad authorization or target-platform runtime validation is evidenced. This is distinct from a confirmed H5 RC; no App ID is known or fabricated here.",
+      "evidence": [
+        "runs/h5-qq-mobile-20261013/workspace/game/platform.json and game/candidate.json.",
+        "Read-only filesystem check found no `.zip` under runs/h5-qq-mobile-20261013; `wc -c workspace/game/index.html` reported 13,289,155 bytes (HTML size is not an H5 package-size test).",
+        "TapTap [H5 ad integration guide](https://developer.taptap.cn/minigameapidoc/quick-start/mcp-guide/ad-integration-guide/) requires developer verification, complete financial-entity information and per-game ad enablement (consulted 2026-10-20)."
+      ],
+      "recommendation": "Keep this as a web-lite candidate, not a platform-release claim. Before any authorized platform submission, build the H5 ZIP, verify size/layout against the current H5 tool contract, identify the correct game and ad space through authorized platform metadata, correct the orientation mapping, and complete a physical-device/live-H5 test. No platform writes were performed in this audit."
+    },
+    {
+      "id": "DEPENDENCY_LICENSES",
+      "severity": "INFO",
+      "observation": "Observed: the source package lock is lockfileVersion 3 with 121 package entries; direct dependencies resolve to three@0.169.0 (MIT) and esbuild@0.28.2 (MIT); Playwright Core and Wrangler are dev dependencies (Apache-2.0 and MIT OR Apache-2.0 respectively). `workspace/game/LICENSE.three.txt` is present. These dependency licenses do not license the upstream game code, model assets, or franchise IP; the complete H5-zip notice inventory has not been produced.",
+      "evidence": [
+        "runs/h5-qq-mobile-20261013/workspace/source/qq-speed/package-lock.json and package.json; read-only package-lock inspection.",
+        "runs/h5-qq-mobile-20261013/workspace/game/LICENSE.three.txt."
+      ],
+      "recommendation": "Retain the Three.js notice in any distributed bundle and generate a notice/SBOM from the final H5 ZIP; keep build/test-only dependencies out of the published payload where practical. Do not use these dependency licenses as evidence for source or asset clearance."
+    }
+  ],
+  "blockers": [
+    "The current source self-identifies as a fan recreation, while TapTap review standard §1.6.4 excludes fan derivative games. Do not submit without originalizing the content or obtaining a written policy clarification.",
+    "Author permission is user-confirmed but the underlying grant is not archived; there is no recorded underlying-franchise authorization, and per-asset/model rights evidence is incomplete. Archive a complete rights chain or replace the affected material.",
+    "No confirmed H5 release candidate exists: platform.json is PENDING, no H5 ZIP/App ID/ad-space metadata or live H5 test is recorded, and the H5 ad API/runtime contract remains unverified."
+  ],
+  "commands": [
+    "Read-only inspection of task artifact, target workspace manifests, candidate/platform status, package metadata and existing rights audit; no source/workspace files modified.",
+    "Root-verified read-only `taptap-cli upload-h5-package --help` on 2026.10.19; output saved to /tmp/taptap-h5-upload-final.txt. No upload/account write was run.",
+    "Read-only Node script decoded the six base64 glTF descriptors in race-car-loader.mjs and recomputed SHA-256; all six matched manifest output hashes.",
+    "Read-only Node script inspected package-lock v3 package count and direct/dev dependency license metadata.",
+    "Read official TapTap H5/MCP, MiniGame API, review and developer-agreement pages on 2026-10-20; primary URLs and relevant sections are cited in findings."
+  ]
+}

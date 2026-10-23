@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "TDD keyboard one-shot/expiry and real presentation state/audio",
+      "passed": true,
+      "evidence": "tdd-red.log then tdd-green.log; runtime438/438; native12/12"
+    },
+    {
+      "name": "Unchanged native30 courses,150 physical opponents and10 forks",
+      "passed": true,
+      "evidence": "ai-pace.json,geometry.log and byte-identical generated physics/AI/track receipt"
+    },
+    {
+      "name": "Default normal journeys reach settlement and replay",
+      "passed": true,
+      "evidence": "qa-summary.json; phone/small and difficult-course losses remain losses"
+    },
+    {
+      "name": "Full Chromium smoke, two-size trusted touch lifecycle, SDK fixture safety and desktop WebKit",
+      "passed": true,
+      "evidence": "qa-summary.json browserRegressions; browser24/touch.json screenshot timeout retained, followed by the unchanged existing trusted-touch lifecycle harness passing. No real SDK or physical device claim."
+    },
+    {
+      "name": "Independent perceptual acceptance",
+      "passed": false,
+      "evidence": "perceptual-qa-report.json"
+    },
+    {
+      "name": "Physical phones/human/platforms",
+      "passed": false,
+      "evidence": "Not available; no platform submission or App binding performed"
+    },
+    {
+      "name": "Whole-factory lint/tests",
+      "passed": false,
+      "evidence": "lint.log66 pre-existing errors; factory-tests-bounded.log67 failing files including node:test collection and unrelated cut-stack/waiver cases. Scoped lint/typecheck/native tests pass; no unrelated fixes."
+    }
+  ],
+  "issues": [
+    {
+      "id": "perceptual-review",
+      "severity": "error",
+      "message": "Independent perceptual review still required before accepting formal FIX.",
+      "evidence": "perceptual-qa-report.json"
+    },
+    {
+      "id": "human-platform",
+      "severity": "error",
+      "message": "Human enjoyment, physical-phone and platform publication not verified.",
+      "evidence": "qa-summary.json"
+    }
+  ],
+  "screenshots": [
+    "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-desktop-sequence/drift.png",
+    "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-desktop-sequence/countersteer.png",
+    "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-phone-sequence/drift.png",
+    "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-phone-sequence/countersteer.png",
+    "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-small-sequence/drift.png",
+    "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-small-sequence/countersteer.png"
+  ],
+  "consoleLog": "Exact Playwright errors arrays retained; first selector/transport errors and performance-confounded runs not rewritten.",
+  "testedAt": "2026-10-21T04:30:28.256Z"
+}

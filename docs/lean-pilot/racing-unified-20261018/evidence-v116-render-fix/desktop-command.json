@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "label": "desktop",
+  "cwd": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-qa",
+  "argv": [
+    "node",
+    "--import",
+    "/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-real-browser-preload.mjs",
+    "/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-cold-start-qa.mjs",
+    "desktop"
+  ],
+  "environmentOverrides": {
+    "PLAYWRIGHT_BROWSERS_PATH": "/workspace/scratch/29547c23d820/recovery/playwright-browsers",
+    "FONTCONFIG_FILE": "/workspace/scratch/29547c23d820/recovery/fonts.conf"
+  },
+  "startedAt": "2026-10-18T16:52:09.884341Z",
+  "finishedAt": "2026-10-18T16:52:44.599119Z",
+  "exitCode": 0,
+  "log": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-desktop.log",
+  "logBytes": 15358,
+  "logSha256": "7e78040882f291f4877cb805293d20efea64c242cdc50dbda198e7a39e5747bc"
+}

@@ -1,6 +1,12 @@
 import { EXTRA_STAGES } from './career-expansion.mjs';
+import { PAINT_NAMES, LEGACY_PAINT_STARS, freshCosmetics, restoreCosmetics, skinOwned, carOwned } from './cosmetics.mjs';
 export const CAREER_KEY = 'h5-mobile:qq-speed:career:v1';
-const make = (id, chapter, name, map, laps, diff, kind, mode, rank, goal, extra = {}) => Object.freeze({ id, chapter, name, map, course: 'race-' + id, laps, diff, kind, mode, rank, goal, ...extra });
+/** Only genuine finished podium placement determines the three visible medals. */
+export const PODIUM_GOAL='前三名通关 · 第1名三星 / 第2名二星 / 第3名一星';
+export const rankStars=(finished,place)=>finished===true&&Number.isInteger(place)&&place>=1&&place<=3?4-place:0;
+const make=(id,chapter,name,map,laps,diff,kind,mode,rank,goal,extra={})=>
+  Object.freeze({id,chapter,name,map,course:'race-'+id,laps,diff,kind,mode,
+    rank:Math.max(3,rank),goal:PODIUM_GOAL,mission:goal,...extra});
 /** Every stage demands real rank/technique; 17-30 add eight-chapter progression. */
 export const STAGES = Object.freeze([
   make('01', 1, '城市攻防环', 'city', 2, 1, 'race', 'speed', 3, '跑满两圈并争取前三名'),
@@ -19,12 +25,40 @@ export const STAGES = Object.freeze([
   make('14', 4, '沙丘极速冲顶', 'egypt', 2, 2, 'speed', 'speed', 2, '测速点至少一次达到 190 km/h', {'target':190}),
   make('15', 4, '极地道具冠军战', 'snow', 3, 2, 'item', 'item', 2, '争取前二名，拾取 4 个道具挑战三星', {'target':4}),
   make('16', 4, '悬崖冠军决战', 'aegean', 3, 2, 'boss', 'speed', 1, '超过指定车神，夺得第一名'),
-  ...EXTRA_STAGES,
+  ...EXTRA_STAGES.map(stage=>Object.freeze({...stage,rank:3,mission:stage.goal,goal:PODIUM_GOAL})),
 ]);
-export const SKIN_STARS = Object.freeze([0, 3, 6, 10, 14, 19, 25, 34]);
-export const SKIN_NAMES = Object.freeze(['烈焰红', '冰蓝', '紫电', '黄金', '珍珠白', '樱粉', '翡翠', '暗夜']);
-export const newCareer = () => ({ version: 1, stars: {}, times: {}, skin: 0, rounds: 0,
-  daily: { date: '', best: 0, stars: 0, streak: 0, lastWonDate: '' } });
+/** First five races have no extra star gate. Every checkpoint still requires
+ * a real podium finish in the immediately preceding stage. */
+export const STAR_CHECKPOINTS=Object.freeze({'06':8,'11':18,'16':29,'21':40,'26':51,'30':60});
+export const starGateRequirement=index=>
+  Number.isInteger(index)&&index>=0&&index<STAGES.length ?
+    (STAR_CHECKPOINTS[STAGES[index].id]??0) : 0;
+export function starGateStatus(career,index) {
+  const stage=STAGES[index], required=starGateRequirement(index);
+  const earned=careerStars(career);
+  const previousCleared=index===0||!!(stage && (career?.stars?.[STAGES[index-1]?.id]??0)>0);
+  const stageAdUnlocked=!!stage && index>0 && career?.stagePasses?.[stage.id]==='ad';
+  const pass=stage && required ? career?.gatePasses?.[stage.id] : null;
+  // Preserve a previous player's already-earned medal on the gated stage,
+  // even if their save predates the rollout.
+  const alreadyCompleted=!!(stage && required && STAGES.slice(index)
+    .some(s=>(career?.stars?.[s.id]??0)>0));
+  const gateSatisfied=!required||earned>=required||pass==='ad'||pass==='legacy'||alreadyCompleted;
+  return {
+    index, stageId:stage?.id??null, required, earned,
+    missing:Math.max(0,required-earned),
+    previousCleared, gateSatisfied,
+    adUnlocked:pass==='ad',legacyUnlocked:pass==='legacy'||alreadyCompleted,
+    stageAdUnlocked,
+    unlocked:!!stage && (stageAdUnlocked || previousCleared && gateSatisfied),
+    starLocked:!!stage && !stageAdUnlocked && previousCleared && !gateSatisfied,
+  };
+}
+// Historical thresholds remain ONLY for one-time save migration, never new unlocks.
+export const SKIN_STARS = LEGACY_PAINT_STARS;
+export const SKIN_NAMES = PAINT_NAMES;
+export const newCareer = () => ({ version: 1, stars: {}, times: {}, gatePasses: {}, stagePasses: {}, skin: 0, rounds: 0,
+  ...freshCosmetics(), daily: { date: '', best: 0, stars: 0, streak: 0, lastWonDate: '' } });
 export function localDayKey(date = new Date()) {
   return [date.getFullYear(), String(date.getMonth()+1).padStart(2,'0'), String(date.getDate()).padStart(2,'0')].join('-');
 }
@@ -36,10 +70,11 @@ export function dailyStage(date = new Date()) {
   return Object.freeze({ ...original, id: 'daily-' + key, chapter: 9, name: '每日挑战 · ' + original.name });
 }
 export const careerStars = career => STAGES.reduce((n, stage) => n + (career?.stars?.[stage.id] ?? 0), 0);
-export function stageUnlocked(career, index) {
-  return index === 0 || (index > 0 && index < STAGES.length && (career?.stars?.[STAGES[index - 1].id] ?? 0) > 0);
+export function stageUnlocked(career,index) {
+  return starGateStatus(career,index).unlocked;
 }
-export const skinUnlocked = (career, skinIndex) => Number.isInteger(skinIndex) && skinIndex >= 0 && skinIndex < SKIN_STARS.length && careerStars(career) >= SKIN_STARS[skinIndex];
+export const skinUnlocked = skinOwned;
+export const carUnlocked = carOwned;
 export function loadCareer(raw, legacyBest) {
   try {
     if (!raw) {
@@ -60,7 +95,30 @@ export function loadCareer(raw, legacyBest) {
       const star = v.stars[stage.id]; if (Number.isInteger(star) && star >= 0 && star <= 3) state.stars[stage.id] = star;
       const t = v.times[stage.id]; if (typeof t === 'number' && Number.isFinite(t) && t > 0 && t < 100000) state.times[stage.id] = t;
     }
+    // Old V1 saves did not contain gatePasses. Grandfather ONLY those actual
+    // stages they could already enter before the star-gate update, including
+    // a checkpoint they opened but never won. New V1 saves always have {}.
+    if(!Object.hasOwn(v,'gatePasses')){
+      for(const id of Object.keys(STAR_CHECKPOINTS)) {
+        const index=STAGES.findIndex(s=>s.id===id);
+        if((state.stars[STAGES[index-1].id]??0)>0)state.gatePasses[id]='legacy';
+      }
+    }else if(v.gatePasses && typeof v.gatePasses==='object' && !Array.isArray(v.gatePasses)){
+      for(const id of Object.keys(STAR_CHECKPOINTS)){
+        if(v.gatePasses[id]==='ad'||v.gatePasses[id]==='legacy')
+          state.gatePasses[id]=v.gatePasses[id];
+      }
+    }
+    // A level pass opens only its named level. It never fills in a previous
+    // podium result or creates a medal during migration.
+    if(v.stagePasses && typeof v.stagePasses==='object' && !Array.isArray(v.stagePasses)){
+      for(const stage of STAGES.slice(1))
+        if(v.stagePasses[stage.id]==='ad')state.stagePasses[stage.id]='ad';
+    }
     state.rounds = Number.isSafeInteger(v.rounds) && v.rounds >= 0 ? Math.min(v.rounds, 1_000_000) : 0;
+    // Preserve colors already earned by older star-only saves, then freeze ownership.
+    // Winning more stars after this migration does not grant additional paints.
+    Object.assign(state, restoreCosmetics(v, careerStars(state)));
     state.skin = skinUnlocked(state, v.skin) ? v.skin : 0;
     const d = v.daily;
     const day = x => typeof x === 'string' && /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(x) ? x : '';
@@ -87,34 +145,16 @@ export function stageMetric(stage, stats = {}) {
     default: return 0;
   }
 }
-/** A pass should unlock the next challenge only when its actual stage objective is met. */
-export function gradeStage(stage, result, stats = {}) {
-  const metric = stageMetric(stage, stats), time = finite(result?.time), place = finite(result?.place);
-  const ordinary = result?.finished === true && place > 0 && place <= stage.rank;
-  const extra = stage.kind === 'boss' ? stats.beatBoss === true :
-    stage.kind === 'elimination' ? stats.eliminated !== true && finite(stats.survived) >= 2 :
-    stage.kind === 'time' ? time > 0 && time <= stage.target :
-    stage.kind === 'relay' ? stats.timedOut !== true && metric >= 1 :
-    ['speed', 'drift'].includes(stage.kind) ? metric >= stage.target : true;
-  if (!ordinary || !extra || stats.timedOut || stats.eliminated) return 0;
-  let stars = 1;
-  if (place <= Math.max(1, stage.rank - 1)) stars++;
-  const clean = finite(result?.stats?.crash) <= (stage.laps === 1 ? 2 : 4) && finite(stats.rescues) === 0;
-  const mastery = stage.kind === 'time' ? time <= stage.target * .87 :
-    stage.kind === 'speed' ? metric >= stage.target + 20 :
-    stage.kind === 'drift' ? metric >= Math.max(6,stage.target + 1) :
-    stage.kind === 'overtake' ? metric >= stage.target + 1 :
-    stage.kind === 'item' ? metric >= stage.target + 1 :
-    stage.kind === 'relay' ? metric >= 2 : true;
-  if (place === 1 && clean && mastery) stars++;
-  return stars;
+/** Timing, driving tasks and clean turns remain authentic challenges, but
+ * they cannot inflate or revoke stars earned from an actual finishing rank. */
+export function gradeStage(_stage,result) {
+  return rankStars(result?.finished,result?.place);
 }
 /** Player-facing diagnosis after an actual graded defeat.
  * Pure presentation: never affects rank, stage metrics, fuel, stars or unlocks.
  */
 export function stageFailureFeedback(stage, result, stats = {}) {
   const n = value => Number.isFinite(value) ? value : 0;
-  const count = (value, target, label) => `${label} ${n(value)}/${target}`;
   const tips = {
     race: '先把赛车开稳、少碰墙，争取进入目标名次',
     speed: '测速点前尽量保持直线，减少转向和撞墙失速',
@@ -133,47 +173,16 @@ export function stageFailureFeedback(stage, result, stats = {}) {
     const percent = Math.round(Math.max(0, Math.min(1, n(result?.completion))) * 100);
     return { reason: `尚未完成比赛（进度 ${percent}%）`, tip };
   }
-  const reasons = [];
-  const place = n(result.place);
-  if (place < 1 || place > stage.rank)
-    reasons.push(`第${place || '?'}名，要求前${stage.rank}名`);
-  switch (stage.kind) {
-    case 'speed':
-      if (n(stats.gateSpeed) < stage.target) reasons.push(count(stats.gateSpeed, stage.target, '最佳测速 km/h'));
-      break;
-    case 'drift':
-      if (n(stats.cleanDrifts) < stage.target) reasons.push(count(stats.cleanDrifts, stage.target, '有效漂移'));
-      break;
-    case 'overtake':
-      // Technique counter is an optional mastery objective in V8.
-      break;
-    case 'item':
-      // Earn more stars by using the boxes; a fair rank win still advances.
-      break;
-    case 'time':
-      if (!(n(result.time) > 0 && result.time <= stage.target))
-        reasons.push(`用时 ${n(result.time).toFixed(1)} 秒，限时 ${stage.target} 秒`);
-      break;
-    case 'relay':
-      if (n(stats.padCount) < 1) reasons.push('未经过加速带取得补时');
-      break;
-    case 'elimination':
-      if (n(stats.survived) < 2) reasons.push(count(stats.survived, 2, '成功避开淘汰'));
-      break;
-    case 'boss':
-      if (stats.beatBoss !== true) reasons.push('未超过指定车神');
-      break;
-    default: break;
-  }
-  return { reason: reasons.join('；') || '该场未达到目标', tip };
+  return {reason:`第${n(result.place)||'?'}名，要求前三名`,tip};
 }
 
 export function recordStage(career, stage, result, stats) {
   const stars = gradeStage(stage, result, stats);
   const next = { ...career, stars: { ...career.stars }, times: { ...career.times }, rounds: career.rounds + 1 };
-  if (stars > (next.stars[stage.id] ?? 0)) next.stars[stage.id] = stars;
+  const previousStars=next.stars[stage.id]??0,bestStars=Math.max(stars,previousStars);
+  if(bestStars>previousStars)next.stars[stage.id]=bestStars;
   if (result.finished && result.time > 0 && (!next.times[stage.id] || result.time < next.times[stage.id])) next.times[stage.id] = result.time;
-  return { stars, career: next, total: careerStars(next) };
+  return { stars, previousStars, bestStars, improvement:bestStars-previousStars, career:next, total:careerStars(next) };
 }
 /** Pick a checkpoint without relying on absolute three.js coordinates. */
 export const fractionPassed = (oldProgress, newProgress, totalDistance, threshold) =>

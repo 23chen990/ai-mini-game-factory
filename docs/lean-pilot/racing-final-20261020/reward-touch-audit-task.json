@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "task": "reward-touch-audit",
+  "root": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市",
+  "targetGame": "qq-speed / 极速飞驰",
+  "workspace": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/runs/h5-qq-mobile-20261013/workspace",
+  "readOnly": true,
+  "scope": [
+    "templates/web-lite/h5-source-mobile-v1/racing/mobile.mjs, runtime.mjs, career.mjs, cosmetics.mjs, garage.mjs, wheel-steering.mjs, driver.mjs, fuel.mjs and relevant tests",
+    "Audit concrete cancel, timeout, late callback, duplicate clicks, persisted reward, touch release/multitouch, pause/background paths",
+    "Run existing targeted unit tests if useful, but do not write test/source files"
+  ],
+  "acceptance": [
+    "Reproducible actual bugs with file lines and sequence, not hypothetical defensive checks",
+    "Clear root cause and smallest causally related file set",
+    "Separate already-covered paths from meaningful evidence gaps"
+  ],
+  "output": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/docs/lean-pilot/racing-final-20261020/reward-touch-audit.json",
+  "constraints": [
+    "You are not alone in the codebase. Do not revert other edits. Do not modify source or generated workspace.",
+    "No Git mutations, commits, pushes or thread messages. Existing QA role only; no new Agent/Gate/workflow.",
+    "Return only JSON: {schemaVersion:1,task:string,findings:[{id:string,severity:\"P0\"|\"P1\"|\"P2\"|\"INFO\",observation:string,evidence:string[],recommendation:string}],blockers:string[],commands:string[]}. Validate this output using zod before final. Write your own output JSON only.",
+    "Separate observation, hypothesis and unknowns. Do not call fixtures natural play or licensing assumptions permissions."
+  ]
+}

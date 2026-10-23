@@ -33,11 +33,11 @@ test('phone camera enlarges car, looks into upcoming bends, and tilts only subtl
     Math.abs(v10MobileCameraYaw(.7,0,false,42)));
   assert.equal(v10MobileCameraYaw(-1,0,false,-2),-1);
 });
-test('high-speed and N2O speed perception is strong while static and low speed stay calm',()=>{
+test('handset speed response does not shrink the car into a wide-angle spectator shot',()=>{
   const low=v10MobileFov(0,false,false);
-  assert.ok(low>=67&&low<=69);
-  assert.ok(v10MobileFov(55,false,false)-low>6);
-  assert.ok(v10MobileFov(65,true,false)>=83);
+  assert.ok(low>=63&&low<=65);
+  assert.ok(v10MobileFov(55,false,false)-low>3);
+  assert.ok(v10MobileFov(65,true,false)<=70);
   assert.ok(v10MobileFov(90,true,true)<=V10_DRIVE_TUNE.maxCameraFov);
 });
 test('apex lookahead comes only from physical native path, never an assisted steering command',()=>{

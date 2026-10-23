@@ -1,0 +1,373 @@
+{
+  "schemaVersion": 1,
+  "type": "independent-cold-emergency-qa",
+  "issueId": "V116-COLD-DESKTOP-MULTISECOND-LAG",
+  "reviewer": "/root/car_source_review",
+  "role": "QA",
+  "status": "PASS_SCOPED_LOCAL_COLD_START",
+  "checkedAt": "2026-10-18T16:35:56.339Z",
+  "target": {
+    "gameId": "qq-speed",
+    "runId": "h5-qq-mobile-20261013",
+    "workspace": "/workspace/scratch/29547c23d820/racing-unified/runs/h5-qq-mobile-20261013/workspace/game",
+    "baselineCommit": "99af424cf3584adc4f13fa607a837d56c1028c65"
+  },
+  "build": {
+    "attempt": 12,
+    "buildHash": "893226cc0792aaae4254b0a09fcdeb782d76efa5064f8703a810ca43eebe500d",
+    "inputHash": "e62b6b6114767a01ec1bee5985801a657bbebc7ed89a94c2127e6af27fc7da10",
+    "recomputedBuildHash": "893226cc0792aaae4254b0a09fcdeb782d76efa5064f8703a810ca43eebe500d",
+    "receipt": {
+      "path": "/workspace/scratch/29547c23d820/racing-unified/runs/h5-qq-mobile-20261013/artifacts/build-racing.json",
+      "bytes": 11465,
+      "sha256": "d65df26b382346e57587450b4aa0136a5cb4227457985e7308a584b20fcd80d9"
+    },
+    "trial": {
+      "path": "/workspace/scratch/29547c23d820/racing-unified/runs/h5-qq-mobile-20261013/racing-two-button-893226cc0792.html",
+      "bytes": 13339106,
+      "sha256": "cfffc0ca59989d6dd21325c8dd6168b4861cc6965a65dcfc9ede44d3722d9329"
+    },
+    "sourceFreeze": {
+      "path": "/workspace/scratch/29547c23d820/recovery/cold-emergency-source-freeze.json",
+      "bytes": 1252,
+      "sha256": "5e66bb6d93d60a93c769cf61318192f906c954568220254bb6e95c539618b080"
+    },
+    "sourceCommitReceipt": {
+      "path": "/workspace/scratch/29547c23d820/recovery/cold-emergency-source-commit.json",
+      "bytes": 896,
+      "sha256": "d64f4f96f88764cf9c51ace4d1930a03fc881c9d7e9f9938a2b14eefcfee0c47"
+    },
+    "sourceCommit": "1c68aa89607875406995a896101214a283bccfb6",
+    "sourceTree": "93774f8a63f68d5816efb74ce258f5cb82c8c0ae",
+    "commitVerificationScope": "Local frozen bytes match the parent-created commit receipt; this independent reviewer did not mutate GitHub or verify a remote ref."
+  },
+  "sourceReview": {
+    "handoff": {
+      "path": "/workspace/scratch/29547c23d820/recovery/cold-emergency-fixer-handoff.json",
+      "bytes": 19874,
+      "sha256": "0f539b8d67e234f977441bfff66c26b1f5b76cd94ee3e89ac8a3c2a79d3600e2"
+    },
+    "revision": 2,
+    "frozenFiles": [
+      {
+        "path": "/workspace/scratch/29547c23d820/racing-unified/templates/web-lite/h5-source-mobile-v1/racing/session.mjs",
+        "bytes": 16428,
+        "sha256": "f56c9f10951d26eeb90825aa1376802501736f4081ae4182984cbe0f9d9ee866",
+        "relativePath": "templates/web-lite/h5-source-mobile-v1/racing/session.mjs",
+        "baselineSha256": "bc732a99a14318305bee540e9c370a173616235580e3c83e729e2511d88aeeef",
+        "matchesFreezeHandoffAndCommitReceipt": true
+      },
+      {
+        "path": "/workspace/scratch/29547c23d820/racing-unified/templates/web-lite/h5-source-mobile-v1/tests/racing-countdown-quality.test.mjs",
+        "bytes": 16814,
+        "sha256": "b4717e9d343fe93310341759d4463f36063d10d8d5729ceacc32f4f215440189",
+        "relativePath": "templates/web-lite/h5-source-mobile-v1/tests/racing-countdown-quality.test.mjs",
+        "baselineSha256": "878b8ebc1e09d485b6bbf3861eea98001f039dc49abf774b02dca0d58dad7bea",
+        "matchesFreezeHandoffAndCommitReceipt": true
+      }
+    ],
+    "baselineByteReview": "Earlier in this same read-only review, direct git show of baseline 99af compared all three QA files byte for byte, verified the session prefix before installCountdownQualitySafety, and verified the original 19-test file as an exact prefix. Current SHA-256 values were rechecked before this receipt was written.",
+    "sessionPrefixByteIdentical": true,
+    "changeLimitedToCountdownGuard": true,
+    "nativeResizeSemanticsPreserved": true,
+    "originalTestsBytePreserved": true,
+    "originalTests": 19,
+    "appendedTests": 8,
+    "countdownTests": 27,
+    "testExecution": {
+      "command": "node --test --test-isolation=none --test-reporter=spec templates/web-lite/h5-source-mobile-v1/tests/racing-countdown-quality.test.mjs templates/web-lite/h5-source-mobile-v1/tests/racing-session.test.mjs tools/lean-pilot/tests/racing-build.test.mjs",
+      "total": 67,
+      "passed": 67,
+      "failed": 0,
+      "rawSha256": "3d41b7541e3992fc50ff1a995830c39b5956dff476c33e8edf7f7e9a7e1ebe97",
+      "rawBytes": 6551,
+      "exitCode": 0,
+      "independentlyRerun": false,
+      "countingScope": "One final 67-case command includes the 27 countdown cases. Counts are not added together."
+    },
+    "eslint": {
+      "command": "node node_modules/eslint/bin/eslint.js templates/web-lite/h5-source-mobile-v1/racing/session.mjs templates/web-lite/h5-source-mobile-v1/tests/racing-countdown-quality.test.mjs",
+      "exitCode": 0,
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "resizeRedBeforeGreen": {
+      "tests": 27,
+      "passed": 26,
+      "failed": 1,
+      "includedInGreen": true
+    },
+    "preservedInvariants": [
+      "Only confirmed visible countdown stalls can choose the existing .35 floor directly; ordinary and moderate lag retain gradual reductions.",
+      "Global QualityMonitor and source before installCountdownQualitySafety are byte-identical; game clocks, progress, physics and original QA thresholds are untouched.",
+      "Native renderer/context and render arguments/return value are preserved, with full scene and native antialias policy.",
+      "Actual game.resize, including native setSize-only sizing, resets evidence while preserving receiver, arguments and return value.",
+      "Saved preference, high-to-mid-to-low ownership, later explicit graphics choices, CSS viewport, camera and input remain authoritative."
+    ],
+    "syntheticTraceCaveat": "[4000,4000,4000,5862]ms is a synthetic native-render regression covering the CI multi-second regime and ~17.862s observed delay; CI snapshots are not an exact per-render trace."
+  },
+  "originalQa": {
+    "files": [
+      {
+        "path": "/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-cold-start-qa.mjs",
+        "bytes": 6919,
+        "sha256": "c2a8ff62cac8bae7f45abae22dbfba2bb4793b95fc29c81e3ddfa23c8e3724ad",
+        "byteIdenticalToBaseline": true
+      },
+      {
+        "path": "/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-browser-config.mjs",
+        "bytes": 493,
+        "sha256": "f4ffa8c804fd464904d07fb00d43239853060d297488bc831c59807067a1dc77",
+        "byteIdenticalToBaseline": true
+      },
+      {
+        "path": "/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-real-browser-preload.mjs",
+        "bytes": 581,
+        "sha256": "3a163584a251b3cc0286677bc354bfae1a0af0a7db1103eea87be42fdc0b69c9",
+        "byteIdenticalToBaseline": true
+      }
+    ],
+    "raceEntryDeadlineMs": 45000,
+    "keyboardDeadlineMs": 18000,
+    "keyboardCondition": "Actual ArrowUp and ArrowLeft events; native player.s > 1 and player.steer > 0, then release both keys.",
+    "productionModesOnly": true
+  },
+  "componentInvariance": {
+    "oldReceipt": {
+      "path": "/workspace/scratch/29547c23d820/racing-unified/docs/lean-pilot/racing-unified-20261018/evidence-v116/build-receipt.json",
+      "bytes": 11441,
+      "sha256": "1aa43647c15d05c4fb2a079401372ef32fed17c157cae4a0d9510cbec96d0f87"
+    },
+    "newReceipt": {
+      "path": "/workspace/scratch/29547c23d820/racing-unified/runs/h5-qq-mobile-20261013/artifacts/build-racing.json",
+      "bytes": 11465,
+      "sha256": "d65df26b382346e57587450b4aa0136a5cb4227457985e7308a584b20fcd80d9"
+    },
+    "unchangedFields": [
+      "originalPhysicsSha256",
+      "driftEventVehicleSha256",
+      "originalAiSha256",
+      "generatedAiSha256",
+      "generatedVehicleSha256",
+      "generatedTrackSha256",
+      "trackGeometrySha256",
+      "itemVisualSourceSha256",
+      "userCarManifestSha256",
+      "models",
+      "genuinePhysicalShortcutStages"
+    ],
+    "allEqual": true,
+    "models": 6,
+    "scope": "Independent deep equality of eleven receipt fields against c606; not re-execution of earlier full-runtime evidence."
+  },
+  "execution": {
+    "browserOwner": "/root",
+    "commandsSequential": true,
+    "reviewerRanBrowser": false,
+    "reviewerRebuilt": false,
+    "reviewerReranTests": false,
+    "qaOutputRoot": "/workspace/scratch/29547c23d820/recovery/cold-emergency-qa/runs/h5-qq-mobile-20261013/artifacts",
+    "gameSymlink": "/workspace/scratch/29547c23d820/recovery/cold-emergency-qa/runs/h5-qq-mobile-20261013/workspace/game",
+    "gameTarget": "/workspace/scratch/29547c23d820/racing-unified/runs/h5-qq-mobile-20261013/workspace/game",
+    "buildReceiptSymlink": "/workspace/scratch/29547c23d820/recovery/cold-emergency-qa/runs/h5-qq-mobile-20261013/artifacts/build-racing.json",
+    "buildReceiptTarget": "/workspace/scratch/29547c23d820/racing-unified/runs/h5-qq-mobile-20261013/artifacts/build-racing.json",
+    "isolationScope": "QA output paths are isolated. The game and build receipt intentionally link to the frozen generated attempt-12 workspace; this is not a separate game copy.",
+    "helperObservation": "The unchanged safe buildHash helper rejected the symlink QA root with unsafe-root. No guard was changed; a separate check of the original generated workspace returned the expected build hash."
+  },
+  "runtime": [
+    {
+      "mode": "desktop",
+      "report": {
+        "path": "/workspace/scratch/29547c23d820/recovery/cold-emergency-qa/runs/h5-qq-mobile-20261013/artifacts/cold-start-desktop/report.json",
+        "bytes": 23539,
+        "sha256": "36a07f72e6fc688bfbe143c25b8527844acaba96593de3f363ffe16888bf6090"
+      },
+      "commandReceipt": {
+        "path": "/workspace/scratch/29547c23d820/recovery/cold-emergency-desktop-command.json",
+        "bytes": 876,
+        "sha256": "7ffb8302a704a258cd1d418d4684025e5b7e3bae312d60a65591fd357050b38e"
+      },
+      "rawLog": {
+        "path": "/workspace/scratch/29547c23d820/recovery/cold-emergency-desktop.log",
+        "bytes": 23608,
+        "sha256": "1080f29bea17497d72cd04c2d7f85e6ff008de24f7ccab4e448579705044c773"
+      },
+      "startedAt": "2026-10-18T16:29:03.080951Z",
+      "finishedAt": "2026-10-18T16:29:49.599254Z",
+      "commandExitCode": 0,
+      "passed": true,
+      "productionGate": true,
+      "experiment": null,
+      "rawLogEqualsReport": true,
+      "logHashAndBytesMatchReceipt": true,
+      "snapshotCount": 28,
+      "allObservedStatesVisibleAndFocused": true,
+      "observedFirstPostClickToRaceSeconds": 30.3178,
+      "observedFirstFloorSeconds": 13.2286,
+      "raceEntryDeadlineMs": 45000,
+      "keyboardDeadlineMs": 18000,
+      "keyboardResult": "PASSED_ARROW_UP_AND_LEFT",
+      "lastNativeSpeed": 1.1998763749041974,
+      "lastNativeSteer": 0.698805788087798,
+      "speedUnits": "native player.s; not displayed KM/H",
+      "finalQuality": "low",
+      "finalPixelRatio": 0.35,
+      "finalAntialias": true,
+      "finalDrawingBuffer": [
+        478,
+        268
+      ],
+      "cssCases": 12,
+      "cssUniqueCases": 12,
+      "cssCoverageAndValuesCorrect": true,
+      "actualStageItemControlHidden": true,
+      "touchSteeringDrivingCertified": false,
+      "scope": "Cold start plus the original ArrowUp and ArrowLeft native speed/steer assertion."
+    },
+    {
+      "mode": "touch",
+      "report": {
+        "path": "/workspace/scratch/29547c23d820/recovery/cold-emergency-qa/runs/h5-qq-mobile-20261013/artifacts/cold-start-touch/report.json",
+        "bytes": 11499,
+        "sha256": "09b3e84be3c197597618237853d7eb0556066cf47d3add50fd8fec1ddada76a8"
+      },
+      "commandReceipt": {
+        "path": "/workspace/scratch/29547c23d820/recovery/cold-emergency-touch-command.json",
+        "bytes": 870,
+        "sha256": "4f2dbf95e8d774694a5883ff5a71d3b3dbc362909e431ff2ed1d164ee4f2c4b4"
+      },
+      "rawLog": {
+        "path": "/workspace/scratch/29547c23d820/recovery/cold-emergency-touch.log",
+        "bytes": 11568,
+        "sha256": "40704c07f6c64508d34d658ff2276ca31e6d08585bdb5e13d14b2d23ff41e44a"
+      },
+      "startedAt": "2026-10-18T16:30:12.015207Z",
+      "finishedAt": "2026-10-18T16:30:32.754082Z",
+      "commandExitCode": 0,
+      "passed": true,
+      "productionGate": true,
+      "experiment": null,
+      "rawLogEqualsReport": true,
+      "logHashAndBytesMatchReceipt": true,
+      "snapshotCount": 12,
+      "allObservedStatesVisibleAndFocused": true,
+      "observedFirstPostClickToRaceSeconds": 10.1763,
+      "observedFirstFloorSeconds": 9.1064,
+      "raceEntryDeadlineMs": 45000,
+      "keyboardDeadlineMs": null,
+      "keyboardResult": "NOT_RUN_TOUCH_MODE",
+      "lastNativeSpeed": 30.09054323902845,
+      "lastNativeSteer": 0,
+      "speedUnits": "native player.s; not displayed KM/H",
+      "finalQuality": "low",
+      "finalPixelRatio": 0.35,
+      "finalAntialias": false,
+      "finalDrawingBuffer": [
+        295,
+        136
+      ],
+      "cssCases": 12,
+      "cssUniqueCases": 12,
+      "cssCoverageAndValuesCorrect": true,
+      "actualStageItemControlHidden": true,
+      "touchSteeringDrivingCertified": false,
+      "scope": "Cold start and control visibility only; touch steering or drift driving was not exercised."
+    }
+  ],
+  "cssMatrixScope": "Each run contains exactly 12 unique checks: 667x320, 844x390 and 1366x768, by touch/desktop, by false/true item mode. Item controls are visible only in touch item races.",
+  "timingInterpretation": "Durations are offsets between recorded performance.now snapshots from the first post-click observation, not exact click-event or key-response latency. Passage is established by the unchanged original 45-second race-entry and 18-second desktop-keyboard assertions.",
+  "visualReview": [
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/cold-emergency-qa/runs/h5-qq-mobile-20261013/artifacts/cold-start-desktop/cold-start.png",
+      "bytes": 880069,
+      "sha256": "625fe331c2df6e7027ace863d8e50c5861342d8278a4cfb585c8e02f0ee1581b",
+      "mode": "desktop",
+      "name": "cold-start.png",
+      "dimensions": [
+        1366,
+        768
+      ],
+      "independentlyViewed": true,
+      "observations": [
+        "Complete start scene and multiple car models visible; touch steering and action pad absent.",
+        "3D scene visibly coarse at .35 while HUD remains readable."
+      ]
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/cold-emergency-qa/runs/h5-qq-mobile-20261013/artifacts/cold-start-desktop/last-state.png",
+      "bytes": 889005,
+      "sha256": "4e380b1b673b670b33e434290bd1ba185e2d43c38e6d388e8f606bba8a2ff334",
+      "mode": "desktop",
+      "name": "last-state.png",
+      "dimensions": [
+        1366,
+        768
+      ],
+      "independentlyViewed": true,
+      "observations": [
+        "Complete start scene and multiple car models visible; touch steering and action pad absent.",
+        "3D scene visibly coarse at .35 while HUD remains readable.",
+        "Near-car name 山路高手 is large at the screen bottom and intersects the boost meter; recorded separately as a non-blocking visual observation."
+      ]
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/cold-emergency-qa/runs/h5-qq-mobile-20261013/artifacts/cold-start-touch/cold-start.png",
+      "bytes": 321814,
+      "sha256": "4ae5e11d14aa24487a0df2a0c79f1fd1df4ea13a57c0cdc0cfcbf47507b038d8",
+      "mode": "touch",
+      "name": "cold-start.png",
+      "dimensions": [
+        844,
+        390
+      ],
+      "independentlyViewed": true,
+      "observations": [
+        "Race scene visible with steering wheel, nitro, small boost and drift controls; item control absent in the speed stage.",
+        "3D scene visibly coarse at .35 while touch controls and HUD remain readable; image does not certify touch driving."
+      ]
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/cold-emergency-qa/runs/h5-qq-mobile-20261013/artifacts/cold-start-touch/last-state.png",
+      "bytes": 323054,
+      "sha256": "740ed8c4d9401b1fcbf361623dfd4d5380cfe913c132c9306cbb9c7f39b6f988",
+      "mode": "touch",
+      "name": "last-state.png",
+      "dimensions": [
+        844,
+        390
+      ],
+      "independentlyViewed": true,
+      "observations": [
+        "Race scene visible with steering wheel, nitro, small boost and drift controls; item control absent in the speed stage.",
+        "3D scene visibly coarse at .35 while touch controls and HUD remain readable; image does not certify touch driving."
+      ]
+    }
+  ],
+  "nonBlockingObservations": [
+    {
+      "id": "DESKTOP_NEAR_CAR_NAME_OVERLAP",
+      "evidence": "/workspace/scratch/29547c23d820/recovery/cold-emergency-qa/runs/h5-qq-mobile-20261013/artifacts/cold-start-desktop/last-state.png",
+      "observation": "A near-car label 山路高手 is large at the bottom of the desktop image and intersects the boost meter.",
+      "rootCauseStatus": "Not diagnosed in this scoped review; no claim that this patch introduced it.",
+      "scope": "Separate visual observation; no cold-start or keyboard assertion failed, and no scene object was hidden to obtain the pass."
+    }
+  ],
+  "limitations": [
+    "Complete Chromium with software WebGL is local browser evidence; physical phones, human play and platform packages are not certified.",
+    "The new local attempt-12 gates pass. This review does not claim a new remote CI result or erase the prior remote 99af desktop failure.",
+    "Touch is startup and controls/CSS only. No touch steering, drift driving or sustained handling was exercised.",
+    "Existing .35 rendering is visibly coarse. Desktop antialias remains true; touch remains false. The test-only no-MSAA mode was not used.",
+    "No full-race natural completion, all-30-stage/daily, live SDK ads/payment, or commercial release certification is added. Earlier natural and platform evidence gaps remain open."
+  ],
+  "blockedWithinRequestedScope": false,
+  "publishable": false,
+  "writes": [
+    "/workspace/scratch/29547c23d820/recovery/cold-emergency-independent-qa.json"
+  ],
+  "validation": {
+    "engine": "Zod",
+    "version": "4.4.3",
+    "schemaId": "cold-emergency-independent-qa/v1",
+    "validatedBeforeWrite": true,
+    "validatedAfterReadBack": true
+  }
+}

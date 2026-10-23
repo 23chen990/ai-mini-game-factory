@@ -1,0 +1,572 @@
+{
+  "schemaVersion": 1,
+  "type": "ci-cold-monitor-handoff",
+  "status": "MONITORING_COMPLETE",
+  "repository": "23chen990/ai-mini-game-factory",
+  "commit": "4746f395815ea8986d438e2dee6437b81fa76fa9",
+  "observedAt": "2026-10-18T16:42:03.162Z",
+  "workflow": {
+    "id": 39145984695,
+    "name": "Racing independent cold-start QA",
+    "status": "completed",
+    "conclusion": "failure",
+    "run_number": 20,
+    "jobs_url": "https://api.github.com/repos/23chen990/ai-mini-game-factory/actions/runs/39145984695/jobs",
+    "logs_url": "https://api.github.com/repos/23chen990/ai-mini-game-factory/actions/runs/39145984695/logs",
+    "workflow_id": 387729351,
+    "url": "https://github.com/23chen990/ai-mini-game-factory/actions/runs/39145984695"
+  },
+  "jobs": [
+    {
+      "id": 117729804022,
+      "name": "cold-start (desktop)",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_id": 39145984695,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Locked dependencies and focused syntax",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Same approved pinned native engine as primary racing CI",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Build exact PR runtime without publishing",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Matching complete Chromium browser",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "Original cold-start assertions in complete Chromium - no timeout changes",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 8
+        },
+        {
+          "name": "Diagnostic GPU queue and HUD isolation - never a production pass",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9
+        },
+        {
+          "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10
+        },
+        {
+          "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 19
+        },
+        {
+          "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21
+        }
+      ]
+    },
+    {
+      "id": 117729804235,
+      "name": "cold-start (touch)",
+      "status": "completed",
+      "conclusion": "success",
+      "run_id": 39145984695,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Locked dependencies and focused syntax",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Same approved pinned native engine as primary racing CI",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Build exact PR runtime without publishing",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Matching complete Chromium browser",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "Original cold-start assertions in complete Chromium - no timeout changes",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8
+        },
+        {
+          "name": "Diagnostic GPU queue and HUD isolation - never a production pass",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9
+        },
+        {
+          "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10
+        },
+        {
+          "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19
+        },
+        {
+          "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21
+        }
+      ]
+    },
+    {
+      "id": 117729804289,
+      "name": "cold-start (context)",
+      "status": "completed",
+      "conclusion": "success",
+      "run_id": 39145984695,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Locked dependencies and focused syntax",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Same approved pinned native engine as primary racing CI",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Build exact PR runtime without publishing",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Matching complete Chromium browser",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "Original cold-start assertions in complete Chromium - no timeout changes",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 8
+        },
+        {
+          "name": "Diagnostic GPU queue and HUD isolation - never a production pass",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9
+        },
+        {
+          "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10
+        },
+        {
+          "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19
+        },
+        {
+          "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21
+        }
+      ]
+    }
+  ],
+  "buildVerification": {
+    "expectedBuildHash": "893226cc0792aaae4254b0a09fcdeb782d76efa5064f8703a810ca43eebe500d",
+    "allThreeCiBuildReceiptsMatch": true,
+    "desktopAndTouchRuntimeReportsMatch": true,
+    "artifactHeadMatchesCanonicalCommit": true
+  },
+  "gates": {
+    "desktop": {
+      "jobId": 117729804022,
+      "productionGate": true,
+      "passed": false,
+      "originalCountdownTimeoutMs": 45000,
+      "countdownGate": "FAIL",
+      "originalKeyboardTimeoutMs": 18000,
+      "keyboardGate": "NOT_REACHED",
+      "source": "tools/lean-pilot/racing-cold-start-qa.mjs:84:10",
+      "errors": [
+        "AssertionError [ERR_ASSERTION]: Fresh desktop did not enter race: {\"when\":\"after-click\",\"at\":71623.6,\"state\":\"countdown\",\"phase\":\"countdown\",\"hasPlayer\":true,\"cdT\":1.5217000000000125,\"raceTime\":0,\"gameTime\":1.8428000000000477,\"quality\":\"low\",\"pixelRatio\":0.35,\"composer\":false,\"antialias\":true,\"drawingBuffer\":[478,268],\"visibility\":\"visible\",\"focus\":true,\"platform\":\"desktop\",\"note\":\"\",\"disabled\":true,\"countdown\":\"2\",\"life\":[{\"type\":\"pageshow\",\"at\":3409.7000000000116,\"visibility\":\"visible\",\"focus\":true}],\"speed\":0,\"steer\":0}\n    at file:///home/runner/work/ai-mini-game-factory/ai-mini-game-factory/tools/lean-pilot/racing-cold-start-qa.mjs:84:10"
+      ],
+      "finalLoopSnapshot": {
+        "at": 71623.6,
+        "state": "countdown",
+        "phase": "countdown",
+        "hasPlayer": true,
+        "cdT": 1.5217000000000125,
+        "raceTime": 0,
+        "gameTime": 1.8428000000000477,
+        "pixelRatio": 0.35,
+        "quality": "low",
+        "composer": false,
+        "antialias": true,
+        "drawingBuffer": [
+          478,
+          268
+        ],
+        "visibility": "visible",
+        "focus": true,
+        "speed": 0,
+        "steer": 0,
+        "when": "after-click",
+        "platform": "desktop",
+        "note": "",
+        "disabled": true,
+        "countdown": "2",
+        "life": [
+          {
+            "type": "pageshow",
+            "at": 3409.7000000000116,
+            "visibility": "visible",
+            "focus": true
+          }
+        ]
+      },
+      "lastSnapshot": {
+        "at": 75915.70000000001,
+        "state": "countdown",
+        "phase": "countdown",
+        "hasPlayer": true,
+        "cdT": 1.7859000000000242,
+        "raceTime": 0,
+        "gameTime": 2.1070000000000593,
+        "pixelRatio": 0.35,
+        "quality": "low",
+        "composer": false,
+        "antialias": true,
+        "drawingBuffer": [
+          478,
+          268
+        ],
+        "visibility": "visible",
+        "focus": true,
+        "speed": 0,
+        "steer": 0,
+        "platform": "desktop",
+        "note": "",
+        "disabled": true,
+        "countdown": "2",
+        "life": [
+          {
+            "type": "pageshow",
+            "at": 3409.7000000000116,
+            "visibility": "visible",
+            "focus": true
+          }
+        ]
+      }
+    },
+    "touch": {
+      "jobId": 117729804235,
+      "productionGate": true,
+      "passed": true,
+      "originalCountdownTimeoutMs": 45000,
+      "countdownGate": "PASS",
+      "errors": [],
+      "firstObservedRace": {
+        "at": 38018.7,
+        "state": "race",
+        "phase": "race",
+        "hasPlayer": true,
+        "cdT": 3.0428000000000006,
+        "raceTime": 0.05,
+        "gameTime": 3.401600000000002,
+        "pixelRatio": 0.35,
+        "quality": "low",
+        "composer": false,
+        "antialias": false,
+        "drawingBuffer": [
+          295,
+          136
+        ],
+        "visibility": "visible",
+        "focus": true,
+        "speed": 18.354685318148466,
+        "steer": 0,
+        "when": "after-click",
+        "platform": "touch",
+        "note": "",
+        "disabled": true,
+        "countdown": "出发",
+        "life": [
+          {
+            "type": "pageshow",
+            "at": 1250.8999999999942,
+            "visibility": "visible",
+            "focus": true
+          }
+        ]
+      },
+      "lastSnapshot": {
+        "at": 39015.29999999999,
+        "state": "race",
+        "phase": "race",
+        "hasPlayer": true,
+        "cdT": 3.0428000000000006,
+        "raceTime": 0.273,
+        "gameTime": 3.6246000000000014,
+        "pixelRatio": 0.35,
+        "quality": "low",
+        "composer": false,
+        "antialias": false,
+        "drawingBuffer": [
+          295,
+          136
+        ],
+        "visibility": "visible",
+        "focus": true,
+        "speed": 28.010272206914603,
+        "steer": 0,
+        "platform": "touch",
+        "note": "",
+        "disabled": true,
+        "countdown": "",
+        "life": [
+          {
+            "type": "pageshow",
+            "at": 1250.8999999999942,
+            "visibility": "visible",
+            "focus": true
+          }
+        ]
+      }
+    },
+    "context": {
+      "jobId": 117729804289,
+      "productionGate": false,
+      "jobConclusion": "success",
+      "productionAssertionStep": "skipped",
+      "diagnosticStep": "success",
+      "errors": []
+    }
+  },
+  "timingObservations": {
+    "reference": "Differences between performance.now QA snapshots. The first after-click record is an observation after the real click, not the exact click timestamp.",
+    "desktopFirstAfterClickAtMs": 26909.100000000006,
+    "desktopFirstObservedRatio035AtMs": 50525.30000000002,
+    "desktopFirstObservedRatio035ElapsedMs": 23616.20000000001,
+    "desktopCdTAtRatio035": 0.31329999999998837,
+    "desktopLastLoopElapsedMs": 44714.5,
+    "desktopAfterFloorObservedElapsedMs": 21098.29999999999,
+    "desktopAfterFloorCdTGain": 1.2084000000000241,
+    "touchFirstObservedRaceElapsedMs": 23085.699999999997
+  },
+  "failureScope": "The new build still failed the unchanged desktop 45-second native countdown assertion. The subsequent 18-second desktop keyboard assertion was not executed. Touch passed the original production test. Context job success is diagnostic only and cannot substitute for either production gate.",
+  "artifacts": [
+    {
+      "mode": "touch",
+      "id": 12143253144,
+      "name": "racing-cold-touch-4746f395815ea8986d438e2dee6437b81fa76fa9",
+      "bytes": 646929,
+      "sha256": "fbd916ec205b12da1f15807c2e56f8e21c25f5487089a84bdef164b6136e086c",
+      "verified": true,
+      "url": "https://github.com/23chen990/ai-mini-game-factory/actions/runs/39145984695/artifacts/12143253144"
+    },
+    {
+      "mode": "desktop",
+      "id": 12143118638,
+      "name": "racing-cold-desktop-4746f395815ea8986d438e2dee6437b81fa76fa9",
+      "bytes": 1754722,
+      "sha256": "e7f7b98c8fecd43f58ac89807b85c224e46d8ffbf9181c52c9d4f27fe97bbe96",
+      "verified": true,
+      "url": "https://github.com/23chen990/ai-mini-game-factory/actions/runs/39145984695/artifacts/12143118638"
+    },
+    {
+      "mode": "context",
+      "id": 12143008914,
+      "name": "racing-cold-context-4746f395815ea8986d438e2dee6437b81fa76fa9",
+      "bytes": 3396,
+      "sha256": "15837292c5ec18f1f9bd26a6a170bbe46a92399f4351748929298bd1ab28daaa",
+      "verified": true,
+      "url": "https://github.com/23chen990/ai-mini-game-factory/actions/runs/39145984695/artifacts/12143008914"
+    }
+  ],
+  "evidenceFiles": [
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-cold-final-raw.json",
+      "bytes": 11024,
+      "sha256": "69e237186796134207981df6f4ac32508cbdd443039cb8e091987cdcc75c643d"
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-cold-desktop.log",
+      "bytes": 132903,
+      "sha256": "2cbc235cd70fe398b4d32c95f786918e6e8969bf60d8d7831eace7b3433ce2e7"
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-cold-desktop-report.json",
+      "bytes": 28708,
+      "sha256": "faf5c0c4a19de2e1e4e3ffbf1b09affb6100f47ae1041f5f1cf072ac645265a4"
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-cold-desktop-build-racing.json",
+      "bytes": 11464,
+      "sha256": "a89e4c59c2930c35f3087a06c218c739e8b3cf29bf44e311a7d830aa2960125e"
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-cold-desktop-artifact.zip",
+      "bytes": 1754722,
+      "sha256": "e7f7b98c8fecd43f58ac89807b85c224e46d8ffbf9181c52c9d4f27fe97bbe96"
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-cold-touch.log",
+      "bytes": 109719,
+      "sha256": "1c685607b8a3235892395b9fdc7fcddd223b89561d86bfb8d841ee2287adb911"
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-cold-touch-report.json",
+      "bytes": 18185,
+      "sha256": "ab3f0f92c6154549beb80ab176ca7d63d16d3d46e9cb6d9d0f8e66d973fdf604"
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-cold-touch-build-racing.json",
+      "bytes": 11464,
+      "sha256": "aba6f051b5709bc11713dc504b7226f884ff52ce535521c998ac9594109615a5"
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-cold-touch-artifact.zip",
+      "bytes": 646929,
+      "sha256": "fbd916ec205b12da1f15807c2e56f8e21c25f5487089a84bdef164b6136e086c"
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-cold-context.log",
+      "bytes": 69264,
+      "sha256": "278e6b13274872745e65ff29872b05c00f9ef1d637c22d32112f7c246848565a"
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-cold-context-report.json",
+      "bytes": 3395,
+      "sha256": "b1a64d87e3108bb9b6b74bfb3b2bed69bf3d1477291ae3b8b01d7d36831d3193"
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-cold-context-build-racing.json",
+      "bytes": 11464,
+      "sha256": "6ea01ce92816b8b437653f999cc54958b06870ad6a10ced42b17b3c985525670"
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-cold-context-artifact.zip",
+      "bytes": 3396,
+      "sha256": "15837292c5ec18f1f9bd26a6a170bbe46a92399f4351748929298bd1ab28daaa"
+    }
+  ],
+  "mutations": {
+    "source": false,
+    "index": false,
+    "remote": false,
+    "reruns": 0,
+    "cancellations": 0
+  },
+  "zodValidated": true
+}

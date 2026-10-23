@@ -1,0 +1,2369 @@
+{
+  "schemaVersion": 1,
+  "buildHash": "c60652cca51624b1efb8fbb4cc183e17a741c89e3e39c313113d7f9e74dab3f1",
+  "htmlSha256": "f7437a4c533d5c17b9fe3b167360aef87ec3864249c7871bdf53985ae804a601",
+  "version": "V11.6",
+  "scope": "Full built H5 in real Chromium with simulated SDK and injected DNF settlement; engineering wiring only",
+  "liveAdSdk": "NOT_RUN",
+  "humanPhoneQA": "NOT_RUN",
+  "naturalRaceOutcome": "NOT_RUN",
+  "injections": [
+    "Seed a prior stage-01 medal/time and a full existing fuel ledger in isolated browser storage",
+    "Call the native showResults() while the actual started player remains unfinished",
+    "Install test-only __PLATFORM_META__ and window.tap callbacks, or omit the SDK",
+    "Replay close callbacks and stale DOM events to check duplicate and cross-stage guards"
+  ],
+  "clock": "Unmodified; fuel must remain unchanged during each measured ad flow",
+  "cases": [
+    {
+      "name": "cancel-stays-on-failed-stage",
+      "hasSdk": true,
+      "passed": true,
+      "errors": [],
+      "dnfInjection": {
+        "method": "native showResults() on an unfinished player",
+        "course": "race-02",
+        "finished": false,
+        "progress": -25,
+        "raceTime": 0
+      },
+      "failed": {
+        "at": 1792336084739,
+        "phase": "finished",
+        "loaded": "true",
+        "selected": "1",
+        "course": "race-02",
+        "identity": "风蚀箭谷：长弧翻过沙脊后收紧反切",
+        "nativeState": "paused",
+        "playerFinished": false,
+        "heading": "未完赛",
+        "resultStars": "★★★本场 0 星 · 历史最高 0 星",
+        "note": "",
+        "adHidden": false,
+        "adDisabled": false,
+        "startDisabled": true,
+        "stages": [
+          {
+            "value": "0",
+            "disabled": false
+          },
+          {
+            "value": "1",
+            "disabled": false
+          },
+          {
+            "value": "2",
+            "disabled": true
+          },
+          {
+            "value": "3",
+            "disabled": true
+          },
+          {
+            "value": "4",
+            "disabled": true
+          },
+          {
+            "value": "5",
+            "disabled": true
+          },
+          {
+            "value": "6",
+            "disabled": true
+          },
+          {
+            "value": "7",
+            "disabled": true
+          },
+          {
+            "value": "8",
+            "disabled": true
+          },
+          {
+            "value": "9",
+            "disabled": true
+          },
+          {
+            "value": "10",
+            "disabled": true
+          },
+          {
+            "value": "11",
+            "disabled": true
+          },
+          {
+            "value": "12",
+            "disabled": true
+          },
+          {
+            "value": "13",
+            "disabled": true
+          },
+          {
+            "value": "14",
+            "disabled": true
+          },
+          {
+            "value": "15",
+            "disabled": true
+          },
+          {
+            "value": "16",
+            "disabled": true
+          },
+          {
+            "value": "17",
+            "disabled": true
+          },
+          {
+            "value": "18",
+            "disabled": true
+          },
+          {
+            "value": "19",
+            "disabled": true
+          },
+          {
+            "value": "20",
+            "disabled": true
+          },
+          {
+            "value": "21",
+            "disabled": true
+          },
+          {
+            "value": "22",
+            "disabled": true
+          },
+          {
+            "value": "23",
+            "disabled": true
+          },
+          {
+            "value": "24",
+            "disabled": true
+          },
+          {
+            "value": "25",
+            "disabled": true
+          },
+          {
+            "value": "26",
+            "disabled": true
+          },
+          {
+            "value": "27",
+            "disabled": true
+          },
+          {
+            "value": "28",
+            "disabled": true
+          },
+          {
+            "value": "29",
+            "disabled": true
+          },
+          {
+            "value": "daily",
+            "disabled": true
+          }
+        ],
+        "progress": {
+          "version": 1,
+          "stars": {
+            "01": 2
+          },
+          "times": {
+            "01": 86.5
+          },
+          "gatePasses": {},
+          "stagePasses": {},
+          "skin": 0,
+          "rounds": 2,
+          "ownedSkins": [
+            0
+          ],
+          "ownedCars": [
+            "starter"
+          ],
+          "car": "starter",
+          "daily": {
+            "date": "",
+            "best": 0,
+            "stars": 0,
+            "streak": 0,
+            "lastWonDate": ""
+          }
+        },
+        "fuel": {
+          "version": 2,
+          "amount": 25,
+          "updatedAt": 1792336083368,
+          "lastAdAt": 0,
+          "lastAdId": ""
+        },
+        "sdk": {
+          "created": 0,
+          "loads": 0,
+          "shows": 0,
+          "active": false,
+          "events": [],
+          "closeListeners": 0,
+          "errorListeners": 0
+        }
+      },
+      "pending": {
+        "at": 1792336085701,
+        "phase": "finished",
+        "loaded": "true",
+        "selected": "1",
+        "course": "race-02",
+        "identity": "风蚀箭谷：长弧翻过沙脊后收紧反切",
+        "nativeState": "paused",
+        "playerFinished": false,
+        "heading": "未完赛",
+        "resultStars": "★★★本场 0 星 · 历史最高 0 星",
+        "note": "",
+        "adHidden": false,
+        "adDisabled": true,
+        "startDisabled": true,
+        "stages": [
+          {
+            "value": "0",
+            "disabled": false
+          },
+          {
+            "value": "1",
+            "disabled": false
+          },
+          {
+            "value": "2",
+            "disabled": true
+          },
+          {
+            "value": "3",
+            "disabled": true
+          },
+          {
+            "value": "4",
+            "disabled": true
+          },
+          {
+            "value": "5",
+            "disabled": true
+          },
+          {
+            "value": "6",
+            "disabled": true
+          },
+          {
+            "value": "7",
+            "disabled": true
+          },
+          {
+            "value": "8",
+            "disabled": true
+          },
+          {
+            "value": "9",
+            "disabled": true
+          },
+          {
+            "value": "10",
+            "disabled": true
+          },
+          {
+            "value": "11",
+            "disabled": true
+          },
+          {
+            "value": "12",
+            "disabled": true
+          },
+          {
+            "value": "13",
+            "disabled": true
+          },
+          {
+            "value": "14",
+            "disabled": true
+          },
+          {
+            "value": "15",
+            "disabled": true
+          },
+          {
+            "value": "16",
+            "disabled": true
+          },
+          {
+            "value": "17",
+            "disabled": true
+          },
+          {
+            "value": "18",
+            "disabled": true
+          },
+          {
+            "value": "19",
+            "disabled": true
+          },
+          {
+            "value": "20",
+            "disabled": true
+          },
+          {
+            "value": "21",
+            "disabled": true
+          },
+          {
+            "value": "22",
+            "disabled": true
+          },
+          {
+            "value": "23",
+            "disabled": true
+          },
+          {
+            "value": "24",
+            "disabled": true
+          },
+          {
+            "value": "25",
+            "disabled": true
+          },
+          {
+            "value": "26",
+            "disabled": true
+          },
+          {
+            "value": "27",
+            "disabled": true
+          },
+          {
+            "value": "28",
+            "disabled": true
+          },
+          {
+            "value": "29",
+            "disabled": true
+          },
+          {
+            "value": "daily",
+            "disabled": true
+          }
+        ],
+        "progress": {
+          "version": 1,
+          "stars": {
+            "01": 2
+          },
+          "times": {
+            "01": 86.5
+          },
+          "gatePasses": {},
+          "stagePasses": {},
+          "skin": 0,
+          "rounds": 2,
+          "ownedSkins": [
+            0
+          ],
+          "ownedCars": [
+            "starter"
+          ],
+          "car": "starter",
+          "daily": {
+            "date": "",
+            "best": 0,
+            "stars": 0,
+            "streak": 0,
+            "lastWonDate": ""
+          }
+        },
+        "fuel": {
+          "version": 2,
+          "amount": 25,
+          "updatedAt": 1792336083368,
+          "lastAdAt": 0,
+          "lastAdId": ""
+        },
+        "sdk": {
+          "created": 1,
+          "loads": 1,
+          "shows": 1,
+          "active": true,
+          "events": [
+            {
+              "kind": "create",
+              "adUnitId": "engineering-fixture-only"
+            },
+            {
+              "kind": "load"
+            },
+            {
+              "kind": "show"
+            }
+          ],
+          "closeListeners": 1,
+          "errorListeners": 1
+        }
+      },
+      "cancelled": {
+        "at": 1792336085707,
+        "phase": "finished",
+        "loaded": "true",
+        "selected": "1",
+        "course": "race-02",
+        "identity": "风蚀箭谷：长弧翻过沙脊后收紧反切",
+        "nativeState": "paused",
+        "playerFinished": false,
+        "heading": "未完赛",
+        "resultStars": "★★★本场 0 星 · 历史最高 0 星",
+        "note": "广告已取消，下一关未解锁",
+        "adHidden": false,
+        "adDisabled": false,
+        "startDisabled": true,
+        "stages": [
+          {
+            "value": "0",
+            "disabled": false
+          },
+          {
+            "value": "1",
+            "disabled": false
+          },
+          {
+            "value": "2",
+            "disabled": true
+          },
+          {
+            "value": "3",
+            "disabled": true
+          },
+          {
+            "value": "4",
+            "disabled": true
+          },
+          {
+            "value": "5",
+            "disabled": true
+          },
+          {
+            "value": "6",
+            "disabled": true
+          },
+          {
+            "value": "7",
+            "disabled": true
+          },
+          {
+            "value": "8",
+            "disabled": true
+          },
+          {
+            "value": "9",
+            "disabled": true
+          },
+          {
+            "value": "10",
+            "disabled": true
+          },
+          {
+            "value": "11",
+            "disabled": true
+          },
+          {
+            "value": "12",
+            "disabled": true
+          },
+          {
+            "value": "13",
+            "disabled": true
+          },
+          {
+            "value": "14",
+            "disabled": true
+          },
+          {
+            "value": "15",
+            "disabled": true
+          },
+          {
+            "value": "16",
+            "disabled": true
+          },
+          {
+            "value": "17",
+            "disabled": true
+          },
+          {
+            "value": "18",
+            "disabled": true
+          },
+          {
+            "value": "19",
+            "disabled": true
+          },
+          {
+            "value": "20",
+            "disabled": true
+          },
+          {
+            "value": "21",
+            "disabled": true
+          },
+          {
+            "value": "22",
+            "disabled": true
+          },
+          {
+            "value": "23",
+            "disabled": true
+          },
+          {
+            "value": "24",
+            "disabled": true
+          },
+          {
+            "value": "25",
+            "disabled": true
+          },
+          {
+            "value": "26",
+            "disabled": true
+          },
+          {
+            "value": "27",
+            "disabled": true
+          },
+          {
+            "value": "28",
+            "disabled": true
+          },
+          {
+            "value": "29",
+            "disabled": true
+          },
+          {
+            "value": "daily",
+            "disabled": true
+          }
+        ],
+        "progress": {
+          "version": 1,
+          "stars": {
+            "01": 2
+          },
+          "times": {
+            "01": 86.5
+          },
+          "gatePasses": {},
+          "stagePasses": {},
+          "skin": 0,
+          "rounds": 2,
+          "ownedSkins": [
+            0
+          ],
+          "ownedCars": [
+            "starter"
+          ],
+          "car": "starter",
+          "daily": {
+            "date": "",
+            "best": 0,
+            "stars": 0,
+            "streak": 0,
+            "lastWonDate": ""
+          }
+        },
+        "fuel": {
+          "version": 2,
+          "amount": 25,
+          "updatedAt": 1792336083368,
+          "lastAdAt": 0,
+          "lastAdId": ""
+        },
+        "sdk": {
+          "created": 1,
+          "loads": 1,
+          "shows": 1,
+          "active": false,
+          "events": [
+            {
+              "kind": "create",
+              "adUnitId": "engineering-fixture-only"
+            },
+            {
+              "kind": "load"
+            },
+            {
+              "kind": "show"
+            },
+            {
+              "kind": "close",
+              "isEnded": false
+            }
+          ],
+          "closeListeners": 0,
+          "errorListeners": 0
+        }
+      },
+      "last": {
+        "at": 1792336086377,
+        "phase": "ready",
+        "loaded": "true",
+        "selected": "1",
+        "course": "race-02",
+        "identity": "风蚀箭谷：长弧翻过沙脊后收紧反切",
+        "nativeState": "menu",
+        "heading": "未完赛",
+        "resultStars": "★★★本场 0 星 · 历史最高 0 星",
+        "note": "",
+        "adHidden": true,
+        "adDisabled": true,
+        "startDisabled": false,
+        "stages": [
+          {
+            "value": "0",
+            "disabled": false
+          },
+          {
+            "value": "1",
+            "disabled": false
+          },
+          {
+            "value": "2",
+            "disabled": true
+          },
+          {
+            "value": "3",
+            "disabled": true
+          },
+          {
+            "value": "4",
+            "disabled": true
+          },
+          {
+            "value": "5",
+            "disabled": true
+          },
+          {
+            "value": "6",
+            "disabled": true
+          },
+          {
+            "value": "7",
+            "disabled": true
+          },
+          {
+            "value": "8",
+            "disabled": true
+          },
+          {
+            "value": "9",
+            "disabled": true
+          },
+          {
+            "value": "10",
+            "disabled": true
+          },
+          {
+            "value": "11",
+            "disabled": true
+          },
+          {
+            "value": "12",
+            "disabled": true
+          },
+          {
+            "value": "13",
+            "disabled": true
+          },
+          {
+            "value": "14",
+            "disabled": true
+          },
+          {
+            "value": "15",
+            "disabled": true
+          },
+          {
+            "value": "16",
+            "disabled": true
+          },
+          {
+            "value": "17",
+            "disabled": true
+          },
+          {
+            "value": "18",
+            "disabled": true
+          },
+          {
+            "value": "19",
+            "disabled": true
+          },
+          {
+            "value": "20",
+            "disabled": true
+          },
+          {
+            "value": "21",
+            "disabled": true
+          },
+          {
+            "value": "22",
+            "disabled": true
+          },
+          {
+            "value": "23",
+            "disabled": true
+          },
+          {
+            "value": "24",
+            "disabled": true
+          },
+          {
+            "value": "25",
+            "disabled": true
+          },
+          {
+            "value": "26",
+            "disabled": true
+          },
+          {
+            "value": "27",
+            "disabled": true
+          },
+          {
+            "value": "28",
+            "disabled": true
+          },
+          {
+            "value": "29",
+            "disabled": true
+          },
+          {
+            "value": "daily",
+            "disabled": true
+          }
+        ],
+        "progress": {
+          "version": 1,
+          "stars": {
+            "01": 2
+          },
+          "times": {
+            "01": 86.5
+          },
+          "gatePasses": {},
+          "stagePasses": {},
+          "skin": 0,
+          "rounds": 2,
+          "ownedSkins": [
+            0
+          ],
+          "ownedCars": [
+            "starter"
+          ],
+          "car": "starter",
+          "daily": {
+            "date": "",
+            "best": 0,
+            "stars": 0,
+            "streak": 0,
+            "lastWonDate": ""
+          }
+        },
+        "fuel": {
+          "version": 2,
+          "amount": 25,
+          "updatedAt": 1792336083368,
+          "lastAdAt": 0,
+          "lastAdId": ""
+        },
+        "sdk": {
+          "created": 1,
+          "loads": 1,
+          "shows": 1,
+          "active": false,
+          "events": [
+            {
+              "kind": "create",
+              "adUnitId": "engineering-fixture-only"
+            },
+            {
+              "kind": "load"
+            },
+            {
+              "kind": "show"
+            },
+            {
+              "kind": "close",
+              "isEnded": false
+            }
+          ],
+          "closeListeners": 0,
+          "errorListeners": 0
+        }
+      }
+    },
+    {
+      "name": "complete-adjacent-and-reload",
+      "hasSdk": true,
+      "passed": true,
+      "errors": [],
+      "dnfInjection": {
+        "method": "native showResults() on an unfinished player",
+        "course": "race-02",
+        "finished": false,
+        "progress": -25,
+        "raceTime": 0
+      },
+      "failed": {
+        "at": 1792336096500,
+        "phase": "finished",
+        "loaded": "true",
+        "selected": "1",
+        "course": "race-02",
+        "identity": "风蚀箭谷：长弧翻过沙脊后收紧反切",
+        "nativeState": "paused",
+        "playerFinished": false,
+        "heading": "未完赛",
+        "resultStars": "★★★本场 0 星 · 历史最高 0 星",
+        "note": "",
+        "adHidden": false,
+        "adDisabled": false,
+        "startDisabled": true,
+        "stages": [
+          {
+            "value": "0",
+            "disabled": false
+          },
+          {
+            "value": "1",
+            "disabled": false
+          },
+          {
+            "value": "2",
+            "disabled": true
+          },
+          {
+            "value": "3",
+            "disabled": true
+          },
+          {
+            "value": "4",
+            "disabled": true
+          },
+          {
+            "value": "5",
+            "disabled": true
+          },
+          {
+            "value": "6",
+            "disabled": true
+          },
+          {
+            "value": "7",
+            "disabled": true
+          },
+          {
+            "value": "8",
+            "disabled": true
+          },
+          {
+            "value": "9",
+            "disabled": true
+          },
+          {
+            "value": "10",
+            "disabled": true
+          },
+          {
+            "value": "11",
+            "disabled": true
+          },
+          {
+            "value": "12",
+            "disabled": true
+          },
+          {
+            "value": "13",
+            "disabled": true
+          },
+          {
+            "value": "14",
+            "disabled": true
+          },
+          {
+            "value": "15",
+            "disabled": true
+          },
+          {
+            "value": "16",
+            "disabled": true
+          },
+          {
+            "value": "17",
+            "disabled": true
+          },
+          {
+            "value": "18",
+            "disabled": true
+          },
+          {
+            "value": "19",
+            "disabled": true
+          },
+          {
+            "value": "20",
+            "disabled": true
+          },
+          {
+            "value": "21",
+            "disabled": true
+          },
+          {
+            "value": "22",
+            "disabled": true
+          },
+          {
+            "value": "23",
+            "disabled": true
+          },
+          {
+            "value": "24",
+            "disabled": true
+          },
+          {
+            "value": "25",
+            "disabled": true
+          },
+          {
+            "value": "26",
+            "disabled": true
+          },
+          {
+            "value": "27",
+            "disabled": true
+          },
+          {
+            "value": "28",
+            "disabled": true
+          },
+          {
+            "value": "29",
+            "disabled": true
+          },
+          {
+            "value": "daily",
+            "disabled": true
+          }
+        ],
+        "progress": {
+          "version": 1,
+          "stars": {
+            "01": 2
+          },
+          "times": {
+            "01": 86.5
+          },
+          "gatePasses": {},
+          "stagePasses": {},
+          "skin": 0,
+          "rounds": 2,
+          "ownedSkins": [
+            0
+          ],
+          "ownedCars": [
+            "starter"
+          ],
+          "car": "starter",
+          "daily": {
+            "date": "",
+            "best": 0,
+            "stars": 0,
+            "streak": 0,
+            "lastWonDate": ""
+          }
+        },
+        "fuel": {
+          "version": 2,
+          "amount": 25,
+          "updatedAt": 1792336095735,
+          "lastAdAt": 0,
+          "lastAdId": ""
+        },
+        "sdk": {
+          "created": 0,
+          "loads": 0,
+          "shows": 0,
+          "active": false,
+          "events": [],
+          "closeListeners": 0,
+          "errorListeners": 0
+        }
+      },
+      "pending": {
+        "at": 1792336097673,
+        "phase": "finished",
+        "loaded": "true",
+        "selected": "1",
+        "course": "race-02",
+        "identity": "风蚀箭谷：长弧翻过沙脊后收紧反切",
+        "nativeState": "paused",
+        "playerFinished": false,
+        "heading": "未完赛",
+        "resultStars": "★★★本场 0 星 · 历史最高 0 星",
+        "note": "",
+        "adHidden": false,
+        "adDisabled": true,
+        "startDisabled": true,
+        "stages": [
+          {
+            "value": "0",
+            "disabled": false
+          },
+          {
+            "value": "1",
+            "disabled": false
+          },
+          {
+            "value": "2",
+            "disabled": true
+          },
+          {
+            "value": "3",
+            "disabled": true
+          },
+          {
+            "value": "4",
+            "disabled": true
+          },
+          {
+            "value": "5",
+            "disabled": true
+          },
+          {
+            "value": "6",
+            "disabled": true
+          },
+          {
+            "value": "7",
+            "disabled": true
+          },
+          {
+            "value": "8",
+            "disabled": true
+          },
+          {
+            "value": "9",
+            "disabled": true
+          },
+          {
+            "value": "10",
+            "disabled": true
+          },
+          {
+            "value": "11",
+            "disabled": true
+          },
+          {
+            "value": "12",
+            "disabled": true
+          },
+          {
+            "value": "13",
+            "disabled": true
+          },
+          {
+            "value": "14",
+            "disabled": true
+          },
+          {
+            "value": "15",
+            "disabled": true
+          },
+          {
+            "value": "16",
+            "disabled": true
+          },
+          {
+            "value": "17",
+            "disabled": true
+          },
+          {
+            "value": "18",
+            "disabled": true
+          },
+          {
+            "value": "19",
+            "disabled": true
+          },
+          {
+            "value": "20",
+            "disabled": true
+          },
+          {
+            "value": "21",
+            "disabled": true
+          },
+          {
+            "value": "22",
+            "disabled": true
+          },
+          {
+            "value": "23",
+            "disabled": true
+          },
+          {
+            "value": "24",
+            "disabled": true
+          },
+          {
+            "value": "25",
+            "disabled": true
+          },
+          {
+            "value": "26",
+            "disabled": true
+          },
+          {
+            "value": "27",
+            "disabled": true
+          },
+          {
+            "value": "28",
+            "disabled": true
+          },
+          {
+            "value": "29",
+            "disabled": true
+          },
+          {
+            "value": "daily",
+            "disabled": true
+          }
+        ],
+        "progress": {
+          "version": 1,
+          "stars": {
+            "01": 2
+          },
+          "times": {
+            "01": 86.5
+          },
+          "gatePasses": {},
+          "stagePasses": {},
+          "skin": 0,
+          "rounds": 2,
+          "ownedSkins": [
+            0
+          ],
+          "ownedCars": [
+            "starter"
+          ],
+          "car": "starter",
+          "daily": {
+            "date": "",
+            "best": 0,
+            "stars": 0,
+            "streak": 0,
+            "lastWonDate": ""
+          }
+        },
+        "fuel": {
+          "version": 2,
+          "amount": 25,
+          "updatedAt": 1792336095735,
+          "lastAdAt": 0,
+          "lastAdId": ""
+        },
+        "sdk": {
+          "created": 1,
+          "loads": 1,
+          "shows": 1,
+          "active": true,
+          "events": [
+            {
+              "kind": "create",
+              "adUnitId": "engineering-fixture-only"
+            },
+            {
+              "kind": "load"
+            },
+            {
+              "kind": "show"
+            }
+          ],
+          "closeListeners": 1,
+          "errorListeners": 1
+        }
+      },
+      "completed": {
+        "at": 1792336098414,
+        "phase": "ready",
+        "loaded": "true",
+        "selected": "2",
+        "course": "race-03",
+        "identity": "风车立交：四臂回廊接错位切线",
+        "nativeState": "menu",
+        "heading": "极速飞驰",
+        "resultStars": "★★★本场 0 星 · 历史最高 0 星",
+        "note": "第03关已解锁",
+        "adHidden": true,
+        "adDisabled": true,
+        "startDisabled": false,
+        "stages": [
+          {
+            "value": "0",
+            "disabled": false
+          },
+          {
+            "value": "1",
+            "disabled": false
+          },
+          {
+            "value": "2",
+            "disabled": false
+          },
+          {
+            "value": "3",
+            "disabled": true
+          },
+          {
+            "value": "4",
+            "disabled": true
+          },
+          {
+            "value": "5",
+            "disabled": true
+          },
+          {
+            "value": "6",
+            "disabled": true
+          },
+          {
+            "value": "7",
+            "disabled": true
+          },
+          {
+            "value": "8",
+            "disabled": true
+          },
+          {
+            "value": "9",
+            "disabled": true
+          },
+          {
+            "value": "10",
+            "disabled": true
+          },
+          {
+            "value": "11",
+            "disabled": true
+          },
+          {
+            "value": "12",
+            "disabled": true
+          },
+          {
+            "value": "13",
+            "disabled": true
+          },
+          {
+            "value": "14",
+            "disabled": true
+          },
+          {
+            "value": "15",
+            "disabled": true
+          },
+          {
+            "value": "16",
+            "disabled": true
+          },
+          {
+            "value": "17",
+            "disabled": true
+          },
+          {
+            "value": "18",
+            "disabled": true
+          },
+          {
+            "value": "19",
+            "disabled": true
+          },
+          {
+            "value": "20",
+            "disabled": true
+          },
+          {
+            "value": "21",
+            "disabled": true
+          },
+          {
+            "value": "22",
+            "disabled": true
+          },
+          {
+            "value": "23",
+            "disabled": true
+          },
+          {
+            "value": "24",
+            "disabled": true
+          },
+          {
+            "value": "25",
+            "disabled": true
+          },
+          {
+            "value": "26",
+            "disabled": true
+          },
+          {
+            "value": "27",
+            "disabled": true
+          },
+          {
+            "value": "28",
+            "disabled": true
+          },
+          {
+            "value": "29",
+            "disabled": true
+          },
+          {
+            "value": "daily",
+            "disabled": true
+          }
+        ],
+        "progress": {
+          "version": 1,
+          "stars": {
+            "01": 2
+          },
+          "times": {
+            "01": 86.5
+          },
+          "gatePasses": {},
+          "stagePasses": {
+            "03": "ad"
+          },
+          "skin": 0,
+          "rounds": 2,
+          "ownedSkins": [
+            0
+          ],
+          "ownedCars": [
+            "starter"
+          ],
+          "car": "starter",
+          "daily": {
+            "date": "",
+            "best": 0,
+            "stars": 0,
+            "streak": 0,
+            "lastWonDate": ""
+          }
+        },
+        "fuel": {
+          "version": 2,
+          "amount": 25,
+          "updatedAt": 1792336095735,
+          "lastAdAt": 0,
+          "lastAdId": ""
+        },
+        "sdk": {
+          "created": 1,
+          "loads": 1,
+          "shows": 1,
+          "active": false,
+          "events": [
+            {
+              "kind": "create",
+              "adUnitId": "engineering-fixture-only"
+            },
+            {
+              "kind": "load"
+            },
+            {
+              "kind": "show"
+            },
+            {
+              "kind": "close",
+              "isEnded": true
+            }
+          ],
+          "closeListeners": 0,
+          "errorListeners": 0
+        }
+      },
+      "afterReplayedEvents": {
+        "at": 1792336098451,
+        "phase": "ready",
+        "loaded": "true",
+        "selected": "2",
+        "course": "race-03",
+        "identity": "风车立交：四臂回廊接错位切线",
+        "nativeState": "menu",
+        "heading": "极速飞驰",
+        "resultStars": "★★★本场 0 星 · 历史最高 0 星",
+        "note": "",
+        "adHidden": true,
+        "adDisabled": true,
+        "startDisabled": false,
+        "stages": [
+          {
+            "value": "0",
+            "disabled": false
+          },
+          {
+            "value": "1",
+            "disabled": false
+          },
+          {
+            "value": "2",
+            "disabled": false
+          },
+          {
+            "value": "3",
+            "disabled": true
+          },
+          {
+            "value": "4",
+            "disabled": true
+          },
+          {
+            "value": "5",
+            "disabled": true
+          },
+          {
+            "value": "6",
+            "disabled": true
+          },
+          {
+            "value": "7",
+            "disabled": true
+          },
+          {
+            "value": "8",
+            "disabled": true
+          },
+          {
+            "value": "9",
+            "disabled": true
+          },
+          {
+            "value": "10",
+            "disabled": true
+          },
+          {
+            "value": "11",
+            "disabled": true
+          },
+          {
+            "value": "12",
+            "disabled": true
+          },
+          {
+            "value": "13",
+            "disabled": true
+          },
+          {
+            "value": "14",
+            "disabled": true
+          },
+          {
+            "value": "15",
+            "disabled": true
+          },
+          {
+            "value": "16",
+            "disabled": true
+          },
+          {
+            "value": "17",
+            "disabled": true
+          },
+          {
+            "value": "18",
+            "disabled": true
+          },
+          {
+            "value": "19",
+            "disabled": true
+          },
+          {
+            "value": "20",
+            "disabled": true
+          },
+          {
+            "value": "21",
+            "disabled": true
+          },
+          {
+            "value": "22",
+            "disabled": true
+          },
+          {
+            "value": "23",
+            "disabled": true
+          },
+          {
+            "value": "24",
+            "disabled": true
+          },
+          {
+            "value": "25",
+            "disabled": true
+          },
+          {
+            "value": "26",
+            "disabled": true
+          },
+          {
+            "value": "27",
+            "disabled": true
+          },
+          {
+            "value": "28",
+            "disabled": true
+          },
+          {
+            "value": "29",
+            "disabled": true
+          },
+          {
+            "value": "daily",
+            "disabled": true
+          }
+        ],
+        "progress": {
+          "version": 1,
+          "stars": {
+            "01": 2
+          },
+          "times": {
+            "01": 86.5
+          },
+          "gatePasses": {},
+          "stagePasses": {
+            "03": "ad"
+          },
+          "skin": 0,
+          "rounds": 2,
+          "ownedSkins": [
+            0
+          ],
+          "ownedCars": [
+            "starter"
+          ],
+          "car": "starter",
+          "daily": {
+            "date": "",
+            "best": 0,
+            "stars": 0,
+            "streak": 0,
+            "lastWonDate": ""
+          }
+        },
+        "fuel": {
+          "version": 2,
+          "amount": 25,
+          "updatedAt": 1792336095735,
+          "lastAdAt": 0,
+          "lastAdId": ""
+        },
+        "sdk": {
+          "created": 1,
+          "loads": 1,
+          "shows": 1,
+          "active": false,
+          "events": [
+            {
+              "kind": "create",
+              "adUnitId": "engineering-fixture-only"
+            },
+            {
+              "kind": "load"
+            },
+            {
+              "kind": "show"
+            },
+            {
+              "kind": "close",
+              "isEnded": true
+            },
+            {
+              "kind": "replayed-completed-close"
+            }
+          ],
+          "closeListeners": 0,
+          "errorListeners": 0
+        }
+      },
+      "reloaded": {
+        "at": 1792336104450,
+        "phase": "ready",
+        "loaded": "true",
+        "selected": "2",
+        "course": "race-03",
+        "identity": "风车立交：四臂回廊接错位切线",
+        "nativeState": "menu",
+        "heading": "极速飞驰",
+        "resultStars": "",
+        "note": "",
+        "adHidden": true,
+        "adDisabled": true,
+        "startDisabled": false,
+        "stages": [
+          {
+            "value": "0",
+            "disabled": false
+          },
+          {
+            "value": "1",
+            "disabled": false
+          },
+          {
+            "value": "2",
+            "disabled": false
+          },
+          {
+            "value": "3",
+            "disabled": true
+          },
+          {
+            "value": "4",
+            "disabled": true
+          },
+          {
+            "value": "5",
+            "disabled": true
+          },
+          {
+            "value": "6",
+            "disabled": true
+          },
+          {
+            "value": "7",
+            "disabled": true
+          },
+          {
+            "value": "8",
+            "disabled": true
+          },
+          {
+            "value": "9",
+            "disabled": true
+          },
+          {
+            "value": "10",
+            "disabled": true
+          },
+          {
+            "value": "11",
+            "disabled": true
+          },
+          {
+            "value": "12",
+            "disabled": true
+          },
+          {
+            "value": "13",
+            "disabled": true
+          },
+          {
+            "value": "14",
+            "disabled": true
+          },
+          {
+            "value": "15",
+            "disabled": true
+          },
+          {
+            "value": "16",
+            "disabled": true
+          },
+          {
+            "value": "17",
+            "disabled": true
+          },
+          {
+            "value": "18",
+            "disabled": true
+          },
+          {
+            "value": "19",
+            "disabled": true
+          },
+          {
+            "value": "20",
+            "disabled": true
+          },
+          {
+            "value": "21",
+            "disabled": true
+          },
+          {
+            "value": "22",
+            "disabled": true
+          },
+          {
+            "value": "23",
+            "disabled": true
+          },
+          {
+            "value": "24",
+            "disabled": true
+          },
+          {
+            "value": "25",
+            "disabled": true
+          },
+          {
+            "value": "26",
+            "disabled": true
+          },
+          {
+            "value": "27",
+            "disabled": true
+          },
+          {
+            "value": "28",
+            "disabled": true
+          },
+          {
+            "value": "29",
+            "disabled": true
+          },
+          {
+            "value": "daily",
+            "disabled": true
+          }
+        ],
+        "progress": {
+          "version": 1,
+          "stars": {
+            "01": 2
+          },
+          "times": {
+            "01": 86.5
+          },
+          "gatePasses": {},
+          "stagePasses": {
+            "03": "ad"
+          },
+          "skin": 0,
+          "rounds": 2,
+          "ownedSkins": [
+            0
+          ],
+          "ownedCars": [
+            "starter"
+          ],
+          "car": "starter",
+          "daily": {
+            "date": "",
+            "best": 0,
+            "stars": 0,
+            "streak": 0,
+            "lastWonDate": ""
+          }
+        },
+        "fuel": {
+          "version": 2,
+          "amount": 25,
+          "updatedAt": 1792336095735,
+          "lastAdAt": 0,
+          "lastAdId": ""
+        },
+        "sdk": {
+          "created": 0,
+          "loads": 0,
+          "shows": 0,
+          "active": false,
+          "events": [],
+          "closeListeners": 0,
+          "errorListeners": 0
+        }
+      },
+      "last": {
+        "at": 1792336104458,
+        "phase": "ready",
+        "loaded": "true",
+        "selected": "2",
+        "course": "race-03",
+        "identity": "风车立交：四臂回廊接错位切线",
+        "nativeState": "menu",
+        "heading": "极速飞驰",
+        "resultStars": "",
+        "note": "",
+        "adHidden": true,
+        "adDisabled": true,
+        "startDisabled": false,
+        "stages": [
+          {
+            "value": "0",
+            "disabled": false
+          },
+          {
+            "value": "1",
+            "disabled": false
+          },
+          {
+            "value": "2",
+            "disabled": false
+          },
+          {
+            "value": "3",
+            "disabled": true
+          },
+          {
+            "value": "4",
+            "disabled": true
+          },
+          {
+            "value": "5",
+            "disabled": true
+          },
+          {
+            "value": "6",
+            "disabled": true
+          },
+          {
+            "value": "7",
+            "disabled": true
+          },
+          {
+            "value": "8",
+            "disabled": true
+          },
+          {
+            "value": "9",
+            "disabled": true
+          },
+          {
+            "value": "10",
+            "disabled": true
+          },
+          {
+            "value": "11",
+            "disabled": true
+          },
+          {
+            "value": "12",
+            "disabled": true
+          },
+          {
+            "value": "13",
+            "disabled": true
+          },
+          {
+            "value": "14",
+            "disabled": true
+          },
+          {
+            "value": "15",
+            "disabled": true
+          },
+          {
+            "value": "16",
+            "disabled": true
+          },
+          {
+            "value": "17",
+            "disabled": true
+          },
+          {
+            "value": "18",
+            "disabled": true
+          },
+          {
+            "value": "19",
+            "disabled": true
+          },
+          {
+            "value": "20",
+            "disabled": true
+          },
+          {
+            "value": "21",
+            "disabled": true
+          },
+          {
+            "value": "22",
+            "disabled": true
+          },
+          {
+            "value": "23",
+            "disabled": true
+          },
+          {
+            "value": "24",
+            "disabled": true
+          },
+          {
+            "value": "25",
+            "disabled": true
+          },
+          {
+            "value": "26",
+            "disabled": true
+          },
+          {
+            "value": "27",
+            "disabled": true
+          },
+          {
+            "value": "28",
+            "disabled": true
+          },
+          {
+            "value": "29",
+            "disabled": true
+          },
+          {
+            "value": "daily",
+            "disabled": true
+          }
+        ],
+        "progress": {
+          "version": 1,
+          "stars": {
+            "01": 2
+          },
+          "times": {
+            "01": 86.5
+          },
+          "gatePasses": {},
+          "stagePasses": {
+            "03": "ad"
+          },
+          "skin": 0,
+          "rounds": 2,
+          "ownedSkins": [
+            0
+          ],
+          "ownedCars": [
+            "starter"
+          ],
+          "car": "starter",
+          "daily": {
+            "date": "",
+            "best": 0,
+            "stars": 0,
+            "streak": 0,
+            "lastWonDate": ""
+          }
+        },
+        "fuel": {
+          "version": 2,
+          "amount": 25,
+          "updatedAt": 1792336095735,
+          "lastAdAt": 0,
+          "lastAdId": ""
+        },
+        "sdk": {
+          "created": 0,
+          "loads": 0,
+          "shows": 0,
+          "active": false,
+          "events": [],
+          "closeListeners": 0,
+          "errorListeners": 0
+        }
+      }
+    },
+    {
+      "name": "no-sdk-hides-next-stage-ad",
+      "hasSdk": false,
+      "passed": true,
+      "errors": [],
+      "dnfInjection": {
+        "method": "native showResults() on an unfinished player",
+        "course": "race-02",
+        "finished": false,
+        "progress": -25,
+        "raceTime": 0
+      },
+      "failed": {
+        "at": 1792336115255,
+        "phase": "finished",
+        "loaded": "true",
+        "selected": "1",
+        "course": "race-02",
+        "identity": "风蚀箭谷：长弧翻过沙脊后收紧反切",
+        "nativeState": "paused",
+        "playerFinished": false,
+        "heading": "未完赛",
+        "resultStars": "★★★本场 0 星 · 历史最高 0 星",
+        "note": "",
+        "adHidden": true,
+        "adDisabled": true,
+        "startDisabled": true,
+        "stages": [
+          {
+            "value": "0",
+            "disabled": false
+          },
+          {
+            "value": "1",
+            "disabled": false
+          },
+          {
+            "value": "2",
+            "disabled": true
+          },
+          {
+            "value": "3",
+            "disabled": true
+          },
+          {
+            "value": "4",
+            "disabled": true
+          },
+          {
+            "value": "5",
+            "disabled": true
+          },
+          {
+            "value": "6",
+            "disabled": true
+          },
+          {
+            "value": "7",
+            "disabled": true
+          },
+          {
+            "value": "8",
+            "disabled": true
+          },
+          {
+            "value": "9",
+            "disabled": true
+          },
+          {
+            "value": "10",
+            "disabled": true
+          },
+          {
+            "value": "11",
+            "disabled": true
+          },
+          {
+            "value": "12",
+            "disabled": true
+          },
+          {
+            "value": "13",
+            "disabled": true
+          },
+          {
+            "value": "14",
+            "disabled": true
+          },
+          {
+            "value": "15",
+            "disabled": true
+          },
+          {
+            "value": "16",
+            "disabled": true
+          },
+          {
+            "value": "17",
+            "disabled": true
+          },
+          {
+            "value": "18",
+            "disabled": true
+          },
+          {
+            "value": "19",
+            "disabled": true
+          },
+          {
+            "value": "20",
+            "disabled": true
+          },
+          {
+            "value": "21",
+            "disabled": true
+          },
+          {
+            "value": "22",
+            "disabled": true
+          },
+          {
+            "value": "23",
+            "disabled": true
+          },
+          {
+            "value": "24",
+            "disabled": true
+          },
+          {
+            "value": "25",
+            "disabled": true
+          },
+          {
+            "value": "26",
+            "disabled": true
+          },
+          {
+            "value": "27",
+            "disabled": true
+          },
+          {
+            "value": "28",
+            "disabled": true
+          },
+          {
+            "value": "29",
+            "disabled": true
+          },
+          {
+            "value": "daily",
+            "disabled": true
+          }
+        ],
+        "progress": {
+          "version": 1,
+          "stars": {
+            "01": 2
+          },
+          "times": {
+            "01": 86.5
+          },
+          "gatePasses": {},
+          "stagePasses": {},
+          "skin": 0,
+          "rounds": 2,
+          "ownedSkins": [
+            0
+          ],
+          "ownedCars": [
+            "starter"
+          ],
+          "car": "starter",
+          "daily": {
+            "date": "",
+            "best": 0,
+            "stars": 0,
+            "streak": 0,
+            "lastWonDate": ""
+          }
+        },
+        "fuel": {
+          "version": 2,
+          "amount": 25,
+          "updatedAt": 1792336114253,
+          "lastAdAt": 0,
+          "lastAdId": ""
+        },
+        "sdk": {
+          "created": 0,
+          "loads": 0,
+          "shows": 0,
+          "active": false,
+          "events": [],
+          "closeListeners": 0,
+          "errorListeners": 0
+        }
+      },
+      "last": {
+        "at": 1792336115284,
+        "phase": "finished",
+        "loaded": "true",
+        "selected": "1",
+        "course": "race-02",
+        "identity": "风蚀箭谷：长弧翻过沙脊后收紧反切",
+        "nativeState": "paused",
+        "playerFinished": false,
+        "heading": "未完赛",
+        "resultStars": "★★★本场 0 星 · 历史最高 0 星",
+        "note": "",
+        "adHidden": true,
+        "adDisabled": true,
+        "startDisabled": true,
+        "stages": [
+          {
+            "value": "0",
+            "disabled": false
+          },
+          {
+            "value": "1",
+            "disabled": false
+          },
+          {
+            "value": "2",
+            "disabled": true
+          },
+          {
+            "value": "3",
+            "disabled": true
+          },
+          {
+            "value": "4",
+            "disabled": true
+          },
+          {
+            "value": "5",
+            "disabled": true
+          },
+          {
+            "value": "6",
+            "disabled": true
+          },
+          {
+            "value": "7",
+            "disabled": true
+          },
+          {
+            "value": "8",
+            "disabled": true
+          },
+          {
+            "value": "9",
+            "disabled": true
+          },
+          {
+            "value": "10",
+            "disabled": true
+          },
+          {
+            "value": "11",
+            "disabled": true
+          },
+          {
+            "value": "12",
+            "disabled": true
+          },
+          {
+            "value": "13",
+            "disabled": true
+          },
+          {
+            "value": "14",
+            "disabled": true
+          },
+          {
+            "value": "15",
+            "disabled": true
+          },
+          {
+            "value": "16",
+            "disabled": true
+          },
+          {
+            "value": "17",
+            "disabled": true
+          },
+          {
+            "value": "18",
+            "disabled": true
+          },
+          {
+            "value": "19",
+            "disabled": true
+          },
+          {
+            "value": "20",
+            "disabled": true
+          },
+          {
+            "value": "21",
+            "disabled": true
+          },
+          {
+            "value": "22",
+            "disabled": true
+          },
+          {
+            "value": "23",
+            "disabled": true
+          },
+          {
+            "value": "24",
+            "disabled": true
+          },
+          {
+            "value": "25",
+            "disabled": true
+          },
+          {
+            "value": "26",
+            "disabled": true
+          },
+          {
+            "value": "27",
+            "disabled": true
+          },
+          {
+            "value": "28",
+            "disabled": true
+          },
+          {
+            "value": "29",
+            "disabled": true
+          },
+          {
+            "value": "daily",
+            "disabled": true
+          }
+        ],
+        "progress": {
+          "version": 1,
+          "stars": {
+            "01": 2
+          },
+          "times": {
+            "01": 86.5
+          },
+          "gatePasses": {},
+          "stagePasses": {},
+          "skin": 0,
+          "rounds": 2,
+          "ownedSkins": [
+            0
+          ],
+          "ownedCars": [
+            "starter"
+          ],
+          "car": "starter",
+          "daily": {
+            "date": "",
+            "best": 0,
+            "stars": 0,
+            "streak": 0,
+            "lastWonDate": ""
+          }
+        },
+        "fuel": {
+          "version": 2,
+          "amount": 25,
+          "updatedAt": 1792336114253,
+          "lastAdAt": 0,
+          "lastAdId": ""
+        },
+        "sdk": {
+          "created": 0,
+          "loads": 0,
+          "shows": 0,
+          "active": false,
+          "events": [],
+          "closeListeners": 0,
+          "errorListeners": 0
+        }
+      }
+    }
+  ],
+  "errors": [],
+  "passed": true,
+  "browser": "151.0.7922.34"
+}

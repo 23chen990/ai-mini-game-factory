@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "route": "formal-fixer",
+  "repairAttempt": 19,
+  "priorRepairAttempt": 13,
+  "attempts": [
+    {
+      "attempt": 13,
+      "inputHash": "f3822dd6d53139446c413959d48157ab918e819f3201751a343b7dea3a96088b",
+      "hypothesis": "Reproduce archived attempt 13 unchanged as the final acceptance baseline; no gameplay or threshold changes",
+      "status": "AWAITING_PLAYWRIGHT_QA",
+      "buildHash": "cb948095fec6572df905061d777cba6080743d6dc72c3e62dede02b00ebc5725"
+    },
+    {
+      "attempt": 14,
+      "inputHash": "8fc5f345850ecf2dd2c0d90879c97c459e27134ebbd8da14f55e46e5e7b8bb86",
+      "hypothesis": "QA final: native AI boost cap, singleton late reward isolation, TapTap H5 orientation enum, explicit local-only ownership; no physics or acceptance threshold changes",
+      "status": "RETESTED_AD_PRESENTATION_DEFECT_REMAINS",
+      "buildHash": "149f4f87a60694b3dccd057c470d07a71991d9be59ebd8ae0200c9cff165e352",
+      "qa": {
+        "naturalStage01": "PASS_WITH_CHALLENGE_GAP",
+        "all150PhysicalAi": "PASS",
+        "adPresentation": "FAIL_2_NEW_REGRESSIONS",
+        "evidence": "runs/h5-qq-mobile-20261013/artifacts/final-20261020/attempt14"
+      }
+    },
+    {
+      "attempt": 15,
+      "inputHash": "78442b33911970c20164338e0748021460114283284d6b996d38ba4a49a567f1",
+      "hypothesis": "Distinct QA reproduction: ignore close during loading and require successful show Promise before settling any close; preserves first callback and rejects failed show. No physics, routes or acceptance thresholds changed.",
+      "status": "RETESTED_COMPATIBILITY_PACKAGE_MISMATCH",
+      "buildHash": "0c51322c42e2bf552bcbbd59cf3b0d0d742b6be5964be236547961b2ab0a3b86",
+      "qa": {
+        "engineering": "PASS",
+        "naturalRepresentative": "PASS",
+        "naturalCampaign": "BLOCKED_AT_04",
+        "perceptual": "BLOCKED",
+        "report": "docs/lean-pilot/racing-final-20261020/qa-final.json"
+      }
+    },
+    {
+      "attempt": 16,
+      "inputHash": "8e09f4831d99d7ab35af02394e360b1f20429142dde8b8ae18578d84bed9efd5",
+      "hypothesis": "Same source fresh/warm hash mismatch isolated to compatibility themes.mjs. Refresh that bridge on every build; do not change frozen acceptance tests. Default index/style bytes remain unchanged; revalidate one final delivery package.",
+      "status": "QA_RETESTED_PRODUCT_GATE_BLOCKED",
+      "buildHash": "40cf9871719d1154d7d855a805f157f5c00a88b23d6700f90c119717772c7542",
+      "qa": {
+        "engineering": "PASS",
+        "naturalRepresentative": "PASS",
+        "naturalCampaign": "BLOCKED_COVERAGE",
+        "perceptual": "BLOCKED",
+        "report": "docs/lean-pilot/racing-final-20261020/qa-final.json"
+      }
+    },
+    {
+      "attempt": 17,
+      "inputHash": "42152ced3974a766c06fe3c2ecce106d443ca406f837a4604ed071a4c3f2a864",
+      "hypothesis": "Attempt 17: longer legal apex lookahead plus width-aware braking and earned high-speed drift/exit spray; smooth existing tree normals and reduce private car environmental glare. Preserve native physics, maps, progression and all prior failures.",
+      "status": "QA_RETESTED_VISUAL_REPAIR_REQUIRED",
+      "buildHash": "e8ae1ba8825e2f3f28f0c732445cb32b45e5334923cae9da862e68cdfe6f8029",
+      "qa": {
+        "engineering": "PASS",
+        "naturalBaseline": "COMPETITION_OBSERVED_2_3_4",
+        "naturalResources": "THREE_NATURAL_WINS",
+        "controls": "PASS_844_AND_667",
+        "background": "NOT_OBSERVED_AUTOMATION_FOCUS_EMULATION",
+        "perceptual": "REPAIR_REQUIRED_MAP_SPECULAR",
+        "report": "docs/lean-pilot/racing-internal-20261020/triage.json"
+      }
+    },
+    {
+      "attempt": 18,
+      "inputHash": "8624de97e0b75c7a3542af652110b5b2a99489a46e6d15aea6991e91d62c5821",
+      "hypothesis": "Attempt 18: actual six-model A/B isolated residual glare to near-mirror mapped roughness, not normal-map topology. Bound private paint roughness while preserving albedo/PBR maps, original geometry and the validated attempt 17 physical controller. Recheck all natural and rendering paths on this single build.",
+      "status": "QA_RETESTED_PASSING_LANE_REPAIR_REQUIRED",
+      "buildHash": "016c807e29f2736ca2d02f9cabbe6b9b5bdfeddc653a67f9bbac8ee4a2fcc718",
+      "qa": {
+        "engineering": "423_PASS_150_FINISHERS_30_GEOMETRIES",
+        "visualGallery": "NO_REPRODUCED_P0_P1_IN_18_LANDSCAPE_CAPTURES",
+        "naturalCampaign": "01_02_PASS_03_LOSS_RETAINED",
+        "controls": "PASS_844_AND_667_REAL_BLUR_RELEASE_ROTATE",
+        "ads": "FIXTURES_PASS_NOT_LIVE_SDK",
+        "remaining": "V11 main-road passing target compressed into collision cylinder; new native-input-only hypothesis validated in isolated 30-stage engineering experiment",
+        "report": "docs/lean-pilot/racing-internal-20261020/triage.json"
+      }
+    },
+    {
+      "attempt": 19,
+      "inputHash": "448f0eaac44a2f89f5b54c6504d294e77f4e0d7018b07ea13d3d227033cf5f0d",
+      "hypothesis": "Attempt 19: existing tactical passing-line request was compressed by V11 main-road sampler into the blocker collision cylinder. Remove the extra0.70 factor, retain three-metre edge margin and unchanged fork approach. Native wheels/physics alone execute passes. Six-route same-seed traffic experiment improves contacts with unchanged wall count; all30 native experimental races finish. Preserve final18 material/controls and failed natural reports.",
+      "status": "QA_RETESTED_ENGINEERING_PASS_PLAYER_ACCEPTANCE_BLOCKED",
+      "buildHash": "811e05f4f6207050a63939680de93b4b3b262904663a103048d310f1466e37d6",
+      "qa": {
+        "engineering": "424_NATIVE_TESTS_150_FINISHERS_30_ROUTES_10_FORKS_PASS",
+        "gallery": "NO_SUPPORTED_P0_P1_IN_FINAL_18_LANDSCAPE_CAPTURES",
+        "touch": "844_667_REAL_COUNTERSTEER_RELEASE_BLUR_PAUSE_ROTATION_PASS",
+        "ads": "SDK_FIXTURES_PASS_NOT_LIVE",
+        "natural": "01_05_PODIUM;06_08_13_LOSSES_RETAINED;SEE_EXACT_SUMMARY",
+        "humanPhone": "NOT_RUN",
+        "report": "docs/lean-pilot/racing-internal-20261020/qa-final.json"
+      }
+    }
+  ],
+  "replacementThreadId": "01a157e1-82fa-7283-8e0d-39ab9fc0aeb5",
+  "originalThreadId": null,
+  "continuity": "Original stored thread not available in public artifacts. Root is workspace-scoped Fixer; rebuilding archived attempt 13 unchanged once for baseline, next actual repair is 14.",
+  "archivedAttempt13": "docs/lean-pilot/racing-unified-20261018/evidence-v116-render-fix/build-receipt.json",
+  "archivedBuildHash": "3a1bd6000047d8310718ca3ee39c7602b311a07eb5c2d2c08e950fee399cadf5"
+}

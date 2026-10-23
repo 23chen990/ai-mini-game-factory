@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "route": "formal-fixer",
+  "role": "FixerAgent",
+  "issueId": "V116-FUEL-TEARDOWN-ORDER",
+  "gameId": "qq-speed",
+  "workspace": "/workspace/scratch/29547c23d820/racing-unified/runs/h5-qq-mobile-20261013/workspace",
+  "status": "SOURCE_READY_FOR_ROOT_QA",
+  "routeReason": "A reproduced Node/browser lifecycle stall blocks the existing fuel fixture suite; the formal task explicitly assigns cleanup-only repair.",
+  "contextOmitted": [
+    "Map design, GLB upload, physics, economy and unrelated QA remain outside this cleanup repair."
+  ],
+  "taskPath": "/workspace/scratch/29547c23d820/recovery/V116-FUEL-TEARDOWN-ORDER.json",
+  "taskSha256": "ef9d5e587352695a455956c6292febb880ca11e6c6c1c879084bdf77943391c0",
+  "filesChanged": [
+    {
+      "path": "/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs",
+      "relativePath": "tools/lean-pilot/racing-fuel-lifecycle-qa.mjs",
+      "beforeSha256": "236128250cbf4df309480f5c72465069403399416083ee71460917084f9ebd40",
+      "sha256": "79d25157320f33f694ffca946aab6a4a514a482d57f2c1b52e38982bcebcfe59",
+      "gitBlobSha": "830090c78edbfc9c45d36df2c358a7736ab1833e",
+      "bytes": 12006
+    }
+  ],
+  "change": "Register one cleanup before Chromium launch. Close the optional browser first; always attempt HTTP server close in finally, including browser launch or close failure.",
+  "scopeProof": {
+    "onlyCleanupRegistrationChanged": true,
+    "testBodyCount": 10,
+    "testBodiesByteIdentical": true,
+    "beforeTestBodiesSha256": "3315a7f1300b4cc30e5910bb71ae4212916a641b7ae78381b862a41451d85f80",
+    "afterTestBodiesSha256": "3315a7f1300b4cc30e5910bb71ae4212916a641b7ae78381b862a41451d85f80",
+    "existingAssertionsViewportsFuelAmountsAndDeadlinesUnchanged": true,
+    "productSourceChanged": false
+  },
+  "checks": [
+    {
+      "name": "syntax",
+      "command": "node --check tools/lean-pilot/racing-fuel-lifecycle-qa.mjs",
+      "exitCode": 0,
+      "output": ""
+    },
+    {
+      "name": "scoped-eslint",
+      "command": "./node_modules/.bin/eslint tools/lean-pilot/racing-fuel-lifecycle-qa.mjs",
+      "exitCode": 0,
+      "output": ""
+    }
+  ],
+  "qa": {
+    "owner": "root",
+    "status": "PENDING_FRESH_BROWSER_RETEST",
+    "priorEvidence": [
+      "/workspace/scratch/29547c23d820/recovery/fuel-lifecycle-recheck2.tap",
+      "/workspace/scratch/29547c23d820/recovery/fuel-lifecycle-readonly-diagnosis.json"
+    ],
+    "remainingGap": "Root must rerun the unchanged ten-test suite. No runtime pass is claimed by this source handoff."
+  },
+  "upload": {
+    "owner": "root",
+    "status": "NEW_BLOB_REQUIRED_FOR_CHANGED_FIXTURE",
+    "supersedesPriorUploadedBytes": true
+  },
+  "mutations": {
+    "filesChanged": 1,
+    "browsersStarted": 0,
+    "signalsSent": 0,
+    "processesKilled": 0,
+    "buildsStarted": 0,
+    "gitObjectsWritten": 0,
+    "refsChanged": 0
+  },
+  "zodValidated": true,
+  "createdAt": "2026-10-18T15:58:44.754Z"
+}

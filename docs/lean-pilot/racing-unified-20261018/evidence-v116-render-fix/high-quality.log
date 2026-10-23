@@ -1,0 +1,669 @@
+RACING_QA_BROWSER=complete-chromium; game-state-and-timing-unchanged
+HIGH_QUALITY_STAGE={"name":"launch-full-chromium","at":"2026-10-18T16:58:52.555Z"}
+HIGH_QUALITY_STAGE={"name":"click-visible-race-start","at":"2026-10-18T16:59:03.271Z"}
+HIGH_QUALITY_STAGE={"name":"click-visible-race-pause","at":"2026-10-18T16:59:04.750Z"}
+HIGH_QUALITY_STAGE={"name":"select-visible-high-with-keyboard","at":"2026-10-18T16:59:07.218Z","selector":"#race-quality","keys":["End","Enter"]}
+HIGH_QUALITY_STAGE={"name":"capture-paused-high-screenshot","at":"2026-10-18T16:59:11.115Z"}
+{
+  "schemaVersion": 1,
+  "type": "HIGH_QUALITY_RUNTIME_QA",
+  "buildHash": "3a1bd6000047d8310718ca3ee39c7602b311a07eb5c2d2c08e950fee399cadf5",
+  "htmlPath": "/workspace/scratch/29547c23d820/racing-unified/runs/h5-qq-mobile-20261013/racing-two-button-3a1bd6000047.html",
+  "htmlSha256": "6e5d09159c71f34517177d6eacbfaa281337b90717309051e3b6f6803041f6d1",
+  "startedAt": "2026-10-18T16:58:52.529Z",
+  "finishedAt": "2026-10-18T16:59:16.138Z",
+  "passed": true,
+  "scope": "One normal UI start, pause and high-quality selection in full desktop Chromium software WebGL. This is not a natural race completion, a 45/18-second cold-start acceptance test, a physical handset test, or proof of underlying GPU sample allocation.",
+  "browser": {
+    "executablePath": "/workspace/scratch/29547c23d820/recovery/playwright-browsers/chromium-1234/chrome-linux64/chrome",
+    "flags": [
+      "--disable-dev-shm-usage",
+      "--use-gl=angle",
+      "--use-angle=swiftshader",
+      "--enable-unsafe-swiftshader"
+    ],
+    "viewport": {
+      "width": 1366,
+      "height": 768
+    },
+    "deviceScaleFactor": 1,
+    "isMobile": false,
+    "hasTouch": false,
+    "version": "151.0.7922.34"
+  },
+  "constants": {
+    "threeRevision": "169",
+    "HalfFloatType": 1016
+  },
+  "actions": [
+    {
+      "name": "launch-full-chromium",
+      "at": "2026-10-18T16:58:52.555Z"
+    },
+    {
+      "name": "click-visible-race-start",
+      "at": "2026-10-18T16:59:03.271Z"
+    },
+    {
+      "name": "click-visible-race-pause",
+      "at": "2026-10-18T16:59:04.750Z"
+    },
+    {
+      "name": "select-visible-high-with-keyboard",
+      "at": "2026-10-18T16:59:07.218Z",
+      "selector": "#race-quality",
+      "keys": [
+        "End",
+        "Enter"
+      ]
+    },
+    {
+      "name": "capture-paused-high-screenshot",
+      "at": "2026-10-18T16:59:11.115Z"
+    }
+  ],
+  "snapshots": [
+    {
+      "label": "ready",
+      "at": 10535.100000000559,
+      "state": "menu",
+      "pausedFrom": null,
+      "phase": "ready",
+      "quality": "mid",
+      "qualityControl": "low",
+      "graphicsQualityStored": null,
+      "qualityNote": "优先流畅，暂停时可调整画质",
+      "viewport": {
+        "width": 1366,
+        "height": 768,
+        "dpr": 1
+      },
+      "pixelRatio": 1,
+      "drawingBuffer": {
+        "width": 1366,
+        "height": 768
+      },
+      "contextAttributes": {
+        "alpha": true,
+        "antialias": false,
+        "depth": true,
+        "desynchronized": false,
+        "failIfMajorPerformanceCaveat": false,
+        "powerPreference": "high-performance",
+        "premultipliedAlpha": true,
+        "preserveDrawingBuffer": false,
+        "stencil": false,
+        "xrCompatible": false
+      },
+      "contextLost": false,
+      "deviceMaxSamples": 4,
+      "rendererMaxSamples": 4,
+      "identities": {
+        "game": true,
+        "renderer": true,
+        "context": true,
+        "scene": true,
+        "camera": true
+      },
+      "composer": {
+        "rendererIsNative": true,
+        "renderTarget1": {
+          "samplesRequested": 0,
+          "textureType": 1016,
+          "width": 1366,
+          "height": 768
+        },
+        "renderTarget2": {
+          "samplesRequested": 0,
+          "textureType": 1016,
+          "width": 1366,
+          "height": 768
+        },
+        "passCount": 3,
+        "passNames": [
+          "p9",
+          "t",
+          "S9"
+        ],
+        "enabled": [
+          true,
+          true,
+          true
+        ],
+        "renderPassSceneIsNative": true,
+        "renderPassCameraIsNative": true,
+        "bloomIsSecondPass": true
+      },
+      "bloom": {
+        "present": true,
+        "enabled": true,
+        "nMips": 5,
+        "horizontalTargets": 5,
+        "verticalTargets": 5,
+        "strength": 0.6
+      },
+      "nativeScene": {
+        "objectCount": 1188,
+        "children": 10,
+        "racerCount": 6,
+        "hasPlayer": false
+      },
+      "nativeTiming": {
+        "cdT": null,
+        "raceTime": 0.11120000000018627,
+        "time": 0.18230000000074506
+      },
+      "renderInfo": {
+        "frame": 124,
+        "calls": 1,
+        "triangles": 1,
+        "points": 0,
+        "lines": 0
+      },
+      "visibility": "visible",
+      "focused": true
+    },
+    {
+      "label": "before-normal-pause",
+      "at": 12013.700000000186,
+      "state": "countdown",
+      "pausedFrom": null,
+      "phase": "countdown",
+      "quality": "mid",
+      "qualityControl": "low",
+      "graphicsQualityStored": null,
+      "qualityNote": "优先流畅，暂停时可调整画质",
+      "viewport": {
+        "width": 1366,
+        "height": 768,
+        "dpr": 1
+      },
+      "pixelRatio": 1,
+      "drawingBuffer": {
+        "width": 1366,
+        "height": 768
+      },
+      "contextAttributes": {
+        "alpha": true,
+        "antialias": false,
+        "depth": true,
+        "desynchronized": false,
+        "failIfMajorPerformanceCaveat": false,
+        "powerPreference": "high-performance",
+        "premultipliedAlpha": true,
+        "preserveDrawingBuffer": false,
+        "stencil": false,
+        "xrCompatible": false
+      },
+      "contextLost": false,
+      "deviceMaxSamples": 4,
+      "rendererMaxSamples": 4,
+      "identities": {
+        "game": true,
+        "renderer": true,
+        "context": true,
+        "scene": true,
+        "camera": true
+      },
+      "composer": {
+        "rendererIsNative": true,
+        "renderTarget1": {
+          "samplesRequested": 0,
+          "textureType": 1016,
+          "width": 1366,
+          "height": 768
+        },
+        "renderTarget2": {
+          "samplesRequested": 0,
+          "textureType": 1016,
+          "width": 1366,
+          "height": 768
+        },
+        "passCount": 3,
+        "passNames": [
+          "p9",
+          "t",
+          "S9"
+        ],
+        "enabled": [
+          true,
+          true,
+          true
+        ],
+        "renderPassSceneIsNative": true,
+        "renderPassCameraIsNative": true,
+        "bloomIsSecondPass": true
+      },
+      "bloom": {
+        "present": true,
+        "enabled": true,
+        "nMips": 5,
+        "horizontalTargets": 5,
+        "verticalTargets": 5,
+        "strength": 0.6
+      },
+      "nativeScene": {
+        "objectCount": 1187,
+        "children": 10,
+        "racerCount": 6,
+        "hasPlayer": true
+      },
+      "nativeTiming": {
+        "cdT": 0,
+        "raceTime": 0,
+        "time": 0.28230000000074507
+      },
+      "renderInfo": {
+        "frame": 154,
+        "calls": 1,
+        "triangles": 1,
+        "points": 0,
+        "lines": 0
+      },
+      "visibility": "visible",
+      "focused": true
+    },
+    {
+      "label": "paused-before-high",
+      "at": 14484.5,
+      "state": "paused",
+      "pausedFrom": "countdown",
+      "phase": "paused",
+      "quality": "mid",
+      "qualityControl": "mid",
+      "graphicsQualityStored": null,
+      "qualityNote": "优先流畅，暂停时可调整画质",
+      "viewport": {
+        "width": 1366,
+        "height": 768,
+        "dpr": 1
+      },
+      "pixelRatio": 1,
+      "drawingBuffer": {
+        "width": 1366,
+        "height": 768
+      },
+      "contextAttributes": {
+        "alpha": true,
+        "antialias": false,
+        "depth": true,
+        "desynchronized": false,
+        "failIfMajorPerformanceCaveat": false,
+        "powerPreference": "high-performance",
+        "premultipliedAlpha": true,
+        "preserveDrawingBuffer": false,
+        "stencil": false,
+        "xrCompatible": false
+      },
+      "contextLost": false,
+      "deviceMaxSamples": 4,
+      "rendererMaxSamples": 4,
+      "identities": {
+        "game": true,
+        "renderer": true,
+        "context": true,
+        "scene": true,
+        "camera": true
+      },
+      "composer": {
+        "rendererIsNative": true,
+        "renderTarget1": {
+          "samplesRequested": 0,
+          "textureType": 1016,
+          "width": 1366,
+          "height": 768
+        },
+        "renderTarget2": {
+          "samplesRequested": 0,
+          "textureType": 1016,
+          "width": 1366,
+          "height": 768
+        },
+        "passCount": 3,
+        "passNames": [
+          "p9",
+          "t",
+          "S9"
+        ],
+        "enabled": [
+          true,
+          true,
+          true
+        ],
+        "renderPassSceneIsNative": true,
+        "renderPassCameraIsNative": true,
+        "bloomIsSecondPass": true
+      },
+      "bloom": {
+        "present": true,
+        "enabled": true,
+        "nMips": 5,
+        "horizontalTargets": 5,
+        "verticalTargets": 5,
+        "strength": 0.6
+      },
+      "nativeScene": {
+        "objectCount": 1187,
+        "children": 10,
+        "racerCount": 6,
+        "hasPlayer": true
+      },
+      "nativeTiming": {
+        "cdT": 0.10780000000074506,
+        "raceTime": 0,
+        "time": 0.3901000000014901
+      },
+      "renderInfo": {
+        "frame": 199,
+        "calls": 1,
+        "triangles": 1,
+        "points": 0,
+        "lines": 0
+      },
+      "visibility": "visible",
+      "focused": true
+    },
+    {
+      "label": "paused-high-rendered",
+      "at": 18384,
+      "state": "paused",
+      "pausedFrom": "countdown",
+      "phase": "paused",
+      "quality": "high",
+      "qualityControl": "high",
+      "graphicsQualityStored": "high",
+      "qualityNote": "已保存画质偏好，下次打开继续生效",
+      "viewport": {
+        "width": 1366,
+        "height": 768,
+        "dpr": 1
+      },
+      "pixelRatio": 1,
+      "drawingBuffer": {
+        "width": 1366,
+        "height": 768
+      },
+      "contextAttributes": {
+        "alpha": true,
+        "antialias": false,
+        "depth": true,
+        "desynchronized": false,
+        "failIfMajorPerformanceCaveat": false,
+        "powerPreference": "high-performance",
+        "premultipliedAlpha": true,
+        "preserveDrawingBuffer": false,
+        "stencil": false,
+        "xrCompatible": false
+      },
+      "contextLost": false,
+      "deviceMaxSamples": 4,
+      "rendererMaxSamples": 4,
+      "identities": {
+        "game": true,
+        "renderer": true,
+        "context": true,
+        "scene": true,
+        "camera": true
+      },
+      "composer": {
+        "rendererIsNative": true,
+        "renderTarget1": {
+          "samplesRequested": 4,
+          "textureType": 1016,
+          "width": 1366,
+          "height": 768
+        },
+        "renderTarget2": {
+          "samplesRequested": 4,
+          "textureType": 1016,
+          "width": 1366,
+          "height": 768
+        },
+        "passCount": 3,
+        "passNames": [
+          "p9",
+          "t",
+          "S9"
+        ],
+        "enabled": [
+          true,
+          true,
+          true
+        ],
+        "renderPassSceneIsNative": true,
+        "renderPassCameraIsNative": true,
+        "bloomIsSecondPass": true
+      },
+      "bloom": {
+        "present": true,
+        "enabled": true,
+        "nMips": 5,
+        "horizontalTargets": 5,
+        "verticalTargets": 5,
+        "strength": 0.75
+      },
+      "nativeScene": {
+        "objectCount": 1187,
+        "children": 10,
+        "racerCount": 6,
+        "hasPlayer": true
+      },
+      "nativeTiming": {
+        "cdT": 0.10780000000074506,
+        "raceTime": 0,
+        "time": 0.5987000000011176
+      },
+      "renderInfo": {
+        "frame": 274,
+        "calls": 1,
+        "triangles": 1,
+        "points": 0,
+        "lines": 0
+      },
+      "visibility": "visible",
+      "focused": true
+    },
+    {
+      "label": "after-high-screenshot",
+      "at": 22487.300000000745,
+      "state": "paused",
+      "pausedFrom": "countdown",
+      "phase": "paused",
+      "quality": "high",
+      "qualityControl": "high",
+      "graphicsQualityStored": "high",
+      "qualityNote": "已保存画质偏好，下次打开继续生效",
+      "viewport": {
+        "width": 1366,
+        "height": 768,
+        "dpr": 1
+      },
+      "pixelRatio": 1,
+      "drawingBuffer": {
+        "width": 1366,
+        "height": 768
+      },
+      "contextAttributes": {
+        "alpha": true,
+        "antialias": false,
+        "depth": true,
+        "desynchronized": false,
+        "failIfMajorPerformanceCaveat": false,
+        "powerPreference": "high-performance",
+        "premultipliedAlpha": true,
+        "preserveDrawingBuffer": false,
+        "stencil": false,
+        "xrCompatible": false
+      },
+      "contextLost": false,
+      "deviceMaxSamples": 4,
+      "rendererMaxSamples": 4,
+      "identities": {
+        "game": true,
+        "renderer": true,
+        "context": true,
+        "scene": true,
+        "camera": true
+      },
+      "composer": {
+        "rendererIsNative": true,
+        "renderTarget1": {
+          "samplesRequested": 4,
+          "textureType": 1016,
+          "width": 1366,
+          "height": 768
+        },
+        "renderTarget2": {
+          "samplesRequested": 4,
+          "textureType": 1016,
+          "width": 1366,
+          "height": 768
+        },
+        "passCount": 3,
+        "passNames": [
+          "p9",
+          "t",
+          "S9"
+        ],
+        "enabled": [
+          true,
+          true,
+          true
+        ],
+        "renderPassSceneIsNative": true,
+        "renderPassCameraIsNative": true,
+        "bloomIsSecondPass": true
+      },
+      "bloom": {
+        "present": true,
+        "enabled": true,
+        "nMips": 5,
+        "horizontalTargets": 5,
+        "verticalTargets": 5,
+        "strength": 0.75
+      },
+      "nativeScene": {
+        "objectCount": 1187,
+        "children": 10,
+        "racerCount": 6,
+        "hasPlayer": true
+      },
+      "nativeTiming": {
+        "cdT": 0.10780000000074506,
+        "raceTime": 0,
+        "time": 0.7208000000016764
+      },
+      "renderInfo": {
+        "frame": 334,
+        "calls": 1,
+        "triangles": 1,
+        "points": 0,
+        "lines": 0
+      },
+      "visibility": "visible",
+      "focused": true
+    }
+  ],
+  "checks": [
+    {
+      "name": "exact-attempt13-build",
+      "passed": true
+    },
+    {
+      "name": "exact-parent-requested-standalone-html",
+      "passed": true
+    },
+    {
+      "name": "served-exact-original-html-bytes",
+      "passed": true
+    },
+    {
+      "name": "initial-default-context-antialias-false",
+      "passed": true
+    },
+    {
+      "name": "normal-native-pause-branch",
+      "passed": true
+    },
+    {
+      "name": "quality-selector-visible",
+      "passed": true
+    },
+    {
+      "name": "same-game-renderer-context-scene-camera",
+      "passed": true
+    },
+    {
+      "name": "default-context-still-antialias-false",
+      "passed": true
+    },
+    {
+      "name": "unchanged-1366x768-dpr1",
+      "passed": true
+    },
+    {
+      "name": "actual-high-native-composer",
+      "passed": true
+    },
+    {
+      "name": "both-targets-request-four-samples",
+      "passed": true
+    },
+    {
+      "name": "both-targets-use-native-half-float",
+      "passed": true
+    },
+    {
+      "name": "three-enabled-passes-native-scene-and-camera",
+      "passed": true
+    },
+    {
+      "name": "bloom-retained-as-second-pass",
+      "passed": true
+    },
+    {
+      "name": "normal-quality-preference-stored",
+      "passed": true
+    },
+    {
+      "name": "native-full-scene-retained",
+      "passed": true
+    },
+    {
+      "name": "no-page-errors",
+      "passed": true
+    },
+    {
+      "name": "no-console-errors",
+      "passed": true
+    },
+    {
+      "name": "no-failed-requests",
+      "passed": true
+    }
+  ],
+  "pageErrors": [],
+  "consoleErrors": [],
+  "consoleWarnings": [],
+  "requestFailures": [],
+  "errors": [],
+  "sampleInterpretation": "renderTarget.samples records the actual runtime requested sample count. MAX_SAMPLES records device capability. No underlying renderbuffer allocation was inspected.",
+  "screenshot": {
+    "path": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-high-quality.png",
+    "bytes": 891003,
+    "sha256": "83c4850c94ea099434bb8469aa45464ff55e02aa09be27b3727334fcc396543e",
+    "width": 1366,
+    "height": 768
+  },
+  "cleanup": {
+    "browserLaunched": true,
+    "browserClosed": true,
+    "serverClosed": true
+  },
+  "zodValidated": true,
+  "inputEvidence": {
+    "buildReceiptSha256": "c70471b656c3f6e16e6e2c69c475aa7dad13aa795391b12801f27ee0fdfbcd40",
+    "htmlBytes": 13339105
+  },
+  "servedHtmlSha256": "6e5d09159c71f34517177d6eacbfaa281337b90717309051e3b6f6803041f6d1"
+}

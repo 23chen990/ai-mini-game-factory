@@ -1,0 +1,187 @@
+TAP version 13
+# Subtest: delivery evidence rejects seeded victories, old saved stars and forbidden state writes
+ok 1 - delivery evidence rejects seeded victories, old saved stars and forbidden state writes
+  ---
+  duration_ms: 6.092294
+  type: 'test'
+  ...
+# Subtest: a visible PASS still requires a real positive finish time/progress and a known career stage
+ok 2 - a visible PASS still requires a real positive finish time/progress and a known career stage
+  ---
+  duration_ms: 0.870786
+  type: 'test'
+  ...
+# Subtest: H5 delivery cannot claim physical, LIVE, commercial or publication approval
+ok 3 - H5 delivery cannot claim physical, LIVE, commercial or publication approval
+  ---
+  duration_ms: 2.322452
+  type: 'test'
+  ...
+# Subtest: real verifyDelivery follows native rank awards instead of historical mission counters
+    # Subtest: 05 item: native first place earns three stars with unmet old counters
+    ok 1 - 05 item: native first place earns three stars with unmet old counters
+      ---
+      duration_ms: 236.46556
+      type: 'test'
+      ...
+    # Subtest: 03 overtake: native first place earns three stars with unmet old counters
+    ok 2 - 03 overtake: native first place earns three stars with unmet old counters
+      ---
+      duration_ms: 233.341453
+      type: 'test'
+      ...
+    # Subtest: 04 drift: native first place earns three stars with unmet old counters
+    ok 3 - 04 drift: native first place earns three stars with unmet old counters
+      ---
+      duration_ms: 230.703054
+      type: 'test'
+      ...
+    # Subtest: 07 time: native first place earns three stars with unmet old counters
+    ok 4 - 07 time: native first place earns three stars with unmet old counters
+      ---
+      duration_ms: 223.131684
+      type: 'test'
+      ...
+    # Subtest: 02 speed: native first place earns three stars with unmet old counters
+    ok 5 - 02 speed: native first place earns three stars with unmet old counters
+      ---
+      duration_ms: 217.483461
+      type: 'test'
+      ...
+    # Subtest: 12 elimination: native first place earns three stars with unmet old counters
+    ok 6 - 12 elimination: native first place earns three stars with unmet old counters
+      ---
+      duration_ms: 223.595753
+      type: 'test'
+      ...
+    1..6
+ok 4 - real verifyDelivery follows native rank awards instead of historical mission counters
+  ---
+  duration_ms: 1366.47185
+  type: 'test'
+  ...
+# Subtest: real verifyDelivery accepts the native third-place one-star threshold
+ok 5 - real verifyDelivery accepts the native third-place one-star threshold
+  ---
+  duration_ms: 231.298917
+  type: 'test'
+  ...
+# Subtest: real verifyDelivery requires bounded daily start identity as well as that date's course and save
+ok 6 - real verifyDelivery requires bounded daily start identity as well as that date's course and save
+  ---
+  duration_ms: 631.01584
+  type: 'test'
+  ...
+# Subtest: real verifyDelivery keeps native outcome, saved stage and evidence integrity gates
+    # Subtest: unfinished
+    ok 1 - unfinished
+      ---
+      duration_ms: 209.122639
+      type: 'test'
+      ...
+    # Subtest: fourth despite old stars
+    ok 2 - fourth despite old stars
+      ---
+      duration_ms: 172.003799
+      type: 'test'
+      ...
+    # Subtest: zero stars
+    ok 3 - zero stars
+      ---
+      duration_ms: 173.840134
+      type: 'test'
+      ...
+    # Subtest: old result
+    ok 4 - old result
+      ---
+      duration_ms: 168.043322
+      type: 'test'
+      ...
+    # Subtest: wrong course
+    ok 5 - wrong course
+      ---
+      duration_ms: 171.521988
+      type: 'test'
+      ...
+    # Subtest: wrong saved stage
+    ok 6 - wrong saved stage
+      ---
+      duration_ms: 176.43138
+      type: 'test'
+      ...
+    # Subtest: artifact mismatch
+    ok 7 - artifact mismatch
+      ---
+      duration_ms: 148.220067
+      type: 'test'
+      ...
+    # Subtest: build mismatch
+    ok 8 - build mismatch
+      ---
+      duration_ms: 132.872086
+      type: 'test'
+      ...
+    # Subtest: input mismatch
+    ok 9 - input mismatch
+      ---
+      duration_ms: 152.286673
+      type: 'test'
+      ...
+    1..9
+ok 7 - real verifyDelivery keeps native outcome, saved stage and evidence integrity gates
+  ---
+  duration_ms: 1506.347684
+  type: 'test'
+  ...
+# Subtest: real verifyDelivery preserves both script bodies with a 14 MiB inline asset payload
+ok 8 - real verifyDelivery preserves both script bodies with a 14 MiB inline asset payload
+  ---
+  duration_ms: 711.661482
+  type: 'test'
+  ...
+# Subtest: real verifyDelivery enforces HTML script attributes and uppercase entry counts
+    # Subtest: spaced src assignment
+    ok 1 - spaced src assignment
+      ---
+      duration_ms: 167.675293
+      type: 'test'
+      ...
+    # Subtest: uppercase SRC attribute
+    ok 2 - uppercase SRC attribute
+      ---
+      duration_ms: 165.124787
+      type: 'test'
+      ...
+    # Subtest: extra uppercase external script
+    ok 3 - extra uppercase external script
+      ---
+      duration_ms: 162.085516
+      type: 'test'
+      ...
+    # Subtest: extra uppercase inline script
+    ok 4 - extra uppercase inline script
+      ---
+      duration_ms: 173.333652
+      type: 'test'
+      ...
+    1..4
+ok 9 - real verifyDelivery enforces HTML script attributes and uppercase entry counts
+  ---
+  duration_ms: 669.247896
+  type: 'test'
+  ...
+# Subtest: real verifyDelivery preserves bodies with mixed-case HTML script tags
+ok 10 - real verifyDelivery preserves bodies with mixed-case HTML script tags
+  ---
+  duration_ms: 216.336045
+  type: 'test'
+  ...
+1..10
+# tests 29
+# suites 0
+# pass 29
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 5475.252516

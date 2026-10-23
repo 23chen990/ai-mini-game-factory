@@ -1,0 +1,4430 @@
+{
+  "schemaVersion": 1,
+  "scope": "Constructed final native Track + verified ItemSystem placement; NO rendered or natural item pickup claim",
+  "buildHash": "811e05f4f6207050a63939680de93b4b3b262904663a103048d310f1466e37d6",
+  "sourceCommit": "6196faa085e18ac38b484fcfc1d6909c2bf22882",
+  "rows": [
+    {
+      "stage": "01",
+      "name": "城市攻防环",
+      "identity": "新城攻防：街口三连反打接内街回头",
+      "mode": "speed",
+      "laps": 2,
+      "raceFraction": 1,
+      "lapLengthM": 3181.85,
+      "minHeightM": -0.01,
+      "maxHeightM": 17.07,
+      "maxAbsoluteGradePercent": 5.54,
+      "minWidthM": 17.1,
+      "maxWidthM": 19.85,
+      "directionChanges": 9,
+      "sharpCurvePercent": 13,
+      "padPositions": [
+        {
+          "f": 0.1725,
+          "lat": 6
+        },
+        {
+          "f": 0.3987,
+          "lat": 6
+        },
+        {
+          "f": 0.6661,
+          "lat": -4
+        },
+        {
+          "f": 0.8696,
+          "lat": 4
+        }
+      ],
+      "shortcut": null,
+      "itemBoxesWhenItemMode": 20,
+      "itemModeActive": false,
+      "itemAnchors": [
+        {
+          "fraction": 0.1,
+          "lateralM": -5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": -2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 5.7,
+          "insideRoad": true
+        }
+      ],
+      "fixedSeedAiFinishRangeSeconds": [
+        117.333,
+        125.017
+      ]
+    },
+    {
+      "stage": "02",
+      "name": "沙漠疾速考核",
+      "identity": "风蚀箭谷：长弧翻过沙脊后收紧反切",
+      "mode": "speed",
+      "laps": 2,
+      "raceFraction": 1,
+      "lapLengthM": 3301.2,
+      "minHeightM": -0.01,
+      "maxHeightM": 30.99,
+      "maxAbsoluteGradePercent": 10.54,
+      "minWidthM": 16.65,
+      "maxWidthM": 19.33,
+      "directionChanges": 9,
+      "sharpCurvePercent": 12,
+      "padPositions": [
+        {
+          "f": 0.2963,
+          "lat": 0
+        },
+        {
+          "f": 0.682,
+          "lat": -6
+        }
+      ],
+      "shortcut": null,
+      "itemBoxesWhenItemMode": 20,
+      "itemModeActive": false,
+      "itemAnchors": [
+        {
+          "fraction": 0.1,
+          "lateralM": -5.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": -2.77,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 2.77,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 5.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -5.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -2.77,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 2.77,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 5.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -5.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -2.77,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 2.77,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 5.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -5.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -2.77,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 2.77,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 5.55,
+          "insideRoad": true
+        }
+      ],
+      "fixedSeedAiFinishRangeSeconds": [
+        124.417,
+        126.517
+      ]
+    },
+    {
+      "stage": "03",
+      "name": "内线双反超",
+      "identity": "风车立交：四臂回廊接错位切线",
+      "mode": "speed",
+      "laps": 2,
+      "raceFraction": 1,
+      "lapLengthM": 3397.86,
+      "minHeightM": 0,
+      "maxHeightM": 32.01,
+      "maxAbsoluteGradePercent": 10.63,
+      "minWidthM": 17.1,
+      "maxWidthM": 19.85,
+      "directionChanges": 9,
+      "sharpCurvePercent": 14,
+      "padPositions": [
+        {
+          "f": 0.1604,
+          "lat": 6
+        },
+        {
+          "f": 0.3611,
+          "lat": -6
+        },
+        {
+          "f": 0.6628,
+          "lat": 4
+        },
+        {
+          "f": 0.8635,
+          "lat": 4
+        }
+      ],
+      "shortcut": null,
+      "itemBoxesWhenItemMode": 20,
+      "itemModeActive": false,
+      "itemAnchors": [
+        {
+          "fraction": 0.1,
+          "lateralM": -5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": -2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 5.7,
+          "insideRoad": true
+        }
+      ],
+      "fixedSeedAiFinishRangeSeconds": [
+        125.208,
+        130.95
+      ]
+    },
+    {
+      "stage": "04",
+      "name": "海湾高压连漂",
+      "identity": "海鸥湾：外海宽弧与港内窄回头交替",
+      "mode": "speed",
+      "laps": 2,
+      "raceFraction": 1,
+      "lapLengthM": 3388.08,
+      "minHeightM": -0.03,
+      "maxHeightM": 38.97,
+      "maxAbsoluteGradePercent": 7.86,
+      "minWidthM": 17.1,
+      "maxWidthM": 19.85,
+      "directionChanges": 9,
+      "sharpCurvePercent": 11,
+      "padPositions": [
+        {
+          "f": 0.2798,
+          "lat": 5
+        },
+        {
+          "f": 0.67,
+          "lat": 5
+        }
+      ],
+      "shortcut": null,
+      "itemBoxesWhenItemMode": 20,
+      "itemModeActive": false,
+      "itemAnchors": [
+        {
+          "fraction": 0.1,
+          "lateralM": -5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": -2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 5.7,
+          "insideRoad": true
+        }
+      ],
+      "fixedSeedAiFinishRangeSeconds": [
+        125.883,
+        130.55
+      ]
+    },
+    {
+      "stage": "05",
+      "name": "神殿道具争夺",
+      "identity": "失落神殿：双臂马蹄回头与内院斜切",
+      "mode": "item",
+      "laps": 2,
+      "raceFraction": 1,
+      "lapLengthM": 3411.77,
+      "minHeightM": -0.08,
+      "maxHeightM": 29.01,
+      "maxAbsoluteGradePercent": 9.17,
+      "minWidthM": 16.2,
+      "maxWidthM": 18.81,
+      "directionChanges": 7,
+      "sharpCurvePercent": 13,
+      "padPositions": [
+        {
+          "f": 0.2483,
+          "lat": 0
+        },
+        {
+          "f": 0.6966,
+          "lat": -6
+        }
+      ],
+      "shortcut": {
+        "scene": "egypt",
+        "branchLengthM": 146.3,
+        "mainSegmentM": 175,
+        "physicalSavingM": 28.7,
+        "widthM": 11.5,
+        "neckWidthM": 8.25,
+        "playerProjectionPoints": 36,
+        "minMidCorridorClearanceM": 2,
+        "physicalTimeProxy": {
+          "mainMeters": 175,
+          "branchMeters": 146.3,
+          "physicalSavingMeters": 28.7,
+          "widthRatio": 0.458,
+          "skilled": {
+            "mainSeconds": 4.21,
+            "branchSeconds": 3.4,
+            "estimatedGainSeconds": 0.81,
+            "mainApexCurvature": 0.0401,
+            "branchApexCurvature": 0.0187,
+            "branchCornerMinMps": 43
+          },
+          "novice": {
+            "mainSeconds": 4.93,
+            "branchSeconds": 3.86,
+            "estimatedGainSeconds": 1.07,
+            "branchCornerMinMps": 36.5
+          },
+          "model": "Native physical centerline curvature + speed limit + finite braking/acceleration; NOT timed PlayerCar/AI and NOT evidence of natural human success"
+        }
+      },
+      "itemBoxesWhenItemMode": 20,
+      "itemModeActive": true,
+      "itemAnchors": [
+        {
+          "fraction": 0.1,
+          "lateralM": -5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": -2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 5.4,
+          "insideRoad": true
+        }
+      ],
+      "fixedSeedAiFinishRangeSeconds": [
+        126.367,
+        132.95
+      ]
+    },
+    {
+      "stage": "06",
+      "name": "城市道具混战",
+      "identity": "双城回廊：方形内院交错嵌入阶梯街网",
+      "mode": "item",
+      "laps": 2,
+      "raceFraction": 1,
+      "lapLengthM": 3101.58,
+      "minHeightM": -0.01,
+      "maxHeightM": 27.05,
+      "maxAbsoluteGradePercent": 9.51,
+      "minWidthM": 17.55,
+      "maxWidthM": 20.38,
+      "directionChanges": 11,
+      "sharpCurvePercent": 17,
+      "padPositions": [
+        {
+          "f": 0.2001,
+          "lat": 6
+        },
+        {
+          "f": 0.3703,
+          "lat": -6
+        },
+        {
+          "f": 0.5737,
+          "lat": 4
+        },
+        {
+          "f": 0.895,
+          "lat": 4
+        }
+      ],
+      "shortcut": null,
+      "itemBoxesWhenItemMode": 20,
+      "itemModeActive": true,
+      "itemAnchors": [
+        {
+          "fraction": 0.1,
+          "lateralM": -5.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": -2.92,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 2.92,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 5.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -5.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -2.92,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 2.92,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 5.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -5.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -2.92,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 2.92,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 5.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -5.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -2.92,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 2.92,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 5.85,
+          "insideRoad": true
+        }
+      ],
+      "fixedSeedAiFinishRangeSeconds": [
+        114.858,
+        120.717
+      ]
+    },
+    {
+      "stage": "07",
+      "name": "海崖极限限时",
+      "identity": "海崖阶梯：三级错台连续回头，坡面横穿后反向落到下一层",
+      "mode": "speed",
+      "laps": 1,
+      "raceFraction": 0.82,
+      "lapLengthM": 5014.97,
+      "minHeightM": 1.91,
+      "maxHeightM": 68.12,
+      "maxAbsoluteGradePercent": 11.9,
+      "minWidthM": 16.2,
+      "maxWidthM": 18.81,
+      "directionChanges": 10,
+      "sharpCurvePercent": 9,
+      "padPositions": [
+        {
+          "f": 0.2547,
+          "lat": 5
+        },
+        {
+          "f": 0.6908,
+          "lat": 5
+        }
+      ],
+      "shortcut": null,
+      "itemBoxesWhenItemMode": 20,
+      "itemModeActive": false,
+      "itemAnchors": [
+        {
+          "fraction": 0.1,
+          "lateralM": -5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": -2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 5.4,
+          "insideRoad": true
+        }
+      ],
+      "fixedSeedAiFinishRangeSeconds": [
+        76.408,
+        79.717
+      ]
+    },
+    {
+      "stage": "08",
+      "name": "雪地决胜",
+      "identity": "雪岭Ω：外岭长回头套住内钩再接谷底双切",
+      "mode": "speed",
+      "laps": 2,
+      "raceFraction": 1,
+      "lapLengthM": 3669.24,
+      "minHeightM": -0.07,
+      "maxHeightM": 37.01,
+      "maxAbsoluteGradePercent": 7.9,
+      "minWidthM": 17.1,
+      "maxWidthM": 19.85,
+      "directionChanges": 5,
+      "sharpCurvePercent": 10,
+      "padPositions": [
+        {
+          "f": 0.2635,
+          "lat": -5
+        },
+        {
+          "f": 0.646,
+          "lat": -5
+        }
+      ],
+      "shortcut": null,
+      "itemBoxesWhenItemMode": 20,
+      "itemModeActive": false,
+      "itemAnchors": [
+        {
+          "fraction": 0.1,
+          "lateralM": -5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": -2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 5.7,
+          "insideRoad": true
+        }
+      ],
+      "fixedSeedAiFinishRangeSeconds": [
+        136.208,
+        139.342
+      ]
+    },
+    {
+      "stage": "09",
+      "name": "沙丘极限补时",
+      "identity": "仙人掌岭：三片岩脊尖端之间交错换线",
+      "mode": "speed",
+      "laps": 2,
+      "raceFraction": 1,
+      "lapLengthM": 3272.72,
+      "minHeightM": -0.02,
+      "maxHeightM": 27.04,
+      "maxAbsoluteGradePercent": 11.19,
+      "minWidthM": 17.1,
+      "maxWidthM": 19.85,
+      "directionChanges": 11,
+      "sharpCurvePercent": 14,
+      "padPositions": [
+        {
+          "f": 0.3109,
+          "lat": 0
+        },
+        {
+          "f": 0.6649,
+          "lat": -6
+        }
+      ],
+      "shortcut": null,
+      "itemBoxesWhenItemMode": 20,
+      "itemModeActive": false,
+      "itemAnchors": [
+        {
+          "fraction": 0.1,
+          "lateralM": -5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": -2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -5.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 2.85,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 5.7,
+          "insideRoad": true
+        }
+      ],
+      "fixedSeedAiFinishRangeSeconds": [
+        120.7,
+        124.967
+      ]
+    },
+    {
+      "stage": "10",
+      "name": "城市逆转争冠",
+      "identity": "霓虹闪电：连续Z形切线接双层折返街区",
+      "mode": "item",
+      "laps": 3,
+      "raceFraction": 1,
+      "lapLengthM": 3519.1,
+      "minHeightM": 0,
+      "maxHeightM": 26.09,
+      "maxAbsoluteGradePercent": 9.83,
+      "minWidthM": 16.65,
+      "maxWidthM": 19.33,
+      "directionChanges": 7,
+      "sharpCurvePercent": 13,
+      "padPositions": [
+        {
+          "f": 0.158,
+          "lat": 6
+        },
+        {
+          "f": 0.3449,
+          "lat": 6
+        },
+        {
+          "f": 0.644,
+          "lat": -4
+        },
+        {
+          "f": 0.84,
+          "lat": 4
+        }
+      ],
+      "shortcut": {
+        "scene": "city",
+        "branchLengthM": 175.3,
+        "mainSegmentM": 220,
+        "physicalSavingM": 44.7,
+        "widthM": 11.5,
+        "neckWidthM": 8.05,
+        "playerProjectionPoints": 44,
+        "minMidCorridorClearanceM": 1.7,
+        "physicalTimeProxy": {
+          "mainMeters": 220,
+          "branchMeters": 175.3,
+          "physicalSavingMeters": 44.7,
+          "widthRatio": 0.435,
+          "skilled": {
+            "mainSeconds": 5.26,
+            "branchSeconds": 4.08,
+            "estimatedGainSeconds": 1.18,
+            "mainApexCurvature": 0.0339,
+            "branchApexCurvature": 0.0189,
+            "branchCornerMinMps": 43
+          },
+          "novice": {
+            "mainSeconds": 6.16,
+            "branchSeconds": 4.63,
+            "estimatedGainSeconds": 1.53,
+            "branchCornerMinMps": 36.4
+          },
+          "model": "Native physical centerline curvature + speed limit + finite braking/acceleration; NOT timed PlayerCar/AI and NOT evidence of natural human success"
+        }
+      },
+      "itemBoxesWhenItemMode": 20,
+      "itemModeActive": true,
+      "itemAnchors": [
+        {
+          "fraction": 0.1,
+          "lateralM": -5.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": -2.77,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 2.77,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 5.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -5.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -2.77,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 2.77,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 5.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -5.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -2.77,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 2.77,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 5.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -5.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -2.77,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 2.77,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 5.55,
+          "insideRoad": true
+        }
+      ],
+      "fixedSeedAiFinishRangeSeconds": [
+        188.017,
+        194.75
+      ]
+    },
+    {
+      "stage": "11",
+      "name": "海蛇三次超越",
+      "identity": "海蛇湾：三排山腰道路串联两组内侧长S",
+      "mode": "speed",
+      "laps": 2,
+      "raceFraction": 1,
+      "lapLengthM": 3373.88,
+      "minHeightM": -0.04,
+      "maxHeightM": 39.03,
+      "maxAbsoluteGradePercent": 9.5,
+      "minWidthM": 16.2,
+      "maxWidthM": 18.81,
+      "directionChanges": 9,
+      "sharpCurvePercent": 11,
+      "padPositions": [
+        {
+          "f": 0.3177,
+          "lat": -5
+        },
+        {
+          "f": 0.6913,
+          "lat": -5
+        }
+      ],
+      "shortcut": null,
+      "itemBoxesWhenItemMode": 20,
+      "itemModeActive": false,
+      "itemAnchors": [
+        {
+          "fraction": 0.1,
+          "lateralM": -5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": -2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 5.4,
+          "insideRoad": true
+        }
+      ],
+      "fixedSeedAiFinishRangeSeconds": [
+        123,
+        127.35
+      ]
+    },
+    {
+      "stage": "12",
+      "name": "雪地末位猎杀",
+      "identity": "冰旋高架：外桥大回转折入内桥窄U",
+      "mode": "speed",
+      "laps": 2,
+      "raceFraction": 1,
+      "lapLengthM": 3536.59,
+      "minHeightM": -0.03,
+      "maxHeightM": 34.99,
+      "maxAbsoluteGradePercent": 9.29,
+      "minWidthM": 16.65,
+      "maxWidthM": 19.33,
+      "directionChanges": 9,
+      "sharpCurvePercent": 12,
+      "padPositions": [
+        {
+          "f": 0.2505,
+          "lat": 5
+        },
+        {
+          "f": 0.7354,
+          "lat": -5
+        }
+      ],
+      "shortcut": {
+        "scene": "snow",
+        "branchLengthM": 202.8,
+        "mainSegmentM": 235,
+        "physicalSavingM": 32.2,
+        "widthM": 11.5,
+        "neckWidthM": 7.95,
+        "playerProjectionPoints": 52,
+        "minMidCorridorClearanceM": 3.1,
+        "physicalTimeProxy": {
+          "mainMeters": 235,
+          "branchMeters": 202.8,
+          "physicalSavingMeters": 32.2,
+          "widthRatio": 0.43,
+          "skilled": {
+            "mainSeconds": 5.56,
+            "branchSeconds": 4.72,
+            "estimatedGainSeconds": 0.84,
+            "mainApexCurvature": 0.0354,
+            "branchApexCurvature": 0.0129,
+            "branchCornerMinMps": 43
+          },
+          "novice": {
+            "mainSeconds": 6.43,
+            "branchSeconds": 5.34,
+            "estimatedGainSeconds": 1.09,
+            "branchCornerMinMps": 38
+          },
+          "model": "Native physical centerline curvature + speed limit + finite braking/acceleration; NOT timed PlayerCar/AI and NOT evidence of natural human success"
+        }
+      },
+      "itemBoxesWhenItemMode": 20,
+      "itemModeActive": false,
+      "itemAnchors": [
+        {
+          "fraction": 0.1,
+          "lateralM": -5.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": -2.77,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 2.77,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 5.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -5.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -2.77,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 2.77,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 5.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -5.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -2.77,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 2.77,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 5.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -5.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -2.77,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 2.77,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 5.55,
+          "insideRoad": true
+        }
+      ],
+      "fixedSeedAiFinishRangeSeconds": [
+        128.542,
+        133.233
+      ]
+    },
+    {
+      "stage": "13",
+      "name": "都市终极车神",
+      "identity": "皇冠内街：正交双发夹，内街穿过两枚冠齿后再次折返",
+      "mode": "speed",
+      "laps": 3,
+      "raceFraction": 1,
+      "lapLengthM": 3297.85,
+      "minHeightM": -0.06,
+      "maxHeightM": 38.1,
+      "maxAbsoluteGradePercent": 10.59,
+      "minWidthM": 16.65,
+      "maxWidthM": 19.33,
+      "directionChanges": 11,
+      "sharpCurvePercent": 18,
+      "padPositions": [
+        {
+          "f": 0.165,
+          "lat": 6
+        },
+        {
+          "f": 0.3853,
+          "lat": 6
+        },
+        {
+          "f": 0.6058,
+          "lat": -4
+        },
+        {
+          "f": 0.8494,
+          "lat": 4
+        }
+      ],
+      "shortcut": {
+        "scene": "city",
+        "branchLengthM": 143.9,
+        "mainSegmentM": 175,
+        "physicalSavingM": 31.1,
+        "widthM": 11.5,
+        "neckWidthM": 7.7,
+        "playerProjectionPoints": 36,
+        "minMidCorridorClearanceM": 1.1,
+        "physicalTimeProxy": {
+          "mainMeters": 175,
+          "branchMeters": 143.9,
+          "physicalSavingMeters": 31.1,
+          "widthRatio": 0.416,
+          "skilled": {
+            "mainSeconds": 4.18,
+            "branchSeconds": 3.35,
+            "estimatedGainSeconds": 0.83,
+            "mainApexCurvature": 0.0368,
+            "branchApexCurvature": 0.0231,
+            "branchCornerMinMps": 43
+          },
+          "novice": {
+            "mainSeconds": 4.88,
+            "branchSeconds": 3.86,
+            "estimatedGainSeconds": 1.02,
+            "branchCornerMinMps": 32.9
+          },
+          "model": "Native physical centerline curvature + speed limit + finite braking/acceleration; NOT timed PlayerCar/AI and NOT evidence of natural human success"
+        }
+      },
+      "itemBoxesWhenItemMode": 20,
+      "itemModeActive": false,
+      "itemAnchors": [
+        {
+          "fraction": 0.1,
+          "lateralM": -5.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": -2.77,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 2.77,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 5.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -5.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -2.77,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 2.77,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 5.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -5.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -2.77,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 2.77,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 5.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -5.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -2.77,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 2.77,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 5.55,
+          "insideRoad": true
+        }
+      ],
+      "fixedSeedAiFinishRangeSeconds": [
+        180.625,
+        186.3
+      ]
+    },
+    {
+      "stage": "14",
+      "name": "沙丘极速冲顶",
+      "identity": "双丘三叉：两座坡顶之间换边接谷底三折",
+      "mode": "speed",
+      "laps": 2,
+      "raceFraction": 1,
+      "lapLengthM": 3451.9,
+      "minHeightM": -0.02,
+      "maxHeightM": 41.02,
+      "maxAbsoluteGradePercent": 12.44,
+      "minWidthM": 16.2,
+      "maxWidthM": 18.81,
+      "directionChanges": 11,
+      "sharpCurvePercent": 12,
+      "padPositions": [
+        {
+          "f": 0.234,
+          "lat": 0
+        },
+        {
+          "f": 0.7149,
+          "lat": -6
+        }
+      ],
+      "shortcut": null,
+      "itemBoxesWhenItemMode": 20,
+      "itemModeActive": false,
+      "itemAnchors": [
+        {
+          "fraction": 0.1,
+          "lateralM": -5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": -2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 5.4,
+          "insideRoad": true
+        }
+      ],
+      "fixedSeedAiFinishRangeSeconds": [
+        125.392,
+        127.658
+      ]
+    },
+    {
+      "stage": "15",
+      "name": "极地道具冠军战",
+      "identity": "极地三叶：三瓣回头各用不同入弯方向",
+      "mode": "item",
+      "laps": 3,
+      "raceFraction": 1,
+      "lapLengthM": 3545.34,
+      "minHeightM": -0.01,
+      "maxHeightM": 36.88,
+      "maxAbsoluteGradePercent": 9.98,
+      "minWidthM": 16.2,
+      "maxWidthM": 18.81,
+      "directionChanges": 9,
+      "sharpCurvePercent": 14,
+      "padPositions": [
+        {
+          "f": 0.2813,
+          "lat": 5
+        },
+        {
+          "f": 0.6437,
+          "lat": -5
+        }
+      ],
+      "shortcut": null,
+      "itemBoxesWhenItemMode": 20,
+      "itemModeActive": true,
+      "itemAnchors": [
+        {
+          "fraction": 0.1,
+          "lateralM": -5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": -2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 5.4,
+          "insideRoad": true
+        }
+      ],
+      "fixedSeedAiFinishRangeSeconds": [
+        193.225,
+        198.508
+      ]
+    },
+    {
+      "stage": "16",
+      "name": "悬崖冠军决战",
+      "identity": "悬崖王冠：山腰双折返与悬崖内线决战",
+      "mode": "speed",
+      "laps": 3,
+      "raceFraction": 1,
+      "lapLengthM": 3592.09,
+      "minHeightM": -0.07,
+      "maxHeightM": 46.99,
+      "maxAbsoluteGradePercent": 8.03,
+      "minWidthM": 16.2,
+      "maxWidthM": 18.81,
+      "directionChanges": 9,
+      "sharpCurvePercent": 12,
+      "padPositions": [
+        {
+          "f": 0.3216,
+          "lat": 5
+        },
+        {
+          "f": 0.6642,
+          "lat": 5
+        }
+      ],
+      "shortcut": {
+        "scene": "aegean",
+        "branchLengthM": 168.1,
+        "mainSegmentM": 235,
+        "physicalSavingM": 66.9,
+        "widthM": 11.5,
+        "neckWidthM": 7.65,
+        "playerProjectionPoints": 41,
+        "minMidCorridorClearanceM": 5.9,
+        "physicalTimeProxy": {
+          "mainMeters": 235,
+          "branchMeters": 168.1,
+          "physicalSavingMeters": 66.9,
+          "widthRatio": 0.425,
+          "skilled": {
+            "mainSeconds": 5.65,
+            "branchSeconds": 3.92,
+            "estimatedGainSeconds": 1.73,
+            "mainApexCurvature": 0.0355,
+            "branchApexCurvature": 0.0248,
+            "branchCornerMinMps": 41.6
+          },
+          "novice": {
+            "mainSeconds": 6.64,
+            "branchSeconds": 4.53,
+            "estimatedGainSeconds": 2.11,
+            "branchCornerMinMps": 31.7
+          },
+          "model": "Native physical centerline curvature + speed limit + finite braking/acceleration; NOT timed PlayerCar/AI and NOT evidence of natural human success"
+        }
+      },
+      "itemBoxesWhenItemMode": 20,
+      "itemModeActive": false,
+      "itemAnchors": [
+        {
+          "fraction": 0.1,
+          "lateralM": -5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": -2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 5.4,
+          "insideRoad": true
+        }
+      ],
+      "fixedSeedAiFinishRangeSeconds": [
+        195.017,
+        201.108
+      ]
+    },
+    {
+      "stage": "17",
+      "name": "霓虹剪刀湾",
+      "identity": "剪刀立交：内折斜桥咬合正交回头庭院",
+      "mode": "speed",
+      "laps": 2,
+      "raceFraction": 1,
+      "lapLengthM": 3382.47,
+      "minHeightM": -0.05,
+      "maxHeightM": 26.97,
+      "maxAbsoluteGradePercent": 8.65,
+      "minWidthM": 16.2,
+      "maxWidthM": 18.81,
+      "directionChanges": 9,
+      "sharpCurvePercent": 15,
+      "padPositions": [
+        {
+          "f": 0.1273,
+          "lat": -6
+        },
+        {
+          "f": 0.3564,
+          "lat": -6
+        },
+        {
+          "f": 0.6606,
+          "lat": -4
+        },
+        {
+          "f": 0.8471,
+          "lat": -4
+        }
+      ],
+      "shortcut": null,
+      "itemBoxesWhenItemMode": 20,
+      "itemModeActive": false,
+      "itemAnchors": [
+        {
+          "fraction": 0.1,
+          "lateralM": -5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": -2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 5.4,
+          "insideRoad": true
+        }
+      ],
+      "fixedSeedAiFinishRangeSeconds": [
+        123.1,
+        123.758
+      ]
+    },
+    {
+      "stage": "18",
+      "name": "黄沙双沟",
+      "identity": "双谷裂隙：内谷窄U与外谷长回头成对出现",
+      "mode": "speed",
+      "laps": 2,
+      "raceFraction": 1,
+      "lapLengthM": 3538.08,
+      "minHeightM": 0,
+      "maxHeightM": 37.1,
+      "maxAbsoluteGradePercent": 9.85,
+      "minWidthM": 16.2,
+      "maxWidthM": 18.81,
+      "directionChanges": 9,
+      "sharpCurvePercent": 13,
+      "padPositions": [
+        {
+          "f": 0.3189,
+          "lat": 0
+        },
+        {
+          "f": 0.6813,
+          "lat": -6
+        }
+      ],
+      "shortcut": {
+        "scene": "egypt",
+        "branchLengthM": 166,
+        "mainSegmentM": 235,
+        "physicalSavingM": 69,
+        "widthM": 11.5,
+        "neckWidthM": 7.5,
+        "playerProjectionPoints": 40,
+        "minMidCorridorClearanceM": 5.7,
+        "physicalTimeProxy": {
+          "mainMeters": 235,
+          "branchMeters": 166,
+          "physicalSavingMeters": 69,
+          "widthRatio": 0.417,
+          "skilled": {
+            "mainSeconds": 5.66,
+            "branchSeconds": 3.9,
+            "estimatedGainSeconds": 1.76,
+            "mainApexCurvature": 0.0356,
+            "branchApexCurvature": 0.0285,
+            "branchCornerMinMps": 38.8
+          },
+          "novice": {
+            "mainSeconds": 6.65,
+            "branchSeconds": 4.53,
+            "estimatedGainSeconds": 2.12,
+            "branchCornerMinMps": 29.6
+          },
+          "model": "Native physical centerline curvature + speed limit + finite braking/acceleration; NOT timed PlayerCar/AI and NOT evidence of natural human success"
+        }
+      },
+      "itemBoxesWhenItemMode": 20,
+      "itemModeActive": false,
+      "itemAnchors": [
+        {
+          "fraction": 0.1,
+          "lateralM": -5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": -2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -5.4,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 2.7,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 5.4,
+          "insideRoad": true
+        }
+      ],
+      "fixedSeedAiFinishRangeSeconds": [
+        127.492,
+        129.808
+      ]
+    },
+    {
+      "stage": "19",
+      "name": "潮汐断岬",
+      "identity": "潮汐岬角：突出海角与后撤港湾交错相连",
+      "mode": "speed",
+      "laps": 2,
+      "raceFraction": 1,
+      "lapLengthM": 3442.05,
+      "minHeightM": -0.07,
+      "maxHeightM": 40,
+      "maxAbsoluteGradePercent": 11.58,
+      "minWidthM": 16.02,
+      "maxWidthM": 18.6,
+      "directionChanges": 11,
+      "sharpCurvePercent": 13,
+      "padPositions": [
+        {
+          "f": 0.246,
+          "lat": 5
+        },
+        {
+          "f": 0.706,
+          "lat": 5
+        }
+      ],
+      "shortcut": null,
+      "itemBoxesWhenItemMode": 20,
+      "itemModeActive": false,
+      "itemAnchors": [
+        {
+          "fraction": 0.1,
+          "lateralM": -5.34,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": -2.67,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 2.67,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 5.34,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -5.34,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -2.67,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 2.67,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 5.34,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -5.34,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -2.67,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 2.67,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 5.34,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -5.34,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -2.67,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 2.67,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 5.34,
+          "insideRoad": true
+        }
+      ],
+      "fixedSeedAiFinishRangeSeconds": [
+        126.4,
+        129.45
+      ]
+    },
+    {
+      "stage": "20",
+      "name": "寒晶折冠",
+      "identity": "水晶山巅：双山口急收紧与连续峰间反打",
+      "mode": "item",
+      "laps": 2,
+      "raceFraction": 1,
+      "lapLengthM": 3605.08,
+      "minHeightM": -0.06,
+      "maxHeightM": 41,
+      "maxAbsoluteGradePercent": 9.51,
+      "minWidthM": 16.02,
+      "maxWidthM": 18.6,
+      "directionChanges": 11,
+      "sharpCurvePercent": 14,
+      "padPositions": [
+        {
+          "f": 0.282,
+          "lat": -5
+        },
+        {
+          "f": 0.6491,
+          "lat": -5
+        }
+      ],
+      "shortcut": null,
+      "itemBoxesWhenItemMode": 20,
+      "itemModeActive": true,
+      "itemAnchors": [
+        {
+          "fraction": 0.1,
+          "lateralM": -5.34,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": -2.67,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 2.67,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 5.34,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -5.34,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -2.67,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 2.67,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 5.34,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -5.34,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -2.67,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 2.67,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 5.34,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -5.34,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -2.67,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 2.67,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 5.34,
+          "insideRoad": true
+        }
+      ],
+      "fixedSeedAiFinishRangeSeconds": [
+        131.342,
+        133.267
+      ]
+    },
+    {
+      "stage": "21",
+      "name": "星港双弓",
+      "identity": "双弓回环：两座长负荷内回环由收紧的中央S连接",
+      "mode": "speed",
+      "laps": 3,
+      "raceFraction": 1,
+      "lapLengthM": 3616.87,
+      "minHeightM": 0,
+      "maxHeightM": 14.99,
+      "maxAbsoluteGradePercent": 5.27,
+      "minWidthM": 15.84,
+      "maxWidthM": 18.39,
+      "directionChanges": 9,
+      "sharpCurvePercent": 12,
+      "padPositions": [
+        {
+          "f": 0.1119,
+          "lat": 6
+        },
+        {
+          "f": 0.4383,
+          "lat": -6
+        },
+        {
+          "f": 0.62,
+          "lat": 4
+        },
+        {
+          "f": 0.8337,
+          "lat": 4
+        }
+      ],
+      "shortcut": null,
+      "itemBoxesWhenItemMode": 20,
+      "itemModeActive": false,
+      "itemAnchors": [
+        {
+          "fraction": 0.1,
+          "lateralM": -5.28,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": -2.64,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 2.64,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 5.28,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -5.28,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -2.64,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 2.64,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 5.28,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -5.28,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -2.64,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 2.64,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 5.28,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -5.28,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -2.64,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 2.64,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 5.28,
+          "insideRoad": true
+        }
+      ],
+      "fixedSeedAiFinishRangeSeconds": [
+        201.425,
+        205.033
+      ]
+    },
+    {
+      "stage": "22",
+      "name": "碎岩齿谷",
+      "identity": "峡谷折页：宽谷折回窄谷，三折岩缝后沿对侧山壁下行",
+      "mode": "speed",
+      "laps": 1,
+      "raceFraction": 0.84,
+      "lapLengthM": 5086.09,
+      "minHeightM": -0.01,
+      "maxHeightM": 50,
+      "maxAbsoluteGradePercent": 16.01,
+      "minWidthM": 15.84,
+      "maxWidthM": 18.39,
+      "directionChanges": 11,
+      "sharpCurvePercent": 11,
+      "padPositions": [
+        {
+          "f": 0.281,
+          "lat": 0
+        },
+        {
+          "f": 0.6539,
+          "lat": 6
+        }
+      ],
+      "shortcut": {
+        "scene": "egypt",
+        "branchLengthM": 157.4,
+        "mainSegmentM": 235,
+        "physicalSavingM": 77.6,
+        "widthM": 11.5,
+        "neckWidthM": 7.35,
+        "playerProjectionPoints": 35,
+        "minMidCorridorClearanceM": 18.9,
+        "physicalTimeProxy": {
+          "mainMeters": 235,
+          "branchMeters": 157.4,
+          "physicalSavingMeters": 77.6,
+          "widthRatio": 0.418,
+          "skilled": {
+            "mainSeconds": 5.58,
+            "branchSeconds": 4.04,
+            "estimatedGainSeconds": 1.54,
+            "mainApexCurvature": 0.0343,
+            "branchApexCurvature": 0.0557,
+            "branchCornerMinMps": 27.8
+          },
+          "novice": {
+            "mainSeconds": 6.57,
+            "branchSeconds": 4.87,
+            "estimatedGainSeconds": 1.7,
+            "branchCornerMinMps": 21.2
+          },
+          "model": "Native physical centerline curvature + speed limit + finite braking/acceleration; NOT timed PlayerCar/AI and NOT evidence of natural human success"
+        }
+      },
+      "itemBoxesWhenItemMode": 20,
+      "itemModeActive": false,
+      "itemAnchors": [
+        {
+          "fraction": 0.1,
+          "lateralM": -5.28,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": -2.64,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 2.64,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 5.28,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -5.28,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -2.64,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 2.64,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 5.28,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -5.28,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -2.64,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 2.64,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 5.28,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -5.28,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -2.64,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 2.64,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 5.28,
+          "insideRoad": true
+        }
+      ],
+      "fixedSeedAiFinishRangeSeconds": [
+        78.45,
+        80.083
+      ]
+    },
+    {
+      "stage": "23",
+      "name": "群岛反潮",
+      "identity": "群岛跳桥：三岛内庭与相反朝向的桥头U口",
+      "mode": "speed",
+      "laps": 3,
+      "raceFraction": 1,
+      "lapLengthM": 3172.97,
+      "minHeightM": 0,
+      "maxHeightM": 38.07,
+      "maxAbsoluteGradePercent": 12.78,
+      "minWidthM": 15.75,
+      "maxWidthM": 18.29,
+      "directionChanges": 11,
+      "sharpCurvePercent": 15,
+      "padPositions": [
+        {
+          "f": 0.3085,
+          "lat": -5
+        },
+        {
+          "f": 0.677,
+          "lat": -5
+        }
+      ],
+      "shortcut": null,
+      "itemBoxesWhenItemMode": 20,
+      "itemModeActive": false,
+      "itemAnchors": [
+        {
+          "fraction": 0.1,
+          "lateralM": -5.25,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": -2.63,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 2.63,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 5.25,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -5.25,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -2.63,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 2.63,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 5.25,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -5.25,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -2.63,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 2.63,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 5.25,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -5.25,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -2.63,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 2.63,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 5.25,
+          "insideRoad": true
+        }
+      ],
+      "fixedSeedAiFinishRangeSeconds": [
+        172.533,
+        175.017
+      ]
+    },
+    {
+      "stage": "24",
+      "name": "白夜倒钩",
+      "identity": "白夜冰钩：短正交S接深内钩，沿平行内街反向脱出",
+      "mode": "speed",
+      "laps": 2,
+      "raceFraction": 1,
+      "lapLengthM": 3470.38,
+      "minHeightM": -0.01,
+      "maxHeightM": 21.97,
+      "maxAbsoluteGradePercent": 6.13,
+      "minWidthM": 15.75,
+      "maxWidthM": 18.29,
+      "directionChanges": 7,
+      "sharpCurvePercent": 12,
+      "padPositions": [
+        {
+          "f": 0.2834,
+          "lat": 5
+        },
+        {
+          "f": 0.604,
+          "lat": -5
+        }
+      ],
+      "shortcut": null,
+      "itemBoxesWhenItemMode": 20,
+      "itemModeActive": false,
+      "itemAnchors": [
+        {
+          "fraction": 0.1,
+          "lateralM": -5.25,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": -2.63,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 2.63,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 5.25,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -5.25,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -2.63,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 2.63,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 5.25,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -5.25,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -2.63,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 2.63,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 5.25,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -5.25,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -2.63,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 2.63,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 5.25,
+          "insideRoad": true
+        }
+      ],
+      "fixedSeedAiFinishRangeSeconds": [
+        128.25,
+        129.958
+      ]
+    },
+    {
+      "stage": "25",
+      "name": "量子折轨",
+      "identity": "量子高架：内外双回廊串联三次错位出桥",
+      "mode": "item",
+      "laps": 3,
+      "raceFraction": 1,
+      "lapLengthM": 3643.66,
+      "minHeightM": -0.04,
+      "maxHeightM": 34.05,
+      "maxAbsoluteGradePercent": 8.56,
+      "minWidthM": 15.57,
+      "maxWidthM": 18.08,
+      "directionChanges": 11,
+      "sharpCurvePercent": 14,
+      "padPositions": [
+        {
+          "f": 0.194,
+          "lat": 6
+        },
+        {
+          "f": 0.3768,
+          "lat": 6
+        },
+        {
+          "f": 0.607,
+          "lat": -4
+        },
+        {
+          "f": 0.8936,
+          "lat": 4
+        }
+      ],
+      "shortcut": {
+        "scene": "city",
+        "branchLengthM": 156.6,
+        "mainSegmentM": 190,
+        "physicalSavingM": 33.4,
+        "widthM": 11.5,
+        "neckWidthM": 7.35,
+        "playerProjectionPoints": 40,
+        "minMidCorridorClearanceM": 3.2,
+        "physicalTimeProxy": {
+          "mainMeters": 190,
+          "branchMeters": 156.6,
+          "physicalSavingMeters": 33.4,
+          "widthRatio": 0.425,
+          "skilled": {
+            "mainSeconds": 4.56,
+            "branchSeconds": 3.64,
+            "estimatedGainSeconds": 0.92,
+            "mainApexCurvature": 0.0403,
+            "branchApexCurvature": 0.0179,
+            "branchCornerMinMps": 43
+          },
+          "novice": {
+            "mainSeconds": 5.32,
+            "branchSeconds": 4.13,
+            "estimatedGainSeconds": 1.19,
+            "branchCornerMinMps": 37.4
+          },
+          "model": "Native physical centerline curvature + speed limit + finite braking/acceleration; NOT timed PlayerCar/AI and NOT evidence of natural human success"
+        }
+      },
+      "itemBoxesWhenItemMode": 20,
+      "itemModeActive": true,
+      "itemAnchors": [
+        {
+          "fraction": 0.1,
+          "lateralM": -5.19,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": -2.6,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 2.6,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 5.19,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -5.19,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -2.6,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 2.6,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 5.19,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -5.19,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -2.6,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 2.6,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 5.19,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -5.19,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -2.6,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 2.6,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 5.19,
+          "insideRoad": true
+        }
+      ],
+      "fixedSeedAiFinishRangeSeconds": [
+        197.267,
+        200.433
+      ]
+    },
+    {
+      "stage": "26",
+      "name": "落日石轮",
+      "identity": "落日石环：偏心岩台三瓣回转与谷口切线",
+      "mode": "speed",
+      "laps": 3,
+      "raceFraction": 1,
+      "lapLengthM": 3506.53,
+      "minHeightM": -0.03,
+      "maxHeightM": 43.04,
+      "maxAbsoluteGradePercent": 11.44,
+      "minWidthM": 15.57,
+      "maxWidthM": 18.08,
+      "directionChanges": 9,
+      "sharpCurvePercent": 11,
+      "padPositions": [
+        {
+          "f": 0.2734,
+          "lat": 0
+        },
+        {
+          "f": 0.6923,
+          "lat": -6
+        }
+      ],
+      "shortcut": null,
+      "itemBoxesWhenItemMode": 20,
+      "itemModeActive": false,
+      "itemAnchors": [
+        {
+          "fraction": 0.1,
+          "lateralM": -5.19,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": -2.6,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 2.6,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 5.19,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -5.19,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -2.6,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 2.6,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 5.19,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -5.19,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -2.6,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 2.6,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 5.19,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -5.19,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -2.6,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 2.6,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 5.19,
+          "insideRoad": true
+        }
+      ],
+      "fixedSeedAiFinishRangeSeconds": [
+        188.533,
+        193.117
+      ]
+    },
+    {
+      "stage": "27",
+      "name": "断云连蛇",
+      "identity": "云脊长蛇：横贯三组正反S，回程通过脊下内街",
+      "mode": "speed",
+      "laps": 3,
+      "raceFraction": 1,
+      "lapLengthM": 3674.11,
+      "minHeightM": -0.04,
+      "maxHeightM": 49.02,
+      "maxAbsoluteGradePercent": 14.89,
+      "minWidthM": 15.48,
+      "maxWidthM": 17.97,
+      "directionChanges": 9,
+      "sharpCurvePercent": 14,
+      "padPositions": [
+        {
+          "f": 0.2798,
+          "lat": 5
+        },
+        {
+          "f": 0.6558,
+          "lat": -5
+        }
+      ],
+      "shortcut": {
+        "scene": "aegean",
+        "branchLengthM": 167.3,
+        "mainSegmentM": 235,
+        "physicalSavingM": 67.7,
+        "widthM": 11.5,
+        "neckWidthM": 7.2,
+        "playerProjectionPoints": 38,
+        "minMidCorridorClearanceM": 13.7,
+        "physicalTimeProxy": {
+          "mainMeters": 235,
+          "branchMeters": 167.3,
+          "physicalSavingMeters": 67.7,
+          "widthRatio": 0.419,
+          "skilled": {
+            "mainSeconds": 5.58,
+            "branchSeconds": 4.19,
+            "estimatedGainSeconds": 1.39,
+            "mainApexCurvature": 0.0356,
+            "branchApexCurvature": 0.0427,
+            "branchCornerMinMps": 31.6
+          },
+          "novice": {
+            "mainSeconds": 6.56,
+            "branchSeconds": 5.03,
+            "estimatedGainSeconds": 1.53,
+            "branchCornerMinMps": 24.1
+          },
+          "model": "Native physical centerline curvature + speed limit + finite braking/acceleration; NOT timed PlayerCar/AI and NOT evidence of natural human success"
+        }
+      },
+      "itemBoxesWhenItemMode": 20,
+      "itemModeActive": false,
+      "itemAnchors": [
+        {
+          "fraction": 0.1,
+          "lateralM": -5.16,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": -2.58,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 2.58,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 5.16,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -5.16,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -2.58,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 2.58,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 5.16,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -5.16,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -2.58,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 2.58,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 5.16,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -5.16,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -2.58,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 2.58,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 5.16,
+          "insideRoad": true
+        }
+      ],
+      "fixedSeedAiFinishRangeSeconds": [
+        200.575,
+        203.792
+      ]
+    },
+    {
+      "stage": "28",
+      "name": "极光三叉",
+      "identity": "极光分岔：北侧深指廊接三座桥头反切",
+      "mode": "item",
+      "laps": 3,
+      "raceFraction": 1,
+      "lapLengthM": 3555.64,
+      "minHeightM": -0.06,
+      "maxHeightM": 46.96,
+      "maxAbsoluteGradePercent": 16.1,
+      "minWidthM": 15.48,
+      "maxWidthM": 17.97,
+      "directionChanges": 9,
+      "sharpCurvePercent": 12,
+      "padPositions": [
+        {
+          "f": 0.234,
+          "lat": 5
+        },
+        {
+          "f": 0.7075,
+          "lat": 5
+        }
+      ],
+      "shortcut": null,
+      "itemBoxesWhenItemMode": 20,
+      "itemModeActive": true,
+      "itemAnchors": [
+        {
+          "fraction": 0.1,
+          "lateralM": -5.16,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": -2.58,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 2.58,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 5.16,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -5.16,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -2.58,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 2.58,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 5.16,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -5.16,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -2.58,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 2.58,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 5.16,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -5.16,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -2.58,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 2.58,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 5.16,
+          "insideRoad": true
+        }
+      ],
+      "fixedSeedAiFinishRangeSeconds": [
+        193.892,
+        197.258
+      ]
+    },
+    {
+      "stage": "29",
+      "name": "夜幕十字峰",
+      "identity": "夜幕交错：四向街廊与内街连续晚弯心",
+      "mode": "speed",
+      "laps": 3,
+      "raceFraction": 1,
+      "lapLengthM": 3677.56,
+      "minHeightM": -0.14,
+      "maxHeightM": 31.01,
+      "maxAbsoluteGradePercent": 8.65,
+      "minWidthM": 15.3,
+      "maxWidthM": 17.76,
+      "directionChanges": 11,
+      "sharpCurvePercent": 15,
+      "padPositions": [
+        {
+          "f": 0.1961,
+          "lat": -6
+        },
+        {
+          "f": 0.3921,
+          "lat": -6
+        },
+        {
+          "f": 0.6712,
+          "lat": -4
+        },
+        {
+          "f": 0.8498,
+          "lat": -4
+        }
+      ],
+      "shortcut": null,
+      "itemBoxesWhenItemMode": 20,
+      "itemModeActive": false,
+      "itemAnchors": [
+        {
+          "fraction": 0.1,
+          "lateralM": -5.1,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": -2.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 2.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 5.1,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -5.1,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -2.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 2.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 5.1,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -5.1,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -2.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 2.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 5.1,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -5.1,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -2.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 2.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 5.1,
+          "insideRoad": true
+        }
+      ],
+      "fixedSeedAiFinishRangeSeconds": [
+        199.658,
+        200.833
+      ]
+    },
+    {
+      "stage": "30",
+      "name": "天空终局",
+      "identity": "天际终章：嵌套双U与三段收紧反切连考",
+      "mode": "speed",
+      "laps": 3,
+      "raceFraction": 1,
+      "lapLengthM": 3627.34,
+      "minHeightM": -0.05,
+      "maxHeightM": 50.01,
+      "maxAbsoluteGradePercent": 11.19,
+      "minWidthM": 15.3,
+      "maxWidthM": 17.76,
+      "directionChanges": 11,
+      "sharpCurvePercent": 14,
+      "padPositions": [
+        {
+          "f": 0.3325,
+          "lat": 5
+        },
+        {
+          "f": 0.6776,
+          "lat": -5
+        }
+      ],
+      "shortcut": {
+        "scene": "aegean",
+        "branchLengthM": 170.4,
+        "mainSegmentM": 205,
+        "physicalSavingM": 34.6,
+        "widthM": 11.5,
+        "neckWidthM": 7.05,
+        "playerProjectionPoints": 46,
+        "minMidCorridorClearanceM": 4.2,
+        "physicalTimeProxy": {
+          "mainMeters": 205,
+          "branchMeters": 170.4,
+          "physicalSavingMeters": 34.6,
+          "widthRatio": 0.415,
+          "skilled": {
+            "mainSeconds": 4.96,
+            "branchSeconds": 4,
+            "estimatedGainSeconds": 0.96,
+            "mainApexCurvature": 0.0414,
+            "branchApexCurvature": 0.0294,
+            "branchCornerMinMps": 38.2
+          },
+          "novice": {
+            "mainSeconds": 5.84,
+            "branchSeconds": 4.66,
+            "estimatedGainSeconds": 1.18,
+            "branchCornerMinMps": 29.2
+          },
+          "model": "Native physical centerline curvature + speed limit + finite braking/acceleration; NOT timed PlayerCar/AI and NOT evidence of natural human success"
+        }
+      },
+      "itemBoxesWhenItemMode": 20,
+      "itemModeActive": false,
+      "itemAnchors": [
+        {
+          "fraction": 0.1,
+          "lateralM": -5.1,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": -2.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 2.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.1,
+          "lateralM": 5.1,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -5.1,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": -2.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 2.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.35,
+          "lateralM": 5.1,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -5.1,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": -2.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 2.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.6,
+          "lateralM": 5.1,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -5.1,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": -2.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 0,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 2.55,
+          "insideRoad": true
+        },
+        {
+          "fraction": 0.85,
+          "lateralM": 5.1,
+          "insideRoad": true
+        }
+      ],
+      "fixedSeedAiFinishRangeSeconds": [
+        196.917,
+        200.4
+      ]
+    }
+  ]
+}

@@ -1,0 +1,258 @@
+{
+  "phase": "race",
+  "state": "race",
+  "raceTime": 0.2,
+  "map": "city",
+  "course": "race-01",
+  "laps": 2,
+  "diff": 1,
+  "mode": "speed",
+  "progress": -20.835648399360252,
+  "finished": false,
+  "finishTime": 0,
+  "place": 3,
+  "speed": 90.52209626022196,
+  "lat": 5.499999817936152,
+  "spinSec": 0,
+  "wrongWaySec": 0,
+  "forwardHeadingDot": 1,
+  "firstFinish": -1,
+  "racers": [
+    {
+      "name": "夜の车神",
+      "isPlayer": false,
+      "skill": 1.6,
+      "finished": false,
+      "finishTime": 0,
+      "progress": -13.715244910466936,
+      "assetIdentity": {
+        "id": "original-racer-v1",
+        "carId": "starter",
+        "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+        "provider": "Tencent-Hunyuan-3.1-web"
+      },
+      "wheelAngles": [
+        {
+          "front": true,
+          "spin": 0.7653970061305265,
+          "steer": -0.36961698547002886
+        },
+        {
+          "front": true,
+          "spin": 0.7653970061305265,
+          "steer": -0.36961698547002886
+        },
+        {
+          "front": false,
+          "spin": 0.7653970061305265,
+          "steer": 0
+        },
+        {
+          "front": false,
+          "spin": 0.7653970061305265,
+          "steer": 0
+        }
+      ]
+    },
+    {
+      "name": "漂移少女",
+      "isPlayer": false,
+      "skill": 1.3447,
+      "finished": false,
+      "finishTime": 0,
+      "progress": -13.965009348837157,
+      "assetIdentity": {
+        "id": "original-racer-v1",
+        "carId": "starter",
+        "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+        "provider": "Tencent-Hunyuan-3.1-web"
+      },
+      "wheelAngles": [
+        {
+          "front": true,
+          "spin": 0.12764642286214867,
+          "steer": 0.2655461994733633
+        },
+        {
+          "front": true,
+          "spin": 0.12764642286214867,
+          "steer": 0.2655461994733633
+        },
+        {
+          "front": false,
+          "spin": 0.12764642286214867,
+          "steer": 0
+        },
+        {
+          "front": false,
+          "spin": 0.12764642286214867,
+          "steer": 0
+        }
+      ]
+    },
+    {
+      "name": "闪电旋风",
+      "isPlayer": false,
+      "skill": 1.4856,
+      "finished": false,
+      "finishTime": 0,
+      "progress": -25.00000024036035,
+      "assetIdentity": {
+        "id": "original-racer-v1",
+        "carId": "starter",
+        "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+        "provider": "Tencent-Hunyuan-3.1-web"
+      },
+      "wheelAngles": [
+        {
+          "front": true,
+          "spin": 0,
+          "steer": 0
+        },
+        {
+          "front": true,
+          "spin": 0,
+          "steer": 0
+        },
+        {
+          "front": false,
+          "spin": 0,
+          "steer": 0
+        },
+        {
+          "front": false,
+          "spin": 0,
+          "steer": 0
+        }
+      ]
+    },
+    {
+      "name": "我",
+      "isPlayer": true,
+      "skill": null,
+      "finished": false,
+      "finishTime": 0,
+      "progress": -20.835648399360252,
+      "assetIdentity": {
+        "id": "original-racer-v1",
+        "carId": "starter",
+        "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+        "provider": "Tencent-Hunyuan-3.1-web"
+      },
+      "wheelAngles": [
+        {
+          "front": true,
+          "spin": 9.265736931309002,
+          "steer": 0
+        },
+        {
+          "front": true,
+          "spin": 9.265736931309002,
+          "steer": 0
+        },
+        {
+          "front": false,
+          "spin": 9.265736931309002,
+          "steer": 0
+        },
+        {
+          "front": false,
+          "spin": 9.265736931309002,
+          "steer": 0
+        }
+      ]
+    },
+    {
+      "name": "小飞侠",
+      "isPlayer": false,
+      "skill": 1.16,
+      "finished": false,
+      "finishTime": 0,
+      "progress": -36.00000024036581,
+      "assetIdentity": {
+        "id": "original-racer-v1",
+        "carId": "starter",
+        "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+        "provider": "Tencent-Hunyuan-3.1-web"
+      },
+      "wheelAngles": [
+        {
+          "front": true,
+          "spin": 0,
+          "steer": 0
+        },
+        {
+          "front": true,
+          "spin": 0,
+          "steer": 0
+        },
+        {
+          "front": false,
+          "spin": 0,
+          "steer": 0
+        },
+        {
+          "front": false,
+          "spin": 0,
+          "steer": 0
+        }
+      ]
+    },
+    {
+      "name": "风之子",
+      "isPlayer": false,
+      "skill": 1.5647,
+      "finished": false,
+      "finishTime": 0,
+      "progress": -35.96500863683468,
+      "assetIdentity": {
+        "id": "original-racer-v1",
+        "carId": "starter",
+        "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+        "provider": "Tencent-Hunyuan-3.1-web"
+      },
+      "wheelAngles": [
+        {
+          "front": true,
+          "spin": 0.12764642286214867,
+          "steer": 0.2655461994733633
+        },
+        {
+          "front": true,
+          "spin": 0.12764642286214867,
+          "steer": 0.2655461994733633
+        },
+        {
+          "front": false,
+          "spin": 0.12764642286214867,
+          "steer": 0
+        },
+        {
+          "front": false,
+          "spin": 0.12764642286214867,
+          "steer": 0
+        }
+      ]
+    }
+  ],
+  "throttle": 1,
+  "stats": {
+    "drift": 0,
+    "small": 0,
+    "perfect": 0,
+    "double": 0,
+    "nitro": 0,
+    "crash": 0,
+    "top": 90.52209626022196,
+    "land": 0
+  },
+  "items": [],
+  "roadHint": "",
+  "goal": "",
+  "feedback": "",
+  "events": [],
+  "heading": "城市攻防环",
+  "result": "未完赛 · 尚未完成比赛（进度 92%）",
+  "resultStats": "0有效漂移0弯道超车0拾取道具0小喷",
+  "saved": "{\"version\":1,\"stars\":{},\"times\":{},\"gatePasses\":{},\"stagePasses\":{},\"skin\":0,\"rounds\":1,\"ownedSkins\":[0],\"ownedCars\":[\"starter\"],\"car\":\"starter\",\"daily\":{\"date\":\"\",\"best\":0,\"stars\":0,\"streak\":0,\"lastWonDate\":\"\"}}"
+}

@@ -1,0 +1,45 @@
+{
+  "ok": true,
+  "dry_run": true,
+  "data": {
+    "stage": "materials-inspect",
+    "input": "runs/h5-qq-mobile-20261013/artifacts/final-20261020/delivery/taptap-h5-staging-20261020.1.zip",
+    "materials": [
+      {
+        "path": "runs/h5-qq-mobile-20261013/artifacts/final-20261020/delivery/taptap-h5-staging-20261020.1.zip",
+        "name": "taptap-h5-staging-20261020.1.zip",
+        "size": 8380815,
+        "kind": "package",
+        "packageType": "h5",
+        "reason": "zip 内含 index.html，识别为 H5 包",
+        "archive_preflight": {
+          "entry_count": 8,
+          "top_level_entries": [
+            "jisu-feichi"
+          ],
+          "violations": [],
+          "warnings": []
+        }
+      }
+    ],
+    "summary": {
+      "image": 0,
+      "video": 0,
+      "package": 1,
+      "bundle": 0,
+      "unknown": 0,
+      "packagesByType": {
+        "h5": 1
+      }
+    },
+    "notes": [],
+    "handoff": {
+      "required": true,
+      "reason": "检查只生成本地 manifest；后续上传和资料绑定必须由明确的专用流程完成。",
+      "nextSteps": [
+        "H5 包：使用 `taptap-cli upload-h5-package \u003cmaterials[].path\u003e --screen-orientation \u003c0|1\u003e` 上传。"
+      ]
+    },
+    "hint": "只读物料检查：不会上传文件、创建远端任务、写入资料或绑定包体。按 handoff 继续处理。"
+  }
+}

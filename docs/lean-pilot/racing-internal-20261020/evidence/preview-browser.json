@@ -1,0 +1,12 @@
+{
+  "url": "https://raw.githack.com/23chen990/ai-mini-game-factory/ab5fc6c260df598e35e3951c6842e227def18433/index.html",
+  "sourceCommit": "6196faa085e18ac38b484fcfc1d6909c2bf22882",
+  "buildHash": "811e05f4f6207050a63939680de93b4b3b262904663a103048d310f1466e37d6",
+  "scope": "Actual remote immutable standalone; entry/start/pause only, not a new natural complete-race or platform acceptance",
+  "physicalPhone": false,
+  "passed": false,
+  "errors": [],
+  "httpStatus": 200,
+  "htmlSha256": "43562a06b93c3475f6ee0e9c511d109c70f249d772130a8f9d8b7f7da1d16026",
+  "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ '43562a06b93c3475f6ee0e9c511d109c70f249d772130a8f9d8b7f7da1d16026'\n- 'bf68ed63714900a049afd1cb003c5c395155fa1c92b50fe37c72737f5ae40ea4'\n"
+}

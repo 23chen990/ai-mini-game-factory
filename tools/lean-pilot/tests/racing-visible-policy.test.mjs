@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { itemBoxPolicy, earnedResumeOrigin, warningVisible, recoverVisibleHeading, qualifiedVisibleFinish, needsVisibleItemPickup, visibleItemSteer } from '../racing-visible-policy.mjs';
+import * as visiblePolicy from '../racing-visible-policy.mjs';
 function image(rectangles) {
   const width = 400, height = 200, data = new Uint8Array(width * height * 4);
   for (const [x0, y0, w, h, color] of rectangles) for (let y = y0; y < y0 + h; y++) for (let x = x0; x < x0 + w; x++) data.set(color, (y * width + x) * 4);
@@ -81,10 +82,121 @@ test('ordinary corner rotation is followed normally and opposite-heading jitter 
   const jitter = recoverVisibleHeading({ direction: null, heading: [-.81, -.59], wrongWay: true }, memory, 1450);
   assert.equal(jitter.direction, first.direction);
 });
-test('old saved stars cannot turn a failed replay or AI finish into a natural victory', () => {
-  assert.equal(qualifiedVisibleFinish({ finished: true, heading: '再试一次，争取过关' }, 3), false);
-  assert.equal(qualifiedVisibleFinish({ finished: false, heading: '挑战成功！★' }, 3), false);
-  assert.equal(qualifiedVisibleFinish({ finished: true, heading: '挑战成功！★★' }, 2), true);
+const currentFinish = () => ({
+  stage: '01', course: 'race-01', phase: 'finished', map: 'city', laps: 2, diff: 1, mode: 'speed',
+  finished: true, finishTime: 142.34, progress: 6363.81, place: 1, heading: '第 1 名',
+  result: '第 1 名 · 02:22.34 · 最佳 02:22.34 · 累计 3 星',
+  saved: JSON.stringify({ version: 1, rounds: 1, stars: { '01': 3 }, times: { '01': 142.34 } }),
+});
+const dailyStartWindow = (before = '2026-10-18T12:00:00Z', after = '2026-10-18T12:00:04Z', config = {}) => {
+  const wallMs = Date.parse(before), afterMs = Date.parse(after), timeOrigin = wallMs - 1000;
+  return { before: { wallMs, monotonicMs: 1000, timeOrigin, timezoneOffsetMinutes: 0 },
+    after: { wallMs: afterMs, monotonicMs: 1000 + afterMs - wallMs, timeOrigin, timezoneOffsetMinutes: 0,
+      nativeState: 'race', course: 'race-05', map: 'egypt', laps: 2, diff: 0, mode: 'item', ...config } };
+};
+test('current V11.5 first, second and third place titles require a real matching podium result and save', () => {
+  for (const [place, stars] of [[1, 3], [2, 2], [3, 1]]) {
+    const finish = { ...currentFinish(), place, heading: `第 ${place} 名`,
+      result: `第 ${place} 名 · 02:22.34 · 最佳 02:22.34 · 累计 ${stars} 星`,
+      saved: JSON.stringify({ version: 1, rounds: 1, stars: { '01': stars }, times: { '01': 142.34 } }) };
+    assert.equal(qualifiedVisibleFinish(finish, stars), true, `place ${place}`);
+  }
+});
+test('a genuine podium replay may retain a better historical medal and best time', () => {
+  const finish = { ...currentFinish(), place: 2, heading: '第 2 名',
+    result: '第 2 名 · 02:22.34 · 最佳 02:00.00 · 累计 3 星',
+    saved: JSON.stringify({ version: 1, rounds: 2, stars: { '01': 3 }, times: { '01': 120 } }) };
+  assert.equal(qualifiedVisibleFinish(finish, 3), true);
+});
+test('product result card binds the visible dedicated time and CURRENT stars to native finish',()=>{
+  const finish={...currentFinish(),result:'进入前三 · 下一关已解锁',
+    resultCard:{time:'02:22.34',stars:'本场 3 星 · 历史最高 3 星'}};
+  assert.equal(qualifiedVisibleFinish(finish,3),true);
+  assert.equal(qualifiedVisibleFinish({...finish,resultCard:{...finish.resultCard,time:'02:21.00'}},3),false);
+  assert.equal(qualifiedVisibleFinish({...finish,resultCard:{...finish.resultCard,stars:'本场 0 星 · 历史最高 3 星'}},3),false);
+  assert.equal(qualifiedVisibleFinish({...finish,place:5,heading:'第 5 名'},3),false);
+});
+test('old saved medals do not turn an unfinished player, fourth place or an active race into a victory', () => {
+  const finish = currentFinish();
+  assert.equal(qualifiedVisibleFinish({ ...finish, finished: false }, 3), false);
+  assert.equal(qualifiedVisibleFinish({ ...finish, place: 4, heading: '第 4 名',
+    result: '本次未进前三 · 第4名，要求前三名' }, 3), false);
+  assert.equal(qualifiedVisibleFinish({ ...finish, phase: 'race' }, 3), false);
+  assert.equal(qualifiedVisibleFinish({ ...finish, finishTime: 0 }, 3), false);
+  assert.equal(qualifiedVisibleFinish({ ...finish, progress: 0 }, 3), false);
+});
+test('a current-looking title cannot pass with zero medals or inconsistent persisted medals', () => {
+  const finish = currentFinish();
+  assert.equal(qualifiedVisibleFinish(finish, 0), false);
+  assert.equal(qualifiedVisibleFinish(finish, 2), false);
+  assert.equal(qualifiedVisibleFinish({ ...finish, saved: JSON.stringify({ version: 1, rounds: 1,
+    stars: { '01': 0 }, times: { '01': 142.34 } }) }, 3), false);
+  assert.equal(qualifiedVisibleFinish({ ...finish, saved: JSON.stringify({ version: 1, rounds: 1,
+    stars: { '01': 2 }, times: { '01': 142.34 } }) }, 2), false);
+});
+test('old or mismatched result text is not a current native podium settlement', () => {
+  const finish = currentFinish();
+  assert.equal(qualifiedVisibleFinish({ ...finish, heading: '挑战成功！★★★' }, 3), false);
+  assert.equal(qualifiedVisibleFinish({ ...finish, heading: '第 2 名' }, 3), false);
+  assert.equal(qualifiedVisibleFinish({ ...finish, result: '第 1 名 · 02:00.00 · 最佳 02:00.00 · 累计 3 星' }, 3), false);
+  assert.equal(qualifiedVisibleFinish({ ...finish, result: '未完赛 · 尚未完成比赛（进度 46%）' }, 3), false);
+});
+test('another stage save or same-biome course cannot qualify the current race', () => {
+  const finish = currentFinish();
+  assert.equal(qualifiedVisibleFinish({ ...finish, saved: JSON.stringify({ version: 1, rounds: 1,
+    stars: { '03': 3 }, times: { '03': 142.34 } }) }, 3), false);
+  assert.equal(qualifiedVisibleFinish({ ...finish, course: 'race-03' }, 3), false);
+  assert.equal(qualifiedVisibleFinish({ ...finish, stage: '03' }, 3), false);
+  assert.equal(qualifiedVisibleFinish({ ...finish, laps: 1 }, 3), false);
+  assert.equal(qualifiedVisibleFinish({ ...finish, mode: 'item' }, 3), false);
+});
+test('missing or malformed save evidence and unknown stages remain unqualified', () => {
+  const finish = currentFinish();
+  for (const saved of [undefined, '{', 'null', '{}', JSON.stringify({ version: 1, rounds: 0,
+    stars: { '01': 3 }, times: { '01': 142.34 } })])
+    assert.equal(qualifiedVisibleFinish({ ...finish, saved }, 3), false);
+  assert.equal(qualifiedVisibleFinish({ ...finish, stage: 'unknown' }, 3), false);
+  assert.equal(qualifiedVisibleFinish({ ...finish, saved: JSON.stringify({ version: 1, rounds: 1,
+    stars: { '01': 3 }, times: { '01': 160 } }) }, 3), false);
+});
+test('daily podium evidence binds the played date, actual course and daily save independently of campaign stars', () => {
+  const finish = { ...currentFinish(), stage: 'daily', raceDay: '2026-10-18', dailyStart: dailyStartWindow(), course: 'race-05',
+    map: 'egypt', diff: 0, mode: 'item',
+    result: '每日挑战成功 · 第 1 名 · 02:22.34 · 当日最佳 02:22.34 · 连续挑战 1 天',
+    saved: JSON.stringify({ version: 1, rounds: 1, stars: {}, times: {},
+      daily: { date: '2026-10-18', lastWonDate: '2026-10-18', stars: 3, best: 142.34 } }) };
+  assert.equal(qualifiedVisibleFinish(finish, 3), true);
+  assert.equal(qualifiedVisibleFinish({ ...finish, dailyStart: undefined }, 3), false);
+  assert.equal(qualifiedVisibleFinish({ ...finish, raceDay: '2026-10-19' }, 3), false);
+  assert.equal(qualifiedVisibleFinish({ ...finish, course: 'race-01' }, 3), false);
+  assert.equal(qualifiedVisibleFinish({ ...finish, saved: currentFinish().saved }, 3), false);
+  assert.equal(qualifiedVisibleFinish({ ...finish, saved: JSON.stringify({ version: 1, rounds: 1,
+    daily: { date: '2026-10-18', lastWonDate: '2026-10-17', stars: 3, best: 142.34 } }) }, 3), false);
+});
+test('daily start dates come from the bounded start interval and actual course on either side of midnight', () => {
+  const resolve = visiblePolicy.dailyRaceDayFromStart;
+  assert.equal(resolve(dailyStartWindow()), '2026-10-18');
+  const before = '2026-10-18T23:59:59.990Z', after = '2026-10-19T00:00:00.010Z';
+  assert.equal(resolve(dailyStartWindow(before, after)), '2026-10-18');
+  assert.equal(resolve(dailyStartWindow(before, after, { course: 'race-07', map: 'aegean', laps: 1, diff: 1, mode: 'speed' })), '2026-10-19');
+  const local = dailyStartWindow('2026-10-17T16:00:01Z', '2026-10-17T16:00:05Z');
+  local.before.timezoneOffsetMinutes = local.after.timezoneOffsetMinutes = -480;
+  assert.equal(resolve(local), '2026-10-18', 'use the browser local date instead of the Node timezone');
+});
+test('a month boundary with the same daily course on both dates is ambiguous and must remain blocked', () => {
+  const range = dailyStartWindow('2026-10-31T23:59:59.990Z', '2026-11-01T00:00:00.010Z',
+    { course: 'race-03', map: 'city', laps: 2, diff: 1, mode: 'speed' });
+  assert.equal(visiblePolicy.dailyRaceDayFromStart(range), null);
+});
+test('daily date evidence rejects wide intervals, clock jumps, changed documents or timezones and unmatched courses', () => {
+  const resolve = visiblePolicy.dailyRaceDayFromStart, range = dailyStartWindow();
+  assert.equal(resolve(dailyStartWindow('2026-10-18T12:00:00Z', '2026-10-18T12:03:00.001Z')), null);
+  assert.equal(resolve({ ...range, after: { ...range.after, wallMs: range.after.wallMs + 5000 } }), null);
+  assert.equal(resolve({ ...range, after: { ...range.after, timeOrigin: range.after.timeOrigin + 1 } }), null);
+  assert.equal(resolve({ ...range, after: { ...range.after, timezoneOffsetMinutes: 60 } }), null);
+  assert.equal(resolve({ ...range, after: { ...range.after, nativeState: 'menu' } }), null);
+  assert.equal(resolve({ ...range, after: { ...range.after, course: 'race-01' } }), null);
+  assert.equal(resolve(null), null);
 });
 test('a reversed arrow turns into the visible road rather than the outside barrier', () => {
   const memory = {};

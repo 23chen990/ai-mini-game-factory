@@ -1,0 +1,256 @@
+{
+  "scope": "DETERMINISTIC_ENGINEERING_NOT_HUMAN_WIN_RATE",
+  "oldBuildHash": "40cf9871719d1154d7d855a805f157f5c00a88b23d6700f90c119717772c7542",
+  "buildHash": "811e05f4f6207050a63939680de93b4b3b262904663a103048d310f1466e37d6",
+  "physicsHz": 120,
+  "fixedSeedBase": 2026101800,
+  "rows": [
+    {
+      "id": "01",
+      "before16PodiumSec": 132.617,
+      "final19PodiumSec": 120.775,
+      "improvementSec": 11.842,
+      "finalFinishers": 5,
+      "wallCrashEvents": 0
+    },
+    {
+      "id": "02",
+      "before16PodiumSec": 135.275,
+      "final19PodiumSec": 124.475,
+      "improvementSec": 10.8,
+      "finalFinishers": 5,
+      "wallCrashEvents": 0
+    },
+    {
+      "id": "03",
+      "before16PodiumSec": 142.65,
+      "final19PodiumSec": 125.342,
+      "improvementSec": 17.308,
+      "finalFinishers": 5,
+      "wallCrashEvents": 0
+    },
+    {
+      "id": "04",
+      "before16PodiumSec": 139.533,
+      "final19PodiumSec": 129.117,
+      "improvementSec": 10.416,
+      "finalFinishers": 5,
+      "wallCrashEvents": 0
+    },
+    {
+      "id": "05",
+      "before16PodiumSec": 138.067,
+      "final19PodiumSec": 127.692,
+      "improvementSec": 10.375,
+      "finalFinishers": 5,
+      "wallCrashEvents": 0
+    },
+    {
+      "id": "06",
+      "before16PodiumSec": 135.325,
+      "final19PodiumSec": 115.408,
+      "improvementSec": 19.917,
+      "finalFinishers": 5,
+      "wallCrashEvents": 3
+    },
+    {
+      "id": "07",
+      "before16PodiumSec": 84.108,
+      "final19PodiumSec": 77.65,
+      "improvementSec": 6.458,
+      "finalFinishers": 5,
+      "wallCrashEvents": 0
+    },
+    {
+      "id": "08",
+      "before16PodiumSec": 149.658,
+      "final19PodiumSec": 136.858,
+      "improvementSec": 12.8,
+      "finalFinishers": 5,
+      "wallCrashEvents": 0
+    },
+    {
+      "id": "09",
+      "before16PodiumSec": 134.275,
+      "final19PodiumSec": 122.192,
+      "improvementSec": 12.083,
+      "finalFinishers": 5,
+      "wallCrashEvents": 2
+    },
+    {
+      "id": "10",
+      "before16PodiumSec": 206.642,
+      "final19PodiumSec": 189.6,
+      "improvementSec": 17.042,
+      "finalFinishers": 5,
+      "wallCrashEvents": 0
+    },
+    {
+      "id": "11",
+      "before16PodiumSec": 136.733,
+      "final19PodiumSec": 125.792,
+      "improvementSec": 10.941,
+      "finalFinishers": 5,
+      "wallCrashEvents": 0
+    },
+    {
+      "id": "12",
+      "before16PodiumSec": 140.45,
+      "final19PodiumSec": 130.25,
+      "improvementSec": 10.2,
+      "finalFinishers": 5,
+      "wallCrashEvents": 0
+    },
+    {
+      "id": "13",
+      "before16PodiumSec": 206.642,
+      "final19PodiumSec": 183.258,
+      "improvementSec": 23.384,
+      "finalFinishers": 5,
+      "wallCrashEvents": 10
+    },
+    {
+      "id": "14",
+      "before16PodiumSec": 137.075,
+      "final19PodiumSec": 127.433,
+      "improvementSec": 9.642,
+      "finalFinishers": 5,
+      "wallCrashEvents": 0
+    },
+    {
+      "id": "15",
+      "before16PodiumSec": 213.383,
+      "final19PodiumSec": 194.842,
+      "improvementSec": 18.541,
+      "finalFinishers": 5,
+      "wallCrashEvents": 0
+    },
+    {
+      "id": "16",
+      "before16PodiumSec": 212.183,
+      "final19PodiumSec": 196.133,
+      "improvementSec": 16.05,
+      "finalFinishers": 5,
+      "wallCrashEvents": 10
+    },
+    {
+      "id": "17",
+      "before16PodiumSec": 139.533,
+      "final19PodiumSec": 123.283,
+      "improvementSec": 16.25,
+      "finalFinishers": 5,
+      "wallCrashEvents": 3
+    },
+    {
+      "id": "18",
+      "before16PodiumSec": 139.667,
+      "final19PodiumSec": 129.133,
+      "improvementSec": 10.534,
+      "finalFinishers": 5,
+      "wallCrashEvents": 3
+    },
+    {
+      "id": "19",
+      "before16PodiumSec": 139.483,
+      "final19PodiumSec": 127.717,
+      "improvementSec": 11.766,
+      "finalFinishers": 5,
+      "wallCrashEvents": 4
+    },
+    {
+      "id": "20",
+      "before16PodiumSec": 145.217,
+      "final19PodiumSec": 132.317,
+      "improvementSec": 12.9,
+      "finalFinishers": 5,
+      "wallCrashEvents": 5
+    },
+    {
+      "id": "21",
+      "before16PodiumSec": 218.542,
+      "final19PodiumSec": 202.125,
+      "improvementSec": 16.417,
+      "finalFinishers": 5,
+      "wallCrashEvents": 8
+    },
+    {
+      "id": "22",
+      "before16PodiumSec": 86.692,
+      "final19PodiumSec": 79.117,
+      "improvementSec": 7.575,
+      "finalFinishers": 5,
+      "wallCrashEvents": 4
+    },
+    {
+      "id": "23",
+      "before16PodiumSec": 198.283,
+      "final19PodiumSec": 174.4,
+      "improvementSec": 23.883,
+      "finalFinishers": 5,
+      "wallCrashEvents": 1
+    },
+    {
+      "id": "24",
+      "before16PodiumSec": 140.692,
+      "final19PodiumSec": 128.492,
+      "improvementSec": 12.2,
+      "finalFinishers": 5,
+      "wallCrashEvents": 5
+    },
+    {
+      "id": "25",
+      "before16PodiumSec": 219.375,
+      "final19PodiumSec": 198.092,
+      "improvementSec": 21.283,
+      "finalFinishers": 5,
+      "wallCrashEvents": 0
+    },
+    {
+      "id": "26",
+      "before16PodiumSec": 208.858,
+      "final19PodiumSec": 189.592,
+      "improvementSec": 19.266,
+      "finalFinishers": 5,
+      "wallCrashEvents": 0
+    },
+    {
+      "id": "27",
+      "before16PodiumSec": 223.5,
+      "final19PodiumSec": 201.067,
+      "improvementSec": 22.433,
+      "finalFinishers": 5,
+      "wallCrashEvents": 2
+    },
+    {
+      "id": "28",
+      "before16PodiumSec": 212.167,
+      "final19PodiumSec": 194.758,
+      "improvementSec": 17.409,
+      "finalFinishers": 5,
+      "wallCrashEvents": 1
+    },
+    {
+      "id": "29",
+      "before16PodiumSec": 221.983,
+      "final19PodiumSec": 200.3,
+      "improvementSec": 21.683,
+      "finalFinishers": 5,
+      "wallCrashEvents": 2
+    },
+    {
+      "id": "30",
+      "before16PodiumSec": 217.05,
+      "final19PodiumSec": 197.317,
+      "improvementSec": 19.733,
+      "finalFinishers": 5,
+      "wallCrashEvents": 0
+    }
+  ],
+  "omitted": [
+    "player car/input",
+    "rendering",
+    "item pickups and weapon attacks",
+    "player-dependent tactical pressure",
+    "career result/medal validation"
+  ]
+}

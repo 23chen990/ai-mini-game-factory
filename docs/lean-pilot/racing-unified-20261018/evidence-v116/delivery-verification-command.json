@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "command": [
+    "node",
+    "tools/lean-pilot/racing-delivery-verify.mjs",
+    "runs/h5-qq-mobile-20261013/artifacts/delivery-v116/delivery-manifest.json"
+  ],
+  "startedAt": "2026-10-18T16:12:07.828556+00:00",
+  "completedAt": "2026-10-18T16:12:08.337615+00:00",
+  "exitCode": 0,
+  "manifestSha256": "51b0ae53ea1a1f44db5347181829dc774509d6703e6be55dfd2514d66755accf",
+  "verifierSha256": "f37f364b3206286d2626913116970c5729c4e09471de519e4182ae97ae3920a8",
+  "sourceCommit": "7d2f484afc50617dffa66747c2406d7840b88227",
+  "sourceTree": "2e27824445593e79dd9dda61d02e2924a81698f5",
+  "buildHash": "c60652cca51624b1efb8fbb4cc183e17a741c89e3e39c313113d7f9e74dab3f1",
+  "inputHash": "9936cef6259c01abb7315dce82fd07a1bafa3e30e7dbdea862422c9a4e351855",
+  "resultSha256": "98d42d0d13e3bcd590a764a63aa23f2cd3963a796c0210815d26e2537999329c",
+  "stderrBytes": 0,
+  "contractsLog": "/workspace/scratch/29547c23d820/recovery/delivery-attributes-contracts-29.tap"
+}

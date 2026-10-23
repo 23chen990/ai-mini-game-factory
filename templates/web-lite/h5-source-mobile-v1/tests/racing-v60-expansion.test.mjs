@@ -113,13 +113,13 @@ test('advanced circuits stay separated at road width and have meaningfully diffe
 test('chapters 5-8 increase rank, corner and race duration demand without fake winner data',()=>{
   const later=STAGES.slice(16);
   assert.deepEqual(later.map(x=>x.chapter),[5,5,5,5,6,6,6,6,7,7,7,7,8,8]);
-  assert.ok(later.every(x=>x.rank<=2 && x.diff===2));
+  assert.ok(later.every(x=>x.rank===3 && x.diff===2));
   assert.ok(STAGES.slice(20).filter(x=>x.laps===3).length>=8);
-  assert.equal(STAGES[29].kind,'boss');assert.equal(STAGES[29].rank,1);
+  assert.equal(STAGES[29].kind,'boss');assert.equal(STAGES[29].rank,3);
   assert.equal(gradeStage(STAGES[29],{finished:true,place:1,time:150,stats:{crash:0}},
-    {beatBoss:false}),0,'final boss cannot be credited without a genuine native overtake');
-  assert.ok(gradeStage(STAGES[29],{finished:true,place:1,time:150,stats:{crash:0}},
-    {beatBoss:true})>0);
+    {beatBoss:false}),3,'a completed first place always earns gold, even without optional boss bonus');
+  assert.equal(gradeStage(STAGES[29],{finished:true,place:2,time:150,stats:{crash:0}},
+    {beatBoss:true}),2);
   const failure={finished:true,place:4,time:1,stats:{crash:0}};
   for(const stage of later)
     assert.equal(gradeStage(stage,failure,{cleanDrifts:10,cleanPasses:10,pickups:10,

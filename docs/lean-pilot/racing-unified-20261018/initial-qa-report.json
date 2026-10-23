@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "cross-branch-source-recovery",
+      "passed": false,
+      "evidence": "Independent source and saved V11 routes require reconciliation."
+    }
+  ],
+  "issues": [
+    {
+      "id": "RACING-UNIFIED-SOURCE",
+      "severity": "error",
+      "message": "All compatible racing source branches are represented in one immutable GitHub source commit; V11 recovered route data matches the saved playtest data.",
+      "evidence": "recovery-triage.json"
+    },
+    {
+      "id": "RACING-NEXT-AD",
+      "severity": "error",
+      "message": "A verified completed ad can permanently open exactly the adjacent next level after a real loss, without granting stars, times, fuel or a passed result.",
+      "evidence": "reproduction-matrix.json:next-stage-ad-result"
+    },
+    {
+      "id": "RACING-AI-ENTRY",
+      "severity": "error",
+      "message": "AI drives the real road and selected branch through native physics; entry collision and recovery are measured on the generated V11 routes, without position/standing/finish injection.",
+      "evidence": "reproduction-matrix.json:ai-entry-collision"
+    }
+  ],
+  "screenshots": [],
+  "consoleLog": "No final runtime check has been run yet.",
+  "testedAt": "2026-10-18T13:07:32.134675Z"
+}

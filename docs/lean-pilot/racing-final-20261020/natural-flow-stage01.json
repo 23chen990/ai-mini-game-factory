@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "startedFromReset": true,
+  "actions": [
+    "Fresh origin, default free car",
+    "Trusted start and visible-pixel touch steering; successful driving techniques are recorded in stats, not inferred from button attempts",
+    "Native finish and visible settlement",
+    "Trusted replay button"
+  ],
+  "transitions": [
+    {
+      "name": "startup → race",
+      "changed": true,
+      "evidence": "rc16-natural-stage01/startup.png and 01-trace.json"
+    },
+    {
+      "name": "race → settlement",
+      "changed": true,
+      "evidence": "rc16-natural-stage01/01-terminal.png"
+    },
+    {
+      "name": "settlement → replay",
+      "changed": true,
+      "evidence": "rc16-natural-stage01/replay.json and replay.png"
+    }
+  ],
+  "completion": "settlement",
+  "replayObserved": true,
+  "forbiddenOperations": [],
+  "screenshots": [
+    "materials/screenshot-garage.png",
+    "materials/screenshot-driving.png",
+    "materials/screenshot-settlement.png"
+  ],
+  "passed": true,
+  "blockers": [],
+  "runner": "racing-career-qa visible-input agent; not a human player",
+  "buildHash": "40cf9871719d1154d7d855a805f157f5c00a88b23d6700f90c119717772c7542",
+  "runtime": "Three.js H5 / Chromium 151 Metal on macOS",
+  "device": {
+    "width": 844,
+    "height": 390,
+    "label": "M1 Pro touch-emulated browser, NOT physical phone"
+  },
+  "seed": "Natural default runtime RNG, not forced",
+  "observedAt": "2026-10-20T07:14:29.693Z"
+}

@@ -1,0 +1,104 @@
+✖ keyboard W just before a clean drift end survives until one physical step, not a render-only frame (0.948125ms)
+✖ keyboard buffer expires and clears on pause; never fabricates a small boost or changes player state (0.152792ms)
+✖ small-spray button previews native clean-drift eligibility and counts down the actual window (0.168333ms)
+✖ ready audio is a short native-mixer cue only for an earned clean drift, not collision or a tap (0.111667ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 0
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 72.717542
+
+✖ failing tests:
+
+test at templates/web-lite/h5-source-mobile-v1/tests/racing-replay-feel.test.mjs:6:1
+✖ keyboard W just before a clean drift end survives until one physical step, not a render-only frame (0.948125ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + 'undefined'
+  - 'function'
+
+      at TestContext.<anonymous> (file:///Users/kker/.codex/worktrees/racing-final-acceptance/%E5%A6%96%E6%80%AA%E5%A4%9C%E5%B8%82/templates/web-lite/h5-source-mobile-v1/tests/racing-replay-feel.test.mjs:7:10)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.start (node:internal/test_runner/test:1015:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:358:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at templates/web-lite/h5-source-mobile-v1/tests/racing-replay-feel.test.mjs:17:1
+✖ keyboard buffer expires and clears on pause; never fabricates a small boost or changes player state (0.152792ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + 'undefined'
+  - 'function'
+
+      at TestContext.<anonymous> (file:///Users/kker/.codex/worktrees/racing-final-acceptance/%E5%A6%96%E6%80%AA%E5%A4%9C%E5%B8%82/templates/web-lite/h5-source-mobile-v1/tests/racing-replay-feel.test.mjs:18:10)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+      at Test.postRun (node:internal/test_runner/test:1247:19)
+      at Test.run (node:internal/test_runner/test:1175:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:358:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at templates/web-lite/h5-source-mobile-v1/tests/racing-replay-feel.test.mjs:27:1
+✖ small-spray button previews native clean-drift eligibility and counts down the actual window (0.168333ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + undefined
+  - 'charging'
+
+      at TestContext.<anonymous> (file:///Users/kker/.codex/worktrees/racing-final-acceptance/%E5%A6%96%E6%80%AA%E5%A4%9C%E5%B8%82/templates/web-lite/h5-source-mobile-v1/tests/racing-replay-feel.test.mjs:29:10)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+      at Test.postRun (node:internal/test_runner/test:1247:19)
+      at Test.run (node:internal/test_runner/test:1175:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'charging',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at templates/web-lite/h5-source-mobile-v1/tests/racing-replay-feel.test.mjs:39:1
+✖ ready audio is a short native-mixer cue only for an earned clean drift, not collision or a tap (0.111667ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + 'undefined'
+  - 'function'
+
+      at TestContext.<anonymous> (file:///Users/kker/.codex/worktrees/racing-final-acceptance/%E5%A6%96%E6%80%AA%E5%A4%9C%E5%B8%82/templates/web-lite/h5-source-mobile-v1/tests/racing-replay-feel.test.mjs:40:10)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+      at Test.postRun (node:internal/test_runner/test:1247:19)
+      at Test.run (node:internal/test_runner/test:1175:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

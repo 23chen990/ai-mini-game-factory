@@ -1,0 +1,201 @@
+{
+  "schemaVersion": 1,
+  "version": "V11.6",
+  "buildHash": "d4b6e32b056a5f7c3afb4f3cafe7da01282488ea58f78b1e5490955a3a3db005",
+  "pinnedRevision": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+  "artifact": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/runs/h5-qq-mobile-20261013/artifacts/racing-v115-native-player/native-player-physics.json",
+  "sourceHashes": {
+    "vehicle.js": "c99698dd31c5ad2c90720f129616e6b65185875cc4c85cbd9d4c7c54e7c8261f",
+    "track.js": "336c734656afaf5df0c33ec132743d1e8a3023bfee348db528ab050de31f85de",
+    "main.js": "b587ee970388f56c5424ecc6fb87300a3323a9d1772ec177f8f7e5658622a655",
+    "layouts.js": "307e0ecf8a30214b98049576ac445abe1f7b15a81435d34916bf7afaf1ceb421",
+    "ai.js": "47377c07688e4023d57a8db1167eb3e70fced3b896b5786aca7f86f5ceb805c7",
+    "race-v11-physical-ai.mjs": "0438c774437c7cb4c37cf7d684e16f0f335b340ca4b06e3cbf9acf478382d1eb",
+    "ManualRaceDriver": "b78f2725f5d796a86616ba2eed51a114472736ebbce5ddbc6c87fa3ff22f6c53"
+  },
+  "timestepsPerSecond": 120,
+  "simulatedController": true,
+  "naturalInputsOnly": false,
+  "rendered": false,
+  "checks": [
+    {
+      "name": "01 native countersteering while holding drift",
+      "status": "PASS",
+      "declaredInitialState": {
+        "distanceFraction": 0.2,
+        "speedMps": 35,
+        "lateral": 0,
+        "outwardHeadingRad": 0
+      },
+      "headingSeparationRad": 0.8074932442062299,
+      "minimumRad": 0.17,
+      "heldDriftStarts": 1,
+      "oppositeDriftStarts": 1
+    },
+    {
+      "name": "01 corrected drift release and one explicit small spray retain collision consequences",
+      "status": "PASS",
+      "declaredInitialState": {
+        "distanceFraction": 0.2,
+        "speedMps": 35,
+        "lateral": 0,
+        "outwardHeadingRad": 0
+      },
+      "driftStarts": 1,
+      "releasedSteerAxis": -0.95,
+      "uncorrected": {
+        "releasedSteerAxis": 0,
+        "crashes": 1,
+        "smallWindow": 0
+      },
+      "cleanDriftEnds": 1,
+      "smallBoosts": 1,
+      "elapsedSec": 0.5666666666666671,
+      "maxStepM": 0.38830387173297104
+    },
+    {
+      "name": "01 wall impact costs speed and requires drift release before restart",
+      "status": "PASS",
+      "declaredInitialState": {
+        "distanceFraction": 0.2,
+        "speedMps": 32,
+        "lateral": 8.658617346091745,
+        "outwardHeadingRad": 0.62
+      },
+      "crashes": 1,
+      "speedAfterImpactMps": 19.700272247184838,
+      "driftStartsAfterRepress": 2,
+      "maxStepM": 0.22420097339682452
+    },
+    {
+      "name": "01 native pause loop freezes physics and clears stale touch actions",
+      "status": "PASS",
+      "nativeLoopExecuted": true,
+      "pausedPhysicsSteps": 0,
+      "resumedWithStaleActions": false
+    },
+    {
+      "name": "07 native countersteering while holding drift",
+      "status": "PASS",
+      "declaredInitialState": {
+        "distanceFraction": 0.2,
+        "speedMps": 35,
+        "lateral": 0,
+        "outwardHeadingRad": 0
+      },
+      "headingSeparationRad": 0.8073754750901071,
+      "minimumRad": 0.17,
+      "heldDriftStarts": 1,
+      "oppositeDriftStarts": 1
+    },
+    {
+      "name": "07 corrected drift release and one explicit small spray retain collision consequences",
+      "status": "PASS",
+      "declaredInitialState": {
+        "distanceFraction": 0.2,
+        "speedMps": 35,
+        "lateral": 0,
+        "outwardHeadingRad": 0
+      },
+      "driftStarts": 1,
+      "releasedSteerAxis": -0.95,
+      "uncorrected": {
+        "releasedSteerAxis": 0,
+        "crashes": 1,
+        "smallWindow": 0
+      },
+      "cleanDriftEnds": 1,
+      "smallBoosts": 1,
+      "elapsedSec": 0.5666666666666671,
+      "maxStepM": 0.3890930426612326
+    },
+    {
+      "name": "07 wall impact costs speed and requires drift release before restart",
+      "status": "PASS",
+      "declaredInitialState": {
+        "distanceFraction": 0.2,
+        "speedMps": 32,
+        "lateral": 8.083890025392463,
+        "outwardHeadingRad": 0.62
+      },
+      "crashes": 1,
+      "speedAfterImpactMps": 19.8033413487665,
+      "driftStartsAfterRepress": 2,
+      "maxStepM": 0.2252571871998471
+    },
+    {
+      "name": "07 native pause loop freezes physics and clears stale touch actions",
+      "status": "PASS",
+      "nativeLoopExecuted": true,
+      "pausedPhysicsSteps": 0,
+      "resumedWithStaleActions": false
+    },
+    {
+      "name": "22 native countersteering while holding drift",
+      "status": "PASS",
+      "declaredInitialState": {
+        "distanceFraction": 0.2,
+        "speedMps": 35,
+        "lateral": 0,
+        "outwardHeadingRad": 0
+      },
+      "headingSeparationRad": 0.8072939014081326,
+      "minimumRad": 0.17,
+      "heldDriftStarts": 1,
+      "oppositeDriftStarts": 1
+    },
+    {
+      "name": "22 corrected drift release and one explicit small spray retain collision consequences",
+      "status": "PASS",
+      "declaredInitialState": {
+        "distanceFraction": 0.2,
+        "speedMps": 35,
+        "lateral": 0,
+        "outwardHeadingRad": 0
+      },
+      "driftStarts": 1,
+      "releasedSteerAxis": -0.95,
+      "uncorrected": {
+        "releasedSteerAxis": 0,
+        "crashes": 1,
+        "smallWindow": 0
+      },
+      "cleanDriftEnds": 1,
+      "smallBoosts": 1,
+      "elapsedSec": 0.5666666666666671,
+      "maxStepM": 0.3896467630330773
+    },
+    {
+      "name": "22 wall impact costs speed and requires drift release before restart",
+      "status": "PASS",
+      "declaredInitialState": {
+        "distanceFraction": 0.2,
+        "speedMps": 32,
+        "lateral": 7.649960235163801,
+        "outwardHeadingRad": 0.62
+      },
+      "crashes": 1,
+      "speedAfterImpactMps": 19.735229267349876,
+      "driftStartsAfterRepress": 2,
+      "maxStepM": 0.22405380562884172
+    },
+    {
+      "name": "22 native pause loop freezes physics and clears stale touch actions",
+      "status": "PASS",
+      "nativeLoopExecuted": true,
+      "pausedPhysicsSteps": 0,
+      "resumedWithStaleActions": false
+    }
+  ],
+  "limitations": [
+    "Declared initial-state fixtures and scripted player input; no claim of human play, race rank, full campaign, phone rendering or opponent contact.",
+    "The legacy V3–V10 bot.dist, guided/late pace and personal-lane separation comparisons assumed the old spline AICar. They remain in --legacy-v10 mode and are not acceptance criteria for a different physical controller.",
+    "All thirty V11 stages and real single-run endings belong to the independent native AI pace audit; this report measures player controls and collision consequences."
+  ],
+  "legacyComparisons": {
+    "status": "NOT_APPLICABLE_TO_V11",
+    "command": "node tools/lean-pilot/racing-native-player-qa.mjs --legacy-v10",
+    "reason": "The old suite requires a historical V10 build, original/revised route pairs, on-rail bot.dist and virtual lane behavior. No historical threshold has been relabeled as a V11 pass."
+  },
+  "status": "PASS"
+}

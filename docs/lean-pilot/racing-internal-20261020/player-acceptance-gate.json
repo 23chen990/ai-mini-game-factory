@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "core": {
+    "passed": false,
+    "evidence": "All30 native routes/150 finishers pass unchanged350s gate; actual natural rank changes and loss/win/resource/recovery are recorded. Natural observed:01,02,03,04,05,06,08,13; unobserved:07,09,10,11,12,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30. Fixed-seed pace is not human difficulty or all-stage perceptual acceptance."
+  },
+  "normalFlow": {
+    "passed": true,
+    "evidence": "Same-build fresh stage01 native win, failed races, exact earned-save reload and next-stage progression; separate trusted-input real no-steering loss and replay. See natural-summary and browser-loss."
+  },
+  "visualEvidence": {
+    "passed": true,
+    "evidence": "Independent review of all18 final landscape six-car previews plus three driving/settlement stills found no supported P0/P1 layout blocker. P2 source-specific texture/geometry variation and five static merged-wheel models remain disclosed. Not handset/human approval."
+  },
+  "levelDifference": {
+    "passed": true,
+    "evidence": "Thirty physically constructed routes and ten legal fork entry/exit paths; geometry, heights, width, pads, native finishes and duration tabulated in COURSES.zh-CN.md. No separate road slowpad implementation was found."
+  },
+  "humanPlaytest": {
+    "passed": false,
+    "evidence": "No connected Android/iPhone and no human usability sample. Actual macOS Chromium/WebKit and touch emulation must not be called real mobile hardware."
+  },
+  "releaseReady": false,
+  "candidateHash": "811e05f4f6207050a63939680de93b4b3b262904663a103048d310f1466e37d6"
+}

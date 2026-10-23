@@ -1,0 +1,301 @@
+{
+  "schemaVersion": 1,
+  "type": "ci-terminal-result",
+  "commit": "99af424cf3584adc4f13fa607a837d56c1028c65",
+  "repository": "23chen990/ai-mini-game-factory",
+  "runId": 39144127699,
+  "workflow": "Racing independent cold-start QA",
+  "status": "completed",
+  "conclusion": "failure",
+  "jobs": [
+    {
+      "id": 117724389254,
+      "name": "cold-start (context)",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Locked dependencies and focused syntax",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Same approved pinned native engine as primary racing CI",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Build exact PR runtime without publishing",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Matching complete Chromium browser",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "Original cold-start assertions in complete Chromium - no timeout changes",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 8
+        },
+        {
+          "name": "Diagnostic GPU queue and HUD isolation - never a production pass",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9
+        },
+        {
+          "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10
+        },
+        {
+          "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19
+        },
+        {
+          "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21
+        }
+      ]
+    },
+    {
+      "id": 117724389418,
+      "name": "cold-start (touch)",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Locked dependencies and focused syntax",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Same approved pinned native engine as primary racing CI",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Build exact PR runtime without publishing",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Matching complete Chromium browser",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "Original cold-start assertions in complete Chromium - no timeout changes",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8
+        },
+        {
+          "name": "Diagnostic GPU queue and HUD isolation - never a production pass",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9
+        },
+        {
+          "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10
+        },
+        {
+          "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19
+        },
+        {
+          "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21
+        }
+      ]
+    },
+    {
+      "id": 117724389465,
+      "name": "cold-start (desktop)",
+      "status": "completed",
+      "conclusion": "failure",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Locked dependencies and focused syntax",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Same approved pinned native engine as primary racing CI",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Build exact PR runtime without publishing",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Matching complete Chromium browser",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "Original cold-start assertions in complete Chromium - no timeout changes",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 8
+        },
+        {
+          "name": "Diagnostic GPU queue and HUD isolation - never a production pass",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9
+        },
+        {
+          "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10
+        },
+        {
+          "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 19
+        },
+        {
+          "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21
+        }
+      ]
+    }
+  ],
+  "evidenceFiles": [
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-99af-cold-desktop.log",
+      "bytes": 127594,
+      "sha256": "a0cc9857ee123ed0f9c4cd267409c1cb97ef188d71616efa6ccca0e8d549697a"
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-99af-cold-touch.log",
+      "bytes": 111492,
+      "sha256": "42c740dc50a9f1c92c805226ba614136e1a7df032ab6cb470ff21fd5435598d2"
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-99af-cold-context.log",
+      "bytes": 69317,
+      "sha256": "eb97318de58bda25d9f068898d18e3a96c4d94454ffb4b3e963ca501fedc147b"
+    }
+  ],
+  "failure": {
+    "jobId": 117724389465,
+    "step": 8,
+    "error": "Fresh desktop did not enter race",
+    "state": "countdown",
+    "sampleCdT": 1.092,
+    "pixelRatio": 0.35,
+    "visibility": "visible",
+    "focus": true,
+    "source": "tools/lean-pilot/racing-cold-start-qa.mjs:84"
+  },
+  "interpretation": "Touch production cold-start passed. Desktop production cold-start failed within the unchanged 45-second gate. Context success is diagnostic only; its production assertion step is intentionally skipped.",
+  "remoteMutations": false,
+  "zodValidated": true
+}

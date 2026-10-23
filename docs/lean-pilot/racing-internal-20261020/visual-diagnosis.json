@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "task": "visual-diagnosis",
+  "findings": [
+    {
+      "id": "imported-car-surface-variation",
+      "severity": "P1",
+      "observation": "The appearance issue is visible in all six selected-car previews at touch size and remains qualitatively present at 667×375 and 1366×768. The variation follows each model: custom-01 is dark purple/black with dense magenta contrast and strong highlights; custom-02 is acid-lime/black; custom-03 is an open-wheel formula silhouette; custom-04 is a comparatively coherent red road car; custom-05 is blue/white with tan distress-like patches. Starter and custom-04 are less visually noisy under the same scene/camera. This is not explained by one common camera or environment change alone. The custom asset source confirms embedded base-color, metallic-roughness, and normal JPEG maps; lighting can still amplify their highlights, but the exact contribution of each map versus source normals is not isolated.",
+      "evidence": [
+        "runs/h5-qq-mobile-20261013/artifacts/final-20261020/browser/gallery.json (buildHash 40cf9871719d1154d7d855a805f157f5c00a88b23d6700f90c119717772c7542; six cars captured at 1366×768, 844×390, and 667×375, pixelRatio 1)",
+        "runs/h5-qq-mobile-20261013/artifacts/final-20261020/browser/gallery-844x390-starter.png SHA-256 e57894860eace667116218f6c816fff38ba090d7c3a29a381b657bb3519a976b",
+        "runs/h5-qq-mobile-20261013/artifacts/final-20261020/browser/gallery-844x390-custom-01.png SHA-256 550ca58ae8bce5eb1efa6d2b9f5c3418255d697f0a49cec4d71d5540da74aa6d",
+        "runs/h5-qq-mobile-20261013/artifacts/final-20261020/browser/gallery-844x390-custom-02.png SHA-256 b50ff298dd65842fc87ecd914be641a92392e5534db013dc2e61bcb6793e929d",
+        "runs/h5-qq-mobile-20261013/artifacts/final-20261020/browser/gallery-844x390-custom-03.png SHA-256 b929afb60509d142f21f94d2b7f32e2d9cc1164cae57a3a894d9d62e73ffdd1f",
+        "runs/h5-qq-mobile-20261013/artifacts/final-20261020/browser/gallery-844x390-custom-04.png SHA-256 5d7ed14d7a380a2373fba2fecd4c287410ec35ecde0241843f248dad7e7b48e5",
+        "runs/h5-qq-mobile-20261013/artifacts/final-20261020/browser/gallery-844x390-custom-05.png SHA-256 62ada55cb08a49a30c1b48452e93ff8b739266121555ac575531104d9e892f35",
+        "runs/h5-qq-mobile-20261013/artifacts/final-20261020/browser/gallery-1366x768-{starter,custom-01,custom-02,custom-03,custom-04,custom-05}.png and gallery-667x375-{starter,custom-01,custom-02,custom-03,custom-04,custom-05}.png (all 12 inspected alongside the touch captures)",
+        "runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/race-car-loader.mjs:7-16; custom-01..05 embedded descriptors each declare paintable:false and wheelMode:static-source-mesh; decoded GLBs each have one mesh, one primitive, one PBR material and embedded baseColor/metallicRoughness/normal JPEG maps",
+        "runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/race-user-car.mjs:1-3,36-49; imported source materials are cloned per instance, their maps are retained, and returned wheels are empty",
+        "runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/main.js:100-110; common renderer uses antialias:false, NeutralToneMapping at exposure 0.92 and scene.environmentIntensity 0.28"
+      ],
+      "recommendation": "Keep the current camera/layout and do not replace the supplied models or retint their baked base-color maps blindly. The smallest car-surface experiment is a reversible, car-only reduction of envMapIntensity on the already-private material clone in race-user-car.mjs:createUserCarFactory; compare the exact six cars at all three existing viewports. This is only a hypothesis: one material covers the entire imported mesh, including body/glass/wheels, so retain it only if highlights improve without flattening detail. If the high-contrast color motifs remain, a loader-only lighting adjustment cannot remove baked albedo; stop rather than add a new asset pipeline, and treat source texture/model correction as requiring a separate approved asset decision."
+    },
+    {
+      "id": "faceted-foliage-style-mismatch",
+      "severity": "P2",
+      "observation": "The actual previews show low-poly green tree crowns close behind the hard-surface cars. This is a separate, common environment style rather than a car-specific rendering artifact. The implementation intentionally builds the crowns from low-detail icosahedra and assigns a flat-shaded material, which explains the broad triangular color facets visible in the screenshots. The screen evidence does not show that these facets cause gameplay or clipping problems; the issue is the visual contrast with the imported car surfaces.",
+      "evidence": [
+        "runs/h5-qq-mobile-20261013/artifacts/final-20261020/browser/gallery-844x390-custom-01.png and gallery-844x390-starter.png (faceted tree crowns visible behind both different cars)",
+        "runs/h5-qq-mobile-20261013/artifacts/final-20261020/browser/gallery-1366x768-custom-02.png and gallery-667x375-custom-05.png (same foliage style persists at desktop and small-touch sizes)",
+        "runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/props.js:56-64; tree crowns use IcosahedronGeometry detail 1",
+        "runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/props.js:111-115; addTree assigns flat(leafColor) to the crown"
+      ],
+      "recommendation": "Smallest existing-module test: keep the same tree geometry and replace only addTree's flat(leafColor) crown material with the existing smooth std(leafColor) helper. This removes flat-shaded face changes without adding triangles or assets; it will not smooth the silhouette. Compare the same gallery plus one race-scene view because addTree is shared scenery, and reject the change if the smoother trees no longer fit the game's art direction. Avoid increasing tree geometry or remodeling the backdrop in this pass."
+    },
+    {
+      "id": "camera-layout-and-static-wheel-boundary",
+      "severity": "INFO",
+      "observation": "All six cars remain legible and fully framed in the reviewed desktop, touch, and small-touch gallery images; the selected-car panel does not visibly cover the hero model. The same 52-degree, 7.3-metre home camera is used across variants and the images do not implicate framing as the source of the asset-specific surfaces. Source metadata also confirms that every custom car is one static source mesh rather than an articulated wheel rig; the current factory returns no separate wheel assemblies.",
+      "evidence": [
+        "runs/h5-qq-mobile-20261013/artifacts/final-20261020/browser/gallery.json; all 18 landscape screenshots use the home/menu normal-ui-preview branch",
+        "runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/main.js:1065-1104; menu camera selects one hero, uses distance 7.3 and FOV 52",
+        "runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/race-car-loader.mjs:7; imported custom descriptors declare static-source-mesh",
+        "runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/race-user-car.mjs:47-48; factory returns wheels:[]"
+      ],
+      "recommendation": "Do not change camera/layout or claim independent wheel motion as part of this visual repair. Preserve the current framing while checking the surface and foliage hypotheses; any later moving-wheel change needs actual separated wheel geometry and its own evidence, not a material or camera workaround."
+    }
+  ],
+  "blockers": [
+    "The reviewed gallery is the baseline only; no post-repair candidate screenshots exist, so none of these recommendations is a perceptual pass or a verified fix.",
+    "No unlit/texture-disabled render or editable source DCC model was available. The embedded maps establish that the textures are asset-owned, but the exact split of highlights between metallic-roughness/normal maps and common scene lighting remains partly unknown.",
+    "Custom-car source topology is a static merged mesh with no wheel assemblies. The preview captures cannot establish dynamic wheel behavior, and that limitation must not be disguised by falsely animating the merged model."
+  ],
+  "commands": [
+    "view_image inspected the 18 named gallery screenshots: six cars × 1366×768, 844×390, and 667×375.",
+    "node -e decoded embedded GLB JSON from race-car-loader.mjs to inspect each custom descriptor's mesh, primitive, material, and texture-map counts; no files written.",
+    "shasum -a 256 checked all 18 named gallery screenshots; six 844×390 image hashes are recorded in the imported-car finding.",
+    "No build, source edits, or tests run; this was a read-only visual diagnosis.",
+    "Zod output-contract validation was run after writing this JSON."
+  ]
+}

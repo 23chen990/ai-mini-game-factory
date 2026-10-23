@@ -1,0 +1,256 @@
+{
+  "schemaVersion": 1,
+  "revision": 2,
+  "issueId": "V116-COLD-DESKTOP-MULTISECOND-LAG",
+  "status": "READY_FOR_ROOT_BUILD_AND_INDEPENDENT_QA",
+  "rawValidationLogs": [
+    {
+      "name": "final-source-and-countdown-contracts",
+      "command": "node --test --test-isolation=none --test-reporter=spec templates/web-lite/h5-source-mobile-v1/tests/racing-countdown-quality.test.mjs templates/web-lite/h5-source-mobile-v1/tests/racing-session.test.mjs tools/lean-pilot/tests/racing-build.test.mjs",
+      "cwd": "/workspace/scratch/29547c23d820/racing-unified",
+      "exitCode": 0,
+      "outputKind": "raw exec_command combined stdout/stderr",
+      "output": "✔ repeated long render stalls can lower graphics before the race begins (2.417201ms)\n✔ countdown protection retains the native renderer and does not advance the game (0.256276ms)\n✔ normal frame cadence and an isolated stall leave selected graphics unchanged (0.391503ms)\n✔ pause and return do not combine unrelated stalls into a downgrade (0.19162ms)\n✔ race/menu/finished states keep the existing quality owner (0.289705ms)\n✔ installation is idempotent and invalid rendering interfaces are ignored (0.221194ms)\n✔ severe continuous low FPS can step high to mid to low without changing preference (0.268753ms)\n✔ actual runtime FX setup installs the countdown guard even when no particle pools exist (0.202456ms)\n✔ persistent foreground lag at low quality reduces drawing pixels within a bounded budget (0.612617ms)\n✔ ordinary cadence and one expensive frame keep full low-quality resolution (0.448016ms)\n✔ native renderer method behavior is unchanged until a budget is earned and installation stays idempotent (0.269325ms)\n✔ sustained near-12-FPS low-quality rendering also has a bounded fallback (0.349072ms)\n✔ render-budget fallback preserves native render, game state, camera, viewport and storage (0.358014ms)\n✔ a hidden interval without animation frames discards earlier low-quality stall samples (0.236767ms)\n✔ paused frames and resuming a race cannot combine unrelated stall intervals (0.264037ms)\n✔ invalid or backwards elapsed time resets low-quality samples (0.331656ms)\n✔ native resize and low-quality setup retain a required effective pixel budget (0.187134ms)\n✔ explicit higher quality remains authoritative and later low setup retains the safe budget (0.222836ms)\n✔ actual race rendering can degrade low pixels without taking over other quality settings (0.152243ms)\n✔ CI multi-second stalls earn the emergency budget on the same mid-to-low render (0.193664ms)\n✔ four consecutive multi-second countdown stalls can take existing low quality directly to the floor (0.192712ms)\n✔ sub-second stalls and sustained moderate slow frames retain gradual pixel reductions (0.189869ms)\n✔ one multi-second spike followed by ordinary frames cannot pre-earn an emergency budget (0.198961ms)\n✔ lifecycle, sizing, quality and clock discontinuities discard old multi-second evidence (0.244558ms)\n✔ emergency pixels retain high-to-mid-to-low ownership and explicit later quality choices (0.190129ms)\n✔ the multi-second shortcut is confined to countdown and retains the race pixel policy (0.081739ms)\n✔ native setSize-only resize resets countdown evidence and preserves its receiver, arguments and result (0.243647ms)\n✔ 原生大厅只有AI演示赛车时即可启动，不等待尚未创建的玩家 (0.120126ms)\n✔ 切关加载失败或仍处于旧赛道时，禁止用错误赛道开新关并扣燃油 (0.159543ms)\n✔ 画质偏好：首次使用均衡，用户选流畅后刷新仍优先流畅 (0.131693ms)\n✔ 暂停静音复用原生 WebAudio 总音量，支持启动前后调用与恢复 (0.165273ms)\n✔ 成绩读取真实玩家，不将AI冲线计为玩家完赛 (0.289394ms)\n✔ single-run settlement uses the actual 07/22 finish distance and does not mark a loss as finished (0.391123ms)\n✔ 结算冻结原生模拟，重复调用不会从结算恢复模拟 (0.190219ms)\n✔ 输入释放同时清除触屏、键盘、两个边沿集合 (0.161948ms)\n✔ V10手机镜头FOV有可感知的速度反馈且不超过88度 (0.127217ms)\n✔ 手机特效保持原生粒子事件与寿命，限制近镜头遮挡；安装一次且键盘模式恢复原参数 (0.26636ms)\n✔ 自适应只在持续低帧率后降一档；手选画质保留 (0.317295ms)\n✔ UI refresh at 30 Hz cannot throttle 120Hz physics or misread a backwards clock (0.186473ms)\n✔ phone quality drops on sustained <46FPS rather than isolated delayed frames (0.342501ms)\n✔ screen platform depends on input affordance, not CSS window width (0.241705ms)\n✔ phone follows closer car yet looks ahead on V9 technical bends (0.135318ms)\n✔ first mobile frame uses safe rendering budget, saved user preference still wins (0.091965ms)\n✔ phone downhill camera samples true road elevation, avoids airborne/fork guesses (0.243317ms)\n✔ manual graphics cannot become unsteerable at sustained 14 FPS (0.137572ms)\n✔ input diagnostics are aggregate-only and do not claim display latency (0.295553ms)\n✔ 赛车源补丁保留原输入、物理和AI流程，只约束手机镜头与渲染 (0.893409ms)\n✔ 未知源版本不能静默套用补丁 (0.329452ms)\n✔ registered build includes live career, items, runtime and fuel dependencies (2.651635ms)\n✔ race text labels remove known third-party signboards in build output (0.131603ms)\n✔ instrument clean native drift without changing dynamics, and reject unknown source (0.154446ms)\n✔ recognizable character balloons are replaced with generic scene assets (0.084394ms)\n✔ actual esbuild script injection keeps valid $& tokens and exactly one closing body (0.148498ms)\n✔ V3.1 build adds pinned geometry and question-box source patches once, rejects unknown shapes (0.371213ms)\n✔ V3.1 model and spline modules are hashed into H5 build and kept scoped to racing (2.227133ms)\n✔ desert dune relief edits only the original generated sand base, never native physics (0.195486ms)\n✔ native stage-specific course selection is strict, idempotent and does not rewrite driving physics (0.196828ms)\n✔ native fork adapters are exact, idempotent and preserve original acceleration/AI (0.348941ms)\n✔ stage-scenery pipeline changes only sky/props, never native car or track physics (0.202376ms)\n✔ fixed desert monument safety keeps pyramid models away from new racing surfaces (0.182237ms)\n✔ V8 native AI hook is strict and avoids checkpoint/progress surgery (0.214194ms)\n✔ V11 build adapter preserves AI names and instantiates the native PlayerCar subclass (1.742393ms)\n✔ V11 world adapter projects physical rivals and applies real impulses without taking player ownership (0.538639ms)\n✔ V8 one-way finish hooks preserve native progress and onLap bookkeeping (0.175497ms)\n✔ phone and desktop camera differences preserve native car/road physics (0.20461ms)\n✔ native eight-item HUD matches V8 pickups and never crashes on a new item ID (0.44374ms)\n✔ V6.2 graphics safety is re-integrated into native generated WebGL with fail-closed anchors (0.304516ms)\nℹ tests 67\nℹ suites 0\nℹ pass 67\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 85.475074\n",
+      "outputSha256": "3d41b7541e3992fc50ff1a995830c39b5956dff476c33e8edf7f7e9a7e1ebe97",
+      "toolChunkId": "789ae7",
+      "wallTimeSeconds": 0.000023134
+    },
+    {
+      "name": "final-scoped-eslint",
+      "command": "node node_modules/eslint/bin/eslint.js templates/web-lite/h5-source-mobile-v1/racing/session.mjs templates/web-lite/h5-source-mobile-v1/tests/racing-countdown-quality.test.mjs",
+      "cwd": "/workspace/scratch/29547c23d820/racing-unified",
+      "exitCode": 0,
+      "outputKind": "raw exec_command combined stdout/stderr",
+      "output": "",
+      "outputSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "toolChunkId": "eb6802",
+      "wallTimeSeconds": 0.582304098
+    }
+  ],
+  "validation": {
+    "engine": "Zod",
+    "version": "4.4.3",
+    "schemaId": "cold-emergency-fixer-handoff/v2",
+    "validatedBeforeWrite": true,
+    "validatedAfterReadBack": true
+  },
+  "role": "FixerAgent",
+  "route": "formal-fixer",
+  "createdAt": "2026-10-18T16:27:55.503Z",
+  "changes": [
+    {
+      "path": "/workspace/scratch/29547c23d820/racing-unified/templates/web-lite/h5-source-mobile-v1/racing/session.mjs",
+      "beforeSha256": "bc732a99a14318305bee540e9c370a173616235580e3c83e729e2511d88aeeef",
+      "afterSha256": "f56c9f10951d26eeb90825aa1376802501736f4081ae4182984cbe0f9d9ee866",
+      "bytes": 16428,
+      "change": "Only installCountdownQualitySafety body: multi-second emergency cap plus owned native resize wrapper resetting observations before calling the original method."
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/racing-unified/templates/web-lite/h5-source-mobile-v1/tests/racing-countdown-quality.test.mjs",
+      "beforeSha256": "878b8ebc1e09d485b6bbf3861eea98001f039dc49abf774b02dca0d58dad7bea",
+      "afterSha256": "b4717e9d343fe93310341759d4463f36063d10d8d5729ceacc32f4f215440189",
+      "bytes": 16814,
+      "change": "Append eight regressions; all nineteen original test statements remain byte-for-byte unchanged."
+    }
+  ],
+  "behavior": {
+    "scope": "countdown only; existing race pixel policy retained",
+    "emergencyCondition": {
+      "consecutiveVisibleIntervalsAtLeast": 4,
+      "eachIntervalSecondsStrictlyGreaterThan": 0.25,
+      "totalSecondsAtLeast": 4,
+      "meanIntervalSecondsAtLeast": 1
+    },
+    "entryToLow": "The .35 cap is set before native setupQuality on the same confirmed mid-to-low render, then effective pixels and native resize are applied.",
+    "alreadyLow": "The same confirmed countdown evidence selects the existing .35 floor directly instead of .75/.5 intermediate stages.",
+    "normalAndModerate": "The existing >=4 stalls or >=1.3s severe-slow triggers and .75→.5→.35 progression remain unchanged when the emergency condition is absent.",
+    "resets": [
+      "visibilitychange or hidden/inactive frames",
+      "pause/state transition",
+      "quality change",
+      "owned native game.resize invocation, including setSize-only sizing",
+      "owned native setPixelRatio including quality setup",
+      "non-positive or non-finite elapsed",
+      "ordinary frame breaks consecutive multi-second evidence"
+    ],
+    "preserved": [
+      "global QualityMonitor byte-identical",
+      "high→mid→low ownership and explicit later higher quality",
+      "saved preferences untouched",
+      "native renderer/context identity and render arguments",
+      "full scene and native antialias setting",
+      "CSS viewport, camera and all player/track/input state",
+      "all simulation clocks and original 45s/18s QA thresholds",
+      "native resize receiver, arguments, return value and original method execution"
+    ]
+  },
+  "tests": {
+    "testFirst": {
+      "command": "node --test --test-isolation=none --test-reporter=spec templates/web-lite/h5-source-mobile-v1/tests/racing-countdown-quality.test.mjs",
+      "stage": "before source modification",
+      "tests": 26,
+      "passed": 23,
+      "failed": 3,
+      "expectedFailures": [
+        {
+          "name": "CI multi-second stalls earn the emergency budget on the same mid-to-low render",
+          "expected": "setupQuality observes pixelRatio .35",
+          "actual": "setupQuality observes pixelRatio 1"
+        },
+        {
+          "name": "four consecutive multi-second countdown stalls can take existing low quality directly to the floor",
+          "expected": ".35",
+          "actual": ".75"
+        },
+        {
+          "name": "emergency pixels retain high-to-mid-to-low ownership and explicit later quality choices",
+          "expected": "low pixelRatio .35",
+          "actual": "low pixelRatio 1"
+        }
+      ]
+    },
+    "green": [
+      {
+        "command": "node --test --test-isolation=none --test-reporter=spec templates/web-lite/h5-source-mobile-v1/tests/racing-countdown-quality.test.mjs templates/web-lite/h5-source-mobile-v1/tests/racing-session.test.mjs tools/lean-pilot/tests/racing-build.test.mjs",
+        "exitCode": 0,
+        "tests": 67,
+        "passed": 67,
+        "failed": 0
+      }
+    ],
+    "lint": {
+      "command": "node node_modules/eslint/bin/eslint.js templates/web-lite/h5-source-mobile-v1/racing/session.mjs templates/web-lite/h5-source-mobile-v1/tests/racing-countdown-quality.test.mjs",
+      "exitCode": 0,
+      "output": ""
+    },
+    "diffCheck": {
+      "command": "git diff --check",
+      "exitCode": 0,
+      "output": ""
+    },
+    "newRegressions": 8,
+    "originalTestsPreserved": 19,
+    "regressionScope": [
+      "same-render pre-setupQuality cap",
+      "already-low four-interval emergency floor and state/context invariants",
+      "400ms/999ms and 80ms progressive behavior",
+      "isolated15s spike with normal-frame reset",
+      "hidden/pause/resize/quality/backwards-clock evidence reset",
+      "high→mid→low then explicit high and low choices",
+      "race remains on existing progressive policy",
+      "faithful setSize-only native resize clears both mid/low evidence and forwards native receiver/arguments/result"
+    ],
+    "traceCaveat": "[4000,4000,4000,5862]ms is a synthetic native-render regression covering the CI multi-second regime and ~17.862s observed delay; CI snapshots are not an exact per-render trace.",
+    "environmentNotes": [
+      "Default Node test worker mode failed before producing individual test results; in-process --test-isolation=none ran the unchanged test bodies and reported all cases.",
+      "pnpm exec attempted environment-managed installation and failed creating /root/.local/share/pnpm before ESLint; the already installed local ESLint CLI was run directly and passed. No dependency files changed."
+    ],
+    "reviewRegressionRed": {
+      "command": "node --test --test-isolation=none --test-reporter=spec templates/web-lite/h5-source-mobile-v1/tests/racing-countdown-quality.test.mjs",
+      "stage": "native setSize-only resize regression added before wrapper correction",
+      "tests": 27,
+      "passed": 26,
+      "failed": 1,
+      "name": "native setSize-only resize resets countdown evidence and preserves its receiver, arguments and result",
+      "expected": "pixelRatio remains1 after resize then first long baseline frame",
+      "actual": "pixelRatio dropped to .35 by carrying old three stalls across resize"
+    }
+  },
+  "scopeVerification": {
+    "onlyTwoTrackedFilesChanged": true,
+    "changedRelativePaths": [
+      "templates/web-lite/h5-source-mobile-v1/racing/session.mjs",
+      "templates/web-lite/h5-source-mobile-v1/tests/racing-countdown-quality.test.mjs"
+    ],
+    "sessionPrefixBeforeAllowedFunctionByteIdentical": true,
+    "originalTestFileIsByteIdenticalPrefix": true,
+    "globalQualityMonitorModified": false,
+    "qaAssertionsModified": false,
+    "qaFile": {
+      "path": "/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-cold-start-qa.mjs",
+      "sha256": "c2a8ff62cac8bae7f45abae22dbfba2bb4793b95fc29c81e3ddfa23c8e3724ad"
+    },
+    "generatedGameIndexUnchanged": {
+      "path": "/workspace/scratch/29547c23d820/racing-unified/runs/h5-qq-mobile-20261013/workspace/game/index.html",
+      "sha256": "f7437a4c533d5c17b9fe3b167360aef87ec3864249c7871bdf53985ae804a601"
+    },
+    "diffStat": {
+      "files": 2,
+      "insertions": 144,
+      "deletions": 1
+    }
+  },
+  "runtimeGate": {
+    "status": "NOT_RUN_BY_FIXER",
+    "releaseBlocked": true,
+    "buildExecuted": false,
+    "browserExecuted": false,
+    "remoteMutation": false,
+    "staging": false,
+    "commit": false,
+    "nextOwner": "/root",
+    "requiredNext": [
+      "Inspect source handoff and independent read-only review.",
+      "Perform the authorized single real rebuild and bind its new buildHash.",
+      "Run the original complete-Chromium desktop cold gate, preserving 45-second race entry and 18-second keyboard-motion thresholds.",
+      "Run touch sibling cold gate and inspect player-visible outcome; retain context as diagnostic only.",
+      "Accept only after independent natural-input QA passes the exact modified build; this handoff is not a completed production FIX."
+    ]
+  },
+  "reviewFollowup": {
+    "reviewer": "/root/car_source_review",
+    "supersededHandoffSha256": "2e18f480cb195278898b8e029b04953f903e34d312008036d89314d92abc5882",
+    "supersededSourceSha256": "e389e7e5668dbe1f148a3eb0cd2e8f015c44116b73050126e9d51a7a5b0951cf",
+    "finding": "Original budgetFixture.resize calls setPixelRatio, but actual native main.js resize calls renderer.setSize(w,h,false), which does not reset through that setter.",
+    "sourceEvidence": "runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/main.js:134,190-200",
+    "correction": "Wrap only the installed game resize method; clear measurements then invoke nativeResize.apply(this,args). No renderer/canvas replacement, fake sizing or new game-state behavior.",
+    "status": "CORRECTED_AND_REGRESSION_PASSED",
+    "independentFinalReview": "PENDING_REVIEWER_CONFIRMATION"
+  },
+  "target": {
+    "gameId": "qq-speed",
+    "runId": "h5-qq-mobile-20261013",
+    "repo": "/workspace/scratch/29547c23d820/racing-unified",
+    "workspace": "/workspace/scratch/29547c23d820/racing-unified/runs/h5-qq-mobile-20261013/workspace/game",
+    "baselineCommit": "99af424cf3584adc4f13fa607a837d56c1028c65",
+    "baselineBuildHash": "c60652cca51624b1efb8fbb4cc183e17a741c89e3e39c313113d7f9e74dab3f1",
+    "newBuildHash": null
+  },
+  "task": {
+    "path": "/workspace/scratch/29547c23d820/recovery/cold-emergency-fixer-task.json",
+    "sha256": "bdd6dd785bb4b784a6f3d54e069b44575e4f7595fe3d6eaa372771fa576dcbe0"
+  },
+  "diagnosis": {
+    "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-99af-cold-analysis.json",
+    "sha256": "30e6dd7fcdc0fb7e9e9b17612694449c5f3f3fdede9a794aafc8ee357103ae51",
+    "summary": "真实原始 desktop gate 失败；点击后约17.862秒才降low，44.9103秒才首次观测到.35，cdT仅1.092。逐级等待重复长帧可能让有效恢复预算来得过迟，GPU/context/MSAA具体根因仍未唯一确定。"
+  },
+  "repairHistory": {
+    "path": "/workspace/scratch/29547c23d820/racing-unified/runs/h5-qq-mobile-20261013/artifacts/repair-history.json",
+    "sha256": "64f8a731fb338891d105bc73662d7bc06453c36e49f6642cdcc151f08deacf4b",
+    "repairAttempt": 11,
+    "priorRepairAttempt": 2,
+    "replacementThreadId": "01a14f1b-1e8b-7616-ad9a-bb413bcfa000",
+    "lastStoredBuildAttempt": 11,
+    "storedAttemptCount": 9,
+    "modified": false,
+    "note": "Local history currently ends at build attempt 11 (remote fresh CI build metadata used attempt 3). Do not reset local stored attempt/thread to the CI counter; root owns one actual rebuild and history advancement."
+  },
+  "buildArtifact": {
+    "path": "/workspace/scratch/29547c23d820/racing-unified/runs/h5-qq-mobile-20261013/artifacts/build-racing.json",
+    "sha256": "1aa43647c15d05c4fb2a079401372ef32fed17c157cae4a0d9510cbec96d0f87",
+    "attempt": 11,
+    "buildHash": "c60652cca51624b1efb8fbb4cc183e17a741c89e3e39c313113d7f9e74dab3f1",
+    "modified": false
+  },
+  "remainingRisks": [
+    "Earlier .35 eligibility is an evidence-backed performance hypothesis; the patched production runtime has not yet been built or browser-tested.",
+    "Synthetic frame tests cannot prove real GitHub render cadence, GPU work distribution, visual readability at the floor, or final race entry.",
+    "The existing floor and MSAA/scene/viewport are preserved, so a deeper rendering bottleneck may remain after the earlier recovery."
+  ],
+  "contextOmitted": [
+    "Unrelated Lean runs",
+    "other games/assets",
+    "prior unrelated release changes"
+  ]
+}

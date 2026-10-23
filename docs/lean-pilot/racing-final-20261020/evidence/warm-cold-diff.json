@@ -1,0 +1,65 @@
+{
+  "sourceCommit": "bde813d6f78f44809ae7d475c3dda4efda972823",
+  "files": [
+    {
+      "path": "LICENSE.three.txt",
+      "identical": true,
+      "localSha256": "4c40a1ef62450b857c3b2aaf294936304cd552d965fbcd9d32d4c5bcf4ba4454",
+      "ciSha256": "4c40a1ef62450b857c3b2aaf294936304cd552d965fbcd9d32d4c5bcf4ba4454"
+    },
+    {
+      "path": "candidate.json",
+      "identical": true,
+      "localSha256": "4a1c53acbf6f76aa7ff6c7e52b5990beb2872ea84500cab5e6dedfe00ad61186",
+      "ciSha256": "4a1c53acbf6f76aa7ff6c7e52b5990beb2872ea84500cab5e6dedfe00ad61186"
+    },
+    {
+      "path": "engine.mjs",
+      "identical": true,
+      "localSha256": "2558c7f3c9dce4090e9866ce66215cdb04f0204f08477b0db85a78860ec4f9e8",
+      "ciSha256": "2558c7f3c9dce4090e9866ce66215cdb04f0204f08477b0db85a78860ec4f9e8"
+    },
+    {
+      "path": "index.html",
+      "identical": true,
+      "localSha256": "6949497a622678fe3e8ccd5d059a66894ce293020afcaf17fc7c42c31c1ca812",
+      "ciSha256": "6949497a622678fe3e8ccd5d059a66894ce293020afcaf17fc7c42c31c1ca812"
+    },
+    {
+      "path": "main.mjs",
+      "identical": true,
+      "localSha256": "c47f751fb87d575c1a73a39e4b093919a979bc206eabc7cc3c4b59ee483eda1c",
+      "ciSha256": "c47f751fb87d575c1a73a39e4b093919a979bc206eabc7cc3c4b59ee483eda1c"
+    },
+    {
+      "path": "platform.json",
+      "identical": true,
+      "localSha256": "ebc8f939c756aa1ff0220059c9fe14a5d473f145696681d26a6d8042f0654daf",
+      "ciSha256": "ebc8f939c756aa1ff0220059c9fe14a5d473f145696681d26a6d8042f0654daf"
+    },
+    {
+      "path": "style.css",
+      "identical": true,
+      "localSha256": "a5e2b84a92a0cfbd3e5163e4d18e6eeda10ffb1fc5cabc570b07023780ad7b15",
+      "ciSha256": "a5e2b84a92a0cfbd3e5163e4d18e6eeda10ffb1fc5cabc570b07023780ad7b15"
+    },
+    {
+      "path": "tests/ads.test.mjs",
+      "identical": false,
+      "localSha256": "3d6e2799d96247932ff3ad3f56207235b00213ed70aac77f6b2378ff31aeff28",
+      "ciSha256": "f10d133caccae4c50d849400a47e21b4ae1df8984a5f769bde2444ff8b3bb71e"
+    },
+    {
+      "path": "tests/engine.test.mjs",
+      "identical": true,
+      "localSha256": "83d77ee481f125e2d4f1fa0ab6eac889602e9728b6dc7f40c9818366eb0ccef4",
+      "ciSha256": "83d77ee481f125e2d4f1fa0ab6eac889602e9728b6dc7f40c9818366eb0ccef4"
+    },
+    {
+      "path": "themes.mjs",
+      "identical": false,
+      "localSha256": "0753983c593393a79d95c05af2ec8208f5637a02577d78ebd1321028d39b1de3",
+      "ciSha256": "177ee6d7c3c4975710b3b853f8fc7ad9ce38c2d0b96e5b96e02ec5c26579e2b2"
+    }
+  ]
+}

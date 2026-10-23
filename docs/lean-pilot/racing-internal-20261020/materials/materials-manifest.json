@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "gameId": "qq-speed",
+  "workspace": "runs/h5-qq-mobile-20261013/workspace",
+  "buildHash": "811e05f4f6207050a63939680de93b4b3b262904663a103048d310f1466e37d6",
+  "publishable": false,
+  "assets": [
+    {
+      "path": "README.md",
+      "bytes": 742,
+      "sha256": "f2b13486d99c0c9730c319bc0aa38ea6d360e6e50d2ddb4bab876a1d4ad19020",
+      "role": "DRAFT_REUSED_FROM_SAME_RUN_NOT_RIGHTS_CLEARANCE"
+    },
+    {
+      "path": "cover-illustration-draft.png",
+      "bytes": 2182697,
+      "sha256": "1d9776a83085a519575491633c5c647ea3c637c2b27db843d406401489c97610",
+      "role": "DRAFT_REUSED_FROM_SAME_RUN_NOT_RIGHTS_CLEARANCE"
+    },
+    {
+      "path": "icon-512.png",
+      "bytes": 100381,
+      "sha256": "a8bfe4f9266aabb47e9c47238ffc29fa4a305ccdb2053ad107cb13dba1c97f82",
+      "role": "DRAFT_REUSED_FROM_SAME_RUN_NOT_RIGHTS_CLEARANCE"
+    },
+    {
+      "path": "icon.svg",
+      "bytes": 1469,
+      "sha256": "458916cd862d20f0df88a72db8a0680316125d28e25db5211c4007a0936f87f1",
+      "role": "DRAFT_REUSED_FROM_SAME_RUN_NOT_RIGHTS_CLEARANCE"
+    },
+    {
+      "path": "original-generation-provenance.json",
+      "bytes": 1971,
+      "sha256": "9db506ccf0178d69f3e1460fd3928bdb4dabb62f0ba3c528756b8fcc5158a19d",
+      "role": "DRAFT_REUSED_FROM_SAME_RUN_NOT_RIGHTS_CLEARANCE"
+    },
+    {
+      "path": "screenshot-driving.png",
+      "bytes": 294218,
+      "sha256": "56b75d6a2873a2dc1f94c1415c78ca8ddcbb87e1a777f7b05c7eb085bbf3882b",
+      "role": "ACTUAL_FINAL_BUILD_SCREENSHOT"
+    },
+    {
+      "path": "screenshot-garage.png",
+      "bytes": 366099,
+      "sha256": "d5da03ad17527f9a69d23edbb8fb47acca3d38decef32d060aae6cff727f6c49",
+      "role": "ACTUAL_FINAL_BUILD_SCREENSHOT"
+    },
+    {
+      "path": "screenshot-settlement.png",
+      "bytes": 245333,
+      "sha256": "c424bd63dd176b4c6bc6dbaf8503e672b7c53d043d1d454a2871438b688ecbef",
+      "role": "ACTUAL_FINAL_BUILD_SCREENSHOT"
+    }
+  ]
+}

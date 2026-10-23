@@ -1,0 +1,1004 @@
+{
+  "type": "native-physics-fixture",
+  "humanInput": false,
+  "rendered": false,
+  "project": "/workspace/scratch/74be31e29a0f/racing-unified/runs/h5-qq-mobile-20261013/workspace/source/qq-speed",
+  "buildHash": "3d891ab2cef02f7a0e760038413bd2e7a53a36284fd866c23da61d446c5011d3",
+  "cases": [
+    {
+      "course": "race-05",
+      "fixture": {
+        "laps": 2,
+        "wall": false,
+        "startDelta": -8,
+        "circuitGeometry": false
+      },
+      "seconds": 139.61666666670402,
+      "entries": 2,
+      "exits": 2,
+      "crashes": 0,
+      "maxStep": 0.4557081383644117,
+      "minCrashSpeed": null,
+      "final": {
+        "d": 0.04592640952705551,
+        "progress": 6823.576222493264,
+        "lapsDone": 2,
+        "lapEvents": 2,
+        "finished": true,
+        "finishTime": 139.61666666670402,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-05",
+      "fixture": {
+        "laps": 0,
+        "wall": false,
+        "startDelta": -8,
+        "circuitGeometry": false
+      },
+      "seconds": 3.8333333333333224,
+      "entries": 1,
+      "exits": 1,
+      "crashes": 0,
+      "maxStep": 0.44054119260693647,
+      "minCrashSpeed": null,
+      "final": {
+        "d": 1459.6410011012208,
+        "progress": 1459.6410011012208,
+        "lapsDone": 0,
+        "lapEvents": 0,
+        "finished": false,
+        "finishTime": 0,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-05",
+      "fixture": {
+        "laps": 0,
+        "wall": true,
+        "startDelta": -8,
+        "circuitGeometry": false
+      },
+      "seconds": 4.308333333333337,
+      "entries": 1,
+      "exits": 1,
+      "crashes": 1,
+      "maxStep": 0.4405039377030613,
+      "minCrashSpeed": 19.516653697104964,
+      "final": {
+        "d": 1459.6361646703585,
+        "progress": 1459.6361646703585,
+        "lapsDone": 0,
+        "lapEvents": 0,
+        "finished": false,
+        "finishTime": 0,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-05",
+      "fixture": {
+        "laps": 0,
+        "wall": true,
+        "startDelta": 8,
+        "circuitGeometry": false
+      },
+      "seconds": 4.600000000000018,
+      "entries": 1,
+      "exits": 1,
+      "crashes": 1,
+      "maxStep": 0.440070671224958,
+      "minCrashSpeed": 19.526563979272698,
+      "final": {
+        "d": 1459.670392049557,
+        "progress": 1459.670392049557,
+        "lapsDone": 0,
+        "lapEvents": 0,
+        "finished": false,
+        "finishTime": 0,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-10",
+      "fixture": {
+        "laps": 2,
+        "wall": false,
+        "startDelta": -8,
+        "circuitGeometry": false
+      },
+      "seconds": 142.83333333336776,
+      "entries": 2,
+      "exits": 2,
+      "crashes": 0,
+      "maxStep": 0.45571210944860935,
+      "minCrashSpeed": null,
+      "final": {
+        "d": 0.4546713394906874,
+        "progress": 7038.660364837589,
+        "lapsDone": 2,
+        "lapEvents": 2,
+        "finished": true,
+        "finishTime": 142.83333333336776,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-10",
+      "fixture": {
+        "laps": 0,
+        "wall": false,
+        "startDelta": -8,
+        "circuitGeometry": false
+      },
+      "seconds": 4.35833333333334,
+      "entries": 1,
+      "exits": 1,
+      "crashes": 0,
+      "maxStep": 0.4556573637977728,
+      "minCrashSpeed": null,
+      "final": {
+        "d": 1110.618621194793,
+        "progress": 1110.618621194793,
+        "lapsDone": 0,
+        "lapEvents": 0,
+        "finished": false,
+        "finishTime": 0,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-10",
+      "fixture": {
+        "laps": 0,
+        "wall": true,
+        "startDelta": -8,
+        "circuitGeometry": false
+      },
+      "seconds": 5.000000000000038,
+      "entries": 1,
+      "exits": 1,
+      "crashes": 1,
+      "maxStep": 0.4556652081406013,
+      "minCrashSpeed": 19.5485067520954,
+      "final": {
+        "d": 1110.7651888271007,
+        "progress": 1110.7651888271007,
+        "lapsDone": 0,
+        "lapEvents": 0,
+        "finished": false,
+        "finishTime": 0,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-10",
+      "fixture": {
+        "laps": 0,
+        "wall": true,
+        "startDelta": 8,
+        "circuitGeometry": false
+      },
+      "seconds": 5.191666666666714,
+      "entries": 1,
+      "exits": 1,
+      "crashes": 1,
+      "maxStep": 0.4496997469786038,
+      "minCrashSpeed": 19.534851444568154,
+      "final": {
+        "d": 1110.463865451386,
+        "progress": 1110.463865451386,
+        "lapsDone": 0,
+        "lapEvents": 0,
+        "finished": false,
+        "finishTime": 0,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-12",
+      "fixture": {
+        "laps": 2,
+        "wall": false,
+        "startDelta": -8,
+        "circuitGeometry": false
+      },
+      "seconds": 143.32500000003398,
+      "entries": 2,
+      "exits": 2,
+      "crashes": 0,
+      "maxStep": 0.45571379265379564,
+      "minCrashSpeed": null,
+      "final": {
+        "d": 0.11339970767903651,
+        "progress": 7073.2918187514715,
+        "lapsDone": 2,
+        "lapEvents": 2,
+        "finished": true,
+        "finishTime": 143.32500000003398,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-12",
+      "fixture": {
+        "laps": 0,
+        "wall": false,
+        "startDelta": -8,
+        "circuitGeometry": false
+      },
+      "seconds": 4.733333333333358,
+      "entries": 1,
+      "exits": 1,
+      "crashes": 0,
+      "maxStep": 0.45570285811714706,
+      "minCrashSpeed": null,
+      "final": {
+        "d": 2342.1905566417668,
+        "progress": 2342.1905566417668,
+        "lapsDone": 0,
+        "lapEvents": 0,
+        "finished": false,
+        "finishTime": 0,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-12",
+      "fixture": {
+        "laps": 0,
+        "wall": true,
+        "startDelta": -8,
+        "circuitGeometry": false
+      },
+      "seconds": 5.283333333333386,
+      "entries": 1,
+      "exits": 1,
+      "crashes": 1,
+      "maxStep": 0.4557072872937419,
+      "minCrashSpeed": 19.438761857012658,
+      "final": {
+        "d": 2342.150441748458,
+        "progress": 2342.150441748458,
+        "lapsDone": 0,
+        "lapEvents": 0,
+        "finished": false,
+        "finishTime": 0,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-12",
+      "fixture": {
+        "laps": 0,
+        "wall": true,
+        "startDelta": 8,
+        "circuitGeometry": false
+      },
+      "seconds": 5.558333333333399,
+      "entries": 1,
+      "exits": 1,
+      "crashes": 1,
+      "maxStep": 0.45571340070280686,
+      "minCrashSpeed": 19.492945002828414,
+      "final": {
+        "d": 2342.386434646815,
+        "progress": 2342.386434646815,
+        "lapsDone": 0,
+        "lapEvents": 0,
+        "finished": false,
+        "finishTime": 0,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-13",
+      "fixture": {
+        "laps": 2,
+        "wall": false,
+        "startDelta": -8,
+        "circuitGeometry": false
+      },
+      "seconds": 142.0666666667018,
+      "entries": 2,
+      "exits": 2,
+      "crashes": 0,
+      "maxStep": 0.45569811123770587,
+      "minCrashSpeed": null,
+      "final": {
+        "d": 0.18632213428418254,
+        "progress": 6595.8900427981025,
+        "lapsDone": 2,
+        "lapEvents": 2,
+        "finished": true,
+        "finishTime": 142.0666666667018,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-13",
+      "fixture": {
+        "laps": 0,
+        "wall": false,
+        "startDelta": -8,
+        "circuitGeometry": false
+      },
+      "seconds": 3.9249999999999887,
+      "entries": 1,
+      "exits": 1,
+      "crashes": 0,
+      "maxStep": 0.43908433937524544,
+      "minCrashSpeed": null,
+      "final": {
+        "d": 1691.1629601149107,
+        "progress": 1691.1629601149107,
+        "lapsDone": 0,
+        "lapEvents": 0,
+        "finished": false,
+        "finishTime": 0,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-13",
+      "fixture": {
+        "laps": 0,
+        "wall": true,
+        "startDelta": -8,
+        "circuitGeometry": false
+      },
+      "seconds": 4.325000000000005,
+      "entries": 1,
+      "exits": 1,
+      "crashes": 1,
+      "maxStep": 0.4392063537193889,
+      "minCrashSpeed": 19.55387159293932,
+      "final": {
+        "d": 1691.4450640674677,
+        "progress": 1691.4450640674677,
+        "lapsDone": 0,
+        "lapEvents": 0,
+        "finished": false,
+        "finishTime": 0,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-13",
+      "fixture": {
+        "laps": 0,
+        "wall": true,
+        "startDelta": 8,
+        "circuitGeometry": false
+      },
+      "seconds": 4.6250000000000195,
+      "entries": 1,
+      "exits": 1,
+      "crashes": 1,
+      "maxStep": 0.43324024397959066,
+      "minCrashSpeed": 19.62584253177345,
+      "final": {
+        "d": 1691.1245068715725,
+        "progress": 1691.1245068715725,
+        "lapsDone": 0,
+        "lapEvents": 0,
+        "finished": false,
+        "finishTime": 0,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-16",
+      "fixture": {
+        "laps": 2,
+        "wall": false,
+        "startDelta": -8,
+        "circuitGeometry": false
+      },
+      "seconds": 144.12500000003325,
+      "entries": 2,
+      "exits": 2,
+      "crashes": 0,
+      "maxStep": 0.45570599347676377,
+      "minCrashSpeed": null,
+      "final": {
+        "d": 0.13367831585992462,
+        "progress": 7184.310096141629,
+        "lapsDone": 2,
+        "lapEvents": 2,
+        "finished": true,
+        "finishTime": 144.12500000003325,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-16",
+      "fixture": {
+        "laps": 0,
+        "wall": false,
+        "startDelta": -8,
+        "circuitGeometry": false
+      },
+      "seconds": 4.366666666666673,
+      "entries": 1,
+      "exits": 1,
+      "crashes": 0,
+      "maxStep": 0.45564448676830394,
+      "minCrashSpeed": null,
+      "final": {
+        "d": 1834.9696996870134,
+        "progress": 1834.9696996870134,
+        "lapsDone": 0,
+        "lapEvents": 0,
+        "finished": false,
+        "finishTime": 0,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-16",
+      "fixture": {
+        "laps": 0,
+        "wall": true,
+        "startDelta": -8,
+        "circuitGeometry": false
+      },
+      "seconds": 4.883333333333366,
+      "entries": 1,
+      "exits": 1,
+      "crashes": 1,
+      "maxStep": 0.455632720924356,
+      "minCrashSpeed": 19.52119343721819,
+      "final": {
+        "d": 1834.8106438614013,
+        "progress": 1834.8106438614013,
+        "lapsDone": 0,
+        "lapEvents": 0,
+        "finished": false,
+        "finishTime": 0,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-16",
+      "fixture": {
+        "laps": 0,
+        "wall": true,
+        "startDelta": 8,
+        "circuitGeometry": false
+      },
+      "seconds": 5.158333333333379,
+      "entries": 1,
+      "exits": 1,
+      "crashes": 1,
+      "maxStep": 0.44355190279276274,
+      "minCrashSpeed": 19.525137708572462,
+      "final": {
+        "d": 1834.6193789635627,
+        "progress": 1834.6193789635627,
+        "lapsDone": 0,
+        "lapEvents": 0,
+        "finished": false,
+        "finishTime": 0,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-18",
+      "fixture": {
+        "laps": 2,
+        "wall": false,
+        "startDelta": -8,
+        "circuitGeometry": false
+      },
+      "seconds": 143.4000000000339,
+      "entries": 2,
+      "exits": 2,
+      "crashes": 0,
+      "maxStep": 0.45571620890499637,
+      "minCrashSpeed": null,
+      "final": {
+        "d": 0.1511137143779706,
+        "progress": 7076.310398633628,
+        "lapsDone": 2,
+        "lapEvents": 2,
+        "finished": true,
+        "finishTime": 143.4000000000339,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-18",
+      "fixture": {
+        "laps": 0,
+        "wall": false,
+        "startDelta": -8,
+        "circuitGeometry": false
+      },
+      "seconds": 4.416666666666676,
+      "entries": 1,
+      "exits": 1,
+      "crashes": 0,
+      "maxStep": 0.4556721616723455,
+      "minCrashSpeed": null,
+      "final": {
+        "d": 1694.495012847035,
+        "progress": 1694.495012847035,
+        "lapsDone": 0,
+        "lapEvents": 0,
+        "finished": false,
+        "finishTime": 0,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-18",
+      "fixture": {
+        "laps": 0,
+        "wall": true,
+        "startDelta": -8,
+        "circuitGeometry": false
+      },
+      "seconds": 4.9583333333333695,
+      "entries": 1,
+      "exits": 1,
+      "crashes": 1,
+      "maxStep": 0.45152269181950216,
+      "minCrashSpeed": 19.515847696090734,
+      "final": {
+        "d": 1694.5756189506014,
+        "progress": 1694.5756189506014,
+        "lapsDone": 0,
+        "lapEvents": 0,
+        "finished": false,
+        "finishTime": 0,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-18",
+      "fixture": {
+        "laps": 0,
+        "wall": true,
+        "startDelta": 8,
+        "circuitGeometry": false
+      },
+      "seconds": 5.216666666666716,
+      "entries": 1,
+      "exits": 1,
+      "crashes": 1,
+      "maxStep": 0.4387109863924726,
+      "minCrashSpeed": 19.518395094184818,
+      "final": {
+        "d": 1694.4706554816034,
+        "progress": 1694.4706554816034,
+        "lapsDone": 0,
+        "lapEvents": 0,
+        "finished": false,
+        "finishTime": 0,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-22",
+      "fixture": {
+        "laps": 1,
+        "wall": false,
+        "startDelta": -8,
+        "circuitGeometry": false
+      },
+      "seconds": 87.76666666668258,
+      "entries": 1,
+      "exits": 1,
+      "crashes": 0,
+      "maxStep": 0.4556978617316177,
+      "minCrashSpeed": null,
+      "final": {
+        "d": 4272.769100122878,
+        "progress": 4272.769100122878,
+        "lapsDone": 1,
+        "lapEvents": 1,
+        "finished": true,
+        "finishTime": 87.76666666668258,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-22",
+      "fixture": {
+        "laps": 2,
+        "wall": false,
+        "startDelta": -8,
+        "circuitGeometry": true
+      },
+      "seconds": 206.47499999997655,
+      "entries": 2,
+      "exits": 2,
+      "crashes": 0,
+      "maxStep": 0.4557024945674569,
+      "minCrashSpeed": null,
+      "final": {
+        "d": 0.3487474000967268,
+        "progress": 10172.536383901086,
+        "lapsDone": 2,
+        "lapEvents": 2,
+        "finished": true,
+        "finishTime": 206.47499999997655,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-22",
+      "fixture": {
+        "laps": 0,
+        "wall": false,
+        "startDelta": -8,
+        "circuitGeometry": false
+      },
+      "seconds": 5.108333333333377,
+      "entries": 1,
+      "exits": 1,
+      "crashes": 0,
+      "maxStep": 0.4414788506911165,
+      "minCrashSpeed": null,
+      "final": {
+        "d": 1390.209253064928,
+        "progress": 1390.209253064928,
+        "lapsDone": 0,
+        "lapEvents": 0,
+        "finished": false,
+        "finishTime": 0,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-22",
+      "fixture": {
+        "laps": 0,
+        "wall": true,
+        "startDelta": -8,
+        "circuitGeometry": false
+      },
+      "seconds": 5.5500000000000655,
+      "entries": 1,
+      "exits": 1,
+      "crashes": 1,
+      "maxStep": 0.43664395955864344,
+      "minCrashSpeed": 19.522421099470243,
+      "final": {
+        "d": 1389.964296497379,
+        "progress": 1389.964296497379,
+        "lapsDone": 0,
+        "lapEvents": 0,
+        "finished": false,
+        "finishTime": 0,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-22",
+      "fixture": {
+        "laps": 0,
+        "wall": true,
+        "startDelta": 8,
+        "circuitGeometry": false
+      },
+      "seconds": 6.100000000000093,
+      "entries": 1,
+      "exits": 1,
+      "crashes": 1,
+      "maxStep": 0.4175013314800305,
+      "minCrashSpeed": 19.512457112527155,
+      "final": {
+        "d": 1390.270494956544,
+        "progress": 1390.270494956544,
+        "lapsDone": 0,
+        "lapEvents": 0,
+        "finished": false,
+        "finishTime": 0,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-25",
+      "fixture": {
+        "laps": 2,
+        "wall": false,
+        "startDelta": -8,
+        "circuitGeometry": false
+      },
+      "seconds": 149.97500000002793,
+      "entries": 2,
+      "exits": 2,
+      "crashes": 0,
+      "maxStep": 0.455719605329148,
+      "minCrashSpeed": null,
+      "final": {
+        "d": 0.25305480014912973,
+        "progress": 7287.576440285578,
+        "lapsDone": 2,
+        "lapEvents": 2,
+        "finished": true,
+        "finishTime": 149.97500000002793,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-25",
+      "fixture": {
+        "laps": 0,
+        "wall": false,
+        "startDelta": -8,
+        "circuitGeometry": false
+      },
+      "seconds": 3.9666666666666552,
+      "entries": 1,
+      "exits": 1,
+      "crashes": 0,
+      "maxStep": 0.45564415714834444,
+      "minCrashSpeed": null,
+      "final": {
+        "d": 1606.2289526856885,
+        "progress": 1606.2289526856885,
+        "lapsDone": 0,
+        "lapEvents": 0,
+        "finished": false,
+        "finishTime": 0,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-25",
+      "fixture": {
+        "laps": 0,
+        "wall": true,
+        "startDelta": -8,
+        "circuitGeometry": false
+      },
+      "seconds": 4.42500000000001,
+      "entries": 1,
+      "exits": 1,
+      "crashes": 1,
+      "maxStep": 0.45547218103388526,
+      "minCrashSpeed": 19.52490532606231,
+      "final": {
+        "d": 1605.9366147066794,
+        "progress": 1605.9366147066794,
+        "lapsDone": 0,
+        "lapEvents": 0,
+        "finished": false,
+        "finishTime": 0,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-25",
+      "fixture": {
+        "laps": 0,
+        "wall": true,
+        "startDelta": 8,
+        "circuitGeometry": false
+      },
+      "seconds": 4.750000000000026,
+      "entries": 1,
+      "exits": 1,
+      "crashes": 1,
+      "maxStep": 0.4471244519135886,
+      "minCrashSpeed": 19.536029011575973,
+      "final": {
+        "d": 1605.8952203323115,
+        "progress": 1605.8952203323115,
+        "lapsDone": 0,
+        "lapEvents": 0,
+        "finished": false,
+        "finishTime": 0,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-27",
+      "fixture": {
+        "laps": 2,
+        "wall": false,
+        "startDelta": -8,
+        "circuitGeometry": false
+      },
+      "seconds": 152.458333333359,
+      "entries": 2,
+      "exits": 2,
+      "crashes": 0,
+      "maxStep": 0.4557177993739125,
+      "minCrashSpeed": null,
+      "final": {
+        "d": 0.37229619847175854,
+        "progress": 7348.592501602292,
+        "lapsDone": 2,
+        "lapEvents": 2,
+        "finished": true,
+        "finishTime": 152.458333333359,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-27",
+      "fixture": {
+        "laps": 0,
+        "wall": false,
+        "startDelta": -8,
+        "circuitGeometry": false
+      },
+      "seconds": 5.008333333333372,
+      "entries": 1,
+      "exits": 1,
+      "crashes": 0,
+      "maxStep": 0.45255052582810845,
+      "minCrashSpeed": null,
+      "final": {
+        "d": 790.070611057809,
+        "progress": 790.070611057809,
+        "lapsDone": 0,
+        "lapEvents": 0,
+        "finished": false,
+        "finishTime": 0,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-27",
+      "fixture": {
+        "laps": 0,
+        "wall": true,
+        "startDelta": -8,
+        "circuitGeometry": false
+      },
+      "seconds": 5.400000000000058,
+      "entries": 1,
+      "exits": 1,
+      "crashes": 1,
+      "maxStep": 0.45112556385711133,
+      "minCrashSpeed": 19.478329773463003,
+      "final": {
+        "d": 790.0055044354444,
+        "progress": 790.0055044354444,
+        "lapsDone": 0,
+        "lapEvents": 0,
+        "finished": false,
+        "finishTime": 0,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-27",
+      "fixture": {
+        "laps": 0,
+        "wall": true,
+        "startDelta": 8,
+        "circuitGeometry": false
+      },
+      "seconds": 5.808333333333412,
+      "entries": 1,
+      "exits": 1,
+      "crashes": 1,
+      "maxStep": 0.4356338764925109,
+      "minCrashSpeed": 19.500329945648883,
+      "final": {
+        "d": 789.9873179575466,
+        "progress": 789.9873179575466,
+        "lapsDone": 0,
+        "lapEvents": 0,
+        "finished": false,
+        "finishTime": 0,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-30",
+      "fixture": {
+        "laps": 2,
+        "wall": false,
+        "startDelta": -8,
+        "circuitGeometry": false
+      },
+      "seconds": 149.33333333336185,
+      "entries": 2,
+      "exits": 2,
+      "crashes": 0,
+      "maxStep": 0.4557241070701164,
+      "minCrashSpeed": null,
+      "final": {
+        "d": 0.010922330459834484,
+        "progress": 7254.698718730844,
+        "lapsDone": 2,
+        "lapEvents": 2,
+        "finished": true,
+        "finishTime": 149.33333333336185,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-30",
+      "fixture": {
+        "laps": 0,
+        "wall": false,
+        "startDelta": -8,
+        "circuitGeometry": false
+      },
+      "seconds": 4.583333333333351,
+      "entries": 1,
+      "exits": 1,
+      "crashes": 0,
+      "maxStep": 0.45570844520346854,
+      "minCrashSpeed": null,
+      "final": {
+        "d": 1484.1011327947003,
+        "progress": 1484.1011327947003,
+        "lapsDone": 0,
+        "lapEvents": 0,
+        "finished": false,
+        "finishTime": 0,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-30",
+      "fixture": {
+        "laps": 0,
+        "wall": true,
+        "startDelta": -8,
+        "circuitGeometry": false
+      },
+      "seconds": 5.000000000000038,
+      "entries": 1,
+      "exits": 1,
+      "crashes": 1,
+      "maxStep": 0.45566421460244944,
+      "minCrashSpeed": 19.526036753592223,
+      "final": {
+        "d": 1484.1457297466964,
+        "progress": 1484.1457297466964,
+        "lapsDone": 0,
+        "lapEvents": 0,
+        "finished": false,
+        "finishTime": 0,
+        "phase": "done"
+      }
+    },
+    {
+      "course": "race-30",
+      "fixture": {
+        "laps": 0,
+        "wall": true,
+        "startDelta": 8,
+        "circuitGeometry": false
+      },
+      "seconds": 5.466666666666728,
+      "entries": 1,
+      "exits": 1,
+      "crashes": 1,
+      "maxStep": 0.4532307108046484,
+      "minCrashSpeed": 19.523061016468944,
+      "final": {
+        "d": 1484.398974832437,
+        "progress": 1484.398974832437,
+        "lapsDone": 0,
+        "lapEvents": 0,
+        "finished": false,
+        "finishTime": 0,
+        "phase": "done"
+      }
+    }
+  ],
+  "sourceHashes": {
+    "ai.js": "47377c07688e4023d57a8db1167eb3e70fced3b896b5786aca7f86f5ceb805c7",
+    "race-v11-physical-ai.mjs": "6b66bac36c17cf532343c7e49bbc637e13e6222ebe0f24598f911521c8b2e0c1",
+    "vehicle.js": "c99698dd31c5ad2c90720f129616e6b65185875cc4c85cbd9d4c7c54e7c8261f",
+    "track.js": "336c734656afaf5df0c33ec132743d1e8a3023bfee348db528ab050de31f85de",
+    "main.js": "ed84e72def3c4652777f92cf0982ce74993026e3e02c5eb58ee708cfe1603fb8",
+    "layouts.js": "307e0ecf8a30214b98049576ac445abe1f7b15a81435d34916bf7afaf1ceb421",
+    "race-track-design.mjs": "69aa9881d4de76df0d25142e4b5a8134ad1dfbdca852516cb67c44cfdd6744e5",
+    "race-shortcut-network.mjs": "35c641f5d1aa0855556f28b9db044a5848e47473335a2f55ee6d665d35bf7afc",
+    "v11-course-director.mjs": "6a3153a041344fd475abd3ee6d37792e167d281f06735fceecd0414f3eb5bb59"
+  }
+}
