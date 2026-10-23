@@ -143,6 +143,9 @@ export function v11AiInput(ai, track, dt, tune = DEFAULT_TUNE) {
   const input = emptyInput();
   if (!ai || !track?.sample || !(track.length > 0) ||
       ![ai.x, ai.z, ai.h, ai.m, ai.s, ai.d, dt].every(finite) || dt <= 0) return input;
+  // This is an earned intent from the actual previous bend, not a stock,
+  // speed or catch-up grant. Expire in native physics time if no safe exit.
+  ai.__V11_EXIT_BOOST_TTL__=Math.max(0,(ai.__V11_EXIT_BOOST_TTL__??0)-dt);
   const route = updateRoute(ai, track);
   const at = routeSampler(ai, track, route);
   const ability = clamp(finite(ai.skill) ? ai.skill : 1, .65, 2.2);
@@ -234,9 +237,19 @@ export function v11AiInput(ai, track, dt, tune = DEFAULT_TUNE) {
     Math.abs(nearCurve) < .016 && Math.abs(headingError) < .20 &&
     Math.abs(input.steerAxis) < .65 && speed > 21;
   input.wPressed = (safeBoost || safeSpray) && (ai.smallWindow ?? 0) > 0;
-  if (safeBoost && (ai.nitroCount ?? 0) > 0 && (ai.nitroTime ?? 0) <= 0) {
+  // An earned nitro can be used at a real corner exit even if a *later*
+  // medium bend within 105m makes the generic straight test too cautious.
+  // The near road, current line, impact and heading still have hard safety
+  // bounds; braking and all native vehicle physics remain unchanged.
+  const exitBoostSafe = ai.__V11_EXIT_BOOST_TTL__>0 && !route &&
+    largestCurve<.0078 && Math.abs(nearCurve)<.0048 &&
+    Math.abs(headingError)<.09 && Math.abs(input.steerAxis)<.42 &&
+    !ai.airborne && !ai.drifting && (ai.spin??0)<=0 &&
+    (ai.impact??0)<=0 && speed>29;
+  if ((safeBoost || exitBoostSafe) && (ai.nitroCount ?? 0) > 0 && (ai.nitroTime ?? 0) <= 0) {
     input.nitroPressed = !ai.__V11_ITEM_MODE__;
     input.manualNitroPressed = !!ai.__V11_ITEM_MODE__;
+    ai.__V11_EXIT_BOOST_TTL__=0;
   }
   ai.__V11_AI_DECISION__ = { route: route?.phase ?? 'main', targetSpeed: desired,
     steerAxis: input.steerAxis, nearCurve, headingError };
@@ -271,6 +284,7 @@ export function createV11PhysicalAiClass(PlayerCar, tune = DEFAULT_TUNE) {
       this.__V11_AI_DECISION__ = null;
       this.__V11_AI_INPUT__ = emptyInput();
       this.__V11_DRIFT_COOLDOWN__ = 0;
+      this.__V11_EXIT_BOOST_TTL__ = 0;
     }
 
     get dist() { return this.lapsDone * this.track.length + this.d; }

@@ -249,8 +249,8 @@ export class RivalPressure {
       return null;
     let observed=null;
     for(const rival of game.racers) {
-      if(!rival||rival.isPlayer||rival.finished||!Number.isFinite(rival.dist)||
-         !Number.isFinite(rival.s)||!Number.isFinite(rival.nitroCd))continue;
+      if(!rival||rival.isPlayer||rival.finished||!rival.__V11_PHYSICAL_AI__||
+         !Number.isFinite(rival.dist)||!Number.isFinite(rival.s))continue;
       const state=this.corners.get(rival)??{armed:false,last:-1e5};
       const bend=Math.abs(game.track.curvAhead(rival.dist,55));
       if(rival.s>=27&&bend>=.011&&!rival.airborne&&(rival.spin??0)<=0)
@@ -259,10 +259,13 @@ export class RivalPressure {
         // Resolve the physical arc, not a clock-based or player-gap trigger.
         state.armed=false;
         if(rival.s>=32 && !rival.drifting && !rival.airborne &&
-          (rival.spin??0)<=0 && (rival.slowTime??0)<=0 &&
-          (rival.nitroTime??0)<=0 && rival.nitroCd>2.5 &&
-          game.raceTime-state.last>=22){
-          rival.nitroCd=Math.min(rival.nitroCd,.85);
+          (rival.spin??0)<=0 && (rival.impact??0)<=0 &&
+          (rival.slowTime??0)<=0 && (rival.nitroTime??0)<=0 &&
+          (rival.nitroCount??0)>0 && game.raceTime-state.last>=22){
+          // V11 rivals are native PlayerCars: nitroCd belongs to the RETIRED
+          // on-rail AI and changing it does nothing. Reserve a short, safe
+          // native-input opportunity instead. Never grant nitro or velocity.
+          rival.__V11_EXIT_BOOST_TTL__=Math.max(rival.__V11_EXIT_BOOST_TTL__??0,1.35);
           state.last=game.raceTime;
           if(!observed&&Number.isFinite(rival.progress)&&
             Number.isFinite(game.player.progress)&&
