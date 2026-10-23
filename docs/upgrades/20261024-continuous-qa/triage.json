@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "issueId": "CODEX-FAILED-RETRY-OUTPUT-REDACTION",
+  "targetGame": "factory-control-plane",
+  "workspace": "/Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市",
+  "classification": "sensitive-attempt-artifact",
+  "scope": [
+    "src/providers/codex-cli.ts",
+    "tests/unit/codex-cli-provider.test.ts"
+  ],
+  "observation": "At PR75 HEAD, failed-attempt last-message redaction runs only in execute outer catch. Legacy unbudgeted retry success returns without entering that catch.",
+  "hypothesis": "A failed attempt partial message remains unredacted when a later attempt succeeds.",
+  "reproduction": "Controlled local fake process: attempt1 exit1 and partial Authorization Bearer sentinel; attempt2 valid fresh output. Inspect canonical attempt1 file. No paid model.",
+  "acceptance": [
+    "Failed partial attempt is retained redacted even after retry success.",
+    "Only current successful output is published.",
+    "All attempt usage still accumulates; budgeted failure still cannot retry.",
+    "lint/typecheck/full regression pass."
+  ],
+  "route": "shared-factory-local-correction",
+  "defensiveCheckReason": "The external CLI can fail before writing its last message or write a non-regular filesystem object; existing file-existence and regular-file checks remain necessary at this boundary."
+}

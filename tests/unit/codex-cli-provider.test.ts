@@ -166,6 +166,26 @@ describe('CodexCliProvider', () => {
     expect(await readFile(outputPath, 'utf8')).toBe('previous approved artifact');
   });
 
+  it('redacts a failed attempt even when the next unbudgeted attempt succeeds', async () => {
+    const root = await mkdtemp(path.join(tmpdir(), 'codex-cli-retry-redaction-'));
+    const outputPath = path.join(root, 'out.txt');
+    const secret = 'account-token-123456789';
+    const provider = new CodexCliProvider({
+      spawn: fakeSpawn([
+        { code: 1, stdout: '{"type":"turn.completed","usage":{"input_tokens":2,"output_tokens":1}}\n', output: `partial Authorization: Bearer ${secret}` },
+        { stdout: '{"type":"turn.completed","usage":{"input_tokens":3,"output_tokens":1}}\n', output: 'fresh output' },
+      ], []),
+      timeoutMs: 100, maxRetries: 1,
+    });
+    const result = await provider.execute({ label: 'BLUEPRINT', prompt: 'fresh', cwd: root,
+      sandbox: 'read-only', outputPath, logDir: path.join(root, 'logs') });
+    const retained = await readFile(path.join(root, `logs/codex/executions/${result.executionId}/BLUEPRINT.attempt-1.last-message.txt`), 'utf8');
+    expect(retained).toContain('partial');
+    expect(retained).not.toContain(secret);
+    expect(await readFile(outputPath, 'utf8')).toBe('fresh output');
+    expect(result).toMatchObject({ attempts: 2, usage: { inputTokens: 5, outputTokens: 2, totalTokens: 7 } });
+  });
+
   it('parses thread, completion, failure, usage and error JSONL events', () => {
     const parsed = parseCodexJsonl([
       '{"type":"thread.started","thread_id":"thread-42"}',

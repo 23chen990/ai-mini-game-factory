@@ -151,6 +151,14 @@ export function parseCodexJsonl(stdout: string): CodexJsonlResult {
 type ProcessStopReason = 'failed' | 'token-budget' | 'usage-unavailable' | 'timeout' | 'cancelled';
 type ProcessResult = { code: number | null; signal: NodeJS.Signals | null; stdout: string; stderr: string; stopReason?: ProcessStopReason };
 
+async function redactAttemptOutput(outputPath: string): Promise<void> {
+  // The external CLI can fail before writing a message or leave a non-file.
+  if (!await exists(outputPath)) return;
+  const stat = await lstat(outputPath);
+  if (!stat.isFile() || stat.isSymbolicLink()) throw new Error('Codex attempt output must be a regular file');
+  await writeFile(outputPath, redactText(await readFile(outputPath, 'utf8')));
+}
+
 function isWithin(parent: string, candidate: string): boolean {
   const relative = path.relative(path.resolve(parent), path.resolve(candidate));
   return relative === '' || (!relative.startsWith(`..${path.sep}`) && relative !== '..' && !path.isAbsolute(relative));
@@ -385,21 +393,15 @@ export class CodexCliProvider {
           // A failed budgeted process can have an unreported in-flight turn.
           // No retry is safe merely because its observed lower bound is small.
           if (maxTotalTokens !== undefined || request.signal?.aborted) throw error;
+        } finally {
+          // A later successful retry must not leave an earlier partial message
+          // unredacted, even though the outer error handler will not run.
+          await redactAttemptOutput(attemptOutputPath);
         }
       }
       throw lastError;
     } catch (error) {
       await execution.save(usage, attempts, uncertain || attempts > 0 ? 'uncertain' : 'complete');
-      // Failed attempts can contain partial and sensitive final messages.
-      // Redact those run-local copies without modifying a prior stage output.
-      for (let attempt = 1; attempt <= attempts; attempt += 1) {
-        const attempted = path.join(execution.logDir, `${request.label}.attempt-${attempt}.last-message.txt`);
-        if (await exists(attempted)) {
-          const stat = await lstat(attempted);
-          if (!stat.isFile() || stat.isSymbolicLink()) throw new Error('Codex failed attempt output must be a regular file');
-          await writeFile(attempted, redactText(await readFile(attempted, 'utf8')));
-        }
-      }
       throw new CodexExecutionError(redactText(error instanceof Error ? error.message : String(error)), usage, attempts, execution.executionId, model);
     } finally { await execution.release(); }
   }
