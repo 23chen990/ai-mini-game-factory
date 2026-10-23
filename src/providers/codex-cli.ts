@@ -23,6 +23,8 @@ export type CodexExecRequest = {
   signal?: AbortSignal;
   timeoutMs?: number;
   maxRetries?: number;
+  /** Remaining hard token allowance for this invocation, including automatic retries. */
+  maxTotalTokens?: number;
   /** Optional per-stage override; absent means the provider default. */
   model?: string;
   /** Optional stage metadata enables the same role/sandbox guard used by the factory. */
@@ -95,6 +97,20 @@ function eventError(value: unknown) {
   return undefined;
 }
 
+/** A turn.completed event reports one turn, not the lifetime cost of the CLI task.
+ * cached_input_tokens is already part of input_tokens and must not be added twice. */
+function readTurnUsage(value: Record<string, unknown>): TokenUsage {
+  const field = (...keys: string[]) => {
+    const found = keys.map((key) => value[key]).find((item) => item !== undefined);
+    const number = Number(found ?? 0);
+    if (!Number.isSafeInteger(number) || number < 0) throw new Error('Codex emitted invalid token usage');
+    return number;
+  };
+  const inputTokens = field('input_tokens', 'inputTokens');
+  const outputTokens = field('output_tokens', 'outputTokens');
+  return { inputTokens, outputTokens, totalTokens: Math.max(inputTokens + outputTokens, field('total_tokens', 'totalTokens')) };
+}
+
 export function parseCodexJsonl(stdout: string): CodexJsonlResult {
   const events: Record<string, unknown>[] = [];
   const errors: string[] = [];
@@ -110,9 +126,10 @@ export function parseCodexJsonl(stdout: string): CodexJsonlResult {
     if (event.type === 'turn.completed') {
       completed = true;
       const rawUsage = event.usage && typeof event.usage === 'object' ? event.usage as Record<string, unknown> : {};
-      usage.inputTokens = Number(rawUsage.input_tokens ?? rawUsage.inputTokens ?? 0);
-      usage.outputTokens = Number(rawUsage.output_tokens ?? rawUsage.outputTokens ?? 0);
-      usage.totalTokens = Number(rawUsage.total_tokens ?? rawUsage.totalTokens ?? usage.inputTokens + usage.outputTokens);
+      const snapshot = readTurnUsage(rawUsage);
+      usage.inputTokens += snapshot.inputTokens;
+      usage.outputTokens += snapshot.outputTokens;
+      usage.totalTokens += snapshot.totalTokens;
     }
     if (event.type === 'turn.failed') { failed = true; const message = eventError(event.error) ?? eventError(event.message); if (message) errors.push(redactText(message)); }
     if (event.type === 'error') { failed = true; const message = eventError(event.error) ?? eventError(event.message); if (message) errors.push(redactText(message)); }
@@ -120,7 +137,8 @@ export function parseCodexJsonl(stdout: string): CodexJsonlResult {
   return { events, threadId, completed, failed, usage, errors };
 }
 
-type ProcessResult = { code: number | null; signal: NodeJS.Signals | null; stdout: string; stderr: string };
+type ProcessStopReason = 'token-budget' | 'usage-unavailable' | 'timeout' | 'cancelled';
+type ProcessResult = { code: number | null; signal: NodeJS.Signals | null; stdout: string; stderr: string; stopReason?: ProcessStopReason };
 
 function isWithin(parent: string, candidate: string): boolean {
   const relative = path.relative(path.resolve(parent), path.resolve(candidate));
@@ -189,18 +207,50 @@ export class CodexCliProvider {
     this.model = options.model ?? process.env.CODEX_MODEL;
   }
 
-  private runProcess(args: string[], options: { cwd?: string; stdin?: string; signal?: AbortSignal; timeoutMs?: number; env?: NodeJS.ProcessEnv }) {
+  private runProcess(args: string[], options: { cwd?: string; stdin?: string; signal?: AbortSignal; timeoutMs?: number; env?: NodeJS.ProcessEnv; maxTotalTokens?: number }) {
     return new Promise<ProcessResult>((resolve, reject) => {
       const child = this.spawn(this.command, args, { cwd: options.cwd, stdio: ['pipe', 'pipe', 'pipe'], shell: false, env: options.env });
       let stdout = ''; let stderr = ''; let settled = false;
-      child.stdout.on('data', (chunk) => { stdout += String(chunk); });
-      child.stderr.on('data', (chunk) => { stderr += String(chunk); });
-      child.on('error', (error) => { if (!settled) { settled = true; clearTimeout(timer); reject(error); } });
-      child.on('close', (code, signal) => { if (!settled) { settled = true; clearTimeout(timer); options.signal?.removeEventListener('abort', abort); resolve({ code, signal, stdout, stderr }); } });
-      const abort = () => { child.kill('SIGTERM'); };
-      options.signal?.addEventListener('abort', abort, { once: true });
+      let pendingLine = ''; let observedTokens = 0; let stopReason: ProcessStopReason | undefined;
+      let hardKillTimer: ReturnType<typeof setTimeout> | undefined;
       const timeout = options.timeoutMs ?? this.timeoutMs;
-      const timer = setTimeout(() => { if (!settled) { child.kill('SIGTERM'); settled = true; options.signal?.removeEventListener('abort', abort); reject(new Error(`codex exec timed out after ${timeout}ms`)); } }, timeout);
+      const cleanup = () => { clearTimeout(timer); if (hardKillTimer) clearTimeout(hardKillTimer); options.signal?.removeEventListener('abort', abort); };
+      const terminate = (reason: ProcessStopReason) => {
+        if (settled || stopReason) return;
+        stopReason = reason;
+        child.kill('SIGTERM');
+        // A child can ignore TERM. Never release this stage while it is running.
+        hardKillTimer = setTimeout(() => { if (!settled) child.kill('SIGKILL'); }, 1_000);
+      };
+      const abort = () => terminate('cancelled');
+      const timer = setTimeout(() => terminate('timeout'), timeout);
+      child.stdout.on('data', (chunk) => {
+        const text = String(chunk); stdout += text; pendingLine += text;
+        let newline = pendingLine.indexOf('\n');
+        while (newline >= 0) {
+          const line = pendingLine.slice(0, newline).trim();
+          pendingLine = pendingLine.slice(newline + 1);
+          if (line) {
+            try {
+              const event = JSON.parse(line) as Record<string, unknown>;
+              if (event.type === 'turn.completed' && options.maxTotalTokens !== undefined) {
+                const raw = event.usage as Record<string, unknown> | undefined;
+                if (!raw || (raw.total_tokens === undefined && raw.totalTokens === undefined && raw.input_tokens === undefined && raw.inputTokens === undefined)) terminate('usage-unavailable');
+                else {
+                  observedTokens += readTurnUsage(raw).totalTokens;
+                  if (observedTokens >= options.maxTotalTokens) terminate('token-budget');
+                }
+              }
+            } catch { if (options.maxTotalTokens !== undefined) terminate('usage-unavailable'); }
+          }
+          newline = pendingLine.indexOf('\n');
+        }
+      });
+      child.stderr.on('data', (chunk) => { stderr += String(chunk); });
+      child.on('error', (error) => { if (!settled) { settled = true; cleanup(); reject(error); } });
+      child.on('close', (code, signal) => { if (!settled) { settled = true; cleanup(); resolve({ code, signal, stdout, stderr, ...(stopReason ? { stopReason } : {}) }); } });
+      options.signal?.addEventListener('abort', abort, { once: true });
+      if (options.signal?.aborted) terminate('cancelled');
       child.stdin.end(options.stdin ?? '');
     });
   }
@@ -234,16 +284,31 @@ export class CodexCliProvider {
     const schemaPath = request.outputSchema ? path.join(request.logDir, `${request.label}.schema.json`) : undefined;
     if (schemaPath) await writeJsonAtomic(schemaPath, request.outputSchema);
     let lastError: Error | undefined;
+    let chargedCompletedTokens = 0;
+    const configuredBudget = process.env.CODEX_EXEC_MAX_TOTAL_TOKENS;
+    const maxTotalTokens = request.maxTotalTokens ?? (configuredBudget !== undefined ? Number(configuredBudget) : undefined);
+    if (maxTotalTokens !== undefined && (!Number.isSafeInteger(maxTotalTokens) || maxTotalTokens <= 0)) throw new Error('Codex token budget must be a positive safe integer');
     const maxRetries = Math.min(1, Math.max(0, request.maxRetries ?? this.maxRetries));
     for (let attempt = 1; attempt <= maxRetries + 1; attempt += 1) {
       const args = buildCodexExecArgs({ cwd: workingDirectory.cwd, sandbox: request.sandbox, schemaPath, outputPath: request.outputPath, resumeThreadId: request.resumeThreadId, model: request.model?.trim() || this.model });
       try {
-        const processResult = await this.runProcess(args, { cwd: workingDirectory.cwd, stdin: request.prompt, signal: request.signal, timeoutMs: request.timeoutMs, env: processEnv });
+        const remainingTokens = maxTotalTokens === undefined ? undefined : maxTotalTokens - chargedCompletedTokens;
+        if (remainingTokens !== undefined && remainingTokens <= 0) throw new Error('codex exec token budget exhausted');
+        const processResult = await this.runProcess(args, { cwd: workingDirectory.cwd, stdin: request.prompt, signal: request.signal, timeoutMs: request.timeoutMs, env: processEnv, maxTotalTokens: remainingTokens });
         const stdout = redactText(processResult.stdout); const stderr = redactText(processResult.stderr);
         const parsed = parseCodexJsonl(stdout);
         await writeFile(path.join(request.logDir, `${request.label}.attempt-${attempt}.stdout.jsonl`), stdout);
         await writeFile(path.join(request.logDir, `${request.label}.attempt-${attempt}.stderr.log`), stderr);
         await writeJsonAtomic(path.join(request.logDir, `${request.label}.attempt-${attempt}.events.json`), redactValue(parsed.events));
+        chargedCompletedTokens += parsed.usage.totalTokens;
+        await writeJsonAtomic(path.join(request.logDir, `${request.label}.attempt-${attempt}.usage.json`), {
+          schemaVersion: 1, stage: request.stage ?? request.label, attempt,
+          observedCompletedTurnUsage: parsed.usage, cumulativeObservedTokens: chargedCompletedTokens,
+          maxTotalTokens: maxTotalTokens ?? null, stopReason: processResult.stopReason ?? null,
+          lowerBoundOnly: Boolean(processResult.stopReason || processResult.code !== 0 || parsed.failed || !parsed.completed),
+          reportedAt: new Date().toISOString(),
+        });
+        if (processResult.stopReason) throw new Error(`codex exec stopped: ${processResult.stopReason}; observed completed-turn tokens ${chargedCompletedTokens}`);
         if (processResult.code !== 0 || parsed.failed || !parsed.completed) throw new Error(parsed.errors.at(-1) ?? (stderr.trim() || `codex exec exited with code ${processResult.code}`));
         const rawOutputText = await readFile(request.outputPath, 'utf8');
         const outputText = redactText(rawOutputText);
@@ -254,6 +319,8 @@ export class CodexCliProvider {
       } catch (error) {
         lastError = new Error(redactText(error instanceof Error ? error.message : String(error)));
         if (request.signal?.aborted) throw new Error('codex exec was cancelled');
+        if (/codex exec stopped:|codex exec token budget exhausted/u.test(lastError.message)) throw lastError;
+        if (maxTotalTokens !== undefined && chargedCompletedTokens >= maxTotalTokens) throw new Error('codex exec token budget exhausted');
       }
     }
     if (await exists(request.outputPath)) {
