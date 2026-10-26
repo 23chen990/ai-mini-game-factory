@@ -3116,7 +3116,7 @@ export function createFactory(options: FactoryOptions = {}) {
         const frameManifest = await ensureReferenceFrameManifest(state.runId, canonicalGameIdFromTitle(input.brief.title), path.join(runRoot, 'workspace/game'));
         if (frameManifest?.status === 'BLOCKED') return setWaiting(state, 'REFERENCE_DEEP_RESEARCH', inputs, ['artifacts/reference-frame-manifest.json'], frameManifest.blockers.map((item) => `blocked:reference-frame:${item}`));
         const frameInputs = frameManifest ? ['artifacts/reference-frame-manifest.json'] : [];
-        const media = [...input.sources.filter((source) => /\.(?:png|jpe?g|webp)$/iu.test(source.path)).map(({ path, sha256 }) => ({ path, sha256 })), ...(frameManifest ? selectReferenceResearchMedia(frameManifest, 64).media.map(({ path, sha256 }) => ({ path, sha256 })) : [])];
+        const media = [...input.sources.filter((source) => /\.(?:png|jpe?g|webp)$/iu.test(source.path)).map(({ path, sha256 }) => ({ path, sha256 })), ...(frameManifest ? selectReferenceResearchMedia(frameManifest, Number(process.env.FACTORY_REFERENCE_RESEARCH_DETAIL_FRAMES ?? 64)).media.map(({ path, sha256 }) => ({ path, sha256 })) : [])];
         const context = await contextFor('REFERENCE_DEEP_RESEARCH', runRoot, cachedFile, [...inputs, ...frameInputs], 'Discover reference mechanics and their five-dimensional behavioral acceptance contract from verified evidence, without a pre-written human mechanic spec.', { requiredContextPaths: ['artifacts/reference-intake-evidence.json', ...frameInputs], mediaInputs: media });
         const result = await agents.draftReference(input, context);
         addAgentMetrics(record, result.metrics);

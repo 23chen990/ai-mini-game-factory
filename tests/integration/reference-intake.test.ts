@@ -8,15 +8,18 @@ import { MockAgentProvider } from '../../src/providers/mock.js';
 import { ingestReferenceMedia, reviewReferenceMediaIdentity } from '../../src/core/evidence-provenance.js';
 import { ReferenceMechanicSpecSchema } from '../../src/schemas/reference-mechanic.js';
 import type { ReferenceIntakeEvidence } from '../../src/schemas/reference-intake.js';
+import type { AgentExecutionContext } from '../../src/providers/interfaces.js';
 import { referenceBehaviorChecks, referenceFailurePressureContract } from '../fixtures/reference-behavior.js';
 import { syntheticComparisonChecks } from '../fixtures/reference-comparison.js';
 
 class IntakeFixtureProvider extends MockAgentProvider {
   calls = 0;
+  researchMediaPaths: string[] = [];
   blocked = false;
   measurementBasis: 'runtime-observed' | 'inferred' = 'runtime-observed';
-  async draftReference(input: ReferenceIntakeEvidence) {
+  async draftReference(input: ReferenceIntakeEvidence, context?: AgentExecutionContext) {
     this.calls++;
+    this.researchMediaPaths = context?.mediaInputs?.map(({ path }) => path) ?? [];
     const seed = parse(await readFile('examples/seeds/relic-revival-workshop.yaml', 'utf8'));
     const source = input.sources[0]!;
     return {
@@ -187,4 +190,34 @@ it('accepts a recording/document identity without requiring an invented web URL'
   const factory = createFactory({ root, mode: 'mock', qaMode: 'stub' });
   const runId = await factory.newReference(brief);
   expect((await factory.run(runId)).stage).toBe('REFERENCE_DEEP_RESEARCH');
+});
+
+
+it('honors the existing detail-frame limit in fresh reference discovery', async () => {
+  const provider = new IntakeFixtureProvider();
+  const { factory, runId, runRoot, review } = await fixture(provider, {
+    referenceFrameExtractor: async ({ outputDir }) => {
+      await (await import('node:fs/promises')).mkdir(outputDir, { recursive: true });
+      const frames = [];
+      for (let index = 0; index < 6; index += 1) {
+        const fileName = `frame-${index}.png`;
+        await writeFile(path.join(outputDir, fileName), `frame ${index}`);
+        frames.push({ index, requestedMs: index * 125, actualMs: index * 125, fileName });
+      }
+      return { durationMs: 750, width: 390, height: 844, frames, contactSheets: [] };
+    },
+  });
+  await review();
+  const sourcePath = path.join(path.dirname(runRoot), 'fixture.mp4');
+  await writeFile(sourcePath, 'Synthetic recording transport fixture');
+  const video = await ingestReferenceMedia({ runRoot, sourcePath, targetGame: 'lantern-trial', purpose: 'gameplay-reference' });
+  await reviewReferenceMediaIdentity({ runRoot, targetGame: 'lantern-trial', workspace: path.join(runRoot, 'workspace/game'), id: video.id, expectedSha256: video.sha256, reviewer: 'test-fixture', basis: 'Synthetic transport, not real video evidence.' });
+  const previous = process.env.FACTORY_REFERENCE_RESEARCH_DETAIL_FRAMES;
+  process.env.FACTORY_REFERENCE_RESEARCH_DETAIL_FRAMES = '2';
+  try { await factory.run(runId); }
+  finally {
+    if (previous === undefined) delete process.env.FACTORY_REFERENCE_RESEARCH_DETAIL_FRAMES;
+    else process.env.FACTORY_REFERENCE_RESEARCH_DETAIL_FRAMES = previous;
+  }
+  expect(provider.researchMediaPaths).toHaveLength(2);
 });
