@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "historical cutting game isolated eval / actual QA observation capability",
+  "workspace": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/workspace",
+  "report": "Previous real QA consumed tokens without seeing gameplay; validate actual tool access before another blind invocation.",
+  "classification": [
+    "factory-routing"
+  ],
+  "scope": {
+    "route": "shared-factory",
+    "rationale": "Zero-model diagnostic and evidence recovery only. No new Agent, Gate, model, factory policy, or generated-game edits.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "No gold labels or implementation details will be passed to a future blind QA",
+      "No unrelated game workspaces are modified"
+    ]
+  },
+  "reproduction": {
+    "status": "PARTIALLY_REPRODUCED",
+    "steps": [
+      "Run existing host qa-preflight",
+      "Run direct Chromium launch under codex read-only sandbox",
+      "Use actual configured rea MCP through stdio with the provider environment",
+      "Recover exact historical HTML responses from trace resources and execute normal touch input"
+    ],
+    "observed": [
+      "Host Chromium/WebKit 4/4 browser smokes pass",
+      "Direct read-only Chromium fails creating its required temporary profile (EPERM)",
+      "Existing configured MCP advertises capture_browser_scenario and actually clicks/captures DOM and pixels with no model call",
+      "An actual QA model session using that MCP is not yet tested; current-round call/token/time authorization is missing"
+    ],
+    "evidence": [
+      {
+        "path": "/Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市/docs/upgrades/20261027-real-agent-qa-validation/readonly-browser.log",
+        "sha256": "413d5686c98255036b1db9273af4bf7dbf250feaaf2a613b1b0f46dbd9047358",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市/docs/upgrades/20261027-real-agent-qa-validation/mcp-probe-2/response.json",
+        "sha256": "1b7437c115078ae429d9ad80ac122e71eede1648c61e6592830faf7bacfc357b",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/logs/codex/executions/51d65635-2a16-414f-9641-a52272e9e880/receipt.json",
+        "sha256": "208dc48ed5f1afc21ab276e5d0443ca94e6fc8c2c1fd9b6645343bd9730820bd",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "A new model call requires explicit round-specific invocation/time/token-stop authorization",
+    "Actual independent QA must operate an available browser tool or inspect hash-bound frozen normal-input evidence without gold labels",
+    "Report true discoveries, false positives, missed defects, unobserved cases and uncertainty separately",
+    "Only independently discovered defects enter Fixer; independent natural/perceptual retest is mandatory"
+  ],
+  "status": "BLOCKED",
+  "createdAt": "2026-10-27T09:26:12.917925Z"
+}

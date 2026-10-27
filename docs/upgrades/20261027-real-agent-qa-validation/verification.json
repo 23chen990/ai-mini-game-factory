@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "baselineCommit": "b338b1b092c8af46d288d4c5ac883726f20770ab",
+  "baselineVerify": {
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "testFiles": 195,
+    "tests": 1254,
+    "durationSeconds": 137.62
+  },
+  "diagnosticScripts": {
+    "lint": "PASS",
+    "explicitStrictTypecheck": "PASS",
+    "configuredMcpProbe": "PASS",
+    "normalCaptureSessions": 12
+  },
+  "releaseRegistryTests": 4,
+  "launchReadyGames": 0,
+  "scope": "Engineering/diagnostic verification only, NOT game quality or autonomous Agent acceptance",
+  "rawBaselineLog": {
+    "path": "/Users/kker/.codex/worktrees/factory-agent-eval-v4/\u5996\u602a\u591c\u5e02/docs/upgrades/20261027-real-agent-qa-validation/baseline-verify.log",
+    "sha256": "780105c5bb1dc22d14c8189b671dc0c178cd9317b84cff1e40f924e8a97d61ef",
+    "committed": false,
+    "reason": "Unmodified raw local log retained; avoid rewriting its trailing whitespace for Git"
+  }
+}

@@ -1,0 +1,2234 @@
+[
+  {
+    "actor": "controller-normal-input-capture",
+    "autonomousQa": false,
+    "version": "red2-r4-390",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "intent": "single-launch-then-coast",
+    "buildSha256": "51236c30b4691112fdd488beb93354f914a042d5ea05371150663e3fe88db338",
+    "sourceTrace": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red2-r4-390/trace.zip",
+    "terminalText": "",
+    "replayRestarted": false,
+    "renewedVisibleText": "",
+    "blocked": "locator.waitFor: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#terminal-actions') to be visible\u001b[22m\n\u001b[2m    43 × locator resolved to hidden <div hidden=\"\" id=\"terminal-actions\">…</div>\u001b[22m\n",
+    "errors": [],
+    "inputs": [
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:17:20.745Z",
+        "elapsedMs": 1282,
+        "completedMs": 1564
+      }
+    ],
+    "screenshots": [
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/red2-r4-390-390-single-launch-then-coast/startup.png",
+        "sha256": "794d70295d0948e58a87bb5e9b01df1c868c244f7dabdfd44ea144a744ef214d",
+        "elapsedMs": 1282
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/red2-r4-390-390-single-launch-then-coast/core.png",
+        "sha256": "4d82358e84829032d317375dbadf150b161d1d0554ce491f8b74044294ce3c5b",
+        "elapsedMs": 2134
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/red2-r4-390-390-single-launch-then-coast/blocked.png",
+        "sha256": "249265e33558b3cc91a2fda91ed9d582e1cf605966c1c6537f39d02152b66818",
+        "elapsedMs": 22211
+      }
+    ],
+    "directory": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/red2-r4-390-390-single-launch-then-coast",
+    "elapsedMs": 22762
+  },
+  {
+    "actor": "controller-normal-input-capture",
+    "autonomousQa": false,
+    "version": "red2-r4-390",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "intent": "sustained-flips",
+    "buildSha256": "51236c30b4691112fdd488beb93354f914a042d5ea05371150663e3fe88db338",
+    "sourceTrace": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red2-r4-390/trace.zip",
+    "terminalText": "关卡完成\n×4\n分数 4\n点击“重玩”按钮 · 重新开始",
+    "replayRestarted": false,
+    "renewedVisibleText": "准备",
+    "blocked": null,
+    "errors": [],
+    "inputs": [
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:17:43.180Z",
+        "elapsedMs": 954,
+        "completedMs": 989
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:17:43.790Z",
+        "elapsedMs": 1564,
+        "completedMs": 1605
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:17:44.347Z",
+        "elapsedMs": 2121,
+        "completedMs": 2164
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:17:44.905Z",
+        "elapsedMs": 2679,
+        "completedMs": 2712
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:17:45.447Z",
+        "elapsedMs": 3221,
+        "completedMs": 3256
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:17:45.997Z",
+        "elapsedMs": 3771,
+        "completedMs": 3931
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:17:46.681Z",
+        "elapsedMs": 4455,
+        "completedMs": 4496
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:17:47.231Z",
+        "elapsedMs": 5005,
+        "completedMs": 5031
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:17:47.788Z",
+        "elapsedMs": 5562,
+        "completedMs": 5597
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:17:48.337Z",
+        "elapsedMs": 6111,
+        "completedMs": 6130
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:17:48.889Z",
+        "elapsedMs": 6663,
+        "completedMs": 6679
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:17:49.414Z",
+        "elapsedMs": 7188,
+        "completedMs": 7214
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:17:49.964Z",
+        "elapsedMs": 7738,
+        "completedMs": 7764
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:17:50.521Z",
+        "elapsedMs": 8295,
+        "completedMs": 8314
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:17:51.056Z",
+        "elapsedMs": 8830,
+        "completedMs": 8888
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:17:51.633Z",
+        "elapsedMs": 9407,
+        "completedMs": 9472
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:17:52.225Z",
+        "elapsedMs": 9999,
+        "completedMs": 10040
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:17:52.779Z",
+        "elapsedMs": 10553,
+        "completedMs": 10572
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:17:53.329Z",
+        "elapsedMs": 11103,
+        "completedMs": 11122
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:17:53.877Z",
+        "elapsedMs": 11651,
+        "completedMs": 11701
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:17:54.436Z",
+        "elapsedMs": 12210,
+        "completedMs": 12259
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:17:55.000Z",
+        "elapsedMs": 12774,
+        "completedMs": 12793
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:17:55.580Z",
+        "elapsedMs": 13354,
+        "completedMs": 13385
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:17:56.136Z",
+        "elapsedMs": 13910,
+        "completedMs": 13942
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:17:56.676Z",
+        "elapsedMs": 14450,
+        "completedMs": 14467
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:17:57.202Z",
+        "elapsedMs": 14976,
+        "completedMs": 15010
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:17:57.744Z",
+        "elapsedMs": 15518,
+        "completedMs": 15542
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:17:58.276Z",
+        "elapsedMs": 16050,
+        "completedMs": 16067
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:17:58.801Z",
+        "elapsedMs": 16575,
+        "completedMs": 16592
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:17:59.328Z",
+        "elapsedMs": 17102,
+        "completedMs": 17134
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:17:59.890Z",
+        "elapsedMs": 17664,
+        "completedMs": 17702
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 144.5,
+        "y": 533,
+        "at": "2026-10-27T09:18:00.587Z",
+        "elapsedMs": 18361,
+        "completedMs": 18383
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:18:00.942Z",
+        "elapsedMs": 18716,
+        "completedMs": 18877
+      }
+    ],
+    "screenshots": [
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/red2-r4-390-390-sustained-flips/startup.png",
+        "sha256": "18259aec196e90c7363dabab5615eb9bb230c17d0c840d1a198cc4083a419805",
+        "elapsedMs": 954
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/red2-r4-390-390-sustained-flips/core.png",
+        "sha256": "3908455115a10a6cdf7b3ba7a3cb47edf80b18c46384c9880a6267881c6bb98d",
+        "elapsedMs": 1531
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/red2-r4-390-390-sustained-flips/terminal.png",
+        "sha256": "7eee5abc925b258aa5382cba4ffaac9736236b17619a7f392f49199d25f25278",
+        "elapsedMs": 18326
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/red2-r4-390-390-sustained-flips/after-replay.png",
+        "sha256": "34b1701caf7662045e720b47e52428160795352afa8a6d3e4f9c3b5df7203c35",
+        "elapsedMs": 18716
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/red2-r4-390-390-sustained-flips/renewed-input.png",
+        "sha256": "6dd75682d44c6eef1e6573a273bfced4811708407cce8663dd9fae15ca1f9552",
+        "elapsedMs": 19435
+      }
+    ],
+    "directory": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/red2-r4-390-390-sustained-flips",
+    "elapsedMs": 23221
+  },
+  {
+    "actor": "controller-normal-input-capture",
+    "autonomousQa": false,
+    "version": "red2-r4-390",
+    "viewport": {
+      "width": 1100,
+      "height": 720
+    },
+    "intent": "single-launch-then-coast",
+    "buildSha256": "51236c30b4691112fdd488beb93354f914a042d5ea05371150663e3fe88db338",
+    "sourceTrace": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red2-r4-390/trace.zip",
+    "terminalText": "",
+    "replayRestarted": false,
+    "renewedVisibleText": "",
+    "blocked": "locator.waitFor: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#terminal-actions') to be visible\u001b[22m\n\u001b[2m    42 × locator resolved to hidden <div hidden=\"\" id=\"terminal-actions\">…</div>\u001b[22m\n",
+    "errors": [],
+    "inputs": [
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:18:06.639Z",
+        "elapsedMs": 1190,
+        "completedMs": 1357
+      }
+    ],
+    "screenshots": [
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/red2-r4-390-1100-single-launch-then-coast/startup.png",
+        "sha256": "01de9f76ef374054685a1b0638a0cd2b67d952c9954685526173a202508efd09",
+        "elapsedMs": 1190
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/red2-r4-390-1100-single-launch-then-coast/core.png",
+        "sha256": "a4944ee2ddfe377140d46a457464024842100349e44d4c8c9f7fc28b45460b45",
+        "elapsedMs": 2125
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/red2-r4-390-1100-single-launch-then-coast/blocked.png",
+        "sha256": "cdad0a84e8494ec7aceb1bc6aad9a701d482e4fd5284f72ace7b8eb948fb9cff",
+        "elapsedMs": 22277
+      }
+    ],
+    "directory": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/red2-r4-390-1100-single-launch-then-coast",
+    "elapsedMs": 23206
+  },
+  {
+    "actor": "controller-normal-input-capture",
+    "autonomousQa": false,
+    "version": "red2-r4-390",
+    "viewport": {
+      "width": 1100,
+      "height": 720
+    },
+    "intent": "sustained-flips",
+    "buildSha256": "51236c30b4691112fdd488beb93354f914a042d5ea05371150663e3fe88db338",
+    "sourceTrace": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red2-r4-390/trace.zip",
+    "terminalText": "关卡完成\n×2\n分数 2\n点击“重玩”按钮 · 重新开始",
+    "replayRestarted": false,
+    "renewedVisibleText": "准备",
+    "blocked": null,
+    "errors": [],
+    "inputs": [
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:18:29.663Z",
+        "elapsedMs": 1006,
+        "completedMs": 1196
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:18:30.687Z",
+        "elapsedMs": 2030,
+        "completedMs": 2132
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:18:31.365Z",
+        "elapsedMs": 2708,
+        "completedMs": 2819
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:18:32.047Z",
+        "elapsedMs": 3390,
+        "completedMs": 3494
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:18:32.720Z",
+        "elapsedMs": 4063,
+        "completedMs": 4164
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:18:33.394Z",
+        "elapsedMs": 4737,
+        "completedMs": 4832
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:18:34.038Z",
+        "elapsedMs": 5381,
+        "completedMs": 5459
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:18:34.671Z",
+        "elapsedMs": 6014,
+        "completedMs": 6100
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:18:35.316Z",
+        "elapsedMs": 6659,
+        "completedMs": 6738
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:18:35.956Z",
+        "elapsedMs": 7299,
+        "completedMs": 7388
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:18:36.597Z",
+        "elapsedMs": 7940,
+        "completedMs": 8022
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:18:37.244Z",
+        "elapsedMs": 8587,
+        "completedMs": 8666
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:18:37.877Z",
+        "elapsedMs": 9220,
+        "completedMs": 9303
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:18:38.524Z",
+        "elapsedMs": 9867,
+        "completedMs": 9953
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:18:39.174Z",
+        "elapsedMs": 10517,
+        "completedMs": 10606
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:18:39.826Z",
+        "elapsedMs": 11169,
+        "completedMs": 11262
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:18:40.484Z",
+        "elapsedMs": 11827,
+        "completedMs": 11906
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:18:41.120Z",
+        "elapsedMs": 12463,
+        "completedMs": 12549
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:18:41.763Z",
+        "elapsedMs": 13106,
+        "completedMs": 13192
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:18:42.415Z",
+        "elapsedMs": 13758,
+        "completedMs": 13845
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:18:43.068Z",
+        "elapsedMs": 14411,
+        "completedMs": 14494
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:18:43.709Z",
+        "elapsedMs": 15052,
+        "completedMs": 15134
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:18:44.353Z",
+        "elapsedMs": 15696,
+        "completedMs": 15776
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:18:44.984Z",
+        "elapsedMs": 16327,
+        "completedMs": 16410
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:18:45.620Z",
+        "elapsedMs": 16963,
+        "completedMs": 17047
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:18:46.256Z",
+        "elapsedMs": 17599,
+        "completedMs": 17685
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:18:46.905Z",
+        "elapsedMs": 18248,
+        "completedMs": 18333
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 499.5,
+        "y": 471,
+        "at": "2026-10-27T09:18:47.859Z",
+        "elapsedMs": 19202,
+        "completedMs": 19290
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:18:48.431Z",
+        "elapsedMs": 19774,
+        "completedMs": 19990
+      }
+    ],
+    "screenshots": [
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/red2-r4-390-1100-sustained-flips/startup.png",
+        "sha256": "16f38d96c8cea1cda0d379ae66a19e6d948129a90b0f8112b606b2065d70546a",
+        "elapsedMs": 1006
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/red2-r4-390-1100-sustained-flips/core.png",
+        "sha256": "933631c9c91edfa1b4bf8b1ce75909aab29936407a8c1c57b2fa023fc17d9d73",
+        "elapsedMs": 1963
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/red2-r4-390-1100-sustained-flips/terminal.png",
+        "sha256": "c02f4319cbb6616dabd2c2b35174730c010eea66035ef6908683134120909918",
+        "elapsedMs": 19095
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/red2-r4-390-1100-sustained-flips/after-replay.png",
+        "sha256": "c02f4319cbb6616dabd2c2b35174730c010eea66035ef6908683134120909918",
+        "elapsedMs": 19774
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/red2-r4-390-1100-sustained-flips/renewed-input.png",
+        "sha256": "19a4f2b71965ea850b745b4e3299bb915bedce7b9dc8f2fd6aaffabd46f85571",
+        "elapsedMs": 20816
+      }
+    ],
+    "directory": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/red2-r4-390-1100-sustained-flips",
+    "elapsedMs": 27544
+  },
+  {
+    "actor": "controller-normal-input-capture",
+    "autonomousQa": false,
+    "version": "green-r4-390",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "intent": "single-launch-then-coast",
+    "buildSha256": "63a645bbb0102302a917f6c57d1cb95b6d60ac54faa549e22958778ec00d828d",
+    "sourceTrace": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/green-r4-390/trace.zip",
+    "terminalText": "",
+    "replayRestarted": false,
+    "renewedVisibleText": "",
+    "blocked": "locator.waitFor: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#terminal-actions') to be visible\u001b[22m\n\u001b[2m    43 × locator resolved to hidden <div hidden=\"\" id=\"terminal-actions\">…</div>\u001b[22m\n",
+    "errors": [],
+    "inputs": [
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:18:57.135Z",
+        "elapsedMs": 932,
+        "completedMs": 967
+      }
+    ],
+    "screenshots": [
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/green-r4-390-390-single-launch-then-coast/startup.png",
+        "sha256": "18259aec196e90c7363dabab5615eb9bb230c17d0c840d1a198cc4083a419805",
+        "elapsedMs": 932
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/green-r4-390-390-single-launch-then-coast/core.png",
+        "sha256": "7856e14f3da59517d85658d598d0acde6aabb773c30076026cbd41df4b734812",
+        "elapsedMs": 1517
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/green-r4-390-390-single-launch-then-coast/blocked.png",
+        "sha256": "278bf74943b79515c52972271964ecd870764de2bba9529aff739ce89dd715bf",
+        "elapsedMs": 21573
+      }
+    ],
+    "directory": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/green-r4-390-390-single-launch-then-coast",
+    "elapsedMs": 22014
+  },
+  {
+    "actor": "controller-normal-input-capture",
+    "autonomousQa": false,
+    "version": "green-r4-390",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "intent": "sustained-flips",
+    "buildSha256": "63a645bbb0102302a917f6c57d1cb95b6d60ac54faa549e22958778ec00d828d",
+    "sourceTrace": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/green-r4-390/trace.zip",
+    "terminalText": "关卡完成\n×4\n分数 24\n点击“重玩”按钮 · 重新开始",
+    "replayRestarted": true,
+    "renewedVisibleText": "空中翻转",
+    "blocked": null,
+    "errors": [],
+    "inputs": [
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:19:19.135Z",
+        "elapsedMs": 917,
+        "completedMs": 951
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:19:19.745Z",
+        "elapsedMs": 1527,
+        "completedMs": 1552
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:19:20.300Z",
+        "elapsedMs": 2082,
+        "completedMs": 2102
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:19:20.852Z",
+        "elapsedMs": 2634,
+        "completedMs": 2652
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:19:21.394Z",
+        "elapsedMs": 3176,
+        "completedMs": 3201
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:19:21.943Z",
+        "elapsedMs": 3725,
+        "completedMs": 3743
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:19:22.593Z",
+        "elapsedMs": 4375,
+        "completedMs": 4393
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:19:23.143Z",
+        "elapsedMs": 4925,
+        "completedMs": 4959
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:19:23.686Z",
+        "elapsedMs": 5468,
+        "completedMs": 5502
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:19:24.236Z",
+        "elapsedMs": 6018,
+        "completedMs": 6035
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:19:24.798Z",
+        "elapsedMs": 6580,
+        "completedMs": 6609
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:19:25.342Z",
+        "elapsedMs": 7124,
+        "completedMs": 7144
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:19:25.919Z",
+        "elapsedMs": 7701,
+        "completedMs": 7747
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:19:26.478Z",
+        "elapsedMs": 8260,
+        "completedMs": 8319
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:19:27.069Z",
+        "elapsedMs": 8851,
+        "completedMs": 8897
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:19:27.655Z",
+        "elapsedMs": 9437,
+        "completedMs": 9479
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:19:28.225Z",
+        "elapsedMs": 10007,
+        "completedMs": 10068
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:19:28.813Z",
+        "elapsedMs": 10595,
+        "completedMs": 10619
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:19:29.386Z",
+        "elapsedMs": 11168,
+        "completedMs": 11215
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:19:29.975Z",
+        "elapsedMs": 11757,
+        "completedMs": 11812
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:19:30.573Z",
+        "elapsedMs": 12355,
+        "completedMs": 12409
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:19:31.155Z",
+        "elapsedMs": 12937,
+        "completedMs": 12998
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:19:31.767Z",
+        "elapsedMs": 13549,
+        "completedMs": 13606
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:19:32.375Z",
+        "elapsedMs": 14157,
+        "completedMs": 14225
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:19:32.990Z",
+        "elapsedMs": 14772,
+        "completedMs": 14810
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:19:33.586Z",
+        "elapsedMs": 15368,
+        "completedMs": 15415
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:19:34.152Z",
+        "elapsedMs": 15934,
+        "completedMs": 15984
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:19:34.738Z",
+        "elapsedMs": 16520,
+        "completedMs": 16559
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:19:35.305Z",
+        "elapsedMs": 17087,
+        "completedMs": 17137
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:19:35.881Z",
+        "elapsedMs": 17663,
+        "completedMs": 17729
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:19:36.487Z",
+        "elapsedMs": 18269,
+        "completedMs": 18323
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 144.5,
+        "y": 533,
+        "at": "2026-10-27T09:19:37.169Z",
+        "elapsedMs": 18951,
+        "completedMs": 19002
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:19:37.560Z",
+        "elapsedMs": 19342,
+        "completedMs": 19367
+      }
+    ],
+    "screenshots": [
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/green-r4-390-390-sustained-flips/startup.png",
+        "sha256": "5e33371261216681897ca8d520a1c9682bf62efd9c593366c56941e4c868b95d",
+        "elapsedMs": 917
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/green-r4-390-390-sustained-flips/core.png",
+        "sha256": "93c37a172821383890fc363788d72aa14cfd80c3a1f0cd5b896c72351b5ff481",
+        "elapsedMs": 1493
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/green-r4-390-390-sustained-flips/terminal.png",
+        "sha256": "c6bb0b5e8809d8f6fb3d9bf5042482ff2dc9119a5a15cedd8140263000f14a8d",
+        "elapsedMs": 18920
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/green-r4-390-390-sustained-flips/after-replay.png",
+        "sha256": "1b75f8b94436782cb41aba4cab7f2729a39dd7619535cf8dc8c261461bfb8198",
+        "elapsedMs": 19342
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/green-r4-390-390-sustained-flips/renewed-input.png",
+        "sha256": "80508be85082826d6c92ff387e4a38eee325b5a3adcdd716b3c147c3a910edf5",
+        "elapsedMs": 19919
+      }
+    ],
+    "directory": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/green-r4-390-390-sustained-flips",
+    "elapsedMs": 22835
+  },
+  {
+    "actor": "controller-normal-input-capture",
+    "autonomousQa": false,
+    "version": "green-r4-390",
+    "viewport": {
+      "width": 1100,
+      "height": 720
+    },
+    "intent": "single-launch-then-coast",
+    "buildSha256": "63a645bbb0102302a917f6c57d1cb95b6d60ac54faa549e22958778ec00d828d",
+    "sourceTrace": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/green-r4-390/trace.zip",
+    "terminalText": "",
+    "replayRestarted": false,
+    "renewedVisibleText": "",
+    "blocked": "locator.waitFor: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#terminal-actions') to be visible\u001b[22m\n\u001b[2m    42 × locator resolved to hidden <div hidden=\"\" id=\"terminal-actions\">…</div>\u001b[22m\n",
+    "errors": [],
+    "inputs": [
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:19:42.069Z",
+        "elapsedMs": 1014,
+        "completedMs": 1193
+      }
+    ],
+    "screenshots": [
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/green-r4-390-1100-single-launch-then-coast/startup.png",
+        "sha256": "c6f8fb9af72c6c4d97eddea1e311919538ac900344c8ed345dea95132a9c2d16",
+        "elapsedMs": 1014
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/green-r4-390-1100-single-launch-then-coast/core.png",
+        "sha256": "e8c96111f6980d1720a3145f8326393715954203b8a93469624a0bec099031a7",
+        "elapsedMs": 1967
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/green-r4-390-1100-single-launch-then-coast/blocked.png",
+        "sha256": "ca9b510036079e3cfc25ee59eed981cae9ddff5c29d6665aec0672cd0a829d11",
+        "elapsedMs": 22128
+      }
+    ],
+    "directory": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/green-r4-390-1100-single-launch-then-coast",
+    "elapsedMs": 23099
+  },
+  {
+    "actor": "controller-normal-input-capture",
+    "autonomousQa": false,
+    "version": "green-r4-390",
+    "viewport": {
+      "width": 1100,
+      "height": 720
+    },
+    "intent": "sustained-flips",
+    "buildSha256": "63a645bbb0102302a917f6c57d1cb95b6d60ac54faa549e22958778ec00d828d",
+    "sourceTrace": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/green-r4-390/trace.zip",
+    "terminalText": "关卡完成\n×4\n分数 4\n点击“重玩”按钮 · 重新开始",
+    "replayRestarted": true,
+    "renewedVisibleText": "空中翻转",
+    "blocked": null,
+    "errors": [],
+    "inputs": [
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:20:05.230Z",
+        "elapsedMs": 1075,
+        "completedMs": 1234
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:20:06.229Z",
+        "elapsedMs": 2074,
+        "completedMs": 2176
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:20:06.903Z",
+        "elapsedMs": 2748,
+        "completedMs": 2851
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:20:07.581Z",
+        "elapsedMs": 3426,
+        "completedMs": 3529
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:20:08.246Z",
+        "elapsedMs": 4091,
+        "completedMs": 4185
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:20:08.902Z",
+        "elapsedMs": 4747,
+        "completedMs": 4833
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:20:09.542Z",
+        "elapsedMs": 5387,
+        "completedMs": 5468
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:20:10.184Z",
+        "elapsedMs": 6029,
+        "completedMs": 6113
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:20:10.831Z",
+        "elapsedMs": 6676,
+        "completedMs": 6755
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:20:11.468Z",
+        "elapsedMs": 7313,
+        "completedMs": 7395
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:20:12.113Z",
+        "elapsedMs": 7958,
+        "completedMs": 8039
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:20:12.758Z",
+        "elapsedMs": 8603,
+        "completedMs": 8683
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:20:13.401Z",
+        "elapsedMs": 9246,
+        "completedMs": 9321
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:20:14.031Z",
+        "elapsedMs": 9876,
+        "completedMs": 9962
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:20:14.682Z",
+        "elapsedMs": 10527,
+        "completedMs": 10611
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:20:15.332Z",
+        "elapsedMs": 11177,
+        "completedMs": 11262
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:20:15.988Z",
+        "elapsedMs": 11833,
+        "completedMs": 11919
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:20:16.634Z",
+        "elapsedMs": 12479,
+        "completedMs": 12560
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:20:17.267Z",
+        "elapsedMs": 13112,
+        "completedMs": 13191
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:20:17.918Z",
+        "elapsedMs": 13763,
+        "completedMs": 13846
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:20:18.568Z",
+        "elapsedMs": 14413,
+        "completedMs": 14500
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:20:19.223Z",
+        "elapsedMs": 15068,
+        "completedMs": 15177
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:20:19.929Z",
+        "elapsedMs": 15774,
+        "completedMs": 15881
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:20:20.615Z",
+        "elapsedMs": 16460,
+        "completedMs": 16563
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:20:21.293Z",
+        "elapsedMs": 17138,
+        "completedMs": 17227
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:20:21.942Z",
+        "elapsedMs": 17787,
+        "completedMs": 17875
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:20:22.597Z",
+        "elapsedMs": 18442,
+        "completedMs": 18528
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 499.5,
+        "y": 471,
+        "at": "2026-10-27T09:20:23.552Z",
+        "elapsedMs": 19397,
+        "completedMs": 19479
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:20:24.154Z",
+        "elapsedMs": 19999,
+        "completedMs": 20099
+      }
+    ],
+    "screenshots": [
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/green-r4-390-1100-sustained-flips/startup.png",
+        "sha256": "876b8d6c03e681f7665112c55bde370f2ec3dc4a68bcb9fbf09bc45cea609a9c",
+        "elapsedMs": 1075
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/green-r4-390-1100-sustained-flips/core.png",
+        "sha256": "acf1150c8f4f6e7e652ccff4255b29b2e475590e716b3d72696f1fa1a452111c",
+        "elapsedMs": 2011
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/green-r4-390-1100-sustained-flips/terminal.png",
+        "sha256": "a1eb50f6b3fe0c6ced89b549db00ed389f6b3c95400a8cedd2971b70ab30f09a",
+        "elapsedMs": 19293
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/green-r4-390-1100-sustained-flips/after-replay.png",
+        "sha256": "ce8f4c143dc20ccb2529c41db9f292b1cc858749eceeec5ccebab8dfd4dd3a36",
+        "elapsedMs": 19999
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/green-r4-390-1100-sustained-flips/renewed-input.png",
+        "sha256": "33db53fa273af8b61dd63031484166c3c7eb3b4ca39b5a94ed87d883df651110",
+        "elapsedMs": 20792
+      }
+    ],
+    "directory": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/green-r4-390-1100-sustained-flips",
+    "elapsedMs": 25324
+  },
+  {
+    "actor": "controller-normal-input-capture",
+    "autonomousQa": false,
+    "version": "red2-r4-390",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "intent": "spaced-flips",
+    "buildSha256": "51236c30b4691112fdd488beb93354f914a042d5ea05371150663e3fe88db338",
+    "sourceTrace": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red2-r4-390/trace.zip",
+    "terminalText": "关卡完成\n÷3\n分数 4\n点击“重玩”按钮 · 重新开始",
+    "replayRestarted": false,
+    "renewedVisibleText": "准备",
+    "blocked": null,
+    "errors": [],
+    "inputs": [
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:22:56.783Z",
+        "elapsedMs": 1239,
+        "completedMs": 1512
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:22:58.268Z",
+        "elapsedMs": 2724,
+        "completedMs": 2748
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:22:59.424Z",
+        "elapsedMs": 3880,
+        "completedMs": 3906
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:23:00.567Z",
+        "elapsedMs": 5023,
+        "completedMs": 5047
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:23:01.714Z",
+        "elapsedMs": 6170,
+        "completedMs": 6188
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:23:02.842Z",
+        "elapsedMs": 7298,
+        "completedMs": 7322
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:23:04.013Z",
+        "elapsedMs": 8469,
+        "completedMs": 8527
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:23:05.220Z",
+        "elapsedMs": 9676,
+        "completedMs": 9741
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:23:06.434Z",
+        "elapsedMs": 10890,
+        "completedMs": 10958
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:23:07.650Z",
+        "elapsedMs": 12106,
+        "completedMs": 12170
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:23:08.863Z",
+        "elapsedMs": 13319,
+        "completedMs": 13382
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:23:10.066Z",
+        "elapsedMs": 14522,
+        "completedMs": 14617
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:23:11.286Z",
+        "elapsedMs": 15742,
+        "completedMs": 15760
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:23:12.829Z",
+        "elapsedMs": 17285,
+        "completedMs": 17740
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:23:14.569Z",
+        "elapsedMs": 19025,
+        "completedMs": 19226
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:23:15.944Z",
+        "elapsedMs": 20400,
+        "completedMs": 20462
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:23:17.144Z",
+        "elapsedMs": 21600,
+        "completedMs": 21671
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:23:18.347Z",
+        "elapsedMs": 22803,
+        "completedMs": 22871
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:23:19.534Z",
+        "elapsedMs": 23990,
+        "completedMs": 24068
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:23:20.763Z",
+        "elapsedMs": 25219,
+        "completedMs": 25285
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:23:21.980Z",
+        "elapsedMs": 26436,
+        "completedMs": 26506
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:23:23.207Z",
+        "elapsedMs": 27663,
+        "completedMs": 27734
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 144.5,
+        "y": 533,
+        "at": "2026-10-27T09:23:24.720Z",
+        "elapsedMs": 29176,
+        "completedMs": 29250
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:23:25.241Z",
+        "elapsedMs": 29697,
+        "completedMs": 29891
+      }
+    ],
+    "screenshots": [
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/spaced-validation-20261027-0921/red2-r4-390-390-spaced-flips/startup.png",
+        "sha256": "794d70295d0948e58a87bb5e9b01df1c868c244f7dabdfd44ea144a744ef214d",
+        "elapsedMs": 1239
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/spaced-validation-20261027-0921/red2-r4-390-390-spaced-flips/core.png",
+        "sha256": "554c10d0ed0d75290c065630a7a872de34439f2c5aa07269e3c2e660fa2cb157",
+        "elapsedMs": 2687
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/spaced-validation-20261027-0921/red2-r4-390-390-spaced-flips/terminal.png",
+        "sha256": "fe439e7ad1cda913a4bf03f36dec62c6e329f6fe4ec666590fdf4637d951b402",
+        "elapsedMs": 29084
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/spaced-validation-20261027-0921/red2-r4-390-390-spaced-flips/after-replay.png",
+        "sha256": "3f13386d6807e76765f4a063d06c4785a40a4252008c08f822b5378102168e9c",
+        "elapsedMs": 29697
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/spaced-validation-20261027-0921/red2-r4-390-390-spaced-flips/renewed-input.png",
+        "sha256": "6dd75682d44c6eef1e6573a273bfced4811708407cce8663dd9fae15ca1f9552",
+        "elapsedMs": 30438
+      }
+    ],
+    "directory": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/spaced-validation-20261027-0921/red2-r4-390-390-spaced-flips",
+    "elapsedMs": 32936
+  },
+  {
+    "actor": "controller-normal-input-capture",
+    "autonomousQa": false,
+    "version": "red2-r4-390",
+    "viewport": {
+      "width": 1100,
+      "height": 720
+    },
+    "intent": "spaced-flips",
+    "buildSha256": "51236c30b4691112fdd488beb93354f914a042d5ea05371150663e3fe88db338",
+    "sourceTrace": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red2-r4-390/trace.zip",
+    "terminalText": "关卡完成\n÷3\n分数 4\n点击“重玩”按钮 · 重新开始",
+    "replayRestarted": false,
+    "renewedVisibleText": "准备",
+    "blocked": null,
+    "errors": [],
+    "inputs": [
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:23:29.525Z",
+        "elapsedMs": 1043,
+        "completedMs": 1229
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:23:31.064Z",
+        "elapsedMs": 2582,
+        "completedMs": 2689
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:23:32.340Z",
+        "elapsedMs": 3858,
+        "completedMs": 3981
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:23:33.666Z",
+        "elapsedMs": 5184,
+        "completedMs": 5292
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:23:34.946Z",
+        "elapsedMs": 6464,
+        "completedMs": 6572
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:23:36.228Z",
+        "elapsedMs": 7746,
+        "completedMs": 7860
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:23:37.466Z",
+        "elapsedMs": 8984,
+        "completedMs": 9731
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:23:39.437Z",
+        "elapsedMs": 10955,
+        "completedMs": 11097
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:23:40.763Z",
+        "elapsedMs": 12281,
+        "completedMs": 12426
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:23:42.113Z",
+        "elapsedMs": 13631,
+        "completedMs": 13788
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:23:43.478Z",
+        "elapsedMs": 14996,
+        "completedMs": 15165
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:23:44.834Z",
+        "elapsedMs": 16352,
+        "completedMs": 16484
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:23:46.151Z",
+        "elapsedMs": 17669,
+        "completedMs": 17789
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:23:47.459Z",
+        "elapsedMs": 18977,
+        "completedMs": 19104
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:23:48.786Z",
+        "elapsedMs": 20304,
+        "completedMs": 20444
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:23:50.128Z",
+        "elapsedMs": 21646,
+        "completedMs": 21787
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:23:51.451Z",
+        "elapsedMs": 22969,
+        "completedMs": 23090
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:23:52.753Z",
+        "elapsedMs": 24271,
+        "completedMs": 24392
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:23:54.053Z",
+        "elapsedMs": 25571,
+        "completedMs": 25695
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 499.5,
+        "y": 471,
+        "at": "2026-10-27T09:23:55.826Z",
+        "elapsedMs": 27344,
+        "completedMs": 27452
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:23:56.492Z",
+        "elapsedMs": 28010,
+        "completedMs": 28259
+      }
+    ],
+    "screenshots": [
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/spaced-validation-20261027-0921/red2-r4-390-1100-spaced-flips/startup.png",
+        "sha256": "b42e8b19e3935ee25febd994872d1498436835d649aa237e8982dc09d29c2010",
+        "elapsedMs": 1043
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/spaced-validation-20261027-0921/red2-r4-390-1100-spaced-flips/core.png",
+        "sha256": "8f662587ef08a239857dda02b47ed73a7680e31818b83ecdecfaf411947eadfc",
+        "elapsedMs": 2511
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/spaced-validation-20261027-0921/red2-r4-390-1100-spaced-flips/terminal.png",
+        "sha256": "2573cff7a785cd24e24aaa46e02ee2e889d3f3fa6adee144be0cdbb34300fc0b",
+        "elapsedMs": 27175
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/spaced-validation-20261027-0921/red2-r4-390-1100-spaced-flips/after-replay.png",
+        "sha256": "6923ae4a56b4022638657d253b964887eb65b89429564c5e8a5fb1d7331e32bb",
+        "elapsedMs": 28010
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/spaced-validation-20261027-0921/red2-r4-390-1100-spaced-flips/renewed-input.png",
+        "sha256": "19a4f2b71965ea850b745b4e3299bb915bedce7b9dc8f2fd6aaffabd46f85571",
+        "elapsedMs": 28984
+      }
+    ],
+    "directory": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/spaced-validation-20261027-0921/red2-r4-390-1100-spaced-flips",
+    "elapsedMs": 33387
+  },
+  {
+    "actor": "controller-normal-input-capture",
+    "autonomousQa": false,
+    "version": "green-r4-390",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "intent": "spaced-flips",
+    "buildSha256": "63a645bbb0102302a917f6c57d1cb95b6d60ac54faa549e22958778ec00d828d",
+    "sourceTrace": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/green-r4-390/trace.zip",
+    "terminalText": "关卡完成\n×1\n分数 18\n点击“重玩”按钮 · 重新开始",
+    "replayRestarted": true,
+    "renewedVisibleText": "空中翻转",
+    "blocked": null,
+    "errors": [],
+    "inputs": [
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:24:02.861Z",
+        "elapsedMs": 990,
+        "completedMs": 1044
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:24:04.116Z",
+        "elapsedMs": 2245,
+        "completedMs": 2271
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:24:05.267Z",
+        "elapsedMs": 3396,
+        "completedMs": 3421
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:24:06.432Z",
+        "elapsedMs": 4561,
+        "completedMs": 4578
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:24:07.568Z",
+        "elapsedMs": 5697,
+        "completedMs": 5721
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:24:08.705Z",
+        "elapsedMs": 6834,
+        "completedMs": 6952
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:24:10.327Z",
+        "elapsedMs": 8456,
+        "completedMs": 8874
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:24:11.879Z",
+        "elapsedMs": 10008,
+        "completedMs": 10145
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:24:13.163Z",
+        "elapsedMs": 11292,
+        "completedMs": 11358
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:24:14.381Z",
+        "elapsedMs": 12510,
+        "completedMs": 12585
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:24:15.651Z",
+        "elapsedMs": 13780,
+        "completedMs": 13943
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:24:17.018Z",
+        "elapsedMs": 15147,
+        "completedMs": 15457
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:24:18.534Z",
+        "elapsedMs": 16663,
+        "completedMs": 16829
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:24:19.917Z",
+        "elapsedMs": 18046,
+        "completedMs": 18207
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:24:21.289Z",
+        "elapsedMs": 19418,
+        "completedMs": 19555
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:24:22.625Z",
+        "elapsedMs": 20754,
+        "completedMs": 20901
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:24:23.980Z",
+        "elapsedMs": 22109,
+        "completedMs": 22238
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 144.5,
+        "y": 533,
+        "at": "2026-10-27T09:24:25.835Z",
+        "elapsedMs": 23964,
+        "completedMs": 24087
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 195,
+        "y": 548.6,
+        "at": "2026-10-27T09:24:26.296Z",
+        "elapsedMs": 24425,
+        "completedMs": 24449
+      }
+    ],
+    "screenshots": [
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/spaced-validation-20261027-0921/green-r4-390-390-spaced-flips/startup.png",
+        "sha256": "79662733de18c61a9a460d60efc72604967d0b401afcd815a6493d5805694d53",
+        "elapsedMs": 990
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/spaced-validation-20261027-0921/green-r4-390-390-spaced-flips/core.png",
+        "sha256": "1c18ea966570612fb76a0dd1c8cecfe405c72675f763f8db97deffe8f019dfe2",
+        "elapsedMs": 2217
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/spaced-validation-20261027-0921/green-r4-390-390-spaced-flips/terminal.png",
+        "sha256": "76eda46415597300f599de08d40e3668157a877d99f99ae5862ba7264f35e7db",
+        "elapsedMs": 23781
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/spaced-validation-20261027-0921/green-r4-390-390-spaced-flips/after-replay.png",
+        "sha256": "95f6b1817cc7b747ef613f0468ea58f9cdde21264b3df1e83ee2e506665a33f3",
+        "elapsedMs": 24425
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/spaced-validation-20261027-0921/green-r4-390-390-spaced-flips/renewed-input.png",
+        "sha256": "84c7f65aa5b546fc108fd8f77f7a50d146b64c150093f66b53695fd1e83e90ce",
+        "elapsedMs": 24992
+      }
+    ],
+    "directory": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/spaced-validation-20261027-0921/green-r4-390-390-spaced-flips",
+    "elapsedMs": 26568
+  },
+  {
+    "actor": "controller-normal-input-capture",
+    "autonomousQa": false,
+    "version": "green-r4-390",
+    "viewport": {
+      "width": 1100,
+      "height": 720
+    },
+    "intent": "spaced-flips",
+    "buildSha256": "63a645bbb0102302a917f6c57d1cb95b6d60ac54faa549e22958778ec00d828d",
+    "sourceTrace": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/green-r4-390/trace.zip",
+    "terminalText": "关卡完成\n×0.5\n分数 4.5\n点击“重玩”按钮 · 重新开始",
+    "replayRestarted": true,
+    "renewedVisibleText": "空中翻转",
+    "blocked": null,
+    "errors": [],
+    "inputs": [
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:24:29.423Z",
+        "elapsedMs": 983,
+        "completedMs": 1167
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:24:30.959Z",
+        "elapsedMs": 2519,
+        "completedMs": 2625
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:24:32.247Z",
+        "elapsedMs": 3807,
+        "completedMs": 3937
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:24:33.548Z",
+        "elapsedMs": 5108,
+        "completedMs": 5374
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:24:35.008Z",
+        "elapsedMs": 6568,
+        "completedMs": 6675
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:24:36.304Z",
+        "elapsedMs": 7864,
+        "completedMs": 7987
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:24:37.631Z",
+        "elapsedMs": 9191,
+        "completedMs": 9328
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:24:38.967Z",
+        "elapsedMs": 10527,
+        "completedMs": 10656
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:24:40.266Z",
+        "elapsedMs": 11826,
+        "completedMs": 11925
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:24:41.536Z",
+        "elapsedMs": 13096,
+        "completedMs": 13192
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:24:42.842Z",
+        "elapsedMs": 14402,
+        "completedMs": 14511
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:24:44.108Z",
+        "elapsedMs": 15668,
+        "completedMs": 15768
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:24:45.744Z",
+        "elapsedMs": 17304,
+        "completedMs": 17721
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:24:47.376Z",
+        "elapsedMs": 18936,
+        "completedMs": 19073
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:24:48.701Z",
+        "elapsedMs": 20261,
+        "completedMs": 20394
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:24:50.017Z",
+        "elapsedMs": 21577,
+        "completedMs": 21723
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:24:51.353Z",
+        "elapsedMs": 22913,
+        "completedMs": 23069
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:24:52.695Z",
+        "elapsedMs": 24255,
+        "completedMs": 24372
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 499.5,
+        "y": 471,
+        "at": "2026-10-27T09:24:54.510Z",
+        "elapsedMs": 26070,
+        "completedMs": 26207
+      },
+      {
+        "type": "touchscreen.tap",
+        "x": 550,
+        "y": 468,
+        "at": "2026-10-27T09:24:55.166Z",
+        "elapsedMs": 26726,
+        "completedMs": 26861
+      }
+    ],
+    "screenshots": [
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/spaced-validation-20261027-0921/green-r4-390-1100-spaced-flips/startup.png",
+        "sha256": "598ca96e78b332a20cb0dcfc8b351a9d6e31fbb8e1d35de45aa5d50444c873e9",
+        "elapsedMs": 983
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/spaced-validation-20261027-0921/green-r4-390-1100-spaced-flips/core.png",
+        "sha256": "7ad641a330e125647e98fef2a41f53c90a75e1f981f4f464b044d5668c9fd031",
+        "elapsedMs": 2451
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/spaced-validation-20261027-0921/green-r4-390-1100-spaced-flips/terminal.png",
+        "sha256": "6f3da755c2430bd03c78919b2efa8522d648a2a00a76a07dc2f761d5c09f6658",
+        "elapsedMs": 25927
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/spaced-validation-20261027-0921/green-r4-390-1100-spaced-flips/after-replay.png",
+        "sha256": "25d26d0a3b129f338ad419cb0526206e367e4409e1fc8f5831489a0520c8874d",
+        "elapsedMs": 26726
+      },
+      {
+        "file": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/spaced-validation-20261027-0921/green-r4-390-1100-spaced-flips/renewed-input.png",
+        "sha256": "79d9ec80ebf2dece282d5b61b3073ca636db2f39edc46313f41ce981b0df299f",
+        "elapsedMs": 27575
+      }
+    ],
+    "directory": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/spaced-validation-20261027-0921/green-r4-390-1100-spaced-flips",
+    "elapsedMs": 31020
+  }
+]

@@ -1,0 +1,7 @@
+diff --git a/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/recovery-20261027-0918/red2-r4-390.css b/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/recovery-20261027-0918/green-r4-390.css
+index a406f897..8b137891 100644
+--- a/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/recovery-20261027-0918/red2-r4-390.css
++++ b/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/recovery-20261027-0918/green-r4-390.css
+@@ -1 +1 @@
+-#replay-button { pointer-events: none !important; }
++

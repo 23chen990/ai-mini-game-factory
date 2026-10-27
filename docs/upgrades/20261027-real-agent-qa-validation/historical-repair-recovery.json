@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "actor": "previous controller patch; NOT autonomous QA/Fixer success",
+  "targetRunId": "eval-20261027-slice",
+  "workspace": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/workspace/r4",
+  "buildsThisSession": 0,
+  "recoveredFrom": "exact recorded HTTP response bodies, not timestamp-neighbor substitutions",
+  "versions": [
+    {
+      "version": "red2-r4-390",
+      "tracePath": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red2-r4-390/trace.zip",
+      "traceSha256": "cb1791cfc529d79cfdaae139da31bf33a94ddaad06529a69e621cd1ed0eb9f8e",
+      "resource": "9709cc585fe72274678305175c5ab87735d2ac6c.html",
+      "documentSha256": "51236c30b4691112fdd488beb93354f914a042d5ea05371150663e3fe88db338",
+      "documentBytes": 2845697,
+      "derivedCss": "#replay-button { pointer-events: none !important; }\n",
+      "derivedCssSha256": "222bbf8432e47f91416517789a4f079c02ddb080637fb6587fae8734c92ddd04",
+      "recoveredPath": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/recovery-20261027-0918/red2-r4-390.html"
+    },
+    {
+      "version": "green-r4-390",
+      "tracePath": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/green-r4-390/trace.zip",
+      "traceSha256": "07187e00097fbb96c2b3af6129b35e48f41ef77ebe8093bad49232f9b7c348a8",
+      "resource": "2dbaaedfc418d96bc76e3931844f0d0e8735b4c1.html",
+      "documentSha256": "63a645bbb0102302a917f6c57d1cb95b6d60ac54faa549e22958778ec00d828d",
+      "documentBytes": 2845646,
+      "derivedCss": "\n",
+      "derivedCssSha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "recoveredPath": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/recovery-20261027-0918/green-r4-390.html"
+    }
+  ],
+  "driverBeforeAfterIdentical": true,
+  "driverEvidenceGap": "browser-before-fix.mjs and browser.mjs are byte-identical; original driver red/green source diff cannot be established from that backup. Red/green logs remain preserved.",
+  "cssDiff": "historical-repair.diff"
+}

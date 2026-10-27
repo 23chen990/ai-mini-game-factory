@@ -1,0 +1,2315 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-10-27T09:14:41.347785+00:00",
+  "targetGame": "historical cutting game isolated eval",
+  "runId": "eval-20261027-slice",
+  "workspace": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/workspace",
+  "files": [
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/artifacts/codex-run-budget.json",
+      "bytes": 44,
+      "sha256": "215fb009d1c537b9acb154332a3602afb3c38378896e03e7684e0e91eb624e56"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/artifacts/fix/attempt-1/build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/artifacts/fix/attempt-1/green.log",
+      "bytes": 1345,
+      "sha256": "6969266bd1c7ea7a5124d40e7846b7dc56f38ee79117b8cd13bc7caba0808afc"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/artifacts/fix/attempt-1/qa-report.json",
+      "bytes": 1900,
+      "sha256": "28c427f2dcdfa65dbe1dbd65bbc4aefaeb494727c420f71100f6770c19d9453c"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/artifacts/fix/attempt-1/result.json",
+      "bytes": 781,
+      "sha256": "4808e005f9db514f1bc1e9208becb61e9e35e2ae6e9d30453d3f494864d67104"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/artifacts/fix/attempt-1/triage.json",
+      "bytes": 2078,
+      "sha256": "8d5fcf5b9a28b24981a24c9f4f35d27f69b66a26b346ae0ca6ac47be9f69191b"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/bind-live-reference.mjs",
+      "bytes": 1856,
+      "sha256": "8e04e2f13a0365e8fd0c6c3beb12d6c213a9f44a969fb01b7f598784997c85d5"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/browser-before-fix.mjs",
+      "bytes": 3796,
+      "sha256": "f386f8d24a83a97f77394a41b8abd10348c8dc2ac9e9409c853aeb61694a7fb0"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/browser.mjs",
+      "bytes": 3796,
+      "sha256": "f386f8d24a83a97f77394a41b8abd10348c8dc2ac9e9409c853aeb61694a7fb0"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/classify-reference.ts",
+      "bytes": 755,
+      "sha256": "229cd0ba01c5bca07b2e3ad70b225edc6efe4eb3f06aa52368f30bbee6c4a6a8"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/ApplyPatchApprovalParams.json",
+      "bytes": 2657,
+      "sha256": "179d91081c3c84d0f79fc544a3d6d423f280c0f9d93512cdd0344c80e09b99a3"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/ApplyPatchApprovalResponse.json",
+      "bytes": 3989,
+      "sha256": "7157060306bb48d56d1544be17c104abf571722123cfe3ad72746f98f84e95dc"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/AttestationGenerateParams.json",
+      "bytes": 118,
+      "sha256": "b85df8f169cfbca98724df3a5f7550fc4649fa69b23f5160aafdb52e027133a8"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/AttestationGenerateResponse.json",
+      "bytes": 277,
+      "sha256": "2eb86b2a37bca01a8cb5d0822f28cf13d46dd106c8b1d38e7ba097e436b5ab30"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/ChatgptAuthTokensRefreshParams.json",
+      "bytes": 971,
+      "sha256": "03b7a734b8b3180d9cb477b33564385d29b22a2528165a614891f13849060503"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/ChatgptAuthTokensRefreshResponse.json",
+      "bytes": 406,
+      "sha256": "06d6b30436fc962d80b5d7920f8f323de12a052214d9148c5f0dfbaedd5eec6c"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/ClientNotification.json",
+      "bytes": 431,
+      "sha256": "706cf248d75027c84a3c63348d0ed507182e8eba40069dd17541793de029145a"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/ClientRequest.json",
+      "bytes": 183754,
+      "sha256": "6ba8920b1eb51583d43829d73a353bb069a888d08ed763a44272440c14efc88f"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/CommandExecutionRequestApprovalParams.json",
+      "bytes": 14992,
+      "sha256": "4e47e8fdb5432c9a709377064b3bed28f0a491fef4ca1e60ef3893dbbf98b9ad"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/CommandExecutionRequestApprovalResponse.json",
+      "bytes": 3202,
+      "sha256": "6d0767113e22f311381809b6b236b0dde2b99b01992879c26bf7b1ea0e003cb7"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/DynamicToolCallParams.json",
+      "bytes": 519,
+      "sha256": "401bba20cfbd95762bef0467d840430c46be53369093ad9f26425ba757e34efc"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/DynamicToolCallResponse.json",
+      "bytes": 2010,
+      "sha256": "abb082cad67f11fcc98ba75f2eff75d7d1723af0c657655329b83ff160451a02"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/ExecCommandApprovalParams.json",
+      "bytes": 3768,
+      "sha256": "653116614df1aa5011c3cc399cf79bae6b9eb28c1d527df27275abf61ceb1365"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/ExecCommandApprovalResponse.json",
+      "bytes": 3990,
+      "sha256": "ab2d399e9b3ff769fd32e54160a96bd13158247f73e1b08a0c1175f291b2487a"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/FileChangeRequestApprovalParams.json",
+      "bytes": 968,
+      "sha256": "13848b26814c286ad6425a20d01c1691c86790e1f9e2529399677a8a22fe0d18"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/FileChangeRequestApprovalResponse.json",
+      "bytes": 1158,
+      "sha256": "b95b03ee6be674e25cee2e863cc135a28620e1070addd2f34685aadee27cde08"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/FuzzyFileSearchParams.json",
+      "bytes": 413,
+      "sha256": "0291dbb87a7c3d8ef7f7cdf8d5d61f929deabab8c0ea79f064da95984d7d5f4f"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/FuzzyFileSearchResponse.json",
+      "bytes": 1332,
+      "sha256": "4984c3dba591e240407c39531d41c6b499c4816017de70a3371c7d6fa2d0951f"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/FuzzyFileSearchSessionCompletedNotification.json",
+      "bytes": 244,
+      "sha256": "d3af2e301142ac0cb2462d95b052162ff4f25d83f9c1b21e319d5ce9c860d401"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/FuzzyFileSearchSessionUpdatedNotification.json",
+      "bytes": 1474,
+      "sha256": "b8626521028e0c68611c57d458f27dbc9bf8be542e804865ae0d14acd78cf2e6"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/JSONRPCError.json",
+      "bytes": 893,
+      "sha256": "d7ea353d4875ae204625da5a00a1ecb5afc69101d5778b9acc253a49f8932992"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/JSONRPCErrorError.json",
+      "bytes": 314,
+      "sha256": "12cc5cd5d9df9246defa609c472375020fe5250f3aeabd7d529076cecd9f541e"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/JSONRPCMessage.json",
+      "bytes": 2888,
+      "sha256": "6da4cc373a7ccd01f5608ad4496eeb4d44b6a9b0d3158e85ed66b59f3c0b5114"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/JSONRPCNotification.json",
+      "bytes": 303,
+      "sha256": "c2b43f26880db331393fe09f34bdd76dfeb4dc30d8418d1c26e18db166d6c8c8"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/JSONRPCRequest.json",
+      "bytes": 1093,
+      "sha256": "31bd6f360b2dd8a7ceaf682708105d40d38cb0b9d0821357a04da67028438f73"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/JSONRPCResponse.json",
+      "bytes": 520,
+      "sha256": "4796738c04c74288213a08fb8d820c7b4df19e0977cdcd35b65ffcb43cfc93ab"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/McpServerElicitationRequestParams.json",
+      "bytes": 13251,
+      "sha256": "d056440b1c92d660364b671a39156b87dac4ab6537178499289d4b7204743c61"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/McpServerElicitationRequestResponse.json",
+      "bytes": 741,
+      "sha256": "792a012fdfe53ac211575a6c37ffbd492be848d15cb313d1bb4b534ade1f54ac"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/PermissionsRequestApprovalParams.json",
+      "bytes": 7719,
+      "sha256": "c6d165e1b0c65d5dcf1e099b4c226c7e4dad79fe2b88b03621a1fc6c1d3c86c2"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/PermissionsRequestApprovalResponse.json",
+      "bytes": 7068,
+      "sha256": "23f3f24e9dbf35db3e0b85703f0d934da5a1cff3cbb611fba8bcd41f3b4a04b0"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/RequestId.json",
+      "bytes": 197,
+      "sha256": "9c72d59a306d827113020c6d31a14c326d55210d9bd6954f825196a52009f1c7"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/ServerNotification.json",
+      "bytes": 175668,
+      "sha256": "558aab11da20cd0d278ec6f9067a46444f0566be7e3953f443dcc5d7cb23736f"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/ServerRequest.json",
+      "bytes": 49248,
+      "sha256": "e5ae9078cddac333262ae392fe25558d6054b77e4beb00784b77cf606849d063"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/ToolRequestUserInputParams.json",
+      "bytes": 2143,
+      "sha256": "fda15b62e7446105b59c8ed85c908abed2a47db70653e57c92c47a2f204fa77a"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/ToolRequestUserInputResponse.json",
+      "bytes": 793,
+      "sha256": "5073b245f741fa8ce62ec52e4dd1809b7831f9c4284c279a78abc9b171f8e3f2"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/codex_app_server_protocol.schemas.json",
+      "bytes": 606351,
+      "sha256": "f72b2caa3cbfa4298de9e85c62dda6dfbaf2266ffeb916fed30615ca69ff8c74"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/codex_app_server_protocol.v2.schemas.json",
+      "bytes": 513375,
+      "sha256": "f3dec1e031d99a420b137b903f02196d4325eece57620c925bb7130b25f168d2"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v1/InitializeParams.json",
+      "bytes": 2143,
+      "sha256": "6f0094be9a65242ec779a40794cbd4fdfa32fca1e45084a16adfb50501d33ea2"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v1/InitializeResponse.json",
+      "bytes": 1286,
+      "sha256": "62ad689c2cb6379913c1d72749cfd8de5089d35760214123518eb92eef11acc9"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/AccountLoginCompletedNotification.json",
+      "bytes": 720,
+      "sha256": "d81e8821fd5a4a9ad118dfc3506ea156d32dcb18da388b336501bbc6a5ccb4a6"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/AccountRateLimitsUpdatedNotification.json",
+      "bytes": 4493,
+      "sha256": "3187c452ad240a5ba5717f1b2898f38b7607feb4d287636b4206e19ffcc22e31"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/AccountUpdatedNotification.json",
+      "bytes": 2516,
+      "sha256": "8fbd02e12546f39a500eb04f9d39bb5529c0f165c9514497cfe5668a52d21aab"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/AgentMessageDeltaNotification.json",
+      "bytes": 406,
+      "sha256": "996e6c0ea65e57bed5a00f410b94381fe5ebf804333e5d00c2b6e6d47e5c55f6"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/AppListUpdatedNotification.json",
+      "bytes": 5703,
+      "sha256": "2c67a3bc676309afdd0d6952ad454c2a040a3d4c09d38c8f63ca7fb632034cce"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/AppsInstalledParams.json",
+      "bytes": 570,
+      "sha256": "c2027510d5d041c2205349036f9c2bea10b20df309de5330beab9de8a9e50bdb"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/AppsInstalledResponse.json",
+      "bytes": 1343,
+      "sha256": "d8ef8dd14dcba8aaaaaf2b0b80db90d66edf8f4ff422589b844ae2b0edcb46d4"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/AppsListParams.json",
+      "bytes": 904,
+      "sha256": "e880d0c24811118a2d3c2c7f0569a14aae5b12a31b0efe56809ccca8bbd85802"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/AppsListResponse.json",
+      "bytes": 5888,
+      "sha256": "5811fda68d6274decfc11744ad72bbe93e601d8514549e94f361ba3131d1adeb"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/AppsReadParams.json",
+      "bytes": 645,
+      "sha256": "37fe98157865858c5bf384dbd37c2b1bef46ec09c5f54f4f2372268d4738a424"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/AppsReadResponse.json",
+      "bytes": 2443,
+      "sha256": "f3b73c2c31f16a2cff013c9682dfea48f26571f94002195c93ce10722a288791"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/CancelLoginAccountParams.json",
+      "bytes": 221,
+      "sha256": "a4570a7542b82b918f69199f1e214ef747151c678473a5af58c58b088fdf58b6"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/CancelLoginAccountResponse.json",
+      "bytes": 404,
+      "sha256": "06bc17624df01600fdc399d3c0f222f875c010d2d952c1d1191cb84de9b59014"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/CommandExecOutputDeltaNotification.json",
+      "bytes": 1585,
+      "sha256": "28e74454b211ab677a256129e623fc5a2a29ce5394da1c69d3bc5136f7e37c57"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/CommandExecParams.json",
+      "bytes": 7397,
+      "sha256": "e4f20080b92c6199cf132941840c4bd0fb9a90e3fec197ceb0e1ce9084346e18"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/CommandExecResizeParams.json",
+      "bytes": 1216,
+      "sha256": "b748fee19979d2c32ac17a460ccfdc761e125cc2939bc551945e1e2c2af34197"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/CommandExecResizeResponse.json",
+      "bytes": 188,
+      "sha256": "01da20d70957fa5b43cf41365c5fee4fb3a69927947a45f92866f9bcf0895d0f"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/CommandExecResponse.json",
+      "bytes": 699,
+      "sha256": "dec52d187121e8dd48124b47a4a8d8428ef3717b98b9200345bb404f73b62c9d"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/CommandExecTerminateParams.json",
+      "bytes": 404,
+      "sha256": "979ece7059c6713d0909ab1690daec27149510f4ea2ec10014600bfb1d631c97"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/CommandExecTerminateResponse.json",
+      "bytes": 194,
+      "sha256": "d46aa76d952bb3ac95d0bd64de609fb8a82efd98d9ee38264fe3673fd184ce5d"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/CommandExecWriteParams.json",
+      "bytes": 716,
+      "sha256": "3e8e849ce321c85987bbe96ce1f913df0047696a5207bc97dfa1409b0142eda8"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/CommandExecWriteResponse.json",
+      "bytes": 186,
+      "sha256": "22887250f84443b2a6f5fc6f9c46cf9e2af072ff631574340018c48771411571"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/CommandExecutionOutputDeltaNotification.json",
+      "bytes": 416,
+      "sha256": "841fa94098ddb63a71acf1bf5f9e3fac1b0491f4ed3fa8ef86f9a6ca1260b539"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ConfigBatchWriteParams.json",
+      "bytes": 1325,
+      "sha256": "d11e244258ffaf8a37a0ca4afdbe589d07cb7881b72f06b7f730fddbab9ad613"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ConfigReadParams.json",
+      "bytes": 495,
+      "sha256": "257c54a423b47c1d209ff1076765a1564d82322fd5161670fd489a2874de1bac"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ConfigReadResponse.json",
+      "bytes": 21502,
+      "sha256": "4f680fc2b603c5a0d8ade367d46d9814e65b58a5d2dba11abf7e262a69f9503b"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ConfigRequirementsReadResponse.json",
+      "bytes": 15929,
+      "sha256": "aa35a2d7536e09cf89a261c63f778ee6e42ecfe6846bfbf26e5ff25edb1310b8"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ConfigValueWriteParams.json",
+      "bytes": 763,
+      "sha256": "b9032e35bf64d4628bfc72e22b58b71bbcf754aeb720a86eacb091e0137547c9"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ConfigWarningNotification.json",
+      "bytes": 1640,
+      "sha256": "533e713405b582cce4d772d0b4ebbc75e840f0fe71cedbb17c2c83da285a21d4"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ConfigWriteResponse.json",
+      "bytes": 7913,
+      "sha256": "0307fe8dbb0e1c6a430fdc4f34d4907ba49c66705e536b1e14563d13a85b46de"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ConsumeAccountRateLimitResetCreditParams.json",
+      "bytes": 594,
+      "sha256": "ce36a9f59ce3b8138fccdca042538f723e93d0e34d08441e6846d3153ee0b291"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ConsumeAccountRateLimitResetCreditResponse.json",
+      "bytes": 1177,
+      "sha256": "6d4144c00dcb7f73be6ad24693ff7e539bad56064e4432f7f2bf8d20b3bab724"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ContextCompactedNotification.json",
+      "bytes": 362,
+      "sha256": "c9f9a58ef680e09d568cff5f24b45895841e1cf138b650bae64dcf6c85f177af"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/DeprecationNoticeNotification.json",
+      "bytes": 457,
+      "sha256": "29fdb44fc0a09bfdc5c4924ff34e33679acc9201730fa4fe9be7ed1978af0b72"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/EnvironmentConnectionNotification.json",
+      "bytes": 306,
+      "sha256": "007e9a6ccae0003a56476bb7cdc9a097141e964c168e7ae43d213a763c93fb56"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ErrorNotification.json",
+      "bytes": 5424,
+      "sha256": "0c20c2cdee947cc249a1ea70063469e6fdde83dfa1b7b6abc04dfe050902241d"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ExperimentalFeatureEnablementSetParams.json",
+      "bytes": 509,
+      "sha256": "00aaf2ef719cc336e4d20eb26dd6158be1eb26161fb7647372804b80a02e3131"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ExperimentalFeatureEnablementSetResponse.json",
+      "bytes": 386,
+      "sha256": "5ecd92ee95380d7cadc4c109091530aa71245e41b9f1b530a5e9d5c5c9eda95b"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ExperimentalFeatureListParams.json",
+      "bytes": 827,
+      "sha256": "4db92977e59fea4125710babb4cd2128dc2cebef8292e3619d0844089e7fc1f5"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ExperimentalFeatureListResponse.json",
+      "bytes": 3066,
+      "sha256": "4084a25f32333b3f58eb5e9803a5983739b57f945c4e7e4002e85851622ce597"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ExternalAgentConfigDetectParams.json",
+      "bytes": 1414,
+      "sha256": "db6c6ea654efb4095dc745a1e65bee76d0d063b03f2bc3202b9077a1569211f8"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ExternalAgentConfigDetectResponse.json",
+      "bytes": 5240,
+      "sha256": "36c4173d5f30ebd04be3d40389c904bc4ecadfbb8e5d1dd46b9b589254f7e1d9"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ExternalAgentConfigImportCompletedNotification.json",
+      "bytes": 3025,
+      "sha256": "c54702d40c3a40bcb3e3e835d99860473831725acbd3576fc26d2d4fa3a7617a"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ExternalAgentConfigImportHistoriesReadResponse.json",
+      "bytes": 3890,
+      "sha256": "1c09641e957333a2f602a350532acd99cf538a73ea45f39a2294289907a0bd96"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ExternalAgentConfigImportHistoryRecordParams.json",
+      "bytes": 3237,
+      "sha256": "6a3e8071854771b0f34c6623fb7dcfbeaa7518a90779cc4a40c97fe92ac6f3ed"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ExternalAgentConfigImportHistoryRecordResponse.json",
+      "bytes": 245,
+      "sha256": "a252a2c2a03b4460bf3635d517c0735fa487a2f8a97de1aa0637f930419ae656"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ExternalAgentConfigImportParams.json",
+      "bytes": 5152,
+      "sha256": "6b8d0a8fbd5a7ddd455ec0dea6d1b578f56841480c8a5fffbfcd045db79458ee"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ExternalAgentConfigImportProgressNotification.json",
+      "bytes": 3024,
+      "sha256": "dae7bfc12026811ba24cc6f32dc01ae9ffaee7d9340d7768f9afce94575c23d2"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ExternalAgentConfigImportResponse.json",
+      "bytes": 232,
+      "sha256": "0ad2fc7dff7b1bdc471cc365985f559490f253ea127263417f0a0a1edcb33cef"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/FeedbackUploadParams.json",
+      "bytes": 726,
+      "sha256": "aa958cd74b37fb28cc49ce22345a1efcda9d4cf5fa47e7cce6949e5366ff8b2e"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/FeedbackUploadResponse.json",
+      "bytes": 221,
+      "sha256": "604390e864944eed2c4268675978dd8082f0884909d73cc79fda59dbe03a2d58"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/FileChangeOutputDeltaNotification.json",
+      "bytes": 544,
+      "sha256": "04c3df83d46725ffc048577e7a5aa25de9a6c8ea9eff713bbae2b408672481c5"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/FileChangePatchUpdatedNotification.json",
+      "bytes": 2159,
+      "sha256": "cfb69d18658610a0510f213e09c6847f70517410ed91cf99cc4713c15a795213"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/FsChangedNotification.json",
+      "bytes": 1061,
+      "sha256": "197693fcb852a85fedfbcf1cd00c9a3cc74dddfa09bdf6b11fdafebbcd12ea2d"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/FsCopyParams.json",
+      "bytes": 1198,
+      "sha256": "bc1135070827681e4d9a14f79b5b06a4f5652e538ae6a89642d27dbc8b2a2af1"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/FsCopyResponse.json",
+      "bytes": 162,
+      "sha256": "c88392d6c3ff394441231cdf5614794ba0c2b4ba683811f6033a01fe65528a59"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/FsCreateDirectoryParams.json",
+      "bytes": 1047,
+      "sha256": "405fd718ebafe7f47ffd82c86540ab4af663659c737ea2b25acd3e04a1bc94ea"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/FsCreateDirectoryResponse.json",
+      "bytes": 184,
+      "sha256": "a658fbd34d5e3d6300bcb7015f10fc1764aa8aca3088abc79af9caa2e848e527"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/FsGetMetadataParams.json",
+      "bytes": 851,
+      "sha256": "382bbf3a8b5c7e8cb16a1a29f853ce49c2904e563325e33a9e41dcbf632dab5e"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/FsGetMetadataResponse.json",
+      "bytes": 1005,
+      "sha256": "b8355f112eda37d7ff25ad0eda7dae912dba695961855c5cb8444a7f867d66c2"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/FsReadDirectoryParams.json",
+      "bytes": 862,
+      "sha256": "c4ca6cdc129d70375fe638c723c1b1bb07a9716101525970cf77bf7560fec657"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/FsReadDirectoryResponse.json",
+      "bytes": 1139,
+      "sha256": "2cfb28c3c1ab1487f6b778f4d76871e3a9f590597bdf0da502cc41b202269dbc"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/FsReadFileParams.json",
+      "bytes": 844,
+      "sha256": "74b325108195fe955e6ffcb6032e9380d3bfdee8aed7d115f5f1e4b127c5d706"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/FsReadFileResponse.json",
+      "bytes": 354,
+      "sha256": "fd67dd725b5bf5c7f27e78cc3d66fe24314f08913fc00ace9dbb663bf2f487e1"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/FsRemoveParams.json",
+      "bytes": 1199,
+      "sha256": "c453f8ae4b3311f5da88f67f743fdabbcdc323dc3d9eaa40d750ceae147bb630"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/FsRemoveResponse.json",
+      "bytes": 166,
+      "sha256": "6371aba2cae2f92be487be05c1ce531ca4139da5004b740a0010ccfdba548100"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/FsUnwatchParams.json",
+      "bytes": 368,
+      "sha256": "3134d42c231f40769a4d1ac4adcf051be5205e7a1b70bb32c4a8655fea730175"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/FsUnwatchResponse.json",
+      "bytes": 168,
+      "sha256": "9c59c3473df1f1873ee0d87ed33cecec0766b24c8357ee7dc8b29a57ca21e104"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/FsWatchParams.json",
+      "bytes": 1042,
+      "sha256": "10bd9c01b3819db1ed8e2487a277f20b35e3a9f74ae77214654f1a529fc1444d"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/FsWatchResponse.json",
+      "bytes": 864,
+      "sha256": "d32e77e7d6f619c5f4183c335ecddd3c4ffb95a51761198985c47838ae891a6c"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/FsWriteFileParams.json",
+      "bytes": 970,
+      "sha256": "2167e05c7f3eb26d475f9c1ce71697ba3b635efd8761a00b22abfd6af175bd2f"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/FsWriteFileResponse.json",
+      "bytes": 172,
+      "sha256": "0e4153ee7baa5c1203c2c573504baaa40e1dd8738d78e4c1e3a179fb49df6b16"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/GetAccountParams.json",
+      "bytes": 485,
+      "sha256": "30b545275f60975b55bd6fbaafd70f15505801d14168ee82d3931b6e93c78aab"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/GetAccountRateLimitsResponse.json",
+      "bytes": 7220,
+      "sha256": "c67762e486f5a9b081ec42650fce657781669e6b1261c09c47bc8085d8cf2fc1"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/GetAccountResponse.json",
+      "bytes": 2360,
+      "sha256": "dc770d8377dfe9b93b67e857e22ba7f99726265c8ca5cae63c5ad06e78b70b9d"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/GetAccountTokenUsageResponse.json",
+      "bytes": 1589,
+      "sha256": "12d8cb7692bb1d953cd8f76f2ae34d30f361cd4c9ab4a810704cdc38dfc0e8f9"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/GetWorkspaceMessagesResponse.json",
+      "bytes": 1565,
+      "sha256": "3ebd00f0acca088e5ee0309ec09b9a571e7f2eea5b63a32cda67be01c6886d67"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/GuardianWarningNotification.json",
+      "bytes": 423,
+      "sha256": "5325551d2efb47d578665e3deb846f6369e05f98fbc5bfbffc5d9fe0cb0bd167"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/HookCompletedNotification.json",
+      "bytes": 4247,
+      "sha256": "b541437e04a8beb5667f021faf44f4d8d51df25de758fff6ad7e9eced3a2305c"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/HookStartedNotification.json",
+      "bytes": 4245,
+      "sha256": "34fd93a3d7adc7be8b21719ba65f9f121351e77b9bc832f78c3036fc96b09896"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/HooksListParams.json",
+      "bytes": 311,
+      "sha256": "07638c3a8a3690cf368fa92c7ff697fdd0132865e8c59d53f6e5789e5a260053"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/HooksListResponse.json",
+      "bytes": 4533,
+      "sha256": "5bffc797c1271816b89f20f2d3f4039be8626bae76bc9064453d7403cabaee23"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ItemCompletedNotification.json",
+      "bytes": 40116,
+      "sha256": "cfbd72e98b6103825a1e6b2393fc82472b7f2d85d57a5263cc6e4fff5fde1b5f"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ItemGuardianApprovalReviewCompletedNotification.json",
+      "bytes": 15879,
+      "sha256": "c13715f6e08d69345f0eca65a87682cfb4abef7decdfd9317d479c9ccd1d1f99"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ItemGuardianApprovalReviewStartedNotification.json",
+      "bytes": 15381,
+      "sha256": "438ec1febf8c9b77b699084a1372789b0d3ab28b0f0216e8a2f8df56f85030c8"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ItemStartedNotification.json",
+      "bytes": 40108,
+      "sha256": "f6677d223483607c666c56b2b1cf1e872046cdbed4d025deadd853f23831656c"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ListMcpServerStatusParams.json",
+      "bytes": 1030,
+      "sha256": "33b1933595d844c61f76bdcfbc874c8456b65079877fed6e86e2710ea3d49f1b"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ListMcpServerStatusResponse.json",
+      "bytes": 4895,
+      "sha256": "ca43eb88a56a130a362868d62d36e1e47136c9e203f326463af0dac7fffb92a2"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/LoginAccountParams.json",
+      "bytes": 3518,
+      "sha256": "68cbb2156f0c9d449af9356915c7c2fb73d2ce1cbce1e6e2e6b6bb3e6fb7f646"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/LoginAccountResponse.json",
+      "bytes": 2521,
+      "sha256": "72e6d77f49bc5809c3af50f183e2a0862dd8f7836816d4796ff69bb13eae0e89"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/LogoutAccountResponse.json",
+      "bytes": 114,
+      "sha256": "ac14ddfca2ec6092b0039be8720262d5a9930484d23e62544d2ef0b7e1db7926"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/MarketplaceAddParams.json",
+      "bytes": 431,
+      "sha256": "e6c92ca2a3889641ca2281cca7684569b1187653b25b57f9beabf85519d638a2"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/MarketplaceAddResponse.json",
+      "bytes": 865,
+      "sha256": "a37633e9ecc2fdd87ea582861bcdcbf7963a8fab6db9fbc1bc8eac7d2f7f9a8b"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/MarketplaceRemoveParams.json",
+      "bytes": 236,
+      "sha256": "220c2475a96f32ca095f80f3ecbad427477b4ba37dfad7fb48a0acabdeb1f4eb"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/MarketplaceRemoveResponse.json",
+      "bytes": 869,
+      "sha256": "98deb2f721d57ed727f7cc7b4f478db5f604b6b6d40e6261928dfd5f586405e3"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/MarketplaceUpgradeParams.json",
+      "bytes": 228,
+      "sha256": "93fc5d331d353b1b89262625c38eed54c6c16b2fb8aa0eac718245c7bdcbe4dc"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/MarketplaceUpgradeResponse.json",
+      "bytes": 1348,
+      "sha256": "2402379cb0ed1168a7dc327c412fd61bafdea2ad13ea7a3b3ebaee3b43c45963"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/McpResourceReadParams.json",
+      "bytes": 352,
+      "sha256": "a6461bf743708fc4397dd2723fbf9b56dc349f4c7a92eb6181a97cdda3c3f64c"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/McpResourceReadResponse.json",
+      "bytes": 1482,
+      "sha256": "e1d875e135a4df3d434d4136bcad432a12623c1cefefe4d477e97b9008d1410b"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/McpServerOauthLoginCompletedNotification.json",
+      "bytes": 455,
+      "sha256": "d3b7ca4f2626a623b4b5a97eeedc711cc27d41b3ee56fed8b0304857c5c9b13c"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/McpServerOauthLoginParams.json",
+      "bytes": 539,
+      "sha256": "fd8a9da8bbab606ea0147fd97c9f84f7e1b754a46048611c97bc88ab216bc8ee"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/McpServerOauthLoginResponse.json",
+      "bytes": 242,
+      "sha256": "95d7d00622866ac49dbe459164b8be665b2c9ad7b26772eadfc610a0537aa6d4"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/McpServerRefreshResponse.json",
+      "bytes": 117,
+      "sha256": "54a77812db02175dc69053870e582d3b314af6f161f0c76846f3563b0f9487c4"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/McpServerStatusUpdatedNotification.json",
+      "bytes": 973,
+      "sha256": "d6f4cb120b2363d321247592f03b9afbbf2762ad6d8af31b88c1b1bf39c4c7aa"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/McpServerToolCallParams.json",
+      "bytes": 380,
+      "sha256": "7039a7583a1cbf38e9e0f5fe6398ff3711acd4d654b81b0be562514087fce6ba"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/McpServerToolCallResponse.json",
+      "bytes": 374,
+      "sha256": "04a59b2064922c37b0c49bdb2470b8fff08d943e56dba4f7280a6b34bfa52c68"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/McpToolCallProgressNotification.json",
+      "bytes": 412,
+      "sha256": "64a32b8282226876e749bc107a81db89d20d5ce5cb86ee6a043b960763214b1d"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ModelListParams.json",
+      "bytes": 688,
+      "sha256": "de29a536c00a5b8f46f34dba417dabd93365305571a8ed200e33bea85db68b5a"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ModelListResponse.json",
+      "bytes": 5254,
+      "sha256": "4d4fe3b0c52f71d7ed33eeda1e67e00673851f4af4ce1cca6b2b5cf1f3a2495f"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ModelProviderCapabilitiesReadParams.json",
+      "bytes": 128,
+      "sha256": "9db732188a15476cabb42cf05e495ae0803a1ada993fca7348c21c30a998388d"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ModelProviderCapabilitiesReadResponse.json",
+      "bytes": 395,
+      "sha256": "5c42590f728289daaa441b947617398a0ca3aa17479013b3c564a5d314a3c9cf"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ModelReroutedNotification.json",
+      "bytes": 636,
+      "sha256": "37cd3c1b3a3560b85b01d4061a07d830fc9ed93b80e4663f975f9197cdb501ef"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ModelSafetyBufferingUpdatedNotification.json",
+      "bytes": 746,
+      "sha256": "4cf853e3a2f968fdfde75206fd497d3d530b26769026bee343c3ef09ce438cfd"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ModelVerificationNotification.json",
+      "bytes": 574,
+      "sha256": "4f27a99d0c8664c29abb4d65384ab16853bbc29b61de5e749111cefdc6994655"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/PermissionProfileListParams.json",
+      "bytes": 667,
+      "sha256": "576d405f6c94cbde982a9f65c9301717043683b83ca35d564247907feb16b1b4"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/PermissionProfileListResponse.json",
+      "bytes": 1174,
+      "sha256": "4a290b5b9d47c2fc671033e22754671161bc563027ba387e861bd935398f0def"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/PlanDeltaNotification.json",
+      "bytes": 565,
+      "sha256": "a5cf42ccfc6cf905ede0fa9041e9c951ea7870aba4e3a7c7f68d85f01416d3af"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/PluginInstallParams.json",
+      "bytes": 950,
+      "sha256": "82e91c9df2e92eb522e838a7a93b772bdb0beeadfd70efa0033d4e16e6aa061d"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/PluginInstallResponse.json",
+      "bytes": 1190,
+      "sha256": "ae283e1ecb9f454f7614c6a4348fda5a7aba5af99e9ab9177b9a0cd3e1cd7db7"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/PluginInstalledParams.json",
+      "bytes": 1174,
+      "sha256": "0b56f55a817b6e82ea104496281cd43714ee96800f9b984412a3a858f444f68c"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/PluginInstalledResponse.json",
+      "bytes": 15679,
+      "sha256": "8afc8a16fa5c21d67f66d1855bf29890bad10a6229bafc960b3503281fc878e2"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/PluginListParams.json",
+      "bytes": 1629,
+      "sha256": "bc6b499161306df7082c5a8cc51fd793cd6d28dda93555b12ae299445132270a"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/PluginListResponse.json",
+      "bytes": 15802,
+      "sha256": "a405d2514d6236df75130c87c749e0e070b946a889f143a0448bbcd27d1d8501"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/PluginReadParams.json",
+      "bytes": 947,
+      "sha256": "f15952a2828c90501cc32f347c1e1691ea65cd2d97f503ab40e7be08757de74d"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/PluginReadResponse.json",
+      "bytes": 23615,
+      "sha256": "faf15dc05b09363dc367471b69ccd94cbc317d88df869a8557cfbdb1a75aa909"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/PluginShareCheckoutParams.json",
+      "bytes": 236,
+      "sha256": "25fd868fff9500ff244150a4ecd36322c0d31b339a4709649594b79aa1349185"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/PluginShareCheckoutResponse.json",
+      "bytes": 1187,
+      "sha256": "d6271afa9bba5531574ba255d22b03f70fe10b8ef159185355625d92b6f9fac6"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/PluginShareDeleteParams.json",
+      "bytes": 234,
+      "sha256": "d422a3fdecf91612bdf839d4fea6f1cddccb794869dc03ad3b8998bcb8e27fff"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/PluginShareDeleteResponse.json",
+      "bytes": 118,
+      "sha256": "ae881a7f898f5287354de5adf6f42094cef9029a9b9376bfd12aa1b0fe0b3106"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/PluginShareListParams.json",
+      "bytes": 114,
+      "sha256": "0d71280d2a655ffc26375044ec1693203848614f99fdb4563e0cb5a4ee40122b"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/PluginShareListResponse.json",
+      "bytes": 14477,
+      "sha256": "d349a496947956fd5f4d125b8348faa2ef0c91daf7f3cd74ae0616f55c8e328b"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/PluginShareSaveParams.json",
+      "bytes": 1974,
+      "sha256": "ec937521a40437506ceb2dcfe79cedd03812dd1b8233c651b89c2ddd76e148fe"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/PluginShareSaveResponse.json",
+      "bytes": 417,
+      "sha256": "3eb7c0ed6e6c72126c7bb3d845e73d5de98ad0d4ea8639d2f227fecd16c15411"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/PluginShareUpdateTargetsParams.json",
+      "bytes": 1369,
+      "sha256": "0ecf16212022bca115211cbf13a1302f8995d7be5664ca268b926b7d00add7b0"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/PluginShareUpdateTargetsResponse.json",
+      "bytes": 1380,
+      "sha256": "caf42dec67940f9e686ac7b4e77484921d62fee400b3af73fc85e6f46eaa03f4"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/PluginSkillReadParams.json",
+      "bytes": 388,
+      "sha256": "8850a9a45b9cf6e8b016f014c7c65f7062937be896d4fa0eafdaccc816909a56"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/PluginSkillReadResponse.json",
+      "bytes": 220,
+      "sha256": "dedaf95c4a8f70c022f5cac6fe3882603ed2b27d5efef710b52ae370869956cc"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/PluginUninstallParams.json",
+      "bytes": 220,
+      "sha256": "4c9e1da7048fc99ef5269d4c3f4c6c3297dac01992c2756340fa210ae8f800cc"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/PluginUninstallResponse.json",
+      "bytes": 116,
+      "sha256": "f6a0c9c8dfd9e3fc4a535ecfa606f12922c09e469a37d6b1c6e189f45cacb89e"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ProcessExitedNotification.json",
+      "bytes": 1419,
+      "sha256": "06cb5f39c67f84c227063d7f40e5e78fb62afdb76778c3d603687181896e8440"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ProcessOutputDeltaNotification.json",
+      "bytes": 1436,
+      "sha256": "c31714aa83297b83fd69dee98db877be7d4a3f98551dbeb517750efba0ecd79d"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/RawResponseCompletedNotification.json",
+      "bytes": 1525,
+      "sha256": "dab430b6c6e2ebb51d1fa2acdc597418ce68b12710382d4d93b652efd47fb61a"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/RawResponseItemCompletedNotification.json",
+      "bytes": 31067,
+      "sha256": "00b511b8a25c599d859163100af913693d28afbd0fcf1d0921dba318e5f2ce4b"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ReasoningSummaryPartAddedNotification.json",
+      "bytes": 454,
+      "sha256": "c8dfcb82d773d0f5d297ae1a47749e2b719013e82030a3af5d4550f9feb8eed6"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ReasoningSummaryTextDeltaNotification.json",
+      "bytes": 512,
+      "sha256": "895bdca00b4674634c25a5c4d1f82e55e65767d81ddcac4bb7b00aa3d438e62f"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ReasoningTextDeltaNotification.json",
+      "bytes": 505,
+      "sha256": "16cdc13080a7523b44f00fb6fdb660c56a7c4c8cda96b2f9b87b7e72264170fb"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/RemoteControlStatusChangedNotification.json",
+      "bytes": 800,
+      "sha256": "56aa1d58294238557cd8b16199909c2c157a7542b9259ef2deddf40fe4c02c91"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ReviewStartParams.json",
+      "bytes": 3200,
+      "sha256": "c55c510988a34d2e95752aeb95e5d165f7083724a0945d7fccd1c568ad85dbb0"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ReviewStartResponse.json",
+      "bytes": 47659,
+      "sha256": "2b8dc29f39b84d77d0c140b56a8d9c6a9e40dff49db6d12e826de56c2539ff29"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/SendAddCreditsNudgeEmailParams.json",
+      "bytes": 420,
+      "sha256": "91b380293f5685573f8dcdf46c99eba6f8a2adb7a206df9ac987f7fe6cb282a1"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/SendAddCreditsNudgeEmailResponse.json",
+      "bytes": 417,
+      "sha256": "389978f741476c7cbcaec716b11a5bfb7f17581a28013e18cbf7a73ec8a45ae6"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ServerRequestResolvedNotification.json",
+      "bytes": 514,
+      "sha256": "4f03d586a5af04edd912cad08cc97eceb658e7e06744565e6d41a93e04a55966"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/SkillsChangedNotification.json",
+      "bytes": 341,
+      "sha256": "84f7f1d327c5c774899992f32c98e9e95ee3e010a410d233ec0c33221e4ccbfb"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/SkillsConfigWriteParams.json",
+      "bytes": 1011,
+      "sha256": "6e7dea83b649bfd118828b60446eb2eab2f5ce3cafe287c933b830c9cae9b170"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/SkillsConfigWriteResponse.json",
+      "bytes": 241,
+      "sha256": "628bc112ca64f5475eb02a0eda718e82d670c40299444494e02a8dc278a772c7"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/SkillsExtraRootsSetParams.json",
+      "bytes": 761,
+      "sha256": "bb60389a0c7d4b73f625b9a40965e5e67b56b6503989f2d732cae12e9ca9698a"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/SkillsExtraRootsSetResponse.json",
+      "bytes": 120,
+      "sha256": "b659ec17a196eaa3a23273a3e2d5596460ea329bc3ade249971576bc723d9e96"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/SkillsListParams.json",
+      "bytes": 453,
+      "sha256": "1d245374e64c5acc9739dfc68a4fe5114c6c9147af04c480886f1846d2ca6239"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/SkillsListResponse.json",
+      "bytes": 5102,
+      "sha256": "de701e72b6b1e9f0b13ed67b1da13ac96e368cd6d2830b4ea9a1d7cc065d3348"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/TerminalInteractionNotification.json",
+      "bytes": 474,
+      "sha256": "5383b3d9681d3c071c9845fd4f043afd60fbe1bcc3650939356cb03848a7d627"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadApproveGuardianDeniedActionParams.json",
+      "bytes": 360,
+      "sha256": "082e5278ed4fb1fc23eafbe658e95ec21d81c446bb6daf2b57e25e8cd3aebd5e"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadApproveGuardianDeniedActionResponse.json",
+      "bytes": 134,
+      "sha256": "628336c7cdabd508d5202695502bb0f9ce42fdde380f5efdd4b033cf215d93e5"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadArchiveParams.json",
+      "bytes": 218,
+      "sha256": "dc2c0b133b814a5d9d543cc37afdb3f4f22feca35b7cea4272834b20a1e47705"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadArchiveResponse.json",
+      "bytes": 114,
+      "sha256": "2e021dabd0930ae3e2beb68cd0ddbafc40fc20cfbf8dbcb5e2f9c0493d06a08c"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadArchivedNotification.json",
+      "bytes": 225,
+      "sha256": "54ca94956719ade8682c766f31419ee9953dee8f4587b5b30efd0927de6ca26e"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadClosedNotification.json",
+      "bytes": 223,
+      "sha256": "d504cceb70e3397ad684924b08d3bff328a927be02ef4e3d482a18e27bab73de"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadCompactStartParams.json",
+      "bytes": 223,
+      "sha256": "684b20adf20213a9fcbca31b59108feadcd5a8b693c16431c20d701049df3737"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadCompactStartResponse.json",
+      "bytes": 119,
+      "sha256": "74674e47f33e37d7d97d144eac1789ef0580a1fc12d45a5675bb97caa08d803a"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadDeleteParams.json",
+      "bytes": 217,
+      "sha256": "0d5425d94af95e3dd20971cee052b2cb8c7d0d23195db1d17fde4e59cfbdec4a"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadDeleteResponse.json",
+      "bytes": 113,
+      "sha256": "333c0c5df96d78d1bcbdb19b57ddfa941de9a02bdae1c29d13c5311c2cdf6527"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadDeletedNotification.json",
+      "bytes": 224,
+      "sha256": "6f8d6fa96700ec6fff4b8c2bddf6768539b7ec7ba5dc05483aba53f5183386f9"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadForkParams.json",
+      "bytes": 4995,
+      "sha256": "e49e4faa510ab0120c91aa210140e2401635d510e1d41426d4496da42ef51e82"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadForkResponse.json",
+      "bytes": 65626,
+      "sha256": "967f779d17674f97ff4f9c348ae993f2373da448b40931499c3c662a9d623b1f"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadGoalClearParams.json",
+      "bytes": 220,
+      "sha256": "896c8b1997edf913382393f7d0f20ced4344714b9f0e8ce1f6564a11403e1675"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadGoalClearResponse.json",
+      "bytes": 221,
+      "sha256": "2652c2d0072be8ccb71c8dcaaa054aa74f974e68156a73451baf72c8597669c2"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadGoalClearedNotification.json",
+      "bytes": 228,
+      "sha256": "ad6c2cf53970e45cae55d36dbddd84ecc7b34837846616493efa7b132a35a051"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadGoalGetParams.json",
+      "bytes": 218,
+      "sha256": "1a5de89b3c5c49528af404a65411a73ef05dc7c9c49c3f00c90d9926dfe34137"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadGoalGetResponse.json",
+      "bytes": 1491,
+      "sha256": "f610000963194731c96ce2b45e46722ca700f1b6ccc1fc55a2fd95e526018fd9"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadGoalSetParams.json",
+      "bytes": 804,
+      "sha256": "93162f095e9b3b5a051ceb24318b8922c663edefc1f8c67bd378085c0d6c01d2"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadGoalSetResponse.json",
+      "bytes": 1428,
+      "sha256": "b1c61b6068b3b73dd3d97b38f8a269593f8f7added4643bfdb2016315b71ad8e"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadGoalUpdatedNotification.json",
+      "bytes": 1580,
+      "sha256": "52010479c7efcc6dc749e2d9bf1e27c134453d92a1f0b367193d8125eec1fedc"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadInjectItemsParams.json",
+      "bytes": 397,
+      "sha256": "8d7e754402a2bb71bd817882076d2f8ac4cd75d4573306db082a83b841aa3532"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadInjectItemsResponse.json",
+      "bytes": 118,
+      "sha256": "93d909e5b49b44da02072d340f8ad0ecd417d448ccf27fe50be7e369c7864159"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadListParams.json",
+      "bytes": 3628,
+      "sha256": "b227bb78acf9b91060d03c56d3f2072cdd9f1bd08290c11e8869f1a663b16da2"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadListResponse.json",
+      "bytes": 59226,
+      "sha256": "08d5ffb0a799cf0d1c42c11b12c8bc4b04d6e515f96c6789bbec532eba1b2612"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadLoadedListParams.json",
+      "bytes": 489,
+      "sha256": "42c2d124ab2b2998d84f0126daae2d32b0bf9c5a7ea7266e3a0814e5e37cf00d"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadLoadedListResponse.json",
+      "bytes": 565,
+      "sha256": "1ea02c4710083e552b2a3a89b931b9049d5bf05b7db46278b8352cf9fd80cd52"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadMetadataUpdateParams.json",
+      "bytes": 1465,
+      "sha256": "190da07d8c7c89c44b1e44b4e57fb5d803f356953534498a7a7f39fe29a8a6a4"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadMetadataUpdateResponse.json",
+      "bytes": 58572,
+      "sha256": "999324a92eb6611e95d7f26e941236914454eb036e01a18674f4946d144d8ff6"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadNameUpdatedNotification.json",
+      "bytes": 312,
+      "sha256": "06d5e6b0e1eaf03eb88891af58eff14368a76e300a40a9bed71bacce2093b960"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadReadParams.json",
+      "bytes": 355,
+      "sha256": "7222da641029c071811f6bcb651de347fe037e6689db22b3fad0c5b17b7f1c21"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadReadResponse.json",
+      "bytes": 58562,
+      "sha256": "755212bcb52ddd605501cdf6b7bde73a141605a22ea8037912ad9a7e79d1c20a"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadRealtimeClosedNotification.json",
+      "bytes": 393,
+      "sha256": "5290a73f8d4652b59d2f82d89c7bd289003fe2981fb0c628a61e801fa2123364"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadRealtimeErrorNotification.json",
+      "bytes": 377,
+      "sha256": "aeba7e4b477b4825b41990a4da69b0f3cb3a00f44cf9e2e42e275b944b7cb040"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadRealtimeItemAddedNotification.json",
+      "bytes": 358,
+      "sha256": "48aabfcbfd2361b5830a93257bc9eb31a6933f6e390694e188bfb287acbad9b4"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadRealtimeOutputAudioDeltaNotification.json",
+      "bytes": 1261,
+      "sha256": "4f73a5c606fda4984da4fc14e4cd98f62c8f9aa75b2db17cff76562c2d176ec0"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadRealtimeSdpNotification.json",
+      "bytes": 376,
+      "sha256": "1e276f48d346e6cace65551f84ef9b0bc8daba2a3ce93499f3a902551de239fc"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadRealtimeStartedNotification.json",
+      "bytes": 661,
+      "sha256": "483d324381a8ced04c8ab158c825bca2b64c06a4e85b350a086730050fe8f188"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadRealtimeTranscriptDeltaNotification.json",
+      "bytes": 533,
+      "sha256": "1a6add677534de891026eb56aac815b2585fbd4a6d6475f679a722c52b778703"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadRealtimeTranscriptDoneNotification.json",
+      "bytes": 528,
+      "sha256": "0000453425e300fd19ac2bc5fba4ebf3fbce48ac9a9b62ceb8bc5db8b6c77fff"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadResumeParams.json",
+      "bytes": 37333,
+      "sha256": "7d9ff4b7d83702448715ada355a9713af6f71beaf6fcfcb08c4f03ac52842813"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadResumeResponse.json",
+      "bytes": 66102,
+      "sha256": "1da0ef836c3b2e57f133b7fc55f40a934b5ad39e82b79af44d95d7c98b500c64"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadRollbackParams.json",
+      "bytes": 667,
+      "sha256": "27002ceab514bcbab10ad2e0a7b9b842f9ae51bd5e8c084ed14960889b422ebd"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadRollbackResponse.json",
+      "bytes": 58893,
+      "sha256": "9c3b00ccd615d74917bed0c131bf34c1ba5c870c4b06892ea073983a467d3375"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadSectionCreateParams.json",
+      "bytes": 365,
+      "sha256": "739495d13692425845b59d8b3ef83db20bea988bde2abea6e2b5abe93cfcc269"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadSectionCreateResponse.json",
+      "bytes": 846,
+      "sha256": "c7cb6779c0e36fd0a76284e8e239efd0b8e425f1d7bf8851acd7dacfec390dc7"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadSectionDeleteParams.json",
+      "bytes": 401,
+      "sha256": "93cc3d12bd5580966b59bbab8f2ccddd31b3b4bce56f76d49cfe41f1916b5deb"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadSectionDeleteResponse.json",
+      "bytes": 201,
+      "sha256": "9bbee5cca1fca02e4a65c2481dc3b24f090bca7afb786923ee481017b133b091"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadSectionListParams.json",
+      "bytes": 570,
+      "sha256": "6aea71b3fba46351fcaf648eab0da564080ba424599a012648abd9fd44464cf8"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadSectionListResponse.json",
+      "bytes": 1058,
+      "sha256": "ce1f6075f09ea813cb44c60697f1c36fb90860b5caaa6a7148f7ffd1305f4363"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadSectionMoveParams.json",
+      "bytes": 768,
+      "sha256": "48bc921055838df25c5595c96be7bd25beef3accb8bd1d28026fcaa7d81487b1"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadSectionMoveResponse.json",
+      "bytes": 118,
+      "sha256": "243299d7eebd4fb264d4e75efeb5058982681202371c2b83ff1a63b3369ddbb6"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadSectionUpdateParams.json",
+      "bytes": 527,
+      "sha256": "d804a54cc844dee32b7b9ecea4b90fc171bed3a730b26a1ac933063c28e720cb"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadSectionUpdateResponse.json",
+      "bytes": 850,
+      "sha256": "e331c104cd1927c5178f4fb0479977238742c58f61aea9993fded9adabcbb586"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadSetNameParams.json",
+      "bytes": 274,
+      "sha256": "8e334c816bbaeb80f807aca61bf659246f3f60c245c21b5cb7e3ca4ee3ce4820"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadSetNameResponse.json",
+      "bytes": 114,
+      "sha256": "f8763716433feea94f7c1ebd59b6cea4c261432e83240c13a8d49ba8185aa567"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadSettingsUpdatedNotification.json",
+      "bytes": 10318,
+      "sha256": "e601ede3c6947f6df0aea6b1c091c01e38ef7909df939f5ef11c8f836fc8a2ed"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadShellCommandParams.json",
+      "bytes": 567,
+      "sha256": "7f3e8b33d33c23746e07c1f173ddff03a6f04bfbd1cea1b27092139316fdc664"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadShellCommandResponse.json",
+      "bytes": 119,
+      "sha256": "fd4911613f6a6da2ca13b75342501d4d61f64e00a1083c6d60038369b8caeefe"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadStartParams.json",
+      "bytes": 10180,
+      "sha256": "792e2f32e37cece971bd616664ea2053741acbed4e9c92e9d1766427718f2ecd"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadStartResponse.json",
+      "bytes": 65627,
+      "sha256": "86d37438580ac2da25fa144ee9b4dda1269953cd92c9f9c94d7a2904a28a9517"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadStartedNotification.json",
+      "bytes": 58569,
+      "sha256": "23564ee066724ea02da74faeaa0b2ba5a092de2686fc9209cf41026b15b6ae3c"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadStatusChangedNotification.json",
+      "bytes": 2207,
+      "sha256": "26f3c60c1b73f7fa2d31c74429cdc36f8746c76c33e3d314b3fb61d3661f05f6"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadTokenUsageUpdatedNotification.json",
+      "bytes": 1727,
+      "sha256": "aba4f6c7e4a19b2b842c08ee793b57000c07dafd57b922ad0d8e7c76609108c2"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadUnarchiveParams.json",
+      "bytes": 220,
+      "sha256": "a1d5d847b61ea16ab09d5b9d1c1461134a7829292aae02a7e11b0a69b00c76ca"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadUnarchiveResponse.json",
+      "bytes": 58567,
+      "sha256": "00ab76e3faea8c9e38ab5eeab7d170f0dd778b9988fe2ad961caded77da3d5d7"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadUnarchivedNotification.json",
+      "bytes": 227,
+      "sha256": "fc00949cdc588b84800a26403647eda0e22d6f28663dc032a90db9c20dfa822d"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadUnsubscribeParams.json",
+      "bytes": 222,
+      "sha256": "77c67e0dc0a729af2d4612f30ed63f1297160232e96cd32b7cb9cc3e7fff0233"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/ThreadUnsubscribeResponse.json",
+      "bytes": 431,
+      "sha256": "9cad5e71a589c3c20e0980ce34a894a29e2898a075b10b1493bc87f32500081a"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/TurnCompletedNotification.json",
+      "bytes": 47466,
+      "sha256": "be5938b288e6b36b3f46585f2878f7a88150fc3f56fb373a6c961eea838cfdd6"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/TurnDiffUpdatedNotification.json",
+      "bytes": 494,
+      "sha256": "59a02535094b591b926cdc11a8e5f5babf73b442323a02cace1661c62f0c2918"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/TurnInterruptParams.json",
+      "bytes": 278,
+      "sha256": "6dff382dae73d1dbc58406ed045605f647e7a49660e2540fbd2c6c24d60c5f2b"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/TurnInterruptResponse.json",
+      "bytes": 114,
+      "sha256": "531de6be06fe979b5963f249bab82498a175e614bf65ac12fb2e849dfe60bcf1"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/TurnModerationMetadataNotification.json",
+      "bytes": 331,
+      "sha256": "90fe9ade83c46fd42af9d023737a9990595dac71e059158744950f538e802876"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/TurnPlanUpdatedNotification.json",
+      "bytes": 948,
+      "sha256": "2522f743be0a1e9666dec5ad4f18d8ecba3c4f16e66d510b1491d4117d1dd0ba"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/TurnStartParams.json",
+      "bytes": 16606,
+      "sha256": "ff2e7e0796fbe2ad99e5ec7d489cc8c8630b75f2ab8f17857711107587e3197d"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/TurnStartResponse.json",
+      "bytes": 47394,
+      "sha256": "888a437b6c818b10fb2ec3c255cb71c82293b378d9ce47e7be9c0028ed9e8a34"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/TurnStartedNotification.json",
+      "bytes": 47464,
+      "sha256": "15cb5196aa661487fce238c0f918dd629ea85cbc89a08fce846f296c5e33268c"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/TurnSteerParams.json",
+      "bytes": 6385,
+      "sha256": "4a52eb76e7a717bb388484ccd7538737fca0df35481fc30a21e259f1bfe96e37"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/TurnSteerResponse.json",
+      "bytes": 212,
+      "sha256": "866ba9a77c12b5d570c837d58f73bf40b24e50fa93404bdf792dd984d313b1aa"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/WarningNotification.json",
+      "bytes": 454,
+      "sha256": "f83c400591b923400ca0beaaaab1341c712d5ac0dee4ce6868a8e590f46490f9"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/WindowsSandboxReadinessResponse.json",
+      "bytes": 435,
+      "sha256": "077f60a3d6d1fc226c45059472b29caf675fdc3fdebb29569eaab94bd05ceb00"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/WindowsSandboxSetupCompletedNotification.json",
+      "bytes": 556,
+      "sha256": "dc5383ae8fc2a46badbc2dab3ccd0447fed97729c2d5a177e28c4a7e2a60c329"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/WindowsSandboxSetupStartParams.json",
+      "bytes": 1002,
+      "sha256": "8610d077fff4fc5811f2e33dea82617a15ffb82f08e55e1540aef877133f5b4f"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/WindowsSandboxSetupStartResponse.json",
+      "bytes": 230,
+      "sha256": "830bf89deac3e73e36b7d9799ceed32ee25e782c30b1d25266374aa020d3bc7e"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/cli-schema/v2/WindowsWorldWritableWarningNotification.json",
+      "bytes": 478,
+      "sha256": "bfa34d4890c8121a04412b8d53314a13adf98289fdd948857fd97b808dcbe79e"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/driver-green.log",
+      "bytes": 56,
+      "sha256": "e9b7dbc809acfda65096ce7be67988876258c5e6b422ecd91eecdeeaad9491c8"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/driver-red.log",
+      "bytes": 1157,
+      "sha256": "63b684480253307be46b1ba59c6eef710efcf5b3428f8276dcb00e5d58b22a28"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/driver-regression.mjs",
+      "bytes": 936,
+      "sha256": "6dd0b5c7fd334c6b5b24338db09942c2c3dfdfbae4a3a918d2389efb3a37487b"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/finalize.ts",
+      "bytes": 8696,
+      "sha256": "72eee2e752080d9d52036fde2f4c0829d07ff1ceb1cfcb96d6e8ab6989f248f6"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/fix-triage.ts",
+      "bytes": 2453,
+      "sha256": "8084d30029488db5b0f758f97558c308f12fab74efef0bb0c712d1b97a4ddfad"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/ipc-broker.mjs",
+      "bytes": 601,
+      "sha256": "73460e85610478a90da3f8265cd059948e36d58622424f6c907c5082ef5c9627"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/ipc-client.mjs",
+      "bytes": 603,
+      "sha256": "d7ac6d15cdbc1ae24cc7e85b2db28b9e9f38abe6fe709c3618092e13299a6004"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/ipc-preflight.json",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/reconcile-rejected-startup.ts",
+      "bytes": 2235,
+      "sha256": "92f4c15cf725e0755442dff43725f282bc30a2f2cd7ed09406eac8a5c35c5988"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/red-replay.log",
+      "bytes": 1539,
+      "sha256": "15c6820a9091764c139a99e2f4a64165716bfc79afc5fe7e9d1948341ba494da"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/red2-replay.log",
+      "bytes": 1819,
+      "sha256": "dfe49e8d1c358170984eabee87c3a4f0893ba3232b988e1ed82d050cf7a4eb44"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/reference-after.json",
+      "bytes": 5417,
+      "sha256": "a1c3be357fdc4a8db1a605cab444a5e31f89d5a3f3cdbfcf2d38c1d25cd2f67c"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/reference-diagnostic.json",
+      "bytes": 218,
+      "sha256": "eb587a9ff0ef26948e3dd449bf563f7027514eebef7c19ccfca1cc9659895dd9"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/reference-diagnostic.jsonl",
+      "bytes": 249,
+      "sha256": "7abd7a798e9970c5bcc43a8636040b58cb1afb3f4a4c197969c77822d9de97aa"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/reference-first.json",
+      "bytes": 5417,
+      "sha256": "3062a9992495492a93ed1469f191461f49c215e54092f2aa688a4e8dfbb5b0cc"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/reference-space-after.json",
+      "bytes": 5417,
+      "sha256": "a66b029479b2902735e9ac0920276f618a12fcdfa6992ee7618dc5a58e22077e"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/reference-space.json",
+      "bytes": 5417,
+      "sha256": "0c89989785046772d0df5ef5226bd49ccb2c3a08d115adbdfa43eb1166df8a48"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/reference-wait.json",
+      "bytes": 5417,
+      "sha256": "d75d5a9bf9113002c6b10f4213fa07cf3f9537b6d13a06b1d16c748ca281ac3e"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/rejected-startup-original-receipt.json",
+      "bytes": 386,
+      "sha256": "5bc532b1d39bca7a3bfe8aec752f6bf71d916018787950f5b992afca1f1e79eb"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/replay-regression.mjs",
+      "bytes": 2696,
+      "sha256": "414bcd4025ff51df6bf5bcaf2e252937720847e7f3f2b1a79374223f412225b5"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/run-qa.ts",
+      "bytes": 3933,
+      "sha256": "d7fc6838493718c7120a30e9938f8f75898bf7099427e7a41859d6161a3b70b0"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/schema-gen.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/controller/startup-reconciliation.json",
+      "bytes": 1359,
+      "sha256": "a363750794a370ac285f4a6711a60ae6b62402158adfb74afc94ee5770f49011"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/gold/injection.json",
+      "bytes": 899,
+      "sha256": "398c166be21aee2a8add1d28ae04d436fd9c53f62fe850be20358461ab0ac811"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/inputs/driver.json",
+      "bytes": 41,
+      "sha256": "b01df310e4f1d37d7983ebf1cd4d93b4a4cfec52292dd556bdb41c18562b1203"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/inputs/qa-task.json",
+      "bytes": 2266,
+      "sha256": "0395e807fbba10b88bd82fd025aaf5a8e91bc66dc76e56212b4cc6c7873e6ee1"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/logs/codex/blind-QA-policy.attempt-1.events.json",
+      "bytes": 9527,
+      "sha256": "34d93350b2ef3b2fa6f5839db66ed097dd33b5afd39e93c6fbc51209655289ad"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/logs/codex/blind-QA-policy.attempt-1.stderr.log",
+      "bytes": 1078,
+      "sha256": "5ed1312d94aa87265c80ae4e19c07211869faeffc96eca341ba741593c837f43"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/logs/codex/blind-QA-policy.attempt-1.stdout.jsonl",
+      "bytes": 8587,
+      "sha256": "7f5b285edc8f71ade4464c520b44f4213e69f322f91c3762acda6e9a0f69b2e8"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/logs/codex/blind-QA-policy.attempt-1.usage.json",
+      "bytes": 398,
+      "sha256": "0a70ebef66e21ca13fa571ea4fa7f74b124f6465e69f1f45563d3c008a55a874"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/logs/codex/blind-QA-policy.schema.json",
+      "bytes": 4536,
+      "sha256": "6d04e7d662a0458c8872b7b2ae348aa82537971a4a7a8f17fab806c1d4fb3698"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/logs/codex/blind-QA.attempt-1.events.json",
+      "bytes": 958,
+      "sha256": "7abd9bbea9d3eafad7742bad65462f75e4359290c700e7dc7c34ac1a607f284f"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/logs/codex/blind-QA.attempt-1.stderr.log",
+      "bytes": 979,
+      "sha256": "821b1820cbb5f027708a6ecabfd9d48eb0ed34e2ab19b6cf6ec351b1bf6a844e"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/logs/codex/blind-QA.attempt-1.stdout.jsonl",
+      "bytes": 814,
+      "sha256": "77f876cae8d5bc58b5a4482abfd1d945acf265635f1fc764b7c4de3f681394b5"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/logs/codex/blind-QA.attempt-1.usage.json",
+      "bytes": 375,
+      "sha256": "a26ae3a45f4091497b38061f249cbf71048f7d68b80f152f7ad4e680cdc5b168"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/logs/codex/blind-QA.schema.json",
+      "bytes": 4536,
+      "sha256": "6d04e7d662a0458c8872b7b2ae348aa82537971a4a7a8f17fab806c1d4fb3698"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/logs/codex/executions/2a2500b7-f9da-4dda-b27b-510a856f9188/blind-QA.attempt-1.events.json",
+      "bytes": 958,
+      "sha256": "7abd9bbea9d3eafad7742bad65462f75e4359290c700e7dc7c34ac1a607f284f"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/logs/codex/executions/2a2500b7-f9da-4dda-b27b-510a856f9188/blind-QA.attempt-1.stderr.log",
+      "bytes": 979,
+      "sha256": "821b1820cbb5f027708a6ecabfd9d48eb0ed34e2ab19b6cf6ec351b1bf6a844e"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/logs/codex/executions/2a2500b7-f9da-4dda-b27b-510a856f9188/blind-QA.attempt-1.stdout.jsonl",
+      "bytes": 814,
+      "sha256": "77f876cae8d5bc58b5a4482abfd1d945acf265635f1fc764b7c4de3f681394b5"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/logs/codex/executions/2a2500b7-f9da-4dda-b27b-510a856f9188/blind-QA.attempt-1.usage.json",
+      "bytes": 375,
+      "sha256": "a26ae3a45f4091497b38061f249cbf71048f7d68b80f152f7ad4e680cdc5b168"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/logs/codex/executions/2a2500b7-f9da-4dda-b27b-510a856f9188/blind-QA.schema.json",
+      "bytes": 4536,
+      "sha256": "6d04e7d662a0458c8872b7b2ae348aa82537971a4a7a8f17fab806c1d4fb3698"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/logs/codex/executions/2a2500b7-f9da-4dda-b27b-510a856f9188/receipt.json",
+      "bytes": 384,
+      "sha256": "6f4864ea4feecd2411a29bf87b505dd62cdd0c8702e30d04faf6149eed9d44bb"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/logs/codex/executions/51d65635-2a16-414f-9641-a52272e9e880/blind-QA-policy.attempt-1.events.json",
+      "bytes": 9527,
+      "sha256": "34d93350b2ef3b2fa6f5839db66ed097dd33b5afd39e93c6fbc51209655289ad"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/logs/codex/executions/51d65635-2a16-414f-9641-a52272e9e880/blind-QA-policy.attempt-1.stderr.log",
+      "bytes": 1078,
+      "sha256": "5ed1312d94aa87265c80ae4e19c07211869faeffc96eca341ba741593c837f43"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/logs/codex/executions/51d65635-2a16-414f-9641-a52272e9e880/blind-QA-policy.attempt-1.stdout.jsonl",
+      "bytes": 8587,
+      "sha256": "7f5b285edc8f71ade4464c520b44f4213e69f322f91c3762acda6e9a0f69b2e8"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/logs/codex/executions/51d65635-2a16-414f-9641-a52272e9e880/blind-QA-policy.attempt-1.usage.json",
+      "bytes": 398,
+      "sha256": "0a70ebef66e21ca13fa571ea4fa7f74b124f6465e69f1f45563d3c008a55a874"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/logs/codex/executions/51d65635-2a16-414f-9641-a52272e9e880/blind-QA-policy.schema.json",
+      "bytes": 4536,
+      "sha256": "6d04e7d662a0458c8872b7b2ae348aa82537971a4a7a8f17fab806c1d4fb3698"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/logs/codex/executions/51d65635-2a16-414f-9641-a52272e9e880/receipt.json",
+      "bytes": 395,
+      "sha256": "208dc48ed5f1afc21ab276e5d0443ca94e6fc8c2c1fd9b6645343bd9730820bd"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/actions.jsonl",
+      "bytes": 2895,
+      "sha256": "95864fbc3f6893f7faa3e17a109555ea3575945d758c44392eb2441fa6c60c7e"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/execution-error.json",
+      "bytes": 243,
+      "sha256": "9aa4baacccaeceb33e787c5b5efc99e58e72ed2db9b81228509299990fd1a21b"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/green-q7-1100/after-replay.png",
+      "bytes": 120952,
+      "sha256": "fa08dec087df9f33ae5f4b2a45f24fd1501d5ce8c8752186794ad45da2f2e0fc"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/green-q7-1100/page@b6b0c0f42fa9f0b13fa8425fc39df9a6.webm",
+      "bytes": 2471040,
+      "sha256": "3c2e16a331271b133890fdc5475eb1d87a6bc6fe3db5a7041556085a2cce5065"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/green-q7-1100/renewed-input.png",
+      "bytes": 143258,
+      "sha256": "a92c96f3a36f46cbb8af3bade03036b29b0521842ea11045681b797f10366355"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/green-q7-1100/startup.png",
+      "bytes": 121565,
+      "sha256": "d45b3d68712d541825b4e2766402371da5dc9bf61fef0419e91fc25c32cb42ae"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/green-q7-1100/terminal-before.png",
+      "bytes": 107323,
+      "sha256": "694e8452386ec9bb236d64ef7ab0108495e0dfb8fc9f291b1239c347816b0522"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/green-q7-1100/trace.zip",
+      "bytes": 78440664,
+      "sha256": "9e00a26944a7c9efbe1e87c3cc0b89705f6442d62fe1516789d62a493cc8e601"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/green-q7-390/after-replay.png",
+      "bytes": 69740,
+      "sha256": "446c08d7efcc2f82141cd47cdcea1a13754d5832de777849ed3f076e46a26ea3"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/green-q7-390/page@0114036fffbd662ebbcf341e6436f92e.webm",
+      "bytes": 2281116,
+      "sha256": "95eac6080c5b8a52898fe86112ea9c2a8097dcaa7adee15309030a26a455f8ed"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/green-q7-390/renewed-input.png",
+      "bytes": 83195,
+      "sha256": "04f38cce63e09d30a58f33923e472387cbeed0058c01a69e67d7a1564672f49a"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/green-q7-390/startup.png",
+      "bytes": 70472,
+      "sha256": "2900f3f1f27b119cad56cb20f62eb93aa91c9aa910d7177f6de599e10dad3935"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/green-q7-390/terminal-before.png",
+      "bytes": 62399,
+      "sha256": "b8c83990b19a247f5a8af7a37e8c9b3bde8ed8bfcb463f07a9ccf6622f4f0e77"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/green-q7-390/trace.zip",
+      "bytes": 69386739,
+      "sha256": "e30b1af7de941593d2f21dc84e1bc8933c11449081e214e2e7579a9159a55d5f"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/green-r4-1100/after-replay.png",
+      "bytes": 120785,
+      "sha256": "7face54fdb2181070ca63c644def25f249c7903e6912d933c8851d1cb85ac3e3"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/green-r4-1100/page@119d92a86224af70bf0b2e372c968184.webm",
+      "bytes": 2753871,
+      "sha256": "2c6574204c001bdeae02170ff1430f30622ff706a2fd5d26fccdf351c5612539"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/green-r4-1100/renewed-input.png",
+      "bytes": 143086,
+      "sha256": "7f489465cf66373bea88ef5e9cc7ff7654f99d07b696f7aa7688a2cba96304dc"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/green-r4-1100/startup.png",
+      "bytes": 121762,
+      "sha256": "e1e799398899554428dcabb0af031ba045877d5ff0e4e76a731eb67171ccf0b4"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/green-r4-1100/terminal-before.png",
+      "bytes": 106668,
+      "sha256": "73b93819ffd1090615a6bac5699eabb9774d7319bab601e6176f5f0e4a9f94dc"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/green-r4-1100/trace.zip",
+      "bytes": 89389379,
+      "sha256": "863ec5a841cf1c75a40976c6e3364752cbdde7d5d003eaa514f4f5b3e683bf05"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/green-r4-390/after-replay.png",
+      "bytes": 69600,
+      "sha256": "3d5ef673b722438f3ee6f46a601c65ae7a0eb5b27b0f7285cfc072b30c518962"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/green-r4-390/page@fdb591057df371b9cc039a42d222afa4.webm",
+      "bytes": 2564073,
+      "sha256": "b53052fedfe60bf3ce77652e5ec8fbae44d7d91733db992b2a4dced4558fc37a"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/green-r4-390/renewed-input.png",
+      "bytes": 82885,
+      "sha256": "24b76947dc30c08ff42de761065604234f123e2c35367c387bc85c607c7553eb"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/green-r4-390/startup.png",
+      "bytes": 70137,
+      "sha256": "d8a8f58f469d71471145c37fdbb6c66fc571c6c548fdbbebe214f4d4478d4115"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/green-r4-390/terminal-before.png",
+      "bytes": 63079,
+      "sha256": "e66072d53051b9de9f6a9b8031bf03f4c60ff28b4e1bcb514817c7c22cc6706c"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/green-r4-390/trace.zip",
+      "bytes": 73836858,
+      "sha256": "07187e00097fbb96c2b3af6129b35e48f41ef77ebe8093bad49232f9b7c348a8"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/green-replay-results.json",
+      "bytes": 1671,
+      "sha256": "4f44bef36a122f89a3195be30168676b0edd1a56f8fb8315eb83afdbda282db8"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red-q7-1100/page@5fb1d3ee158a517cef6ac74b536e9165.webm",
+      "bytes": 511682,
+      "sha256": "092cb2f157b104f810692206c4eb3d802c80eb09eef4098b830eafd4114a24cf"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red-q7-1100/startup.png",
+      "bytes": 121010,
+      "sha256": "edfb7cab01c97911bfc5792339c5807c4bdcfa06d08a26ccdc8780403b29ff6c"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red-q7-1100/terminal-before.png",
+      "bytes": 111564,
+      "sha256": "7e264a4e45912ed597b6b4f91d199168834ddcecb1f259b4ab8be3b3103ce213"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red-q7-1100/trace.zip",
+      "bytes": 11831938,
+      "sha256": "05c1b440d3e39c43cb4f730be14770cd6d1a1d14e34e3b8ee00bdb72f0db8115"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red-q7-390/page@7c47e2d79618eb5e978135ca932a2156.webm",
+      "bytes": 375216,
+      "sha256": "34869a76899719d51322ddb7d98425870629ee70c4e98ad50cac0fbcee335d69"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red-q7-390/startup.png",
+      "bytes": 70266,
+      "sha256": "07d35ba599feb389813c8c00e97b9620aa8f7c73c86475f4aab00fc3d52fe425"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red-q7-390/terminal-before.png",
+      "bytes": 60550,
+      "sha256": "0a58cfb016fdc75228c36e8ac5be696c0a5f4b57f3472b1707ea96dab4c317f9"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red-q7-390/trace.zip",
+      "bytes": 7528777,
+      "sha256": "1b10ece7069cdd4437579f7cdc94714c34f753fc20474dd41772dd3cf7b45ac1"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red-r4-1100/page@2945afd0e25ff3d0536a77f4c3cb2978.webm",
+      "bytes": 519896,
+      "sha256": "f8314a2233021296fa230b8c4e4f3e647a9dd98e04bf763b617191a77d18d1c9"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red-r4-1100/startup.png",
+      "bytes": 121673,
+      "sha256": "71e7be4e675ee2d34e8e3bf7d23ba546ecf5fdd8441ef8664190aed883d747e0"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red-r4-1100/terminal-before.png",
+      "bytes": 111794,
+      "sha256": "b95c0f82e3828fca5881f5d9a0f7ce035a42f84ad3426e471d2c3b7288eff6ce"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red-r4-1100/trace.zip",
+      "bytes": 12109809,
+      "sha256": "1314ef112096a53c90106ee1eb30ca31a7297ccd403be8ba4cb361607f3ca86b"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red-r4-390/page@7793607fa767d522b3466c98eea9c6e7.webm",
+      "bytes": 411887,
+      "sha256": "e6d6903f852a5141ca9e45fff028c036b602dcbb43ca3d2760166759e25b77f8"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red-r4-390/startup.png",
+      "bytes": 70149,
+      "sha256": "452dcb48d7e147f7fc025f6525a7c7fd939e6168ffa9ebd89deebf58a0ea8055"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red-r4-390/terminal-before.png",
+      "bytes": 60409,
+      "sha256": "53cfd072df3bed0fedd483131fdc646b9f177c2198425718b30ece0cbd619fc4"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red-r4-390/trace.zip",
+      "bytes": 6880602,
+      "sha256": "df0926f6894cbe5a7b7192a24f6c6b0dcf5c6a21d0b34408e45073cfdb571da6"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red-replay-results.json",
+      "bytes": 1390,
+      "sha256": "7b816ca6f12b916b495120eeff4fdd07f348258006de07a549db1f7a7717101a"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red2-q7-1100/after-replay.png",
+      "bytes": 121160,
+      "sha256": "d8c15f36c778c7f116b68712a3f7f750962279a9e77fb41647360aa4d4c4b7a3"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red2-q7-1100/page@e261f47aa07e03cf9bda1a266db0a686.webm",
+      "bytes": 2760328,
+      "sha256": "86d9bc543789a9e56767ba5994e72a5e352014ae56861f818ffbcdb5956969a2"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red2-q7-1100/renewed-input.png",
+      "bytes": 142111,
+      "sha256": "45bea2173323346ef90e861b006c50ff6c96c085aaa3a7f534c0b128cfbc58ed"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red2-q7-1100/startup.png",
+      "bytes": 121854,
+      "sha256": "fcb01c170808298a5466ff6cff5fec536aeb6699d83c040508d5277137856f6c"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red2-q7-1100/terminal-before.png",
+      "bytes": 106523,
+      "sha256": "a885d97ad26eb79fb01142d06212ac73aee8adee841c6927dd5e19a2fe3c83df"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red2-q7-1100/trace.zip",
+      "bytes": 82012287,
+      "sha256": "a79f29cb55558f3928465b0ce562e1cc00ac9d973dce4bc09e02209ba5254ade"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red2-q7-390/after-replay.png",
+      "bytes": 69740,
+      "sha256": "0d79262c05dad4cd96b3851258ed2529c715e1cb401aaf700cf4f335509e5f1c"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red2-q7-390/page@e87f9a69012b9db7895a5b3b8d6e21b3.webm",
+      "bytes": 2370206,
+      "sha256": "ec3dcc24bf275844fb4c0780ad441b77d89e2b032fe79bc9173f46617122ccd6"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red2-q7-390/renewed-input.png",
+      "bytes": 83335,
+      "sha256": "832c6dbf212b8dcd0f991ee2421ba18b98e3809d1e4c017b10536199f7de6e93"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red2-q7-390/startup.png",
+      "bytes": 70476,
+      "sha256": "9d0fa4ba657a76439472a91fea9a4f9a0d1bc482892cc92ff1a9a9f82e4da8c6"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red2-q7-390/terminal-before.png",
+      "bytes": 62256,
+      "sha256": "f00cd10b878285cb3ece6846ed640bcb2802297dcf3a192a6872a52f5b6429f3"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red2-q7-390/trace.zip",
+      "bytes": 68907769,
+      "sha256": "c8056d52e4f64c53e977faaeb53b7788032a54bebdf85423ef6f1f205a5e094a"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red2-r4-1100/after-replay.png",
+      "bytes": 106977,
+      "sha256": "c1726aae61225eaacfa198766042bac58f9dc3acb8c5c87c3e1762b125a4d60d"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red2-r4-1100/page@6257e2733ca8fd9dc7ada4eb9a376a0f.webm",
+      "bytes": 2259693,
+      "sha256": "a2f553b7b8de89c8453c52c2ff94a0df4a8aab7822074a6157f5d868d14bf69a"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red2-r4-1100/renewed-input.png",
+      "bytes": 66031,
+      "sha256": "19a4f2b71965ea850b745b4e3299bb915bedce7b9dc8f2fd6aaffabd46f85571"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red2-r4-1100/startup.png",
+      "bytes": 121793,
+      "sha256": "ab370086b93f34af3298055d4dede2f1bd75749fcbfdf42f996c2c0786e99d1f"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red2-r4-1100/terminal-before.png",
+      "bytes": 106958,
+      "sha256": "0ffb96b89ba8b6d07254b4d894649550954c8dbe37cdeac3d6cd2e7e4eeaaabb"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red2-r4-1100/trace.zip",
+      "bytes": 70658235,
+      "sha256": "e53e11382a0b0ae02a2561d5a4d91357c936a7352d11ebcc171fdeb116c73eaa"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red2-r4-390/after-replay.png",
+      "bytes": 62465,
+      "sha256": "df9f848846a465c7bda3c52ac0c133aa5de10c0a088b420560b14c8f5d2b372a"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red2-r4-390/page@1d6805df3c56dc7c7f272807f86447d6.webm",
+      "bytes": 2251002,
+      "sha256": "505348acac0c57e1da62842b38cd4ecdb174df6234a37eebe8ad8d6698cf15db"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red2-r4-390/renewed-input.png",
+      "bytes": 50005,
+      "sha256": "6dd75682d44c6eef1e6573a273bfced4811708407cce8663dd9fae15ca1f9552"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red2-r4-390/startup.png",
+      "bytes": 69942,
+      "sha256": "7f426081bb0d11d82163aa597cac6cf22bf8778e380b9fc880d33c1d9b48c602"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red2-r4-390/terminal-before.png",
+      "bytes": 62465,
+      "sha256": "df9f848846a465c7bda3c52ac0c133aa5de10c0a088b420560b14c8f5d2b372a"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red2-r4-390/trace.zip",
+      "bytes": 67423609,
+      "sha256": "cb1791cfc529d79cfdaae139da31bf33a94ddaad06529a69e621cd1ed0eb9f8e"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/red2-replay-results.json",
+      "bytes": 1667,
+      "sha256": "3d4fd3203bdff04cafa51512ba4d2f75840b1b35084bb9e34273fc48874a5f62"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/rejected-blind-result.raw.json",
+      "bytes": 4067,
+      "sha256": "8247bc196d9a2cbd3aedf990f89e42c80d9bdca35f99e8a1855432c5cb0df621"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/session-1/page@0f964a126a662ab69fdb92164fa9671b.webm",
+      "bytes": 152818,
+      "sha256": "f40c04cff788493b9f8c4a9199f9c5e7b9337af86eb4e99047e8e757a35b5398"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/session-1/page@14f41ce08e9b1173d3953ee0e19fa42d.webm",
+      "bytes": 154923,
+      "sha256": "b11088f7cb09e460345496207e25d1bfdd2070443696498bbe01ee19131b269e"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/session-1/page@2b303e0254ae370d505f0e78e14938da.webm",
+      "bytes": 7201247,
+      "sha256": "da50e75427fcd1a8e63513b2d2c112c5456650dde8bf3fb77f8212bb5cc89d39"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/session-1/page@6d86e27cd97e6670f74da24c7457b2dc.webm",
+      "bytes": 148980,
+      "sha256": "17344346ff92056c1b289299076eea1ea1943ab077cc8ca0683ce9442ac31837"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/session-1/page@7bd0b12eabcded32151eb88dc07decbb.webm",
+      "bytes": 148512,
+      "sha256": "f83e6ca0851e9b247cb9c637295fa87b973cf903d9ac6e4059dd97778ab6d8c8"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/session-1/screen-1.png",
+      "bytes": 68296,
+      "sha256": "efb3da0b8123f367e3b0d713170446824d357ca7bb4f227ebe2d43de8c0e2af7"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/session-1/screen-2.png",
+      "bytes": 367917,
+      "sha256": "37fa77e4f2194bf1c562d9ebf363cdb32ab88e49d08f70270aeca6ba06783a44"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/session-1/screen-3.png",
+      "bytes": 367550,
+      "sha256": "e9c671858404588c145ab3c8f4ef19dfcd6316cd7f43b46fb4d59f75f894fa05"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/session-1/screen-4.png",
+      "bytes": 367941,
+      "sha256": "4c6243f8c127c500acaef76f3a5eda934ce6c73c74bfc9a162b6c61cd3d15f3c"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/session-1/screen-5.png",
+      "bytes": 370279,
+      "sha256": "9dfe1c5853951deb6b6788c7ff586f485ef1f63087115681bac0c75acd88a5bf"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/session-1/screen-6.png",
+      "bytes": 366351,
+      "sha256": "5cec1a191092b909534717d2722366cd137dc1b07630967200c93f03d1be53fd"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/session-1/trace.zip",
+      "bytes": 3942774,
+      "sha256": "22819eb15497a4f8f3018a8512a383c1bacfe194b0a53115b72a1b6c34fae1d3"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/workspace/q7/index.html",
+      "bytes": 2845630,
+      "sha256": "c4cc3c427fc52c9f91f6229c9aea0ae7cfe8220341be521df6c807626d101aae"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/workspace/r4/base.html",
+      "bytes": 2845630,
+      "sha256": "c4cc3c427fc52c9f91f6229c9aea0ae7cfe8220341be521df6c807626d101aae"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/workspace/r4/build.mjs",
+      "bytes": 314,
+      "sha256": "8f79bd7e304c829b71093a05e34232e8861bb1954da5e9066cd690ffb4941d2a"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/workspace/r4/index.html",
+      "bytes": 2845646,
+      "sha256": "63a645bbb0102302a917f6c57d1cb95b6d60ac54faa549e22958778ec00d828d"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/workspace/r4/intervention.css",
+      "bytes": 1,
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/docs/upgrades/20261027-capacity-eval/README.md",
+      "bytes": 4361,
+      "sha256": "d23767edd974d523dfe7c45dd74e5d9ef310defbccfb5ca7ca232a088cee392e"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/docs/upgrades/20261027-capacity-eval/agent-eval-result.json",
+      "bytes": 6093,
+      "sha256": "a99c788fad1285084d42897e726e3a3198b266181426d18f0ce4e5a4a0d6c271"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/docs/upgrades/20261027-capacity-eval/cost.json",
+      "bytes": 1110,
+      "sha256": "12c262e9cb9c7148503396e107681ea0caa4cb7a471a7cf1e18c9653744b5d06"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/docs/upgrades/20261027-capacity-eval/driver-green-final.log",
+      "bytes": 68,
+      "sha256": "999bfbcf096db20ed8795ed62f4968972c71c57fa20c4430e753a8319d217483"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/docs/upgrades/20261027-capacity-eval/driver-green.log",
+      "bytes": 56,
+      "sha256": "e9b7dbc809acfda65096ce7be67988876258c5e6b422ecd91eecdeeaad9491c8"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/docs/upgrades/20261027-capacity-eval/driver-red.log",
+      "bytes": 1157,
+      "sha256": "63b684480253307be46b1ba59c6eef710efcf5b3428f8276dcb00e5d58b22a28"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/docs/upgrades/20261027-capacity-eval/infrastructure-triage.json",
+      "bytes": 1494,
+      "sha256": "f3b3d88eacaec4a599347337854a8b7d244a7fa09f4f06aff229a0771250b20e"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/docs/upgrades/20261027-capacity-eval/lint-final.log",
+      "bytes": 11,
+      "sha256": "050c69da23536758722729aeda55a8d0fb9d557495ef6d33d70873a3b64a71c1"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/docs/upgrades/20261027-capacity-eval/lint.log",
+      "bytes": 11,
+      "sha256": "050c69da23536758722729aeda55a8d0fb9d557495ef6d33d70873a3b64a71c1"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/docs/upgrades/20261027-capacity-eval/manifest.json",
+      "bytes": 4062,
+      "sha256": "fad5efce3b8a371d049a6c1168c746cea97682f380b3ed8f218b25d2f9236643"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/docs/upgrades/20261027-capacity-eval/preflight-findings.json",
+      "bytes": 778,
+      "sha256": "3a3425f3875ffc73ca1bd6e4a923c1b0c8444dd725c18e714a499e3eacc1925f"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/docs/upgrades/20261027-capacity-eval/production-status.json",
+      "bytes": 667,
+      "sha256": "dc917bd7259a3b1676b128ea3ede83aea5898ef4d71b6658a77876696895da51"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/docs/upgrades/20261027-capacity-eval/red2-replay.log",
+      "bytes": 1819,
+      "sha256": "dfe49e8d1c358170984eabee87c3a4f0893ba3232b988e1ed82d050cf7a4eb44"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/docs/upgrades/20261027-capacity-eval/reference-audit.json",
+      "bytes": 3936,
+      "sha256": "8534af8ca4ceceef79e861d555fc2cb8f7adf0797d436b7d84581cd400ba8f5d"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/docs/upgrades/20261027-capacity-eval/reference-binding.jsonl",
+      "bytes": 6012,
+      "sha256": "b39ca98284247b5e6ef2f9e626e2eb48fd45311467baabd3db5f99fbf0c5a459"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/docs/upgrades/20261027-capacity-eval/reference-brief.json",
+      "bytes": 302,
+      "sha256": "9af133c20f716b6ee9541b10c0c302f86f3976197e281786c0fde5019f8a1456"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/docs/upgrades/20261027-capacity-eval/registry-tests.log",
+      "bytes": 372,
+      "sha256": "016a0cd844cb88c13b24a4f978fbaac36f056521598ae1e65f2d7536e169c14b"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/docs/upgrades/20261027-capacity-eval/registry.log",
+      "bytes": 49,
+      "sha256": "502dab1e965a1769537dafe622fee1fa7bcb1d3ef224751de22e6be186025e6e"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/docs/upgrades/20261027-capacity-eval/rejected-blind-result.raw.json",
+      "bytes": 4067,
+      "sha256": "8247bc196d9a2cbd3aedf990f89e42c80d9bdca35f99e8a1855432c5cb0df621"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/docs/upgrades/20261027-capacity-eval/scripts/browser.mjs.txt",
+      "bytes": 3796,
+      "sha256": "f386f8d24a83a97f77394a41b8abd10348c8dc2ac9e9409c853aeb61694a7fb0"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/docs/upgrades/20261027-capacity-eval/scripts/driver-regression.mjs.txt",
+      "bytes": 936,
+      "sha256": "6dd0b5c7fd334c6b5b24338db09942c2c3dfdfbae4a3a918d2389efb3a37487b"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/docs/upgrades/20261027-capacity-eval/scripts/reconcile-rejected-startup.ts.txt",
+      "bytes": 2235,
+      "sha256": "92f4c15cf725e0755442dff43725f282bc30a2f2cd7ed09406eac8a5c35c5988"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/docs/upgrades/20261027-capacity-eval/scripts/replay-regression.mjs.txt",
+      "bytes": 2696,
+      "sha256": "414bcd4025ff51df6bf5bcaf2e252937720847e7f3f2b1a79374223f412225b5"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/docs/upgrades/20261027-capacity-eval/scripts/run-qa.ts.txt",
+      "bytes": 3933,
+      "sha256": "d7fc6838493718c7120a30e9938f8f75898bf7099427e7a41859d6161a3b70b0"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/docs/upgrades/20261027-capacity-eval/start-reference-capture.ts",
+      "bytes": 964,
+      "sha256": "3ab0ae899abd9b7437e29fd2adeeb24aba517bbe3be42128fc044f0df9df447c"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/docs/upgrades/20261027-capacity-eval/startup-reconciliation.json",
+      "bytes": 1359,
+      "sha256": "a363750794a370ac285f4a6711a60ae6b62402158adfb74afc94ee5770f49011"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/docs/upgrades/20261027-capacity-eval/tests.log",
+      "bytes": 279,
+      "sha256": "3d72b83bac376bf1abb4863f562e4a373faad350dd8353c7e9d830f5dff64722"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/docs/upgrades/20261027-capacity-eval/typecheck-final.log",
+      "bytes": 15,
+      "sha256": "8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/docs/upgrades/20261027-capacity-eval/typecheck.log",
+      "bytes": 15,
+      "sha256": "8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/docs/upgrades/20261027-capacity-eval/usage-end.json",
+      "bytes": 1119,
+      "sha256": "a21fb7da027de5553e6b28e359d15e4cbb1911d5b7558c0c53a572403ee247a7"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/docs/upgrades/20261027-capacity-eval/usage-start.json",
+      "bytes": 1117,
+      "sha256": "140a28b8c38c8e1104f1f9c5f23a0f7587972ef855806b66058aab6c30963a5d"
+    }
+  ],
+  "interpretation": "Pointers and hashes preserve exact origins; not imported into another game; no model invoked"
+}

@@ -1,0 +1,1 @@
+{"level":30,"time":1793092558887,"application":"rea","mode":"mcp","layer":"server","tool":"capture_browser_scenario","durationMs":1778.93,"status":"ok","msg":"MCP tool execution completed"}
