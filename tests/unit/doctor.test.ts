@@ -23,6 +23,24 @@ describe('factory doctor', () => {
     expect(calls.some(([command, args]) => command === 'codex' && args[0] === 'exec' && args.includes('-'))).toBe(false);
   });
 
+  it('distinguishes a Playwright version string from actual browser usability', async () => {
+    const runner: DoctorCommandRunner = async (command, args) => {
+      if (command === 'pnpm') return { code: 0, stdout: 'version 1.62.1', stderr: '' };
+      if (args[0] === 'login') return { code: 0, stdout: 'Logged in using ChatGPT', stderr: '' };
+      return { code: 0, stdout: 'Usage: codex exec --json --output-schema --sandbox resume', stderr: '' };
+    };
+    const report = await runDoctor({
+      runner, mode: 'codex-account', verifyQaBrowser: true,
+      browserProbe: async () => ({
+        schemaVersion: 1, scope: 'HOST_BROWSER_SMOKE_ONLY', ready: false,
+        checkedAt: new Date().toISOString(), checks: [],
+      }),
+    });
+    expect(report.checks.find((check) => check.id === 'playwright')).toMatchObject({ ok: true });
+    expect(report.checks.find((check) => check.id === 'qa-browser-runtime')).toMatchObject({ ok: false });
+    expect(report.healthy).toBe(false);
+  });
+
   it('reports an actionable login failure', async () => {
     const runner: DoctorCommandRunner = async (command, args) => {
       if (command === 'codex' && args[0] === 'login') return { code: 1, stdout: '', stderr: 'token secret' };
