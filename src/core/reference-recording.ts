@@ -21,18 +21,31 @@ export type NativeFrameExtraction = {
 
 export type ReferenceFrameExtractor = (input: { sourcePath: string; outputDir: string; fps: number; maxFrames: number; runRoot: string }) => Promise<NativeFrameExtraction>;
 
+/** A reproducible time-stratified sample: retains endpoints and evenly
+ * spaced observations without random selection or hidden source rewriting. */
+export function selectStratifiedReferenceItems<T>(items: readonly T[], limit: number): T[] {
+  if (!Number.isSafeInteger(limit) || limit < 0) throw new Error('reference sample limit must be a nonnegative safe integer');
+  if (limit === 0) return [];
+  if (items.length <= limit) return [...items];
+  if (limit === 1) return [items[0]!];
+  return Array.from({ length: limit }, (_, index) => items[Math.round(index * (items.length - 1) / (limit - 1))]!);
+}
+
 /**
- * Keep the full frame manifest as the source of truth while bounding the
- * visual files copied into one model context. Contact sheets preserve full
- * temporal coverage; three detail candidates per sheet provide readable
- * start/middle/end frames and are evenly reduced when a recording is long.
+ * Preserve the complete verified frame manifest for provenance, while choosing
+ * only a bounded subset of image files for one Research call. Unselected sheets
+ * remain timeline metadata, never visual observations. Callers may pass a
+ * contact-sheet budget instead of unconditionally sending every sheet.
+ * Backwards-compatible default keeps all sheets for existing internal callers.
  */
-export function selectReferenceResearchMedia(manifest: ReferenceFrameManifest, maxDetailFrames = 64) {
-  if (!Number.isInteger(maxDetailFrames) || maxDetailFrames < 2 || maxDetailFrames > 256) throw new Error('reference research detail-frame limit must be an integer from 2 to 256');
+export function selectReferenceResearchMedia(manifest: ReferenceFrameManifest, maxDetailFrames = 64, maxContactSheets = manifest.contactSheets.length) {
+  if (!Number.isSafeInteger(maxDetailFrames) || maxDetailFrames < 2 || maxDetailFrames > 256) throw new Error('reference research detail-frame limit must be an integer from 2 to 256');
+  if (!Number.isSafeInteger(maxContactSheets) || maxContactSheets < 0 || maxContactSheets > 256) throw new Error('reference research contact-sheet limit must be an integer from 0 to 256');
+  const selectedSheets = selectStratifiedReferenceItems(manifest.contactSheets, maxContactSheets);
   const byIndex = new Map(manifest.frames.map((frame) => [frame.index, frame]));
   const candidateIndices = new Set<number>();
-  if (manifest.contactSheets.length > 0) {
-    for (const sheet of manifest.contactSheets) {
+  if (selectedSheets.length > 0) {
+    for (const sheet of selectedSheets) {
       candidateIndices.add(sheet.firstFrameIndex);
       candidateIndices.add(Math.floor((sheet.firstFrameIndex + sheet.lastFrameIndex) / 2));
       candidateIndices.add(sheet.lastFrameIndex);
@@ -48,10 +61,8 @@ export function selectReferenceResearchMedia(manifest: ReferenceFrameManifest, m
     .sort((left, right) => left - right)
     .map((index) => byIndex.get(index))
     .filter((frame): frame is ReferenceFrameManifest['frames'][number] => frame !== undefined);
-  const detailFrames = candidates.length <= maxDetailFrames
-    ? candidates
-    : Array.from({ length: maxDetailFrames }, (_, index) => candidates[Math.round(index * (candidates.length - 1) / (maxDetailFrames - 1))]!);
-  return { contactSheets: manifest.contactSheets, detailFrames, media: [...manifest.contactSheets, ...detailFrames] };
+  const detailFrames = selectStratifiedReferenceItems(candidates, maxDetailFrames);
+  return { contactSheets: selectedSheets, detailFrames, media: [...selectedSheets, ...detailFrames] };
 }
 
 function isWithin(parent: string, candidate: string) {
