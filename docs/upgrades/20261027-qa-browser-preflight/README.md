@@ -16,6 +16,10 @@ Inside `CodexCliProvider.execute`, a metered call at `BLIND_PLAYTEST_QA`, `NATUR
 - Missing tool access is `BLOCKED/UNOBSERVED`, not false negative or successful QA. The controller repairing an injected sample is not Fixer success.
 - There is no authorization for additional Codex/Research model calls or credits. A token stop based on delayed telemetry is **not** a billing hard cap. Unverified monetary expense must remain unknown.
 
+## Regression history
+
+The first PR test run passed the real Chromium/WebKit browser smoke and 1,253 tests. An extra success-path fixture subsequently exposed a double-escaped JSONL newline in the fixture itself; this was corrected without relaxing the execution boundary. Require the final exact-head CI to pass before merge.
+
 ## Acceptance
 
 Engineering CI must execute the real Chromium/WebKit smoke, plus unit tests proving that an absent browser blocks Codex spawn and leaves a local receipt. The experimental worktree and its uncommitted injection fix still require an authorized local operator to inspect and commit separately; do not invent GitHub evidence for them.
