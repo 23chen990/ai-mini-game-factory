@@ -971,7 +971,8 @@ export function createFactory(options: FactoryOptions = {}) {
     if (!referenceBehaviorAnalysisNeeded(pack) && levelCurrent) return pack;
     // Keep full per-frame provenance in run artifacts. Never put the enormous
     // original frame manifest in the model's isolated Research filesystem.
-    const inputs = await referenceResearchInputPaths(runId, reference);
+    const inputs = (await referenceResearchInputPaths(runId, reference))
+      .filter((relative) => relative !== 'artifacts/reference-frame-manifest.json');
     // Persist the exact base pack before compiling context so source paths and
     // hashes seen by the ResearchAgent match the artifact merged below.
     await store.writeArtifact(runId, 'reference-evidence-pack.json', pack);
