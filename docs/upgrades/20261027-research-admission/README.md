@@ -12,6 +12,14 @@ The 2026-10-26 authorized new-reference run `20261026104326-reference-9094c978` 
 - The sandbox now admits user-supplied original image sources only if their exact relative path and SHA-256 are present in the verified `artifacts/reference-intake-evidence.json`. Other incoming media stays blocked.
 - Synthetic regression covers 292 frames/19 sheets, an actual Factory reference-intake route, and direct image binding.
 
+## Compact evidence and spend accounting
+
+The original verified frame manifest stays on disk, hash-bound to the run. **It is not copied into the real model's Research sandbox**: the only recording timeline made available to the model is the compact media plan containing observed sample timestamps, contact-sheet ranges, total recording duration and source-manifest hash. A referenced-but-unsampled frame is not an observed game event.
+
+A ChatGPT-login Codex CLI run exposes **observed token usage**, not necessarily a per-call vendor invoice or monetary charge. The local accounting card's zero rate does not establish free inference. Keep monetary cost `unknown` unless authoritative billing exists; do not fabricate a conversion rate. New live calls need explicit user-approved quota/attempt/time bounds or a separately authorized metered provider with a verifiable cost cap. Neither input-size limits nor completed-turn telemetry can guarantee a zero-overrun token cap.
+
+If the approved reference cannot show the core input → result → failure/retry chain, mark that specific contract `BLOCKED` and either obtain authorized missing footage or select a better-evidenced reference. Run no further paid trial solely to reproduce an already-known evidentiary gap. Continue deterministic QA/Eval and engineering work independently of this missing production reference.
+
 ## Limits and one-time delivery decision
 
 The four-image limit is an **input admission** cap, NOT an absolute token/price guarantee. High-resolution contact sheets, model reasoning and delayed usage reporting can still consume more than expected. A live authorized retry is still needed to prove the new model actually finishes Research; this PR does not repair or regenerate the legacy slice game.
