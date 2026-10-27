@@ -54,6 +54,27 @@ async function researchImageRequest(options: { listed?: boolean; tampered?: bool
 }
 
 describe('CodexCliProvider', () => {
+  it('does not launch a token-consuming blind QA Agent when the browser cannot launch/click/capture', async () => {
+    const root = await mkdtemp(path.join(tmpdir(), 'codex-qa-browser-block-'));
+    const calls: Array<{ command: string; args: string[]; cwd?: string; stdin: string }> = [];
+    const provider = new CodexCliProvider({
+      spawn: fakeSpawn([{ stdout: '{"type":"turn.completed","usage":{}}\\n', output: 'SHOULD NOT RUN' }], calls),
+      qaBrowserPreflight: async () => ({
+        schemaVersion: 1, scope: 'HOST_BROWSER_SMOKE_ONLY', ready: false, checkedAt: new Date().toISOString(),
+        checks: [{ engine: 'chromium', label: 'mobile', viewport: { width: 390, height: 844 }, passed: false, screenshotBytes: null, blocker: 'browser unavailable' }],
+      }),
+      maxRetries: 1,
+    });
+    await expect(provider.execute({
+      label: 'BLIND_PLAYTEST_QA', stage: 'BLIND_PLAYTEST_QA', role: 'reviewer', sandbox: 'read-only',
+      prompt: 'play the game', cwd: root, runRoot: root,
+      outputPath: path.join(root, 'out.json'), logDir: path.join(root, 'logs'),
+    })).rejects.toThrow('QA_BROWSER_UNAVAILABLE');
+    expect(calls).toHaveLength(0);
+    expect(JSON.parse(await readFile(path.join(root, 'logs/BLIND_PLAYTEST_QA.qa-browser-preflight.json'), 'utf8')))
+      .toMatchObject({ ready: false, scope: 'HOST_BROWSER_SMOKE_ONLY' });
+  });
+
   it('passes only a safe environment to trusted Codex stages and strips credentials', async () => {
     const root = await mkdtemp(path.join(tmpdir(), 'codex-cli-env-'));
     const calls: Array<{ command: string; args: string[]; cwd?: string; stdin: string; env?: NodeJS.ProcessEnv }> = [];
