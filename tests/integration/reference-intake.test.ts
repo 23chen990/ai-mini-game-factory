@@ -15,11 +15,13 @@ import { syntheticComparisonChecks } from '../fixtures/reference-comparison.js';
 class IntakeFixtureProvider extends MockAgentProvider {
   calls = 0;
   researchMediaPaths: string[] = [];
+  researchInputPaths: string[] = [];
   blocked = false;
   measurementBasis: 'runtime-observed' | 'inferred' = 'runtime-observed';
   async draftReference(input: ReferenceIntakeEvidence, context?: AgentExecutionContext) {
     this.calls++;
     this.researchMediaPaths = context?.mediaInputs?.map(({ path }) => path) ?? [];
+    this.researchInputPaths = context?.inputPaths ?? [];
     const seed = parse(await readFile('examples/seeds/relic-revival-workshop.yaml', 'utf8'));
     const source = input.sources[0]!;
     return {
@@ -258,6 +260,14 @@ it('bounds an actual long-recording intake to a sampled visual packet and persis
   });
   expect(plan.selectedContactSheetIds).toEqual(['contact-000']);
   expect(plan.selectedDetailFrameIds).toHaveLength(3);
+  expect(plan.sourceDurationMs).toBe(36_500);
+  expect(plan.selectedDetailFrameTimes.map((frame: { atMs: number }) => frame.atMs)).toEqual([0, 18_250, 36_375]);
+  expect(plan.selectedContactSheetRanges).toEqual([{ id: 'contact-000', startMs: 0, endMs: 1_875 }]);
+  // The full verified 292-frame manifest remains on disk for provenance,
+  // but it must never be offered to the research model as another input.
+  expect(provider.researchInputPaths).toContain('artifacts/reference-intake-media-plan.json');
+  expect(provider.researchInputPaths).not.toContain('artifacts/reference-frame-manifest.json');
+  expect(JSON.parse(await readFile(path.join(runRoot, 'artifacts/reference-frame-manifest.json'), 'utf8')).frames).toHaveLength(292);
   expect(new Set(provider.researchMediaPaths).size).toBe(4);
 });
 
