@@ -45,7 +45,10 @@ export class MockAgentProvider implements AgentProvider {
       noCopyBoundary: ['Do not copy third-party names, assets, UI, audio, content, or numeric tuning.'],
     };
     let levelReconstruction = null;
-    if (context?.inputPaths.includes('artifacts/reference-frame-manifest.json')) {
+    // Synthetic orchestration fixtures may read run-local ground truth to
+    // fabricate a known-valid comparison contract. This is MOCK ONLY and is
+    // never evidence that the real Research agent observed unselected frames.
+    if (context?.inputPaths.includes('artifacts/reference-frame-manifest.json') || context?.inputPaths.includes('artifacts/reference-behavior-media-plan.json')) {
       const frameManifestPath = path.join(context.runRoot, 'artifacts/reference-frame-manifest.json');
       const frameManifest = ReferenceFrameManifestSchema.parse(JSON.parse(await readFile(frameManifestPath, 'utf8')));
       const frameManifestSha256 = await sha256File(frameManifestPath);
