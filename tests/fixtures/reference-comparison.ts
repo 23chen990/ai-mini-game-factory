@@ -10,8 +10,10 @@ import { MockAgentProvider } from '../../src/providers/mock.js';
 /** Orchestration fixtures only; the production Mock must not invent observations. */
 export class SyntheticReferenceProvider extends MockAgentProvider {
   researchCalls = 0;
+  lastResearchInputPaths: string[] = [];
   override async analyzeReferenceEvidence(...args: Parameters<MockAgentProvider['analyzeReferenceEvidence']>) {
     this.researchCalls++;
+    this.lastResearchInputPaths = args[1]?.inputPaths ?? [];
     const result = await super.analyzeReferenceEvidence(...args);
     const analysis = ReferenceBehaviorAnalysisSchema.parse(result.value);
     return { ...result, value: { ...analysis, behaviorChecks: syntheticComparisonChecks(analysis.behaviorChecks) } };
