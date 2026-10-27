@@ -4,13 +4,20 @@ import { readFile } from 'node:fs/promises';
 import { ReferenceCaptureActionListSchema } from '../schemas/reference-web-capture.js';
 import { createFactory } from '../factory.js';
 import { runDoctor } from '../core/doctor.js';
+import { runQaBrowserPreflight, assertQaBrowserPreflight } from '../qa/browser-preflight.js';
 import { StageNameSchema } from '../schemas/index.js';
 
 const [command, ...args] = process.argv.slice(2); const repositoryRoot = process.cwd(); const factory = createFactory({ repositoryRoot, root: process.env.FACTORY_ROOT ? path.resolve(process.env.FACTORY_ROOT) : repositoryRoot });
 function requireArg(value: string | undefined, name: string): string { if (!value) throw new Error(`Missing ${name}`); return value; }
 function option(name: string) { const index = args.indexOf(name); return index >= 0 ? args[index + 1] : undefined; }
 async function main() {
-  if (command === 'doctor') { const report = await runDoctor(); console.log(JSON.stringify(report, null, 2)); if (!report.healthy) process.exitCode = 1; return; }
+  if (command === 'doctor') { const report = await runDoctor({ verifyQaBrowser: args.includes('--qa') ? true : undefined }); console.log(JSON.stringify(report, null, 2)); if (!report.healthy) process.exitCode = 1; return; }
+  if (command === 'qa-preflight') {
+    const report = await runQaBrowserPreflight();
+    console.log(JSON.stringify(report, null, 2));
+    try { assertQaBrowserPreflight(report); } catch { process.exitCode = 2; }
+    return;
+  }
   switch (command) {
     case 'route': console.log(JSON.stringify(factory.routeRequest({ request: requireArg(args[0], 'request'), targetRunId: option('--run') }), null, 2)); break;
     case 'eval': { const results = args.includes('--agent-results') ? requireArg(option('--agent-results'), '--agent-results file') : undefined; console.log(JSON.stringify(await factory.persistFactoryEval(results === undefined ? {} : { agentResultsPath: path.resolve(results) }), null, 2)); break; }
