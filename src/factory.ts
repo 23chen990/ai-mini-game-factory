@@ -964,18 +964,16 @@ export function createFactory(options: FactoryOptions = {}) {
     // Persist the exact base pack before compiling context so source paths and
     // hashes seen by the ResearchAgent match the artifact merged below.
     await store.writeArtifact(runId, 'reference-evidence-pack.json', pack);
-    const researchMedia = frameManifest
-      ? selectReferenceResearchMedia(frameManifest, Number(process.env.FACTORY_REFERENCE_RESEARCH_DETAIL_FRAMES ?? 64))
-      : undefined;
+    const researchMedia = frameManifest ? await prepareBoundedResearchMedia(runId, 'reference-behavior', frameManifest) : undefined;
     const context = await contextFor(
       'REFERENCE_DEEP_RESEARCH',
       runRoot,
       store.artifact(runId, 'reference-behavior-analysis.json'),
-      inputs,
-      'Convert the run-bound reference evidence into exact QA cases for input/state, spatial relation, failure/recovery, feedback sequence and terminal/replay. When a verified frame manifest is present, inspect the copied contact sheets and frames and produce the recording-level reconstruction. Cite only source paths and hashes already bound in the evidence pack; preserve unknowns and do not copy expression.',
+      [...inputs, ...(researchMedia ? [researchMedia.planPath] : [])],
+      'Convert verified source evidence into QA cases for input/state, spatial relation, failure/recovery, feedback sequence and terminal/replay. Inspect only the bounded supplied visual sample; other manifest frames are unobserved metadata. Mark unsupported causal or temporal claims unknown, rather than inventing a continuous reconstruction. Do not copy protected expression.',
       {
-        requiredContextPaths: ['artifacts/reference-evidence-pack.json', ...(inputs.includes('reference-evidence/manifest.json') ? ['reference-evidence/manifest.json'] : []), ...(frameManifest ? ['artifacts/reference-frame-manifest.json'] : [])],
-        ...(researchMedia ? { mediaInputs: researchMedia.media.map((item) => ({ path: item.path, sha256: item.sha256 })) } : {}),
+        requiredContextPaths: ['artifacts/reference-evidence-pack.json', ...(inputs.includes('reference-evidence/manifest.json') ? ['reference-evidence/manifest.json'] : []), ...(frameManifest ? ['artifacts/reference-frame-manifest.json'] : []), ...(researchMedia ? [researchMedia.planPath] : [])],
+        ...(researchMedia ? { mediaInputs: researchMedia.media } : {}),
       },
     );
     const result = await referenceResearchAgent.run(pack, context);
