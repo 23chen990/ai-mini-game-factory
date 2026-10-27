@@ -1,5 +1,6 @@
 import { spawn } from 'node:child_process';
 import { probeCodexImagegen, type CodexImagegenCapability } from '../providers/codex-imagegen.js';
+import { assertQaBrowserPreflight, runQaBrowserPreflight, type QaBrowserPreflightReport } from '../qa/browser-preflight.js';
 
 type CommandResult = { code: number | null; stdout: string; stderr: string };
 export type DoctorCommandRunner = (command: string, args: readonly string[]) => Promise<CommandResult>;
@@ -15,7 +16,12 @@ const defaultRunner: DoctorCommandRunner = (command, args) => new Promise((resol
   child.on('close', (code) => resolve({ code, stdout, stderr }));
 });
 
-export async function runDoctor(options: { runner?: DoctorCommandRunner; mode?: string } = {}): Promise<DoctorReport> {
+export async function runDoctor(options: {
+  runner?: DoctorCommandRunner;
+  mode?: string;
+  verifyQaBrowser?: boolean;
+  browserProbe?: () => Promise<QaBrowserPreflightReport>;
+} = {}): Promise<DoctorReport> {
   const runner = options.runner ?? defaultRunner;
   const mode = options.mode ?? process.env.FACTORY_MODE ?? 'mock';
   const [pnpm, codexVersion, login, execHelp, playwright] = await Promise.all([
@@ -42,5 +48,17 @@ export async function runDoctor(options: { runner?: DoctorCommandRunner; mode?: 
     { id: 'imagegen', ok: imagegen.available, detail: `${imagegen.mode}: ${imagegen.reason}` },
     { id: 'factory-mode', ok: ['mock', 'live-art', 'codex-account'].includes(mode), detail: mode },
   ];
+  // Codex-account doctor must test launch+input+pixels, not merely a
+  // Playwright version string. Injectable runners are deterministic test stubs.
+  const verifyQaBrowser = options.verifyQaBrowser ?? (mode === 'codex-account' && !options.runner);
+  if (verifyQaBrowser) {
+    try {
+      const report = await (options.browserProbe ?? runQaBrowserPreflight)();
+      assertQaBrowserPreflight(report);
+      checks.push({ id: 'qa-browser-runtime', ok: true, detail: 'Chromium and WebKit launched, clicked and captured both viewports' });
+    } catch {
+      checks.push({ id: 'qa-browser-runtime', ok: false, detail: 'Live browser/input/screenshot unavailable; run pnpm factory qa-preflight before QA Agent calls' });
+    }
+  }
   return { healthy: checks.every((check) => check.ok), mode, authMethod: chatGpt ? 'ChatGPT' : 'none', checks, imagegen };
 }
