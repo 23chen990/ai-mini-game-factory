@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "case": "20261027032048-reference-9094c978",
   "targetGame": "纸片风车",
-  "workspace": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/20261027032048-reference-9094c978/workspace/game",
+  "workspace": "runs/20261027032048-reference-9094c978/workspace/game",
   "classification": "factory-research-input-and-budget",
   "scope": "shared Factory Codex Research provider and initial media selection; no generated game files",
   "expected": "One evidence-bound Research draft with visually inspected source and observed usage within the 120000-token invocation allowance",
@@ -52,8 +52,14 @@
   "offlineAfter": {
     "sameSourceFrameManifest": "runs/20261027032048-reference-9094c978/artifacts/reference-frame-manifest.json",
     "selectedMediaCount": 4,
-    "selectedContactSheets": [0],
-    "selectedDetailTimestampsMs": [0, 18242, 36358],
+    "selectedContactSheets": [
+      0
+    ],
+    "selectedDetailTimestampsMs": [
+      0,
+      18242,
+      36358
+    ],
     "liveModelResult": "UNVERIFIED"
   },
   "acceptanceCriteria": [
@@ -61,5 +67,6 @@
     "An unlisted, foreign or tampered image is rejected before model launch.",
     "The initial visual admission set is smaller than the failed seven-image call and all omitted coverage remains explicitly unknown.",
     "Existing failed and uncertain run receipts remain untouched."
-  ]
+  ],
+  "workspaceLocator": "run-relative (the original historical receipt is unchanged)"
 }
