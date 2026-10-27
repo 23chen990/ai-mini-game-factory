@@ -902,6 +902,40 @@ export function createFactory(options: FactoryOptions = {}) {
     return undefined;
   }
 
+  /** Keep both Research entry points on one bounded sampling policy. The
+   * full source manifest remains intact, but unsampled media is NOT observed. */
+  async function prepareBoundedResearchMedia(
+    runId: string,
+    purpose: 'reference-intake' | 'reference-behavior',
+    frameManifest?: ReferenceFrameManifest,
+    originalImages: Array<{ path: string; sha256: string }> = [],
+  ) {
+    // A real 2026-10-26 call supplied 76 visual files in one turn and reported
+    // 683,321 tokens after execution. Never let a config override reintroduce
+    // that entire batch. These are input-size limits, not financial guarantees.
+    const detailLimit = Number(process.env.FACTORY_REFERENCE_RESEARCH_DETAIL_FRAMES ?? 4);
+    const sheetLimit = Number(process.env.FACTORY_REFERENCE_RESEARCH_CONTACT_SHEETS ?? 3);
+    if (!Number.isSafeInteger(detailLimit) || detailLimit < 2 || detailLimit > 6) throw new Error('FACTORY_REFERENCE_RESEARCH_DETAIL_FRAMES must be 2..6 for a live intake');
+    if (!Number.isSafeInteger(sheetLimit) || sheetLimit < 0 || sheetLimit > 4 || detailLimit + sheetLimit > 8) throw new Error('Research must use at most eight media files: contact sheets 0..4 and detail frames 2..6');
+    const selected = frameManifest ? selectReferenceResearchMedia(frameManifest, detailLimit, sheetLimit) : undefined;
+    const frameMedia = selected?.media.map(({ path, sha256 }) => ({ path, sha256 })) ?? [];
+    const directSelected = selectStratifiedReferenceItems(originalImages, Math.max(0, 8 - frameMedia.length));
+    const media = [...frameMedia, ...directSelected];
+    const runRoot = store.runRoot(runId);
+    const mediaPlan = ReferenceResearchMediaPlanSchema.parse({
+      schemaVersion: 1, artifactType: 'reference-research-media-plan', purpose,
+      sourceManifestSha256: frameManifest ? await sha256File(path.join(runRoot, 'artifacts/reference-frame-manifest.json')) : null,
+      available: { contactSheets: frameManifest?.contactSheets.length ?? 0, frames: frameManifest?.frames.length ?? 0, directImages: originalImages.length },
+      selectedContactSheetIds: selected?.contactSheets.map((sheet) => sheet.id) ?? [],
+      selectedDetailFrameIds: selected?.detailFrames.map((frame) => frame.id) ?? [],
+      media, coverage: 'BOUNDED_SAMPLE_NOT_FULL_VISUAL_COVERAGE',
+      omittedVisualFiles: (frameManifest?.contactSheets.length ?? 0) + (frameManifest?.frames.length ?? 0) + originalImages.length - media.length,
+    });
+    const artifactName = purpose === 'reference-intake' ? 'reference-intake-media-plan.json' : 'reference-behavior-media-plan.json';
+    await store.writeArtifact(runId, artifactName, mediaPlan);
+    return { media, mediaPlan, planPath: `artifacts/${artifactName}` };
+  }
+
   async function persistRecordingAnalysis(runId: string, analysisValue: unknown, frameManifest: ReferenceFrameManifest) {
     const runRoot = store.runRoot(runId);
     let analysis = ReferenceBehaviorAnalysisSchema.parse(analysisValue);
