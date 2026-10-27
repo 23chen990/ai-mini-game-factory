@@ -10,6 +10,7 @@ import { StageNameSchema } from '../schemas/index.js';
 import type { TokenUsage } from './interfaces.js';
 import { beginCodexExecution } from '../core/codex-budget.js';
 import { ResearchSandboxManifestSchema } from '../schemas/research-sandbox.js';
+import { assertQaBrowserPreflight, runQaBrowserPreflight, type QaBrowserPreflightReport } from '../qa/browser-preflight.js';
 
 export type CodexSandbox = 'read-only' | 'workspace-write';
 export type SpawnFunction = (command: string, args: readonly string[], options: { cwd?: string; stdio: ['pipe', 'pipe', 'pipe']; shell: false; env?: NodeJS.ProcessEnv; detached?: boolean }) => ChildProcessWithoutNullStreams;
@@ -219,13 +220,18 @@ export class CodexCliProvider {
   private readonly timeoutMs: number;
   private readonly maxRetries: number;
   private readonly model?: string;
+  private readonly qaBrowserPreflight: () => Promise<QaBrowserPreflightReport>;
 
-  constructor(options: { spawn?: SpawnFunction; command?: string; timeoutMs?: number; maxRetries?: number; model?: string } = {}) {
+  constructor(options: {
+    spawn?: SpawnFunction; command?: string; timeoutMs?: number; maxRetries?: number; model?: string;
+    qaBrowserPreflight?: () => Promise<QaBrowserPreflightReport>;
+  } = {}) {
     this.spawn = options.spawn ?? ((command, args, spawnOptions) => nodeSpawn(command, [...args], spawnOptions));
     this.command = options.command ?? 'codex';
     this.timeoutMs = Math.max(1, options.timeoutMs ?? Number(process.env.CODEX_EXEC_TIMEOUT_MS ?? 300_000));
     this.maxRetries = Math.min(1, Math.max(0, options.maxRetries ?? Number(process.env.CODEX_EXEC_MAX_RETRIES ?? 1)));
     this.model = options.model ?? process.env.CODEX_MODEL;
+    this.qaBrowserPreflight = options.qaBrowserPreflight ?? runQaBrowserPreflight;
   }
 
   private runProcess(args: string[], options: { cwd?: string; stdin?: string; signal?: AbortSignal; timeoutMs?: number; env?: NodeJS.ProcessEnv; maxTotalTokens?: number }) {
@@ -331,6 +337,14 @@ export class CodexCliProvider {
     } else processEnv = buildCodexProcessEnv('trusted');
     await ensureDir(request.logDir);
     if (request.signal?.aborted) throw new Error('codex exec was cancelled before launch');
+    // A failed browser is an infrastructure blocker, NOT a reason to spend
+    // tokens asking a blind QA model to retry the same unavailable tool.
+    // This gate precedes the metered Codex execution/lease entirely.
+    if (request.stage === 'BLIND_PLAYTEST_QA' || request.stage === 'NATURAL_PLAY_QA' || request.stage === 'QA') {
+      const readiness = await this.qaBrowserPreflight();
+      await writeJsonAtomic(path.join(request.logDir, `${request.label}.qa-browser-preflight.json`), readiness);
+      assertQaBrowserPreflight(readiness);
+    }
     const configuredBudget = request.stage === 'REFERENCE_DEEP_RESEARCH'
       ? process.env.CODEX_RESEARCH_MAX_TOTAL_TOKENS ?? process.env.CODEX_EXEC_MAX_TOTAL_TOKENS ?? '200000'
       : process.env.CODEX_EXEC_MAX_TOTAL_TOKENS;
