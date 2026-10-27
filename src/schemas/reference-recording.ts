@@ -82,6 +82,7 @@ export type ReferenceFrameManifest = z.infer<typeof ReferenceFrameManifestSchema
 export const ReferenceResearchMediaPlanSchema = z.object({
   schemaVersion: z.literal(1),
   artifactType: z.literal('reference-research-media-plan'),
+  purpose: z.enum(['reference-intake', 'reference-behavior']),
   sourceManifestSha256: Sha256.nullable(),
   available: z.object({ contactSheets: z.number().int().nonnegative(), frames: z.number().int().nonnegative(), directImages: z.number().int().nonnegative() }).strict(),
   selectedContactSheetIds: z.array(Text),
