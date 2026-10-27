@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import { extractReferenceRecordingFrames, selectReferenceResearchMedia } from '../../src/core/reference-recording.js';
-import { ReferenceFrameManifestSchema } from '../../src/schemas/reference-recording.js';
+import { ReferenceFrameManifestSchema, ReferenceResearchMediaPlanSchema } from '../../src/schemas/reference-recording.js';
 import { ReferenceWebCaptureSchema } from '../../src/schemas/reference-web-capture.js';
 import { createFactory } from '../../src/factory.js';
 
@@ -33,6 +33,20 @@ async function fixture() {
 }
 
 describe('reference recording frame extraction', () => {
+  it('still reads older hash-bound media plans without new timeline fields', () => {
+    const historical = {
+      schemaVersion: 1, artifactType: 'reference-research-media-plan', purpose: 'reference-intake',
+      sourceManifestSha256: null, available: { contactSheets: 0, frames: 0, directImages: 0 },
+      selectedContactSheetIds: [], selectedDetailFrameIds: [], media: [],
+      coverage: 'BOUNDED_SAMPLE_NOT_FULL_VISUAL_COVERAGE', omittedVisualFiles: 0,
+    };
+    const parsed = ReferenceResearchMediaPlanSchema.parse(historical);
+    expect(parsed.sourceDurationMs).toBeUndefined();
+    expect(parsed.selectedDetailFrameTimes).toBeUndefined();
+    expect(parsed.selectedContactSheetRanges).toBeUndefined();
+  });
+
+
   it('gives research every contact sheet plus a bounded deterministic detail sample', () => {
     const frames = Array.from({ length: 100 }, (_, index) => ({
       id: `frame-${String(index).padStart(5, '0')}`,
