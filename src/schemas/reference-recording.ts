@@ -77,6 +77,21 @@ export const ReferenceFrameManifestSchema = z.object({
 });
 export type ReferenceFrameManifest = z.infer<typeof ReferenceFrameManifestSchema>;
 
+/** Exact bounded visual subset supplied to one real Research invocation.
+ * Unsampled frames remain reference timeline metadata, not observed pixels. */
+export const ReferenceResearchMediaPlanSchema = z.object({
+  schemaVersion: z.literal(1),
+  artifactType: z.literal('reference-research-media-plan'),
+  sourceManifestSha256: Sha256.nullable(),
+  available: z.object({ contactSheets: z.number().int().nonnegative(), frames: z.number().int().nonnegative(), directImages: z.number().int().nonnegative() }).strict(),
+  selectedContactSheetIds: z.array(Text),
+  selectedDetailFrameIds: z.array(Text),
+  media: z.array(EvidenceFile).max(8),
+  coverage: z.literal('BOUNDED_SAMPLE_NOT_FULL_VISUAL_COVERAGE'),
+  omittedVisualFiles: z.number().int().nonnegative(),
+}).strict();
+export type ReferenceResearchMediaPlan = z.infer<typeof ReferenceResearchMediaPlanSchema>;
+
 export const REFERENCE_LEVEL_PHASES = ['ready', 'input', 'interaction', 'aftermath', 'terminal', 'replay'] as const;
 export const ReferenceLevelPhaseSchema = z.enum(REFERENCE_LEVEL_PHASES);
 export const ReferenceObjectRoleSchema = z.enum(['player', 'cuttable', 'support', 'hazard', 'finish', 'reward', 'hud', 'replay-control', 'decorative']);
