@@ -62,6 +62,28 @@ describe('reference recording frame extraction', () => {
     expect(selected.media).toEqual([...contactSheets, ...selected.detailFrames]);
   });
 
+  it('keeps first/middle/last visual coverage with a bounded selection instead of all sheets', () => {
+    const frames = Array.from({ length: 292 }, (_, index) => ({
+      id: 'frame-' + index, index, requestedMs: index * 125, actualMs: index * 125,
+      path: 'reference-evidence/derived/frame-' + index + '.jpg', sha256: 'a'.repeat(64), width: 1100, height: 720,
+    }));
+    const contactSheets = Array.from({ length: 19 }, (_, index) => ({
+      id: 'contact-' + index, index, firstFrameIndex: index * 16,
+      lastFrameIndex: Math.min(291, index * 16 + 15),
+      path: 'reference-evidence/derived/contact-' + index + '.jpg', sha256: 'b'.repeat(64),
+    }));
+    const chosen = selectReferenceResearchMedia({ frames, contactSheets } as never, 4, 3);
+    expect(chosen.contactSheets.map((item) => item.index)).toEqual([0, 9, 18]);
+    expect(chosen.detailFrames).toHaveLength(4);
+    expect(chosen.detailFrames[0]?.index).toBe(0);
+    expect(chosen.detailFrames.at(-1)?.index).toBe(291);
+    expect(chosen.media).toHaveLength(7);
+    expect(new Set(chosen.media.map((item) => item.path)).size).toBe(7);
+    // Sampling must not mutate or shrink the source manifest.
+    expect(frames).toHaveLength(292);
+    expect(contactSheets).toHaveLength(19);
+  });
+
   it('creates a run-bound, hash-addressed frame manifest and reuses it idempotently', async () => {
     const { runRoot, workspace, sha256 } = await fixture();
     let calls = 0;
