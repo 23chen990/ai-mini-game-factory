@@ -10,7 +10,8 @@ import { sanitizeUntrustedText } from './security-boundary.js';
 import { sha256Text } from './files.js';
 import type { AgentExecutionContext } from '../providers/interfaces.js';
 import { ResearchSandboxManifestSchema } from '../schemas/research-sandbox.js';
-import { ReferenceFrameManifestSchema } from '../schemas/reference-recording.js';
+import { ReferenceFrameManifestSchema, ReferenceResearchMediaPlanSchema } from '../schemas/reference-recording.js';
+import { ReferenceIntakeEvidenceSchema } from '../schemas/reference-intake.js';
 import { EvidenceProvenanceManifestSchema } from '../schemas/evidence-provenance.js';
 import { ReferenceEvidencePackSchema } from '../schemas/reference-evidence.js';
 import { SeedSchema } from '../schemas/index.js';
@@ -21,6 +22,7 @@ const STRUCTURAL_INPUTS = new Map<string, ZodType>([
   ['input/seed.yaml', SeedSchema],
   ['artifacts/reference-evidence-pack.json', ReferenceEvidencePackSchema],
   ['artifacts/reference-frame-manifest.json', ReferenceFrameManifestSchema],
+  ['artifacts/reference-research-media-plan.json', ReferenceResearchMediaPlanSchema],
   ['reference-evidence/manifest.json', EvidenceProvenanceManifestSchema],
 ]);
 
@@ -107,7 +109,18 @@ export async function prepareResearchSandbox(context: AgentExecutionContext): Pr
   const mediaFiles: Array<{ path: string; sha256: string }> = [];
   for (const [index, media] of (context.mediaInputs ?? []).entries()) {
     const relative = assertSafeContextInputPath(media.path);
-    if (!relative.startsWith('reference-evidence/derived/') || !/\.(?:png|jpe?g|webp)$/iu.test(relative)) throw new Error(`research media must stay inside derived reference evidence: ${relative}`);
+    const derived = relative.startsWith('reference-evidence/derived/');
+    const originalVerifiedImage = stage === 'REFERENCE_DEEP_RESEARCH' && relative.startsWith('reference-evidence/incoming/');
+    if ((!derived && !originalVerifiedImage) || !/\.(?:png|jpe?g|webp)$/iu.test(relative)) throw new Error(`research media must be verified derived evidence or an authorized original reference image: ${relative}`);
+    if (originalVerifiedImage) {
+      // The direct-source image must be one of the exact sources approved for
+      // this Research run, not just another file in an incoming directory.
+      const file = await safeRunFile(runRoot, 'artifacts/reference-intake-evidence.json');
+      const intake = ReferenceIntakeEvidenceSchema.parse(JSON.parse(await readFile(file, 'utf8')));
+      if (!intake.sources.some((source) => source.path === relative && source.sha256 === media.sha256.toLowerCase())) {
+        throw new Error(`research original image has no matching verified intake binding: ${relative}`);
+      }
+    }
     if (!/^[a-f0-9]{64}$/iu.test(media.sha256)) throw new Error(`research media requires a SHA-256 hash: ${relative}`);
     const source = path.resolve(runRoot, relative);
     if (!isWithin(runRoot, source)) throw new Error(`research media escapes run root: ${relative}`);
