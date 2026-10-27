@@ -221,3 +221,52 @@ it('honors the existing detail-frame limit in fresh reference discovery', async 
   }
   expect(provider.researchMediaPaths).toHaveLength(2);
 });
+
+it('bounds an actual long-recording intake to a sampled visual packet and persists omitted coverage', async () => {
+  const provider = new IntakeFixtureProvider();
+  const { factory, runId, runRoot, review } = await fixture(provider, {
+    referenceFrameExtractor: async ({ outputDir }) => {
+      await (await import('node:fs/promises')).mkdir(outputDir, { recursive: true });
+      const frames = [];
+      const contactSheets = [];
+      for (let index = 0; index < 292; index += 1) {
+        const fileName = 'frame-' + index + '.png';
+        await writeFile(path.join(outputDir, fileName), 'frame ' + index);
+        frames.push({ index, requestedMs: index * 125, actualMs: index * 125, fileName });
+      }
+      for (let index = 0; index < 19; index += 1) {
+        const fileName = 'contact-' + index + '.png';
+        await writeFile(path.join(outputDir, fileName), 'sheet ' + index);
+        contactSheets.push({ index, firstFrameIndex: index * 16, lastFrameIndex: Math.min(291, index * 16 + 15), fileName });
+      }
+      return { durationMs: 36_500, width: 1100, height: 720, frames, contactSheets };
+    },
+  });
+  await review();
+  const sourcePath = path.join(path.dirname(runRoot), 'fixture-long.mp4');
+  await writeFile(sourcePath, 'Synthetic source, no real gameplay observations');
+  const video = await ingestReferenceMedia({ runRoot, sourcePath, targetGame: 'lantern-trial', purpose: 'gameplay-reference' });
+  await reviewReferenceMediaIdentity({ runRoot, targetGame: 'lantern-trial', workspace: path.join(runRoot, 'workspace/game'),
+    id: video.id, expectedSha256: video.sha256, reviewer: 'test-fixture', basis: 'Synthetic media transport' });
+  const oldDetails = process.env.FACTORY_REFERENCE_RESEARCH_DETAIL_FRAMES;
+  const oldSheets = process.env.FACTORY_REFERENCE_RESEARCH_CONTACT_SHEETS;
+  process.env.FACTORY_REFERENCE_RESEARCH_DETAIL_FRAMES = '4';
+  process.env.FACTORY_REFERENCE_RESEARCH_CONTACT_SHEETS = '3';
+  try { await factory.run(runId); }
+  finally {
+    if (oldDetails === undefined) delete process.env.FACTORY_REFERENCE_RESEARCH_DETAIL_FRAMES;
+    else process.env.FACTORY_REFERENCE_RESEARCH_DETAIL_FRAMES = oldDetails;
+    if (oldSheets === undefined) delete process.env.FACTORY_REFERENCE_RESEARCH_CONTACT_SHEETS;
+    else process.env.FACTORY_REFERENCE_RESEARCH_CONTACT_SHEETS = oldSheets;
+  }
+  const plan = JSON.parse(await readFile(path.join(runRoot, 'artifacts/reference-intake-media-plan.json'), 'utf8'));
+  expect(provider.calls).toBe(1);
+  expect(provider.researchMediaPaths).toHaveLength(7);
+  expect(plan).toMatchObject({
+    purpose: 'reference-intake', coverage: 'BOUNDED_SAMPLE_NOT_FULL_VISUAL_COVERAGE',
+    available: { contactSheets: 19, frames: 292, directImages: 0 }, omittedVisualFiles: 304,
+  });
+  expect(plan.selectedContactSheetIds).toEqual(['contact-000', 'contact-009', 'contact-018']);
+  expect(plan.selectedDetailFrameIds).toHaveLength(4);
+  expect(new Set(provider.researchMediaPaths).size).toBe(7);
+});
