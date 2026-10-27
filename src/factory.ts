@@ -69,7 +69,8 @@ import { buildControlStageAudit } from './core/control-stage-audit.js';
 import { evaluateTransitionHistory } from './core/state-machine.js';
 import { buildAcceptanceHandoff } from './core/acceptance-handoff.js';
 import { auditReferenceQuality } from './core/reference-quality-audit.js';
-import { extractReferenceRecordingFrames, selectReferenceResearchMedia, type ReferenceFrameExtractor } from './core/reference-recording.js';
+import { extractReferenceRecordingFrames, selectReferenceResearchMedia, selectStratifiedReferenceItems, type ReferenceFrameExtractor } from './core/reference-recording.js';
+import { ReferenceResearchMediaPlanSchema } from './schemas/reference-recording.js';
 import { deriveReferenceLevelImplementationContract, verifyReferenceLevelImplementationContract, verifyReferenceLevelReconstruction, verifyReferenceLevelRuntimeTrace } from './core/reference-level.js';
 import { compileReferenceLevelRuntimeData, verifyReferenceLevelRuntimeData } from './core/reference-level-runtime.js';
 import { readReferenceLevelRuntimeData, verifyReferenceLevelRuntimeDataFile, verifyReferenceLevelLayoutFile } from './core/reference-level-binding.js';
@@ -3116,8 +3117,33 @@ export function createFactory(options: FactoryOptions = {}) {
         const frameManifest = await ensureReferenceFrameManifest(state.runId, canonicalGameIdFromTitle(input.brief.title), path.join(runRoot, 'workspace/game'));
         if (frameManifest?.status === 'BLOCKED') return setWaiting(state, 'REFERENCE_DEEP_RESEARCH', inputs, ['artifacts/reference-frame-manifest.json'], frameManifest.blockers.map((item) => `blocked:reference-frame:${item}`));
         const frameInputs = frameManifest ? ['artifacts/reference-frame-manifest.json'] : [];
-        const media = [...input.sources.filter((source) => /\.(?:png|jpe?g|webp)$/iu.test(source.path)).map(({ path, sha256 }) => ({ path, sha256 })), ...(frameManifest ? selectReferenceResearchMedia(frameManifest, Number(process.env.FACTORY_REFERENCE_RESEARCH_DETAIL_FRAMES ?? 64)).media.map(({ path, sha256 }) => ({ path, sha256 })) : [])];
-        const context = await contextFor('REFERENCE_DEEP_RESEARCH', runRoot, cachedFile, [...inputs, ...frameInputs], 'Discover reference mechanics and their five-dimensional behavioral acceptance contract from verified evidence, without a pre-written human mechanic spec.', { requiredContextPaths: ['artifacts/reference-intake-evidence.json', ...frameInputs], mediaInputs: media });
+        // The previous live attempt supplied 19 contact sheets and 57 detail
+        // frames in a single turn; delayed usage telemetry reported 683k tokens
+        // against 120k. Limit *admitted* visual assets before invoking Codex.
+        // This is a sampling boundary, never a promised vendor token cap.
+        const detailLimit = Number(process.env.FACTORY_REFERENCE_RESEARCH_DETAIL_FRAMES ?? 4);
+        const sheetLimit = Number(process.env.FACTORY_REFERENCE_RESEARCH_CONTACT_SHEETS ?? 3);
+        if (!Number.isSafeInteger(detailLimit) || detailLimit < 2 || detailLimit > 6) throw new Error('FACTORY_REFERENCE_RESEARCH_DETAIL_FRAMES must be 2..6 for a live intake');
+        if (!Number.isSafeInteger(sheetLimit) || sheetLimit < 0 || sheetLimit > 4 || detailLimit + sheetLimit > 8) throw new Error('Research must use at most eight media files: contact sheets 0..4 and detail frames 2..6');
+        const selected = frameManifest ? selectReferenceResearchMedia(frameManifest, detailLimit, sheetLimit) : undefined;
+        const frameMedia = selected?.media.map(({ path, sha256 }) => ({ path, sha256 })) ?? [];
+        const directImages = input.sources.filter((source) => /\.(?:png|jpe?g|webp)$/iu.test(source.path)).map(({ path, sha256 }) => ({ path, sha256 }));
+        const directSelected = selectStratifiedReferenceItems(directImages, Math.max(0, 8 - frameMedia.length));
+        const media = [...frameMedia, ...directSelected];
+        const mediaPlan = ReferenceResearchMediaPlanSchema.parse({
+          schemaVersion: 1, artifactType: 'reference-research-media-plan',
+          sourceManifestSha256: frameManifest ? await sha256File(path.join(runRoot, 'artifacts/reference-frame-manifest.json')) : null,
+          available: { contactSheets: frameManifest?.contactSheets.length ?? 0, frames: frameManifest?.frames.length ?? 0, directImages: directImages.length },
+          selectedContactSheetIds: selected?.contactSheets.map((sheet) => sheet.id) ?? [],
+          selectedDetailFrameIds: selected?.detailFrames.map((frame) => frame.id) ?? [],
+          media, coverage: 'BOUNDED_SAMPLE_NOT_FULL_VISUAL_COVERAGE',
+          omittedVisualFiles: (frameManifest?.contactSheets.length ?? 0) + (frameManifest?.frames.length ?? 0) + directImages.length - media.length,
+        });
+        await store.writeArtifact(state.runId, 'reference-research-media-plan.json', mediaPlan);
+        const planPath = 'artifacts/reference-research-media-plan.json';
+        const context = await contextFor('REFERENCE_DEEP_RESEARCH', runRoot, cachedFile, [...inputs, ...frameInputs, planPath],
+          `Discover source-bound mechanics from only ${media.length} sampled visual files. ${mediaPlan.omittedVisualFiles} other images are timeline metadata, NOT inspected visual evidence; leave unseen gameplay branches unknown. Do not attempt exhaustive inspection of unsampled frames.`,
+          { requiredContextPaths: ['artifacts/reference-intake-evidence.json', ...frameInputs, planPath], mediaInputs: media });
         const result = await agents.draftReference(input, context);
         addAgentMetrics(record, result.metrics);
         draft = ReferenceIntakeDraftSchema.parse(result.value);
