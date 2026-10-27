@@ -270,3 +270,18 @@ it('bounds an actual long-recording intake to a sampled visual packet and persis
   expect(plan.selectedDetailFrameIds).toHaveLength(4);
   expect(new Set(provider.researchMediaPaths).size).toBe(7);
 });
+
+it('rejects unsafe Research media override before any provider invocation', async () => {
+  const provider = new IntakeFixtureProvider();
+  const { factory, runId, review } = await fixture(provider);
+  await review();
+  const previous = process.env.FACTORY_REFERENCE_RESEARCH_DETAIL_FRAMES;
+  process.env.FACTORY_REFERENCE_RESEARCH_DETAIL_FRAMES = '64';
+  try {
+    await expect(factory.run(runId)).rejects.toThrow(/DETAIL_FRAMES must be 2\.\.6/);
+  } finally {
+    if (previous === undefined) delete process.env.FACTORY_REFERENCE_RESEARCH_DETAIL_FRAMES;
+    else process.env.FACTORY_REFERENCE_RESEARCH_DETAIL_FRAMES = previous;
+  }
+  expect(provider.calls).toBe(0);
+});
