@@ -85,9 +85,9 @@ export const ReferenceResearchMediaPlanSchema = z.object({
   purpose: z.enum(['reference-intake', 'reference-behavior']),
   sourceManifestSha256: Sha256.nullable(),
   /** Source timeline length is metadata, not evidence that all events were observed. */
-  sourceDurationMs: z.number().int().positive().nullable(),
-  selectedContactSheetRanges: z.array(z.object({ id: Text, startMs: z.number().int().nonnegative(), endMs: z.number().int().nonnegative() }).strict()).max(4),
-  selectedDetailFrameTimes: z.array(z.object({ id: Text, atMs: z.number().int().nonnegative() }).strict()).max(6),
+  sourceDurationMs: z.number().int().positive().nullable().optional(),
+  selectedContactSheetRanges: z.array(z.object({ id: Text, startMs: z.number().int().nonnegative(), endMs: z.number().int().nonnegative() }).strict()).max(4).optional(),
+  selectedDetailFrameTimes: z.array(z.object({ id: Text, atMs: z.number().int().nonnegative() }).strict()).max(6).optional(),
   available: z.object({ contactSheets: z.number().int().nonnegative(), frames: z.number().int().nonnegative(), directImages: z.number().int().nonnegative() }).strict(),
   selectedContactSheetIds: z.array(Text),
   selectedDetailFrameIds: z.array(Text),
