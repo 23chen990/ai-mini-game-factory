@@ -121,6 +121,37 @@ describe('research execution sandbox', () => {
     expect(manifest.mode).toBe('sanitized-read-only');
   });
 
+  it('passes the compact hash-bound sample without making the full reference manifest readable to Research', async () => {
+    const runRoot = await mkdtemp(path.join(tmpdir(), 'research-compact-timeline-'));
+    roots.push(runRoot);
+    const files = await writeResearchManifests(runRoot);
+    const original = files['artifacts/reference-frame-manifest.json']!;
+    expect(original.length).toBeGreaterThan(12_000);
+    const originalManifest = JSON.parse(original);
+    const relative = 'artifacts/reference-intake-media-plan.json';
+    const plan = {
+      schemaVersion: 1, artifactType: 'reference-research-media-plan', purpose: 'reference-intake',
+      sourceManifestSha256: createHash('sha256').update(original).digest('hex'),
+      sourceDurationMs: originalManifest.source.durationMs,
+      selectedContactSheetRanges: [], selectedDetailFrameTimes: [],
+      available: { contactSheets: originalManifest.contactSheets.length, frames: originalManifest.frames.length, directImages: 0 },
+      selectedContactSheetIds: [], selectedDetailFrameIds: [], media: [],
+      coverage: 'BOUNDED_SAMPLE_NOT_FULL_VISUAL_COVERAGE',
+      omittedVisualFiles: originalManifest.frames.length + originalManifest.contactSheets.length,
+    };
+    await writeFile(path.join(runRoot, relative), JSON.stringify(plan));
+    const result = await prepareResearchSandbox({
+      ...referenceContext(runRoot),
+      inputPaths: [relative],
+      contextPacket: { schemaVersion: 1, stage: 'REFERENCE_DEEP_RESEARCH', summary: 'only sampled evidence', inputs: [], omitted: [], totalChars: 0 },
+    });
+    expect(JSON.parse(await readFile(path.join(result.root, relative), 'utf8'))).toEqual(plan);
+    await expect(readFile(path.join(result.root, 'artifacts/reference-frame-manifest.json'), 'utf8')).rejects.toThrow(/ENOENT/);
+    expect(await readFile(path.join(runRoot, 'artifacts/reference-frame-manifest.json'), 'utf8')).toBe(original);
+    const sandboxManifest = ResearchSandboxManifestSchema.parse(JSON.parse(await readFile(result.manifestPath, 'utf8')));
+    expect(sandboxManifest.allowedFiles).toEqual([relative]);
+  });
+
   it('rejects non-research stages and traversal input pointers', async () => {
     const runRoot = await mkdtemp(path.join(tmpdir(), 'research-sandbox-invalid-'));
     roots.push(runRoot);
