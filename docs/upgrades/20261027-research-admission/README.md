@@ -24,4 +24,4 @@ User involvement should be concentrated at: **(1)** proof-of-rights/source and p
 
 ## Verification
 
-Code regression is run by GitHub Actions. Exact current-head workflow result must be checked before merge. Stacked PR order: main ← #73 ← #74 ← #75 ← #76 ← this PR. No game source, prior run state, owner recording or original failure evidence was modified.
+Initial GitHub CI (before the error-text compatibility fix) ran 193 test files / 1,238 tests: 1,237 passed, one legacy unsafe-media error-message assertion failed. The path remains forbidden; its error now preserves the prior `reference evidence` wording. Run the full CI on the corrected exact head before merge. Stacked PR order: main ← #73 ← #74 ← #75 ← #76 ← this PR. No game source, prior run state, owner recording or original failure evidence was modified.
