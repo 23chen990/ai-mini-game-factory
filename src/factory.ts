@@ -921,10 +921,19 @@ export function createFactory(options: FactoryOptions = {}) {
     const frameMedia = selected?.media.map(({ path, sha256 }) => ({ path, sha256 })) ?? [];
     const directSelected = selectStratifiedReferenceItems(originalImages, Math.max(0, 4 - frameMedia.length));
     const media = [...frameMedia, ...directSelected];
+    const selectedSheetRanges = (selected?.contactSheets ?? []).map((sheet) => {
+      const start = frameManifest?.frames[sheet.firstFrameIndex];
+      const end = frameManifest?.frames[sheet.lastFrameIndex];
+      if (!start || !end) throw new Error(`research contact sheet ${sheet.id} refers to a frame outside the verified manifest`);
+      return { id: sheet.id, startMs: start.actualMs, endMs: end.actualMs };
+    });
     const runRoot = store.runRoot(runId);
     const mediaPlan = ReferenceResearchMediaPlanSchema.parse({
       schemaVersion: 1, artifactType: 'reference-research-media-plan', purpose,
       sourceManifestSha256: frameManifest ? await sha256File(path.join(runRoot, 'artifacts/reference-frame-manifest.json')) : null,
+      sourceDurationMs: frameManifest?.source.durationMs ?? null,
+      selectedContactSheetRanges: selectedSheetRanges,
+      selectedDetailFrameTimes: (selected?.detailFrames ?? []).map((frame) => ({ id: frame.id, atMs: frame.actualMs })),
       available: { contactSheets: frameManifest?.contactSheets.length ?? 0, frames: frameManifest?.frames.length ?? 0, directImages: originalImages.length },
       selectedContactSheetIds: selected?.contactSheets.map((sheet) => sheet.id) ?? [],
       selectedDetailFrameIds: selected?.detailFrames.map((frame) => frame.id) ?? [],
@@ -960,7 +969,9 @@ export function createFactory(options: FactoryOptions = {}) {
     const runRoot = store.runRoot(runId);
     const levelCurrent = frameManifest ? await referenceLevelArtifactsCurrent(runRoot, frameManifest) : true;
     if (!referenceBehaviorAnalysisNeeded(pack) && levelCurrent) return pack;
-    const inputs = [...await referenceResearchInputPaths(runId, reference), ...(frameManifest ? ['artifacts/reference-frame-manifest.json'] : [])];
+    // Keep full per-frame provenance in run artifacts. Never put the enormous
+    // original frame manifest in the model's isolated Research filesystem.
+    const inputs = await referenceResearchInputPaths(runId, reference);
     // Persist the exact base pack before compiling context so source paths and
     // hashes seen by the ResearchAgent match the artifact merged below.
     await store.writeArtifact(runId, 'reference-evidence-pack.json', pack);
@@ -972,7 +983,7 @@ export function createFactory(options: FactoryOptions = {}) {
       [...inputs, ...(researchMedia ? [researchMedia.planPath] : [])],
       'Convert verified source evidence into QA cases for input/state, spatial relation, failure/recovery, feedback sequence and terminal/replay. Inspect only the bounded supplied visual sample; other manifest frames are unobserved metadata. Mark unsupported causal or temporal claims unknown, rather than inventing a continuous reconstruction. Do not copy protected expression.',
       {
-        requiredContextPaths: ['artifacts/reference-evidence-pack.json', ...(inputs.includes('reference-evidence/manifest.json') ? ['reference-evidence/manifest.json'] : []), ...(frameManifest ? ['artifacts/reference-frame-manifest.json'] : []), ...(researchMedia ? [researchMedia.planPath] : [])],
+        requiredContextPaths: ['artifacts/reference-evidence-pack.json', ...(inputs.includes('reference-evidence/manifest.json') ? ['reference-evidence/manifest.json'] : []), ...(researchMedia ? [researchMedia.planPath] : [])],
         ...(researchMedia ? { mediaInputs: researchMedia.media } : {}),
       },
     );
@@ -3148,12 +3159,13 @@ export function createFactory(options: FactoryOptions = {}) {
       try {
         const frameManifest = await ensureReferenceFrameManifest(state.runId, canonicalGameIdFromTitle(input.brief.title), path.join(runRoot, 'workspace/game'));
         if (frameManifest?.status === 'BLOCKED') return setWaiting(state, 'REFERENCE_DEEP_RESEARCH', inputs, ['artifacts/reference-frame-manifest.json'], frameManifest.blockers.map((item) => `blocked:reference-frame:${item}`));
-        const frameInputs = frameManifest ? ['artifacts/reference-frame-manifest.json'] : [];
+        // The original frame manifest stays in the run for verification; the
+        // model sees only a small hash-bound sample with temporal coverage.
         const directImages = input.sources.filter((source) => /\.(?:png|jpe?g|webp)$/iu.test(source.path)).map(({ path, sha256 }) => ({ path, sha256 }));
         const { media, mediaPlan, planPath } = await prepareBoundedResearchMedia(state.runId, 'reference-intake', frameManifest, directImages);
-        const context = await contextFor('REFERENCE_DEEP_RESEARCH', runRoot, cachedFile, [...inputs, ...frameInputs, planPath],
+        const context = await contextFor('REFERENCE_DEEP_RESEARCH', runRoot, cachedFile, [...inputs, planPath],
           `Discover source-bound mechanics from only ${media.length} sampled visual files. ${mediaPlan.omittedVisualFiles} other images are timeline metadata, NOT inspected visual evidence; leave unseen gameplay branches unknown. Do not attempt exhaustive inspection of unsampled frames.`,
-          { requiredContextPaths: ['artifacts/reference-intake-evidence.json', ...frameInputs, planPath], mediaInputs: media });
+          { requiredContextPaths: ['artifacts/reference-intake-evidence.json', planPath], mediaInputs: media });
         const result = await agents.draftReference(input, context);
         addAgentMetrics(record, result.metrics);
         draft = ReferenceIntakeDraftSchema.parse(result.value);
