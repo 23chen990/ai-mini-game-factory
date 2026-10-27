@@ -164,11 +164,12 @@ describe('research execution sandbox', () => {
     await mkdir(path.join(runRoot, 'artifacts'), { recursive: true });
     await writeFile(path.join(runRoot, originalPath), bytes);
     await writeFile(path.join(runRoot, siblingPath), bytes);
-    await writeFile(path.join(runRoot, 'artifacts/reference-intake-evidence.json'), JSON.stringify({
+    const sourceIntake = JSON.stringify({
       schemaVersion: 1, targetRunId: 'fixture-run', inputHash: 'a'.repeat(64),
       brief: { schemaVersion: 1, title: 'Image Trial', theme: 'Original game', source: { name: 'Authorized owner' } },
       sources: [{ path: originalPath, sha256, excerpt: '' }],
-    }));
+    });
+    await writeFile(path.join(runRoot, 'artifacts/reference-intake-evidence.json'), sourceIntake);
     const base = {
       runRoot, outputPath: path.join(runRoot, 'artifacts/out.json'), logDir: path.join(runRoot, 'logs'),
       inputPaths: ['artifacts/reference-intake-evidence.json'],
@@ -176,6 +177,7 @@ describe('research execution sandbox', () => {
     };
     const accepted = await prepareResearchSandbox({ ...base, mediaInputs: [{ path: originalPath, sha256 }] });
     expect(await readFile(path.join(accepted.root, originalPath))).toEqual(bytes);
+    expect(await readFile(path.join(accepted.root, 'artifacts/reference-intake-evidence.json'), 'utf8')).toBe(sourceIntake);
     const manifest = ResearchSandboxManifestSchema.parse(JSON.parse(await readFile(accepted.manifestPath, 'utf8')));
     expect(manifest.mediaFiles).toEqual([{ path: originalPath, sha256 }]);
     await expect(prepareResearchSandbox({ ...base, mediaInputs: [{ path: siblingPath, sha256 }] })).rejects.toThrow(/intake binding/i);
