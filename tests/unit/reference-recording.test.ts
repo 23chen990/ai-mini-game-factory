@@ -79,6 +79,9 @@ describe('reference recording frame extraction', () => {
     expect(chosen.detailFrames.at(-1)?.index).toBe(291);
     expect(chosen.media).toHaveLength(7);
     expect(new Set(chosen.media.map((item) => item.path)).size).toBe(7);
+    const firstPass = selectReferenceResearchMedia({ frames, contactSheets } as never, 3, 1);
+    expect(firstPass.contactSheets.map((item) => item.index)).toEqual([0]);
+    expect(firstPass.detailFrames.map((item) => item.index)).toEqual([0, 146, 291]);
     // Sampling must not mutate or shrink the source manifest.
     expect(frames).toHaveLength(292);
     expect(contactSheets).toHaveLength(19);

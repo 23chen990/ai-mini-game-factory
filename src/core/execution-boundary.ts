@@ -71,7 +71,8 @@ export function assertExecutionContext(value: AgentExecutionContext, options: { 
     for (const [index, media] of context.mediaInputs.entries()) {
       if (!media || typeof media !== 'object') throw new ExecutionBoundaryError(`mediaInputs[${index}] must be an object`);
       const mediaPath = assertRelativeArtifact(media.path, `mediaInputs[${index}].path`);
-      if (!mediaPath.startsWith('reference-evidence/derived/') || !/\.(?:png|jpe?g|webp)$/iu.test(mediaPath)) throw new ExecutionBoundaryError('mediaInputs must be images inside derived reference evidence');
+      const reviewedSource = context.stage === 'REFERENCE_DEEP_RESEARCH' && mediaPath.startsWith('reference-evidence/verified/');
+      if ((!mediaPath.startsWith('reference-evidence/derived/') && !reviewedSource) || !/\.(?:png|jpe?g|webp)$/iu.test(mediaPath)) throw new ExecutionBoundaryError('mediaInputs must be images inside derived reference evidence or verified reference evidence');
       if (typeof media.sha256 !== 'string' || !/^[a-f0-9]{64}$/iu.test(media.sha256)) throw new ExecutionBoundaryError(`mediaInputs[${index}] requires a SHA-256 hash`);
     }
   }

@@ -37,9 +37,11 @@ describe('execution boundary', () => {
     expect(() => assertExecutionContext({ ...base, stage: 'BLUEPRINT', outputPath: '/tmp/factory/runs/run-1/workspace/game/blueprint.json' })).toThrow(/workspace|producer/i);
   });
 
-  it('allows only hash-bound derived reference images as research media inputs', () => {
+  it('allows hash-bound derived or reviewed source images as Research media inputs', () => {
     const sha256 = 'a'.repeat(64);
     expect(assertExecutionContext({ ...base, stage: 'REFERENCE_DEEP_RESEARCH', mediaInputs: [{ path: 'reference-evidence/derived/recording/frame.png', sha256 }] })).toMatchObject({ mediaInputs: [{ sha256 }] });
+    expect(assertExecutionContext({ ...base, stage: 'REFERENCE_DEEP_RESEARCH', mediaInputs: [{ path: 'reference-evidence/verified/approved.png', sha256 }] })).toMatchObject({ mediaInputs: [{ sha256 }] });
+    expect(() => assertExecutionContext({ ...base, stage: 'REFERENCE_DEEP_RESEARCH', mediaInputs: [{ path: 'reference-evidence/incoming/pending.png', sha256 }] })).toThrow(/derived.*verified/i);
     expect(() => assertExecutionContext({ ...base, stage: 'REFERENCE_DEEP_RESEARCH', mediaInputs: [{ path: 'workspace/game/frame.png', sha256 }] })).toThrow(/derived reference evidence/i);
     expect(() => assertExecutionContext({ ...base, stage: 'REFERENCE_DEEP_RESEARCH', mediaInputs: [{ path: 'reference-evidence/derived/recording/frame.png', sha256: 'bad' }] })).toThrow(/sha-256/i);
   });

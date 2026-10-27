@@ -1,10 +1,11 @@
 import { EventEmitter } from 'node:events';
+import { createHash } from 'node:crypto';
 import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { PassThrough } from 'node:stream';
 import { describe, expect, it } from 'vitest';
-import { CodexCliProvider, buildCodexExecArgs, parseCodexJsonl, type SpawnFunction } from '../../src/providers/codex-cli.js';
+import { CodexCliProvider, buildCodexExecArgs, parseCodexJsonl, type CodexExecRequest, type SpawnFunction } from '../../src/providers/codex-cli.js';
 
 type FakeResult = { code?: number; stdout?: string; stderr?: string; output?: string; hang?: boolean; delayMs?: number };
 
@@ -25,6 +26,31 @@ function fakeSpawn(results: FakeResult[], calls: Array<{ command: string; args: 
     }, result.delayMs ?? 0);
     return child as never;
   }) as SpawnFunction;
+}
+
+async function researchImageRequest(options: { listed?: boolean; tampered?: boolean; mediaPath?: string } = {}) {
+  const root = await mkdtemp(path.join(tmpdir(), 'codex-cli-bound-image-'));
+  const sandbox = path.join(root, 'research-sandbox/reference_deep_research');
+  const relative = options.mediaPath ?? 'reference-evidence/derived/recording/frame.png';
+  const imagePath = path.join(sandbox, 'reference-evidence/derived/recording/frame.png');
+  const bytes = Buffer.from('fixture image bytes');
+  const sha256 = createHash('sha256').update(bytes).digest('hex');
+  await mkdir(path.dirname(imagePath), { recursive: true });
+  await mkdir(path.join(root, 'artifacts'));
+  await writeFile(imagePath, options.tampered ? 'tampered bytes' : bytes);
+  await writeFile(path.join(sandbox, 'SANDBOX_MANIFEST.json'), JSON.stringify({
+    schemaVersion: 1, stage: 'REFERENCE_DEEP_RESEARCH', mode: 'sanitized-read-only',
+    rootRelative: 'research-sandbox/reference_deep_research',
+    allowedFiles: options.listed === false ? [] : [relative], inputHashes: {},
+    mediaFiles: [{ path: relative, sha256 }], createdAt: new Date().toISOString(),
+  }));
+  const request: CodexExecRequest = {
+    label: 'REFERENCE_DEEP_RESEARCH', prompt: 'inspect selected image', cwd: sandbox, runRoot: root,
+    stage: 'REFERENCE_DEEP_RESEARCH', role: 'research', sandbox: 'read-only',
+    researchIsolation: { mode: 'sanitized-read-only', root: sandbox },
+    outputPath: path.join(root, 'artifacts/out.json'), logDir: path.join(root, 'logs'),
+  };
+  return { request, imagePath };
 }
 
 describe('CodexCliProvider', () => {
@@ -77,6 +103,53 @@ describe('CodexCliProvider', () => {
     expect(calls[0]?.env).toMatchObject({ PATH: process.env.PATH });
     expect(calls[0]?.env).not.toHaveProperty('HOME');
     expect(calls[0]?.env).not.toHaveProperty('OPENAI_API_KEY');
+  });
+
+  it('attaches a verified Research image to the Codex prompt instead of only copying it into the sandbox', async () => {
+    const root = await mkdtemp(path.join(tmpdir(), 'codex-cli-research-image-'));
+    const sandbox = path.join(root, 'research-sandbox/reference_deep_research');
+    const relative = 'reference-evidence/derived/recording/frame.png';
+    const imagePath = path.join(sandbox, relative);
+    const bytes = Buffer.from('fixture image bytes');
+    const sha256 = createHash('sha256').update(bytes).digest('hex');
+    await mkdir(path.dirname(imagePath), { recursive: true });
+    await mkdir(path.join(root, 'artifacts'));
+    await writeFile(imagePath, bytes);
+    await writeFile(path.join(sandbox, 'SANDBOX_MANIFEST.json'), JSON.stringify({
+      schemaVersion: 1, stage: 'REFERENCE_DEEP_RESEARCH', mode: 'sanitized-read-only',
+      rootRelative: 'research-sandbox/reference_deep_research', allowedFiles: [relative], inputHashes: {},
+      mediaFiles: [{ path: relative, sha256 }], createdAt: new Date().toISOString(),
+    }));
+    const calls: Array<{ command: string; args: string[]; cwd?: string; stdin: string }> = [];
+    const provider = new CodexCliProvider({ spawn: fakeSpawn([{ stdout: '{"type":"turn.completed","usage":{"input_tokens":1,"output_tokens":1}}\n', output: '{}' }], calls), timeoutMs: 100 });
+    await provider.execute({ label: 'REFERENCE_DEEP_RESEARCH', prompt: 'inspect selected image', cwd: sandbox, runRoot: root,
+      stage: 'REFERENCE_DEEP_RESEARCH', role: 'research', sandbox: 'read-only',
+      researchIsolation: { mode: 'sanitized-read-only', root: sandbox }, outputPath: path.join(root, 'artifacts/out.json'), logDir: path.join(root, 'logs') });
+    expect(calls[0]?.args.slice(calls[0].args.indexOf('--image'), calls[0].args.indexOf('--image') + 2)).toEqual(['--image', imagePath]);
+  });
+
+  it('rejects a Research image absent from the sandbox allowlist before model launch', async () => {
+    const { request } = await researchImageRequest({ listed: false });
+    const calls: Array<{ command: string; args: string[]; cwd?: string; stdin: string }> = [];
+    const provider = new CodexCliProvider({ spawn: fakeSpawn([], calls), timeoutMs: 100 });
+    await expect(provider.execute(request)).rejects.toThrow(/allowlist/i);
+    expect(calls).toHaveLength(0);
+  });
+
+  it('rejects a Research image changed after evidence binding before model launch', async () => {
+    const { request } = await researchImageRequest({ tampered: true });
+    const calls: Array<{ command: string; args: string[]; cwd?: string; stdin: string }> = [];
+    const provider = new CodexCliProvider({ spawn: fakeSpawn([], calls), timeoutMs: 100 });
+    await expect(provider.execute(request)).rejects.toThrow(/hash mismatch/i);
+    expect(calls).toHaveLength(0);
+  });
+
+  it('rejects a Research image path that escapes the sandbox before model launch', async () => {
+    const { request } = await researchImageRequest({ mediaPath: '../../outside.png' });
+    const calls: Array<{ command: string; args: string[]; cwd?: string; stdin: string }> = [];
+    const provider = new CodexCliProvider({ spawn: fakeSpawn([], calls), timeoutMs: 100 });
+    await expect(provider.execute(request)).rejects.toThrow(/path|sandbox/i);
+    expect(calls).toHaveLength(0);
   });
 
   it('uses a per-stage model override while preserving the provider default', async () => {

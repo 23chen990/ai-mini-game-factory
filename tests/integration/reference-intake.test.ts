@@ -248,27 +248,17 @@ it('bounds an actual long-recording intake to a sampled visual packet and persis
   const video = await ingestReferenceMedia({ runRoot, sourcePath, targetGame: 'lantern-trial', purpose: 'gameplay-reference' });
   await reviewReferenceMediaIdentity({ runRoot, targetGame: 'lantern-trial', workspace: path.join(runRoot, 'workspace/game'),
     id: video.id, expectedSha256: video.sha256, reviewer: 'test-fixture', basis: 'Synthetic media transport' });
-  const oldDetails = process.env.FACTORY_REFERENCE_RESEARCH_DETAIL_FRAMES;
-  const oldSheets = process.env.FACTORY_REFERENCE_RESEARCH_CONTACT_SHEETS;
-  process.env.FACTORY_REFERENCE_RESEARCH_DETAIL_FRAMES = '4';
-  process.env.FACTORY_REFERENCE_RESEARCH_CONTACT_SHEETS = '3';
-  try { await factory.run(runId); }
-  finally {
-    if (oldDetails === undefined) delete process.env.FACTORY_REFERENCE_RESEARCH_DETAIL_FRAMES;
-    else process.env.FACTORY_REFERENCE_RESEARCH_DETAIL_FRAMES = oldDetails;
-    if (oldSheets === undefined) delete process.env.FACTORY_REFERENCE_RESEARCH_CONTACT_SHEETS;
-    else process.env.FACTORY_REFERENCE_RESEARCH_CONTACT_SHEETS = oldSheets;
-  }
+  await factory.run(runId);
   const plan = JSON.parse(await readFile(path.join(runRoot, 'artifacts/reference-intake-media-plan.json'), 'utf8'));
   expect(provider.calls).toBe(1);
-  expect(provider.researchMediaPaths).toHaveLength(7);
+  expect(provider.researchMediaPaths).toHaveLength(4);
   expect(plan).toMatchObject({
     purpose: 'reference-intake', coverage: 'BOUNDED_SAMPLE_NOT_FULL_VISUAL_COVERAGE',
-    available: { contactSheets: 19, frames: 292, directImages: 0 }, omittedVisualFiles: 304,
+    available: { contactSheets: 19, frames: 292, directImages: 0 }, omittedVisualFiles: 307,
   });
-  expect(plan.selectedContactSheetIds).toEqual(['contact-000', 'contact-009', 'contact-018']);
-  expect(plan.selectedDetailFrameIds).toHaveLength(4);
-  expect(new Set(provider.researchMediaPaths).size).toBe(7);
+  expect(plan.selectedContactSheetIds).toEqual(['contact-000']);
+  expect(plan.selectedDetailFrameIds).toHaveLength(3);
+  expect(new Set(provider.researchMediaPaths).size).toBe(4);
 });
 
 it('rejects unsafe Research media override before any provider invocation', async () => {
@@ -284,4 +274,39 @@ it('rejects unsafe Research media override before any provider invocation', asyn
     else process.env.FACTORY_REFERENCE_RESEARCH_DETAIL_FRAMES = previous;
   }
   expect(provider.calls).toBe(0);
+});
+
+it('rejects the old seven-image override before any provider invocation', async () => {
+  const provider = new IntakeFixtureProvider();
+  const { factory, runId, review } = await fixture(provider);
+  await review();
+  const oldDetails = process.env.FACTORY_REFERENCE_RESEARCH_DETAIL_FRAMES;
+  const oldSheets = process.env.FACTORY_REFERENCE_RESEARCH_CONTACT_SHEETS;
+  process.env.FACTORY_REFERENCE_RESEARCH_DETAIL_FRAMES = '4';
+  process.env.FACTORY_REFERENCE_RESEARCH_CONTACT_SHEETS = '3';
+  try { await expect(factory.run(runId)).rejects.toThrow(/at most four media files/i); }
+  finally {
+    if (oldDetails === undefined) delete process.env.FACTORY_REFERENCE_RESEARCH_DETAIL_FRAMES;
+    else process.env.FACTORY_REFERENCE_RESEARCH_DETAIL_FRAMES = oldDetails;
+    if (oldSheets === undefined) delete process.env.FACTORY_REFERENCE_RESEARCH_CONTACT_SHEETS;
+    else process.env.FACTORY_REFERENCE_RESEARCH_CONTACT_SHEETS = oldSheets;
+  }
+  expect(provider.calls).toBe(0);
+});
+
+it('limits direct verified source images to four initial Research attachments', async () => {
+  const provider = new IntakeFixtureProvider();
+  const { factory, runId, runRoot, review } = await fixture(provider);
+  await review();
+  for (let index = 0; index < 5; index += 1) {
+    const sourcePath = path.join(path.dirname(runRoot), `source-${index}.png`);
+    await writeFile(sourcePath, `first-party image fixture ${index}`);
+    const ingested = await ingestReferenceMedia({ runRoot, sourcePath, targetGame: 'lantern-trial', purpose: 'gameplay-reference' });
+    await reviewReferenceMediaIdentity({ runRoot, targetGame: 'lantern-trial', workspace: path.join(runRoot, 'workspace/game'),
+      id: ingested.id, expectedSha256: ingested.sha256, reviewer: 'test-fixture', basis: 'Synthetic direct source image transport' });
+  }
+  await factory.run(runId);
+  const plan = JSON.parse(await readFile(path.join(runRoot, 'artifacts/reference-intake-media-plan.json'), 'utf8'));
+  expect(provider.researchMediaPaths).toHaveLength(4);
+  expect(plan).toMatchObject({ available: { directImages: 5 }, omittedVisualFiles: 1 });
 });

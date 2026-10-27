@@ -910,16 +910,16 @@ export function createFactory(options: FactoryOptions = {}) {
     frameManifest?: ReferenceFrameManifest,
     originalImages: Array<{ path: string; sha256: string }> = [],
   ) {
-    // A real 2026-10-26 call supplied 76 visual files in one turn and reported
-    // 683,321 tokens after execution. Never let a config override reintroduce
-    // that entire batch. These are input-size limits, not financial guarantees.
-    const detailLimit = Number(process.env.FACTORY_REFERENCE_RESEARCH_DETAIL_FRAMES ?? 4);
-    const sheetLimit = Number(process.env.FACTORY_REFERENCE_RESEARCH_CONTACT_SHEETS ?? 3);
+    // Real 2026-10-26 and 2026-10-27 calls exceeded their observed-token
+    // allowances after a completed turn. This smaller first-pass sample is
+    // input admission, not a vendor billing guarantee.
+    const detailLimit = Number(process.env.FACTORY_REFERENCE_RESEARCH_DETAIL_FRAMES ?? 3);
+    const sheetLimit = Number(process.env.FACTORY_REFERENCE_RESEARCH_CONTACT_SHEETS ?? 1);
     if (!Number.isSafeInteger(detailLimit) || detailLimit < 2 || detailLimit > 6) throw new Error('FACTORY_REFERENCE_RESEARCH_DETAIL_FRAMES must be 2..6 for a live intake');
-    if (!Number.isSafeInteger(sheetLimit) || sheetLimit < 0 || sheetLimit > 4 || detailLimit + sheetLimit > 8) throw new Error('Research must use at most eight media files: contact sheets 0..4 and detail frames 2..6');
+    if (!Number.isSafeInteger(sheetLimit) || sheetLimit < 0 || sheetLimit > 4 || detailLimit + sheetLimit > 4) throw new Error('Research must use at most four media files: contact sheets 0..4 and detail frames 2..6');
     const selected = frameManifest ? selectReferenceResearchMedia(frameManifest, detailLimit, sheetLimit) : undefined;
     const frameMedia = selected?.media.map(({ path, sha256 }) => ({ path, sha256 })) ?? [];
-    const directSelected = selectStratifiedReferenceItems(originalImages, Math.max(0, 8 - frameMedia.length));
+    const directSelected = selectStratifiedReferenceItems(originalImages, Math.max(0, 4 - frameMedia.length));
     const media = [...frameMedia, ...directSelected];
     const runRoot = store.runRoot(runId);
     const mediaPlan = ReferenceResearchMediaPlanSchema.parse({

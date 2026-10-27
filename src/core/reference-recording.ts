@@ -42,26 +42,7 @@ export function selectReferenceResearchMedia(manifest: ReferenceFrameManifest, m
   if (!Number.isSafeInteger(maxDetailFrames) || maxDetailFrames < 2 || maxDetailFrames > 256) throw new Error('reference research detail-frame limit must be an integer from 2 to 256');
   if (!Number.isSafeInteger(maxContactSheets) || maxContactSheets < 0 || maxContactSheets > 256) throw new Error('reference research contact-sheet limit must be an integer from 0 to 256');
   const selectedSheets = selectStratifiedReferenceItems(manifest.contactSheets, maxContactSheets);
-  const byIndex = new Map(manifest.frames.map((frame) => [frame.index, frame]));
-  const candidateIndices = new Set<number>();
-  if (selectedSheets.length > 0) {
-    for (const sheet of selectedSheets) {
-      candidateIndices.add(sheet.firstFrameIndex);
-      candidateIndices.add(Math.floor((sheet.firstFrameIndex + sheet.lastFrameIndex) / 2));
-      candidateIndices.add(sheet.lastFrameIndex);
-    }
-  } else {
-    for (const frame of manifest.frames) candidateIndices.add(frame.index);
-  }
-  const first = manifest.frames[0];
-  const last = manifest.frames.at(-1);
-  if (first) candidateIndices.add(first.index);
-  if (last) candidateIndices.add(last.index);
-  const candidates = [...candidateIndices]
-    .sort((left, right) => left - right)
-    .map((index) => byIndex.get(index))
-    .filter((frame): frame is ReferenceFrameManifest['frames'][number] => frame !== undefined);
-  const detailFrames = selectStratifiedReferenceItems(candidates, maxDetailFrames);
+  const detailFrames = selectStratifiedReferenceItems(manifest.frames, maxDetailFrames);
   return { contactSheets: selectedSheets, detailFrames, media: [...selectedSheets, ...detailFrames] };
 }
 

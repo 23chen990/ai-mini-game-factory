@@ -1,14 +1,15 @@
 import { spawn as nodeSpawn, type ChildProcessWithoutNullStreams } from 'node:child_process';
-import { lstat, readFile, writeFile } from 'node:fs/promises';
+import { lstat, readFile, realpath, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { z } from 'zod';
-import { ensureDir, exists, writeJsonAtomic } from '../core/files.js';
+import { ensureDir, exists, sha256File, writeJsonAtomic } from '../core/files.js';
 import { redactText, redactValue } from '../core/redaction.js';
-import { assertExecutionContext } from '../core/execution-boundary.js';
+import { assertExecutionContext, assertSafeContextInputPath } from '../core/execution-boundary.js';
 import { executionPolicyForStage } from '../core/model-policy.js';
 import { StageNameSchema } from '../schemas/index.js';
 import type { TokenUsage } from './interfaces.js';
 import { beginCodexExecution } from '../core/codex-budget.js';
+import { ResearchSandboxManifestSchema } from '../schemas/research-sandbox.js';
 
 export type CodexSandbox = 'read-only' | 'workspace-write';
 export type SpawnFunction = (command: string, args: readonly string[], options: { cwd?: string; stdio: ['pipe', 'pipe', 'pipe']; shell: false; env?: NodeJS.ProcessEnv; detached?: boolean }) => ChildProcessWithoutNullStreams;
@@ -81,12 +82,13 @@ export function buildCodexProcessEnv(mode: 'trusted' | 'research' = 'trusted'): 
   return environment;
 }
 
-export function buildCodexExecArgs(input: { cwd: string; sandbox: CodexSandbox; schemaPath?: string; outputPath: string; resumeThreadId?: string; model?: string }) {
+export function buildCodexExecArgs(input: { cwd: string; sandbox: CodexSandbox; schemaPath?: string; outputPath: string; resumeThreadId?: string; model?: string; imagePaths?: string[] }) {
   const args = input.resumeThreadId
     ? ['exec', 'resume', input.resumeThreadId, '--json', '-c', `sandbox_mode="${input.sandbox}"`]
     : ['exec', '--json', '--sandbox', input.sandbox, '--cd', input.cwd];
   if (input.model) args.push('--model', input.model);
   if (input.schemaPath) args.push('--output-schema', input.schemaPath);
+  if (input.imagePaths?.length) args.push('--image', ...input.imagePaths);
   args.push('--output-last-message', input.outputPath, '-');
   return args;
 }
@@ -301,9 +303,26 @@ export class CodexCliProvider {
       if (request.role && request.role !== checked.role) throw new Error(`Codex execution role ${request.role} does not match stage ${request.stage}`);
     }
     let processEnv: NodeJS.ProcessEnv;
+    let imagePaths: string[] = [];
     if (request.researchIsolation) {
       const manifestPath = request.researchIsolation.manifestPath ?? path.join(request.researchIsolation.root, 'SANDBOX_MANIFEST.json');
       if (!(await exists(manifestPath))) throw new Error('Codex research sandbox manifest is missing');
+      if (request.stage === 'REFERENCE_DEEP_RESEARCH') {
+        const manifest = ResearchSandboxManifestSchema.parse(JSON.parse(await readFile(manifestPath, 'utf8')));
+        const sandboxRoot = request.researchIsolation.root;
+        if (manifest.stage !== request.stage || path.resolve(workingDirectory.runRoot, manifest.rootRelative) !== sandboxRoot) throw new Error('Codex research media manifest does not match this sandbox');
+        const realSandboxRoot = await realpath(sandboxRoot);
+        imagePaths = await Promise.all(manifest.mediaFiles.map(async (media) => {
+          const relative = assertSafeContextInputPath(media.path);
+          if (!manifest.allowedFiles.includes(relative)) throw new Error(`Codex research image is absent from the sandbox allowlist: ${relative}`);
+          const imagePath = path.resolve(sandboxRoot, relative);
+          if (!isWithin(sandboxRoot, imagePath) || !isWithin(realSandboxRoot, await realpath(imagePath))) throw new Error(`Codex research image path escapes the sandbox: ${relative}`);
+          const stat = await lstat(imagePath);
+          if (!stat.isFile() || stat.isSymbolicLink()) throw new Error(`Codex research image must be a regular file: ${relative}`);
+          if (await sha256File(imagePath) !== media.sha256) throw new Error(`Codex research image hash mismatch: ${relative}`);
+          return imagePath;
+        }));
+      }
       // Do not inherit arbitrary host environment variables into an
       // untrusted-content reader. In particular this excludes API keys,
       // cloud credentials and custom command hooks. The CLI still receives a
@@ -342,7 +361,7 @@ export class CodexCliProvider {
         // Without this isolation a successful exit without a new output file
         // could accidentally publish the previous attempt's result.
         const attemptOutputPath = path.join(execution.logDir, `${request.label}.attempt-${attempt}.last-message.txt`);
-        const args = buildCodexExecArgs({ cwd: workingDirectory.cwd, sandbox: request.sandbox, schemaPath, outputPath: attemptOutputPath, resumeThreadId: request.resumeThreadId, model: request.model?.trim() || this.model });
+        const args = buildCodexExecArgs({ cwd: workingDirectory.cwd, sandbox: request.sandbox, schemaPath, outputPath: attemptOutputPath, resumeThreadId: request.resumeThreadId, model: request.model?.trim() || this.model, imagePaths });
         try {
           const remainingTokens = maxTotalTokens === undefined ? undefined : maxTotalTokens - usage.totalTokens;
           if (remainingTokens !== undefined && remainingTokens <= 0) throw new Error('codex exec token budget exhausted');

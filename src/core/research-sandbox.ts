@@ -112,7 +112,7 @@ export async function prepareResearchSandbox(context: AgentExecutionContext): Pr
   for (const [index, media] of (context.mediaInputs ?? []).entries()) {
     const relative = assertSafeContextInputPath(media.path);
     const derived = relative.startsWith('reference-evidence/derived/');
-    const originalVerifiedImage = stage === 'REFERENCE_DEEP_RESEARCH' && relative.startsWith('reference-evidence/incoming/');
+    const originalVerifiedImage = stage === 'REFERENCE_DEEP_RESEARCH' && relative.startsWith('reference-evidence/verified/');
     if ((!derived && !originalVerifiedImage) || !/\.(?:png|jpe?g|webp)$/iu.test(relative)) throw new Error(`research media must be verified derived reference evidence or an authorized original reference image: ${relative}`);
     if (originalVerifiedImage) {
       // The direct-source image must be one of the exact sources approved for

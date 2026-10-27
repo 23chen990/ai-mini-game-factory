@@ -153,14 +153,14 @@ describe('research execution sandbox', () => {
     await expect(prepareResearchSandbox({ ...context, mediaInputs: [{ path: mediaPath, sha256: '0'.repeat(64) }] })).rejects.toThrow(/hash mismatch/i);
     await expect(prepareResearchSandbox({ ...context, mediaInputs: [{ path: 'workspace/game/secret.png', sha256 }] })).rejects.toThrow(/reference evidence/i);
   });
-  it('accepts only the exact verified incoming image bound to this intake, not a sibling image', async () => {
+  it('accepts only the exact reviewed source image bound to this intake, not a sibling image', async () => {
     const runRoot = await mkdtemp(path.join(tmpdir(), 'research-original-image-'));
     roots.push(runRoot);
-    const originalPath = 'reference-evidence/incoming/approved.png';
-    const siblingPath = 'reference-evidence/incoming/not-approved.png';
+    const originalPath = 'reference-evidence/verified/approved.png';
+    const siblingPath = 'reference-evidence/verified/not-approved.png';
     const bytes = Buffer.from('verified first-party image bytes');
     const sha256 = createHash('sha256').update(bytes).digest('hex');
-    await mkdir(path.join(runRoot, 'reference-evidence/incoming'), { recursive: true });
+    await mkdir(path.join(runRoot, 'reference-evidence/verified'), { recursive: true });
     await mkdir(path.join(runRoot, 'artifacts'), { recursive: true });
     await writeFile(path.join(runRoot, originalPath), bytes);
     await writeFile(path.join(runRoot, siblingPath), bytes);
