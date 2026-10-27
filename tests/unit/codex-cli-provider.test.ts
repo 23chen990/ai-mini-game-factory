@@ -6,6 +6,7 @@ import path from 'node:path';
 import { PassThrough } from 'node:stream';
 import { describe, expect, it } from 'vitest';
 import { CodexCliProvider, buildCodexExecArgs, parseCodexJsonl, type CodexExecRequest, type SpawnFunction } from '../../src/providers/codex-cli.js';
+import { QA_BROWSER_TARGETS } from '../../src/qa/browser-preflight.js';
 
 type FakeResult = { code?: number; stdout?: string; stderr?: string; output?: string; hang?: boolean; delayMs?: number };
 
@@ -73,6 +74,37 @@ describe('CodexCliProvider', () => {
     expect(calls).toHaveLength(0);
     expect(JSON.parse(await readFile(path.join(root, 'logs/BLIND_PLAYTEST_QA.qa-browser-preflight.json'), 'utf8')))
       .toMatchObject({ ready: false, scope: 'HOST_BROWSER_SMOKE_ONLY' });
+  });
+
+  it('allows a budgeted blind QA call only after all four browser checks pass', async () => {
+    const root = await mkdtemp(path.join(tmpdir(), 'codex-qa-browser-ready-'));
+    const calls: Array<{ command: string; args: string[]; cwd?: string; stdin: string }> = [];
+    let preflights = 0;
+    const provider = new CodexCliProvider({
+      spawn: fakeSpawn([{
+        stdout: '{"type":"turn.completed","usage":{"input_tokens":3,"output_tokens":2}}\\n',
+        output: '{"qa":"requires independent evidence"}',
+      }], calls),
+      qaBrowserPreflight: async () => {
+        preflights += 1;
+        return {
+          schemaVersion: 1, scope: 'HOST_BROWSER_SMOKE_ONLY', ready: true,
+          checkedAt: new Date().toISOString(),
+          checks: QA_BROWSER_TARGETS.map((target) => ({ ...target, passed: true, screenshotBytes: 2_048, blocker: null })),
+        };
+      },
+      maxRetries: 0, timeoutMs: 500,
+    });
+    const result = await provider.execute({
+      label: 'BLIND_PLAYTEST_QA', stage: 'BLIND_PLAYTEST_QA', role: 'reviewer', sandbox: 'read-only',
+      prompt: 'evaluate independent evidence', cwd: root, runRoot: root,
+      outputPath: path.join(root, 'out.json'), logDir: path.join(root, 'logs'),
+    });
+    expect(preflights).toBe(1);
+    expect(calls).toHaveLength(1);
+    expect(result.usage.totalTokens).toBe(5);
+    expect(JSON.parse(await readFile(path.join(root, 'logs/BLIND_PLAYTEST_QA.qa-browser-preflight.json'), 'utf8')))
+      .toMatchObject({ ready: true, scope: 'HOST_BROWSER_SMOKE_ONLY' });
   });
 
   it('passes only a safe environment to trusted Codex stages and strips credentials', async () => {
