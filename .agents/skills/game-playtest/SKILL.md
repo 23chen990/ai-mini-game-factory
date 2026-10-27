@@ -20,6 +20,12 @@ source, or pass a run based only on screenshots.
   QA）、`artifacts/perceptual-qa-report.json`（感知/可读性 QA）、`logs/console.log`、
   `screenshots/gameplay.png`。三个报告必须记录各自的证据来源，禁止用一个报告的状态覆盖另一个报告。
 
+## Zero-model browser preflight (required before an independent blind QA invocation)
+
+Run `pnpm factory qa-preflight` **on the same host and with the same permissions as the QA capture runner** before spending any model tokens on a new QA evaluation. This actually launches Chromium and WebKit and proves DOM click → visible change → screenshot in mobile and desktop viewports. `factory doctor` with `FACTORY_MODE=codex-account` also performs this test; a Playwright version number alone is never sufficient. A failed preflight is an **infrastructure blocker**, not a missed gameplay defect. Stop before invoking an LLM, save the preflight report and fix the browser/tool installation or permissions locally.
+
+**Caveat:** This only verifies browser capability in the runner environment, **not** that a Codex read-only reviewer can itself open a browser. If the reviewer has no browser tools, the trusted host-side Playwright runner must collect actual normal-input video, screenshots and timestamps first; pass those frozen artifacts to a separate blind QA reviewer. Do not tell the reviewer the injected fault or have the controller supply the verdict. If there are no actual candidate observations, record UNOBSERVED/BLOCKED rather than burning model tokens to simulate an inaccessible browser. A smoke test does not prove real gameplay completion or autonomous QA.
+
 ## Procedure
 
 1. Start preview on localhost and launch headless Chromium at a fixed viewport.
