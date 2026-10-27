@@ -403,6 +403,7 @@ referenceMechanics:
     }));
 
     expect(await factory.run(runId)).toMatchObject({ stage: 'WAITING_FOR_REFERENCE_APPROVAL', status: 'waiting' });
+    expect(syntheticReferenceProvider.researchCalls).toBe(1);
     expect(syntheticReferenceProvider.lastResearchInputPaths).toContain('artifacts/reference-behavior-media-plan.json');
     expect(syntheticReferenceProvider.lastResearchInputPaths).not.toContain('artifacts/reference-frame-manifest.json');
     await factory.approveReference(runId, { decision: 'APPROVE', notes: 'recording semantics approved' });
