@@ -82,7 +82,7 @@ describe('CodexCliProvider', () => {
     let preflights = 0;
     const provider = new CodexCliProvider({
       spawn: fakeSpawn([{
-        stdout: '{"type":"turn.completed","usage":{"input_tokens":3,"output_tokens":2}}\\n',
+        stdout: '{"type":"turn.completed","usage":{"input_tokens":3,"output_tokens":2}}\n',
         output: '{"qa":"requires independent evidence"}',
       }], calls),
       qaBrowserPreflight: async () => {
