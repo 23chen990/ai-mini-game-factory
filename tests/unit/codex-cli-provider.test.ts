@@ -54,6 +54,23 @@ async function researchImageRequest(options: { listed?: boolean; tampered?: bool
   return { request, imagePath };
 }
 
+async function qaObservation(root: string) {
+  await mkdir(path.join(root, 'qa'), { recursive: true });
+  await mkdir(path.join(root, 'workspace/game/dist'), { recursive: true });
+  const buildPath = 'workspace/game/dist/index.html';
+  const tracePath = 'qa/natural.json';
+  await writeFile(path.join(root, buildPath), '<html>controlled transport fixture, not Agent evidence</html>');
+  await writeFile(path.join(root, 'qa/frame.png'), Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Y9ZlWQAAAAASUVORK5CYII=', 'base64'));
+  const buildSha256 = createHash('sha256').update(await readFile(path.join(root, buildPath))).digest('hex');
+  await writeFile(path.join(root, tracePath), JSON.stringify({ schemaVersion: 1, startedFromReset: true,
+    actions: ['touchscreen.tap at 120ms'], transitions: [{ name: 'primary-action', changed: true, evidence: 'fixture only' }],
+    completion: 'none', replayObserved: false, forbiddenOperations: [], screenshots: ['qa/frame.png'],
+    passed: false, blockers: ['fixture, not product acceptance'], buildHash: buildSha256, observedAt: new Date().toISOString() }));
+  return { buildPath, buildSha256, tracePath, traceSha256: createHash('sha256').update(await readFile(path.join(root, tracePath))).digest('hex') };
+}
+const readyQaBrowser = async () => ({ schemaVersion: 1 as const, scope: 'HOST_BROWSER_SMOKE_ONLY' as const, ready: true,
+  checkedAt: new Date().toISOString(), checks: QA_BROWSER_TARGETS.map((target) => ({ ...target, passed: true, screenshotBytes: 2048, blocker: null })) });
+
 describe('CodexCliProvider', () => {
   it('does not launch a token-consuming blind QA Agent when the browser cannot launch/click/capture', async () => {
     const root = await mkdtemp(path.join(tmpdir(), 'codex-qa-browser-block-'));
@@ -97,14 +114,38 @@ describe('CodexCliProvider', () => {
     });
     const result = await provider.execute({
       label: 'BLIND_PLAYTEST_QA', stage: 'BLIND_PLAYTEST_QA', role: 'reviewer', sandbox: 'read-only',
-      prompt: 'evaluate independent evidence', cwd: root, runRoot: root,
+      prompt: 'evaluate independent evidence', cwd: root, runRoot: root, qaObservation: await qaObservation(root),
       outputPath: path.join(root, 'out.json'), logDir: path.join(root, 'logs'),
     });
+    expect(calls[0]!.args).toContain('--image');
+    expect(calls[0]!.args).toContain(path.join(root, 'qa/frame.png'));
     expect(preflights).toBe(1);
     expect(calls).toHaveLength(1);
     expect(result.usage.totalTokens).toBe(5);
     expect(JSON.parse(await readFile(path.join(root, 'logs/BLIND_PLAYTEST_QA.qa-browser-preflight.json'), 'utf8')))
       .toMatchObject({ ready: true, scope: 'HOST_BROWSER_SMOKE_ONLY' });
+  });
+
+  it('blocks a seeing-host but observation-less QA before any model spawn or usage lease', async () => {
+    const root = await mkdtemp(path.join(tmpdir(), 'qa-no-observation-'));
+    const calls: Array<{ command: string; args: string[]; cwd?: string; stdin: string }> = [];
+    const provider = new CodexCliProvider({ spawn: fakeSpawn([], calls), qaBrowserPreflight: readyQaBrowser });
+    await expect(provider.execute({ label: 'QA', stage: 'QA', cwd: root, runRoot: root, sandbox: 'read-only',
+      prompt: 'inspect', outputPath: path.join(root, 'out.json'), logDir: path.join(root, 'logs') })).rejects.toThrow('QA_OBSERVATIONS_REQUIRED');
+    expect(calls).toHaveLength(0);
+  });
+
+  it.each(['build', 'trace', 'escape'])('rejects %s identity failure before QA model spawn', async (fault) => {
+    const root = await mkdtemp(path.join(tmpdir(), 'qa-bad-observation-'));
+    const observation = await qaObservation(root);
+    if (fault === 'build') await writeFile(path.join(root, observation.buildPath), 'changed build');
+    if (fault === 'trace') await writeFile(path.join(root, observation.tracePath), '{}');
+    if (fault === 'escape') observation.tracePath = '../foreign.json';
+    const calls: Array<{ command: string; args: string[]; cwd?: string; stdin: string }> = [];
+    const provider = new CodexCliProvider({ spawn: fakeSpawn([], calls), qaBrowserPreflight: readyQaBrowser });
+    await expect(provider.execute({ label: 'QA', stage: 'QA', cwd: root, runRoot: root, sandbox: 'read-only',
+      qaObservation: observation, prompt: 'inspect', outputPath: path.join(root, 'out.json'), logDir: path.join(root, 'logs') })).rejects.toThrow();
+    expect(calls).toHaveLength(0);
   });
 
   it('passes only a safe environment to trusted Codex stages and strips credentials', async () => {

@@ -1,0 +1,27 @@
+{
+  "scope": "this user task only; prior task usage subtracted, not reset",
+  "independentAgentInvocations": 0,
+  "independentAgentTokens": 0,
+  "rootObservedUsageIncrements": 43,
+  "rootProviderRequestCountExact": null,
+  "rootUsageDelta": {
+    "input_tokens": 12479262,
+    "cached_input_tokens": 12397184,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 80983,
+    "reasoning_output_tokens": 53310,
+    "total_tokens": 12560245
+  },
+  "startedAt": "2026-10-27T09:52:00.248Z",
+  "snapshotAt": "2026-10-27T10:38:23.517Z",
+  "elapsedMs": 2783269,
+  "snapshotIsLowerBound": true,
+  "modelRetriesIndependent": 0,
+  "humanGameplayOrDefectHints": 0,
+  "controllerGameIterations": 4,
+  "knownCaptureRunnerFailures": 1,
+  "moneyUsd": null,
+  "creditsPurchased": 0,
+  "cacheAccounting": "cached input is included in input; never added twice",
+  "sourceSession": "/Users/kker/.codex/sessions/2026/10/27/rollout-2026-10-27T17-06-26-01a17c9c-636e-7213-97dc-559b9478055d.jsonl"
+}

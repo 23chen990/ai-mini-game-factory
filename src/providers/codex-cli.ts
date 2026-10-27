@@ -10,7 +10,7 @@ import { StageNameSchema } from '../schemas/index.js';
 import type { TokenUsage } from './interfaces.js';
 import { beginCodexExecution } from '../core/codex-budget.js';
 import { ResearchSandboxManifestSchema } from '../schemas/research-sandbox.js';
-import { assertQaBrowserPreflight, runQaBrowserPreflight, type QaBrowserPreflightReport } from '../qa/browser-preflight.js';
+import { assertQaBrowserPreflight, runQaBrowserPreflight, verifyQaObservation, type QaBrowserPreflightReport, type QaObservationInput } from '../qa/browser-preflight.js';
 
 export type CodexSandbox = 'read-only' | 'workspace-write';
 export type SpawnFunction = (command: string, args: readonly string[], options: { cwd?: string; stdio: ['pipe', 'pipe', 'pipe']; shell: false; env?: NodeJS.ProcessEnv; detached?: boolean }) => ChildProcessWithoutNullStreams;
@@ -35,6 +35,8 @@ export type CodexExecRequest = {
   stage?: string;
   role?: 'research' | 'producer' | 'builder' | 'fixer' | 'reviewer' | 'evidence-helper' | 'release';
   networkAccessEnabled?: boolean;
+  /** Frozen normal-input handoff; a host browser smoke is not a reviewer tool grant. */
+  qaObservation?: QaObservationInput;
   /** Parent run root when cwd is a nested generated workspace. */
   runRoot?: string;
   /** Research must run from a stage-scoped, sanitized filesystem view. */
@@ -310,6 +312,7 @@ export class CodexCliProvider {
     }
     let processEnv: NodeJS.ProcessEnv;
     let imagePaths: string[] = [];
+    let prompt = request.prompt;
     if (request.researchIsolation) {
       const manifestPath = request.researchIsolation.manifestPath ?? path.join(request.researchIsolation.root, 'SANDBOX_MANIFEST.json');
       if (!(await exists(manifestPath))) throw new Error('Codex research sandbox manifest is missing');
@@ -344,6 +347,16 @@ export class CodexCliProvider {
       const readiness = await this.qaBrowserPreflight();
       await writeJsonAtomic(path.join(request.logDir, `${request.label}.qa-browser-preflight.json`), readiness);
       assertQaBrowserPreflight(readiness);
+      try {
+        if (!request.qaObservation) throw new Error('QA_OBSERVATIONS_REQUIRED: capture build-bound normal input and PNGs before spending model tokens; host browser readiness is insufficient');
+        const observations = await verifyQaObservation(workingDirectory.runRoot, request.qaObservation);
+        imagePaths = observations.images.map((item) => item.path);
+        await writeJsonAtomic(path.join(request.logDir, `${request.label}.qa-observations.json`), observations);
+        prompt += `\nQA observation mode: inspect the attached frozen gameplay PNGs and normal-input trace ${request.qaObservation.tracePath}. Do not inspect game source, gold labels, other reports or known answers. This handoff is not a browser tool grant. Do not claim to have operated a browser or watched uncaptured video. Unobserved branches and temporally incomplete absence claims remain BLOCKED. Return independent findings, evidence and uncertainty, not capture-runner acceptance.`;
+      } catch (error) {
+        await writeJsonAtomic(path.join(request.logDir, `${request.label}.qa-observations.json`), { scope: 'FROZEN_NATURAL_OBSERVATIONS_ONLY', status: 'BLOCKED', modelCalls: 0, reason: redactText(error instanceof Error ? error.message : String(error)) });
+        throw error;
+      }
     }
     const configuredBudget = request.stage === 'REFERENCE_DEEP_RESEARCH'
       ? process.env.CODEX_RESEARCH_MAX_TOTAL_TOKENS ?? process.env.CODEX_EXEC_MAX_TOTAL_TOKENS ?? '200000'
@@ -379,7 +392,7 @@ export class CodexCliProvider {
         try {
           const remainingTokens = maxTotalTokens === undefined ? undefined : maxTotalTokens - usage.totalTokens;
           if (remainingTokens !== undefined && remainingTokens <= 0) throw new Error('codex exec token budget exhausted');
-          const processResult = await this.runProcess(args, { cwd: workingDirectory.cwd, stdin: request.prompt, signal: request.signal, timeoutMs: request.timeoutMs, env: processEnv, maxTotalTokens: remainingTokens });
+          const processResult = await this.runProcess(args, { cwd: workingDirectory.cwd, stdin: prompt, signal: request.signal, timeoutMs: request.timeoutMs, env: processEnv, maxTotalTokens: remainingTokens });
           const stdout = redactText(processResult.stdout); const stderr = redactText(processResult.stderr);
           const parsed = parseCodexJsonl(stdout);
           usage.inputTokens += parsed.usage.inputTokens;

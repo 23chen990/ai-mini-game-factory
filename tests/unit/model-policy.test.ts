@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { classifyModelFailure, executionPolicyForStage, getModelPolicy, modelForStage, nextModelAfterFailure } from '../../src/core/model-policy.js';
+import { classifyModelFailure, executionPolicyForAttempt, executionPolicyForStage, getModelPolicy, modelForStage, nextModelAfterFailure } from '../../src/core/model-policy.js';
 import { StageNameSchema } from '../../src/schemas/index.js';
 
 describe('model policy', () => {
@@ -45,5 +45,13 @@ describe('model policy', () => {
     expect(classifyModelFailure("You've hit your usage limit. Try again at Sep 15th, 2026 9:27 AM.")).toBe('TRANSIENT');
     expect(classifyModelFailure('Selected model is at capacity. Please try again later.')).toBe('TRANSIENT');
     expect(classifyModelFailure('license policy blocked')).toBe('POLICY_BLOCK');
+  });
+});
+
+describe('QA observation infrastructure failures', () => {
+  it.each(['QA_BROWSER_UNAVAILABLE: browser smoke failed', 'QA_OBSERVATIONS_REQUIRED: no captured pixels', 'QA observation build/trace hash mismatch'])('does not model-escalate %s', (message) => {
+    const kind = classifyModelFailure(message);
+    expect(kind).toBe('TOOL_ERROR');
+    expect(executionPolicyForAttempt('BLIND_PLAYTEST_QA', 2, kind)).toEqual(executionPolicyForStage('BLIND_PLAYTEST_QA'));
   });
 });

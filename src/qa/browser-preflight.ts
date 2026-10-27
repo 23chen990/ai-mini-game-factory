@@ -1,5 +1,40 @@
 import { chromium, webkit } from '@playwright/test';
 import { redactText } from '../core/redaction.js';
+import { lstat, readFile, realpath } from 'node:fs/promises';
+import path from 'node:path';
+import { sha256File } from '../core/files.js';
+import { assertSafeContextInputPath } from '../core/execution-boundary.js';
+import { NaturalFlowEvidenceSchema } from '../schemas/natural-flow.js';
+
+export type QaObservationInput = { buildPath: string; buildSha256: string; tracePath: string; traceSha256: string };
+
+/** Validate the existing natural-flow artifact, not a new acceptance schema.
+ * Files and JSON cross a real external boundary. Host readiness alone did not
+ * let the previous read-only QA session observe even one gameplay frame.
+ */
+export async function verifyQaObservation(runRoot: string, input: QaObservationInput) {
+  const root = await realpath(runRoot);
+  async function boundFile(relative: string): Promise<string> {
+    const file = path.resolve(runRoot, assertSafeContextInputPath(relative));
+    const actual = await realpath(file);
+    const stat = await lstat(file);
+    if (!actual.startsWith(`${root}${path.sep}`) || !stat.isFile() || stat.isSymbolicLink()) throw new Error('QA observation file escapes its run or is not a regular file');
+    return file;
+  }
+  const buildPath = await boundFile(input.buildPath);
+  const tracePath = await boundFile(input.tracePath);
+  if (await sha256File(buildPath) !== input.buildSha256 || await sha256File(tracePath) !== input.traceSha256) throw new Error('QA observation build/trace hash mismatch');
+  const trace = NaturalFlowEvidenceSchema.parse(JSON.parse(await readFile(tracePath, 'utf8')));
+  if (trace.buildHash !== input.buildSha256 || !trace.startedFromReset || trace.actions.length === 0 || trace.forbiddenOperations.length > 0) throw new Error('QA observation requires build-bound normal input, not state injection');
+  if (trace.screenshots.length === 0 || trace.screenshots.length > 8 || new Set(trace.screenshots).size !== trace.screenshots.length) throw new Error('QA observation requires 1–8 distinct selected gameplay screenshots');
+  const images = await Promise.all(trace.screenshots.map(async (relative) => {
+    const file = await boundFile(relative);
+    const bytes = await readFile(file);
+    if (!bytes.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))) throw new Error('QA screenshot is not a PNG capture');
+    return { path: file, sha256: await sha256File(file) };
+  }));
+  return { scope: 'FROZEN_NATURAL_OBSERVATIONS_ONLY' as const, ...input, images, completion: trace.completion, replayObserved: trace.replayObserved };
+}
 
 /**
  * A no-model, same-host browser capability test. This is NOT product QA:
