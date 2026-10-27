@@ -328,11 +328,12 @@ referenceMechanics:
     const sourceSeed = path.join(process.cwd(), 'examples/seeds/relic-revival-workshop.yaml');
     await writeFile(seed, (await readFile(sourceSeed, 'utf8')).replace('researchFiles: []', 'researchFiles: [input/reference-report.txt]').replace('preferences:\n', 'identity:\n  canonicalGameId: relic-revival\n  aliases: []\n  variantId: relic-revival-preview\n  variantOf: relic-revival\npreferences:\n'));
     let qaCalls = 0;
+    const syntheticReferenceProvider = new SyntheticReferenceProvider();
     const factory = createFactory({
       root,
       mode: 'mock',
       qaMode: 'stub',
-      agentProvider: new SyntheticReferenceProvider(),
+      agentProvider: syntheticReferenceProvider,
       enforceStageContracts: true,
       enforceExplicitStageContracts: true,
       allowSyntheticReferenceAnalysisForTests: true,
@@ -402,6 +403,8 @@ referenceMechanics:
     }));
 
     expect(await factory.run(runId)).toMatchObject({ stage: 'WAITING_FOR_REFERENCE_APPROVAL', status: 'waiting' });
+    expect(syntheticReferenceProvider.lastResearchInputPaths).toContain('artifacts/reference-behavior-media-plan.json');
+    expect(syntheticReferenceProvider.lastResearchInputPaths).not.toContain('artifacts/reference-frame-manifest.json');
     await factory.approveReference(runId, { decision: 'APPROVE', notes: 'recording semantics approved' });
     const paused = await factory.resume(runId);
 
