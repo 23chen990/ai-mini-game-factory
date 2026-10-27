@@ -16,9 +16,11 @@ Inside `CodexCliProvider.execute`, a metered call at `BLIND_PLAYTEST_QA`, `NATUR
 - Missing tool access is `BLOCKED/UNOBSERVED`, not false negative or successful QA. The controller repairing an injected sample is not Fixer success.
 - There is no authorization for additional Codex/Research model calls or credits. A token stop based on delayed telemetry is **not** a billing hard cap. Unverified monetary expense must remain unknown.
 
-## Regression history
+## Verified exact-head CI (2026-10-27)
 
-The first PR test run passed the real Chromium/WebKit browser smoke and 1,253 tests. An extra success-path fixture subsequently exposed a double-escaped JSONL newline in the fixture itself; this was corrected without relaxing the execution boundary. Require the final exact-head CI to pass before merge.
+**PASS on `ad00da8d25691e163b683f3dcff1dfc49cf60222`.** [GitHub Actions run 40466760681](https://github.com/23chen990/ai-mini-game-factory/actions/runs/40466760681) completed successfully: lint, TypeScript typecheck, **195/195 test files and 1,254/1,254 tests passed**, including `tests/e2e/qa-browser-preflight.test.ts` with actual Chromium/WebKit launch, click and screenshot, plus release registry integrity. The initial green browser run had 1,253 tests; a later new success-path fixture exposed a double-escaped test JSONL newline, which was corrected without changing execution policy. This is the final green exact-head status.
+
+**Remaining blocker:** this host-side smoke is not a blind reviewer's tool grant and not a captured game journey. Before any further model-based Agent Eval, prove the actual reviewer can operate a browser OR provide separately captured, build-hash-bound normal-input screenshots/video/timestamps to a truly independent reviewer. A non-observing review is `BLOCKED/UNOBSERVED`, not Agent failure detection. Do not spend a new Research/QA model call merely to re-check browser availability.
 
 ## Acceptance
 
