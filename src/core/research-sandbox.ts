@@ -21,6 +21,7 @@ const RESEARCH_STAGES = new Set(['REFERENCE_DEEP_RESEARCH', 'COMPETITOR_RESEARCH
 const STRUCTURAL_INPUTS = new Map<string, ZodType>([
   ['input/seed.yaml', SeedSchema],
   ['artifacts/reference-evidence-pack.json', ReferenceEvidencePackSchema],
+  ['artifacts/reference-intake-evidence.json', ReferenceIntakeEvidenceSchema],
   ['artifacts/reference-frame-manifest.json', ReferenceFrameManifestSchema],
   ['artifacts/reference-intake-media-plan.json', ReferenceResearchMediaPlanSchema],
   ['artifacts/reference-behavior-media-plan.json', ReferenceResearchMediaPlanSchema],
