@@ -1,0 +1,27 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-core-loop-20261028/妖怪夜市
+
+ ❯ tests/integration/reference-review-loop.test.ts (8 tests | 1 failed | 7 skipped) 966ms
+   × does not copy outside bytes from stale model-authored symlink evidence into repair history 966ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/integration/reference-review-loop.test.ts > does not copy outside bytes from stale model-authored symlink evidence into repair history
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ tests/integration/reference-review-loop.test.ts:144:17
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 7 skipped (8)
+   Start at  15:38:19
+   Duration  2.77s (transform 916ms, setup 0ms, import 1.70s, tests 966ms, environment 0ms)

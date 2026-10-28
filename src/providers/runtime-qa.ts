@@ -1,3 +1,4 @@
+import type { QaReport } from '../schemas/index.js';
 import type { RuntimeAdapter } from '../adapters/runtime.js';
 import { WebLiteRuntimeAdapter } from '../adapters/web-lite.js';
 import { Cocos3dRuntimeAdapter } from '../adapters/cocos-3d.js';
@@ -357,7 +358,7 @@ export class MockQAProvider implements QAProvider {
     }
     return buildPerceptualQaReport(contract, observations, { buildHash, runtime: contract.runtime, reviewer: 'QAAgent', authorIndependent: true });
   }
-  async playtest() { return { schemaVersion: 1, passed: true, checks: [{ name: 'stub-contract', passed: true, evidence: 'QA stub selected by integration test' }], issues: [], screenshots: [], consoleLog: 'logs/console.log', testedAt: new Date().toISOString() }; }
+  async playtest(): Promise<QaReport> { return { schemaVersion: 1, passed: true, checks: [{ name: 'stub-contract', passed: true, evidence: 'QA stub selected by integration test' }], issues: [], screenshots: [], consoleLog: 'logs/console.log', testedAt: new Date().toISOString() }; }
   async playtestTournament({ report }: { report: PrototypeBuildReport }) {
     const criterion = (score: number, evidence: string) => ({ score, evidence });
     return { schemaVersion: 1, batch: report.batch, reviewer: 'QAAgent', prototypeAuthor: 'BuilderAgent', comparisons: report.prototypes.map((prototype, index) => ({ slot: prototype.slot, ideaId: prototype.ideaId, testedUrl: `file://${prototype.entrypoint}`, playtestActions: ['start', 'choice:0', 'choice:1', 'choice:0', 'choice:1', 'choice:0'], tenSecondUnderstanding: criterion(8 - index, 'The core action is visible without formal UI.'), funWithinThirtySeconds: criterion(8 - index, 'The first state change occurs on the first input.'), realDecision: criterion(9 - index, 'Safe and risky actions have different consequences.'), mechanicalRepetition: criterion(8 - index, 'Seeded targets change after repeated input.'), pressureOrFailure: criterion(8, 'Pressure reaches a clear failure threshold.'), retryUrge: criterion(8 - index, 'Reset immediately starts a new seeded attempt.'), variationAfterFiveRepeats: criterion(9 - index, 'The target signal changes across five actions.'), extensibility: criterion(9 - index, 'New target traits can extend the same verb.'), screenshot: `screenshots/prototype-${prototype.slot}.png`, consoleLog: `logs/prototype-${prototype.slot}.log` })) };

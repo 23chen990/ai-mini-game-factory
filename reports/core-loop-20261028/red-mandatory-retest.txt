@@ -1,0 +1,25 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-core-loop-20261028/妖怪夜市
+
+ ❯ tests/integration/reference-review-loop.test.ts (6 tests | 1 failed | 5 skipped) 2323ms
+   × runs the mandatory third QA cycle after two distinct changed-build repairs 2322ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/integration/reference-review-loop.test.ts > runs the mandatory third QA cycle after two distinct changed-build repairs
+AssertionError: expected Error: Stage QA exceeded its bounded retr… to not be an instance of Error
+ ❯ tests/integration/reference-review-loop.test.ts:114:22
+    112|   await factory.run(runId);await factory.approveReference(runId,{decis…
+    113|   const result=await factory.resume(runId).catch(error=>error);
+    114|   expect(result).not.toBeInstanceOf(Error);
+       |                      ^
+    115|   expect(fixes).toBe(2);expect(qaCalls).toBe(3);
+    116|  }finally{spy.mockRestore();}
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 skipped (6)
+   Start at  15:33:36
+   Duration  4.33s (transform 1.05s, setup 0ms, import 1.89s, tests 2.32s, environment 0ms)

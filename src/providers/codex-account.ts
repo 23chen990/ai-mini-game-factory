@@ -1,6 +1,7 @@
+import { ReferenceDiscoverySchema, ReferenceFidelityReviewSchema, ReferenceReviewCaseSchema } from '../schemas/reference-fidelity.js';
 import path from 'node:path';
 import { z } from 'zod';
-import type { AgentExecutionContext, AgentProvider, AgentProviderResult, CodexProvider, FormalPrototypeBuildInput } from './interfaces.js';
+import type { AgentExecutionContext, AgentProvider, AgentProviderResult, CodexProvider, FormalPrototypeBuildInput, ReferenceReviewRequest } from './interfaces.js';
 import type { CodexExecRequest, CodexExecResult } from './codex-cli.js';
 import { ArtApprovalSchema, ArtDirectionsSchema, CompetitorResearchSchema, GameBlueprintSchema, GreenlightDecisionSchema, IaaMonetizationReviewSchema, OpenSourceResearchSchema, ProductionCostReviewSchema, ReferenceBehaviorAnalysisSchema, StyleLockSchema, type ArtDirections, type AssetManifest, type CompetitorResearch, type GameBlueprint, type GameplayRevisionLock, type IaaMonetizationReview, type ProductionCostReview, type QaReport, type ReferenceEvidencePack, type ReferenceMechanicSpec, type Seed, type StyleLock } from '../schemas/index.js';
 import { IdeaGenerationSchema, LowCostFilterSchema, PrototypeSelectionSchema, WinnerSelectionSchema, type GameplayIdea, type IdeaGeneration, type LowCostFilter, type PlaytestTournament } from '../schemas/gameplay-experiment.js';
@@ -110,6 +111,11 @@ export class CodexAccountProvider implements AgentProvider, CodexProvider {
 
   private execute(request: CodexExecRequest) {
     return this.client.execute({ ...request, prompt: request.stage ? buildAgentPackageInstruction({ stage: request.stage, base: request.prompt }) : request.prompt });
+  }
+
+  reviewReferenceCandidate(input: ReferenceReviewRequest, context: AgentExecutionContext) {
+    const modelCase = ReferenceReviewCaseSchema.extend({rootCause:ReferenceReviewCaseSchema.shape.rootCause.unwrap(),hypothesis:z.string().trim().min(1)});
+    return this.structured('QA', `Act as independent QAAgent, not the author. Target ${JSON.stringify(input)}. Read only the declared hash-bound reference evidence and candidate artifacts. Open actual source and candidate pixels and use normal browser input where available; compare player intent and causal results, not copied click timing. Never use fixture injection, hidden setters or expected text as observed behavior. Initial discovery is blind: do not read historical defects or Builder/Fixer conclusions. Only the explicit requiredRetests are disclosed after repair; cover them in retests with exact same object/state/viewport and current-build evidence. Check core action, motion/contact, target combinations, continuous reward, danger and recovery/replay. Actively report important discoveries outside the contract, with exact object/state/viewport, evidence and a root-cause hypothesis (research, design, implementation, evidence or unknown). Missing or unobserved branches are failed/unobserved, never invented passes; source code is not source gameplay evidence. Every case needs real screenshot and natural trace hashes. Preserve source limitations. Return only the review; do not modify game files.`, ReferenceFidelityReviewSchema.safeExtend({ cases:z.array(modelCase),retests:z.array(modelCase),discoveries: z.array(ReferenceDiscoverySchema) }), context);
   }
 
   private async structured(stage: string, prompt: string, schema: z.ZodType, contextValue: AgentExecutionContext | undefined, outputSchema = codexOutputSchema(schema)): Promise<AgentProviderResult> {

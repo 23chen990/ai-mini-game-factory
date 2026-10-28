@@ -1,0 +1,8 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-core-loop-20261028/妖怪夜市
+
+
+ Test Files  175 passed (175)
+      Tests  998 passed (998)
+   Start at  15:51:13
+   Duration  107.71s (transform 2.08s, setup 0ms, import 30.94s, tests 169.43s, environment 9ms)

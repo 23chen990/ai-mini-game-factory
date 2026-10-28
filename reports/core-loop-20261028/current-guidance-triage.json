@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "mobile-slice-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+  "report": "Independent QA observed overlapping launch guidance at 390x844 in current build 8e570609…; controller confirmed pixels. This minor UI issue is not a core-experience repair opportunity and is not used to inflate the core-loop experiment.",
+  "classification": [
+    "mobile-readability"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "The visual symptom is reproduced, but its source/layout cause is uninspected; preserve for formal diagnosis rather than changing the game during factory validation.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "game source",
+      "unrelated game histories",
+      "blind reference answers"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Open exact current dist hash in a fresh 390x844 touch context",
+      "Observe initial launch card; use normal failure and visible retry to return"
+    ],
+    "observed": [
+      "Persistent control-helper banner overlaps the smaller launch-card guidance at startup and retry.",
+      "No current-build core gameplay defect was established by this QA."
+    ],
+    "evidence": [
+      {
+        "path": "factory-eval-20261028/blind-player-qa/current-dist/current-390-start.png",
+        "sha256": "800cfab24cd5b020f74de5f0af5185a6d53ae18dfd72ed543621362ff5d67f45",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "At 390x844, launch and persistent guidance do not overlap at initial and normal retry states",
+    "Preserve startup -> primary action -> settlement/failure -> replay and verify desktop regression",
+    "Independent perceptual retest on rebuilt exact candidate; do not call this a core-experience improvement"
+  ],
+  "status": "OPEN",
+  "createdAt": "2026-10-28T07:42:14.441Z"
+}

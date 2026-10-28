@@ -1,0 +1,73 @@
+{
+  "observedMechanisms": [
+    {
+      "playerIntent": "Traverse a short elevated course",
+      "action": "A tap-to-jump/flip prompt is visible; no input event is evidenced",
+      "stateChange": "Start/tutorial state presents the route and placed objects",
+      "challenge": "Separated course sections and elevation changes are visible",
+      "sourceFrame": "frame-00000"
+    },
+    {
+      "playerIntent": "Advance while performing an aerial move",
+      "action": "The player token is airborne with a curved trail; trigger is unknown",
+      "stateChange": "A score popup is visible",
+      "challenge": "Maintain alignment with the route and nearby objects",
+      "sourceFrame": "frame-00024"
+    },
+    {
+      "playerIntent": "Negotiate the next course section",
+      "action": "The player token is shown near a course edge/transition",
+      "stateChange": "A separated raised platform is visible ahead",
+      "challenge": "Gap or landing transition",
+      "sourceFrame": "frame-00064"
+    },
+    {
+      "playerIntent": "Pass through dense route interactions",
+      "action": "The player token overlaps or approaches bar-like clusters; contact behavior is unobserved",
+      "stateChange": "Multiple score popups are visible",
+      "challenge": "Dense mounted bar clusters",
+      "sourceFrame": "frame-00112"
+    },
+    {
+      "playerIntent": "Continue through object clusters toward the endpoint",
+      "action": "The player token is adjacent to clustered objects with particles visible",
+      "stateChange": "Additional score feedback and particles are visible",
+      "challenge": "Crowded interaction area and a raised pad-like element",
+      "sourceFrame": "frame-00160"
+    },
+    {
+      "playerIntent": "Reach the end scoring area",
+      "action": "The player token is shown approaching a tiered end structure",
+      "stateChange": "End-of-run multiplier tiers are visible",
+      "challenge": "Spiked-looking route element and final scoring gate",
+      "sourceFrame": "frame-00208"
+    },
+    {
+      "playerIntent": "Complete the course",
+      "action": "The player token is shown on the end pedestal",
+      "stateChange": "Confetti and an end-area celebration are visible",
+      "challenge": "Final placement or end-gate interaction",
+      "sourceFrame": "frame-00256"
+    },
+    {
+      "playerIntent": "Settle the run and accept its reward",
+      "action": "Claim and optional multiplied-claim controls are visible",
+      "stateChange": "The scene is replaced by a result state with score, bonus, result, and best-score fields",
+      "challenge": "Choose a reward-claim path",
+      "sourceFrame": "frame-00288"
+    }
+  ],
+  "inferences": [
+    "The sequence is consistent with a short course-traversal game ending in a tiered scoring and reward-claim state.",
+    "The blade-shaped player token, score popups, particles, and visibly altered round object suggest object interaction may produce score.",
+    "The jump/flip prompt and airborne pose suggest a tap-triggered aerial mechanic, but this requires runtime confirmation."
+  ],
+  "unknowns": [
+    "Continuous motion, forward automation, speed, trajectory, and camera behavior are not established by static frames.",
+    "Input mapping and whether tapping actually causes jumping, flipping, or rotation are unverified.",
+    "Collision, slicing, collection, hazard, gap, landing, and failure rules are unknown.",
+    "The cause of each score popup and the scoring/multiplier calculation are unknown.",
+    "Lives, reset, game-over, replay, persistence, and post-claim behavior are not shown."
+  ],
+  "representativeSlice": "Original 30–60 second prototype: traverse a short course, attempt tap-triggered aerial moves, negotiate gaps and dense interactable or hazardous sections, show score feedback, reach a tiered end gate, then enter a result and reward-claim state. Treat collision, failure, multiplier, and replay rules as validation targets rather than observed facts."
+}

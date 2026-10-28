@@ -1,0 +1,21 @@
+{
+  "targetGame": "mobile-slice-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+  "url": "https://0e9dcadf-1c75-4c53-a211-b93f4423212a.gdn.poki.com/2f05f3fa-ed09-41a0-b971-b57ffa82cef9/index.html",
+  "finalUrl": "https://0e9dcadf-1c75-4c53-a211-b93f4423212a.gdn.poki.com/2f05f3fa-ed09-41a0-b971-b57ffa82cef9/index.html",
+  "title": "Attention Required! | Cloudflare",
+  "began": "2026-10-28T07:56:51.673Z",
+  "finished": "2026-10-28T07:57:02.813Z",
+  "input": {
+    "type": "mouse.click",
+    "x": 550,
+    "y": 360
+  },
+  "errors": [],
+  "identityStatus": "UNKNOWN",
+  "scope": "Direct-embed reachability probe only; not gameplay acceptance",
+  "status": "BLOCKED",
+  "reviewStatus": "BLOCKED",
+  "usableAsGameplayEvidence": false,
+  "reason": "The direct historical embed resolves to a Cloudflare challenge, not an observed game session. No challenge bypass attempted."
+}

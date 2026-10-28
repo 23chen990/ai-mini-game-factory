@@ -249,7 +249,7 @@ referenceMechanics:
     await writeFile(artifact('runtime-product-gates.json'), JSON.stringify(deriveRuntimeProductGate({ naturalFlow: flow, runtimeWiredFiles: ['workspace/game/index.html'], browserEvidence: [image.path] })));
     await writeFile(artifact('reference-fidelity-review.json'), JSON.stringify({
       schemaVersion: 1, targetRunId: runId, workspace: path.join(runRoot, 'workspace/game'), contractHash: fidelityGate.contractHash, buildHash: fidelityGate.buildHash,
-      reviewer: 'QAAgent', authorIndependent: true,
+      reviewer: 'QAAgent', authorIndependent: true, reviewProtocol:'reference-comparison-v1',
       cases: contract.behaviorChecks.map((check) => ({ checkId: check.id, objectType: check.objectType, stateBranch: check.stateBranch, viewport: check.viewport,
         passed: true, perceptualPassed: true, observedStateChange: 'synthetic observed state', observedFeedback: 'synthetic visible feedback', screenshots: [image], trace })),
     }));

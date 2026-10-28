@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "mobile-slice-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+  "candidateSha256": "8e57060931df63f915b66c15005ab4b27f62f8156bfe8d018e4f8bff01a9502f",
+  "referenceSha256": "3781e4dcd3d21094f186cf442b3ee30cddfbb2fbe68d87c5c7470a2c742bf75a",
+  "startedAt": "2026-10-28T07:29:45.191Z",
+  "finishedAt": "2026-10-28T07:32:21.208Z",
+  "status": "BLOCKED",
+  "report": {
+    "schemaVersion": 1,
+    "passed": false,
+    "checks": [
+      {
+        "name": "current dist 390x844 normal-input start, play, and settlement",
+        "passed": true,
+        "evidence": "The current dist fresh mobile context received a touch start at 2026-10-28T07:29:46.930Z and 35 normal taps through 07:30:20.590Z; it reached a stage-complete settlement (score 8, ×2) by 07:30:22.556Z. Screenshot current-390-35s-end.png SHA-256 e77a426c8b5195cfb8e83d73d54394fbbd184308c049c9229d4b0f3b4203c465; timestamped input log current-390-inputs.json SHA-256 f75a17f92b913814f0853803479665509c747ad0d27751aa8e14fe6bb5e663dd."
+      },
+      {
+        "name": "current dist 1100x720 normal-input start, play, and settlement",
+        "passed": true,
+        "evidence": "The current dist fresh landscape context received a mouse start at 2026-10-28T07:30:24.194Z and 35 normal clicks through 07:30:57.937Z; it reached a stage-complete settlement (score 16, ×4) by 07:31:00.033Z. Screenshot current-1100-35s-end.png SHA-256 365989a8dfcdb56de3d8a902e50160fccf10993bbdbcc88c03c8e6ab55b7de70; timestamped input log current-1100-inputs.json SHA-256 6f462eaf06306f6fde076b8369f984edb753c7d1898143edc2b9d23ec2aa07ab."
+      },
+      {
+        "name": "current dist natural failure cause and retry",
+        "passed": true,
+        "evidence": "At 390x844, after ordinary start and 15 touches followed by 15 seconds without input, the current build showed “踏出路线 / 分数 8 / 本轮失败” and “重玩” at 2026-10-28T07:32:11.403Z. The visible retry button was touched at (195,534) at 07:32:19.923Z; by 07:32:21.173Z the screen was back at Stage 1 with score 0 and the launch prompt. Failure screenshot current-390-failure-before-retry.png SHA-256 9de37b015efe6d719b7a547814a0dbe8e337fb10f8ec871cd8617c9830305a1e; retry screenshot current-390-after-retry.png SHA-256 bfdf0535d8803ed234d64d9962b4e8b3d2045270b29e60871a5f400498bff71f; input log current-failure-replay-inputs.json SHA-256 7f552261cafd31e10bccdac2090c6b77ae10bbbcc566dd9d9f432fe9ac1f2803."
+      },
+      {
+        "name": "applicability of attempt13 behavioral observations to the current dist candidate",
+        "passed": true,
+        "evidence": "Normal touch/mouse input independently confirmed that the current dist still starts, advances through slice/hazard stages, settles, and offers a retry that resets to Stage 1. Scores and multipliers differed between fresh runs (mobile 8/×2, landscape 16/×4, failure 8), so exact values are not asserted as stable. This supports applicability of the attempt13 behavioral-path observations only; the build results remain separate."
+      },
+      {
+        "name": "current dist initial/retry instruction readability at 390x844",
+        "passed": false,
+        "evidence": "In the initial/retry title state the translucent launch-instruction card and persistent dark control-helper banner occupy the same bottom region; their smaller instruction lines visually overlap and become hard to read at 390x844. current-390-start.png SHA-256 800cfab24cd5b020f74de5f0af5185a6d53ae18dfd72ed543621362ff5d67f45 at 2026-10-28T07:29:46.757Z; the same layout is visible after retry in current-390-after-retry.png SHA-256 bfdf0535d8803ed234d64d9962b4e8b3d2045270b29e60871a5f400498bff71f at 07:32:21.173Z."
+      },
+      {
+        "name": "live reference comparison",
+        "passed": false,
+        "evidence": "No new live-reference session was run for this separate candidate check. The attempt13 report documents the blocked live comparison and the identity-reviewed recording is used here only as the reference source; its full-run and replay behavior remain unobserved live."
+      }
+    ],
+    "issues": [
+      {
+        "id": "current-390-launch-guide-overlap",
+        "severity": "warning",
+        "message": "The current dist launch prompt and persistent control-helper banner visually overlap in the 390x844 initial/retry state, reducing readability of the smaller guidance lines.",
+        "evidence": "Object: launch-instruction card and persistent control-helper banner; state: fresh launch and post-retry initial screen; viewport 390x844. current-390-start.png SHA-256 800cfab24cd5b020f74de5f0af5185a6d53ae18dfd72ed543621362ff5d67f45 at 2026-10-28T07:29:46.757Z; current-390-after-retry.png SHA-256 bfdf0535d8803ed234d64d9962b4e8b3d2045270b29e60871a5f400498bff71f at 2026-10-28T07:32:21.173Z. The game was entered via a normal touch and the retry state was reached via the visible retry button; no source or layout code was inspected.",
+        "rootCause": "unknown",
+        "hypothesis": "The launch card and persistent helper may be positioned in the same lower responsive region; the causal layout implementation was not inspected."
+      }
+    ],
+    "screenshots": [
+      "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/current-dist/current-390-start.png",
+      "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/current-dist/current-390-after-start.png",
+      "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/current-dist/current-390-active-10.png",
+      "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/current-dist/current-390-35s-end.png",
+      "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/current-dist/current-390-failure-before-retry.png",
+      "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/current-dist/current-390-after-retry.png",
+      "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/current-dist/current-1100-start.png",
+      "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/current-dist/current-1100-after-start.png",
+      "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/current-dist/current-1100-active-10.png",
+      "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/current-dist/current-1100-35s-end.png"
+    ],
+    "consoleLog": "Not collected: blind player-only observation. No DOM inspection, game-state reads, hidden/debug API, state injection, or fixture controls were used.",
+    "testedAt": "2026-10-28T07:32:21.208Z"
+  },
+  "unobserved": [
+    "A sustained live-reference comparison for this current dist candidate; attempt13 live comparison was blocked and only the verified recording is reused.",
+    "Current dist next-stage selection after the stage-complete settlement.",
+    "Current dist behavior at viewports other than 390x844 and 1100x720."
+  ],
+  "sourceMode": "verified-recording-only",
+  "inputLogs": [
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/current-dist/current-390-inputs.json",
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/current-dist/current-1100-inputs.json",
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/current-dist/current-failure-replay-inputs.json"
+  ],
+  "videos": [
+    "mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/current-dist/videos/page@12e6cfee8da213f34c2836b859e6b8be.webm",
+    "mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/current-dist/videos/page@5e37c569be6dd7c6418b02039d242222.webm",
+    "mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/current-dist/videos/page@f72bda34266f2fa4f631bedb4fef435f.webm"
+  ],
+  "observedFrames": [
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/current-dist/current-390-start.png sha256=800cfab24cd5b020f74de5f0af5185a6d53ae18dfd72ed543621362ff5d67f45",
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/current-dist/current-390-35s-end.png sha256=e77a426c8b5195cfb8e83d73d54394fbbd184308c049c9229d4b0f3b4203c465",
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/current-dist/current-390-failure-before-retry.png sha256=9de37b015efe6d719b7a547814a0dbe8e337fb10f8ec871cd8617c9830305a1e",
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/current-dist/current-390-after-retry.png sha256=bfdf0535d8803ed234d64d9962b4e8b3d2045270b29e60871a5f400498bff71f",
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/current-dist/current-1100-35s-end.png sha256=365989a8dfcdb56de3d8a902e50160fccf10993bbdbcc88c03c8e6ab55b7de70"
+  ]
+}

@@ -225,7 +225,7 @@ describe('reference quality audit', () => {
     await writeFile(path.join(runRoot, trace.path), traceBody);
     const fidelityReview = {
       schemaVersion: 1, targetRunId: runId, workspace, contractHash: sha256Text(JSON.stringify(fidelity)), buildHash,
-      reviewer: 'QAAgent', authorIndependent: true,
+      reviewer: 'QAAgent', authorIndependent: true, reviewProtocol:'reference-comparison-v1',
       cases: checks.map((check) => ({ checkId: check.id, objectType: check.objectType, stateBranch: check.stateBranch, viewport: check.viewport, passed: true, perceptualPassed: true, observedStateChange: check.expectedStateChange, observedFeedback: 'target-local feedback', screenshots: [screenshot], trace })),
     };
     await store.writeArtifact(runId, 'reference-fidelity-review.json', fidelityReview);

@@ -1,0 +1,25 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-core-loop-20261028/妖怪夜市
+
+ ❯ tests/unit/reference-fidelity-qa.test.ts (21 tests | 1 failed | 20 skipped) 18ms
+   × blocks legacy comparison methodology even when all old evidence hashes match 17ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/reference-fidelity-qa.test.ts > blocks legacy comparison methodology even when all old evidence hashes match
+AssertionError: expected [] to include 'fidelity:review-protocol-missing'
+ ❯ tests/unit/reference-fidelity-qa.test.ts:137:96
+    135| it('blocks legacy comparison methodology even when all old evidence ha…
+    136|  const input=await fixture();
+    137|  expect((await verify({...input,review:{...input.review,reviewProtocol…
+       |                                                                                                ^
+    138| });
+    139|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 20 skipped (21)
+   Start at  15:43:13
+   Duration  713ms (transform 371ms, setup 0ms, import 579ms, tests 18ms, environment 0ms)
