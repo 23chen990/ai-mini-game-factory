@@ -1,0 +1,21 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/repair-policy.test.ts (9 tests | 1 failed) 12ms
+   × admits a distinct evidence-backed causal hypothesis for the same still-open issue 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/repair-policy.test.ts > admits a distinct evidence-backed causal hypothesis for the same still-open issue
+AssertionError: expected 'a873d00ac720a6a698cd7cc87f84f53f0b2be…' not to be 'a873d00ac720a6a698cd7cc87f84f53f0b2be…' // Object.is equality
+ ❯ tests/unit/repair-policy.test.ts:118:57
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 8 passed (9)
+   Start at  23:46:38
+   Duration  197ms (transform 32ms, setup 0ms, import 81ms, tests 12ms, environment 0ms)
+

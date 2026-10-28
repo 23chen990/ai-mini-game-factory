@@ -1,0 +1,21 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/integration/factory-agent-eval-cli.test.ts (3 tests | 1 failed) 4914ms
+   × extends the existing eval command with an explicit unverified Agent evidence report 1823ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/integration/factory-agent-eval-cli.test.ts > extends the existing eval command with an explicit unverified Agent evidence report
+Error: Command failed: pnpm factory eval --agent-results /var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/factory-agent-eval-cli-hOqoiT/observations.json
+$ tsx src/cli/factory.ts eval --agent-results /var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/factory-agent-eval-cli-hOqoiT/observations.json
+Agent evidence hash mismatch: tests/unit/reference-comparison-mode.test.ts
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  23:40:38
+   Duration  5.03s (transform 14ms, setup 0ms, import 22ms, tests 4.91s, environment 0ms)
+

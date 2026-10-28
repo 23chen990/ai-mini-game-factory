@@ -128,6 +128,7 @@ export function safeExecutionContext(value: AgentExecutionContext): SafeExecutio
     targetGameId: checked.targetGameId,
     targetWorkspaceRelative: checked.targetWorkspaceRelative,
     requiredArtifacts: checked.requiredArtifacts?.map((item) => item.replaceAll('\\', '/')),
+    qaObservation: checked.qaObservation,
     stage: checked.stage,
     model: checked.model,
     reasoning: checked.reasoning,

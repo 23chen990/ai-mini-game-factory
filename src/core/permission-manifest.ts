@@ -56,7 +56,9 @@ export function buildPermissionManifest(stageValue: StageName, options: Permissi
         ? ['input/', 'artifacts/', 'human/', 'reference-evidence/']
       // Research and all metadata/QA roles may inspect only run evidence and
       // approvals.  They never receive workspace source or arbitrary files.
-      : ['input/', 'artifacts/', 'human/'];
+      : stage === 'QA'
+        ? ['input/', 'artifacts/', 'human/', 'workspace/game/dist/', 'reference-evidence/manifest.json', 'reference-evidence/verified/', 'reference-evidence/derived/', 'screenshots/', 'logs/reference-level/', 'logs/product-experience/']
+        : ['input/', 'artifacts/', 'human/'];
   // Commands are deliberately descriptive allow-list entries. Providers may
   // still choose not to expose a shell; this manifest is the auditable upper
   // bound and never grants a wildcard command.

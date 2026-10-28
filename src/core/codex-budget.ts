@@ -108,3 +108,12 @@ export async function codexStageExecution(runRoot: string, stage: string, label:
   const directory = path.join(runRoot, 'logs/codex/executions', receipt.executionId);
   return { receipt, stdoutPath: path.join(directory, `${label}.attempt-${receipt.attempts}.stdout.jsonl`), outputPath: path.join(directory, `${label}.last-message.txt`) };
 }
+
+/** Cumulative execution time excludes human/engineering idle intervals. A live
+ * or crashed invocation is unresolved, not a zero-cost completed interval. */
+export function completedCodexExecutionMs(receipts: readonly Pick<CodexUsageReceipt, 'startedAt' | 'finishedAt'>[]): number {
+  return receipts.reduce((total, receipt) => {
+    if (receipt.finishedAt === null) throw new Error('Codex execution is unfinished; reconcile it before continuation');
+    return total + Date.parse(receipt.finishedAt) - Date.parse(receipt.startedAt);
+  }, 0);
+}

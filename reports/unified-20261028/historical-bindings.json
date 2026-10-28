@@ -1,0 +1,16 @@
+[
+  {
+    "caseId": "qa-ordered-sequence",
+    "before": {
+      "path": "tests/unit/reference-comparison-mode.test.ts",
+      "sha256": "76ea5fbc8a50793230e6f097c55d9bd85a41c893a25600a1a6b31239644aaf64",
+      "revision": "0c3c498f54cf334b83e96bd14c3016e7c84382b6"
+    },
+    "after": {
+      "path": "tests/unit/reference-comparison-mode.test.ts",
+      "sha256": "e1e72670bb092550667a44a2eb161c2a99e85f4e9bb18fddb197a9a151d7df04"
+    },
+    "basis": "Existing ordered/mean/range/sensitivity assertions unchanged; appended recording-observation UNKNOWN regression passed. No Agent success labels changed.",
+    "testLog": "reports/unified-20261028/comparison-current-binding.log"
+  }
+]

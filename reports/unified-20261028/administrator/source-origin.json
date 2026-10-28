@@ -1,0 +1,551 @@
+{
+  "targetGame": "小李飞刀 · 海岸试炼（独立实验副本）",
+  "workspace": "/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/runs/unified-agent-repair-20261028/workspace/game",
+  "parent": "/Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市/runs/slice-h5-candidate-20261027/workspace/game",
+  "files": [
+    {
+      "path": "watermelon-cleave.html",
+      "sha256": "2ecbe4846e8486b95277c5b798db7e6e5c6a261ab50cf3f69759b97bb5e03e7a"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "1030f259c947f9bc8448ec6c208fb4c9f817408ae019a88a7b20fb41392f2722"
+    },
+    {
+      "path": "index.html",
+      "sha256": "7ded3c754c6f206fbd27d8082287d010c9c89b3a275bbe2e19b730c6594424a8"
+    },
+    {
+      "path": ".DS_Store",
+      "sha256": "eafe9b25e16bb8489db051170b4d2fd69824d7f164429a80e33d3de1c324fb76"
+    },
+    {
+      "path": "poc-3d.html",
+      "sha256": "1515bb4d6864e7daf2fe608b1ca1d9cdec6fceb9dedbf03bad0e277c23877e49"
+    },
+    {
+      "path": "package.json",
+      "sha256": "f3c2044c936c173160faa68840f0570143f3f7364f7e0a39df29cfe77005313c"
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "ca2e1e969f70259c060df5745047edf0391c87243e6572cb253a497df213394d"
+    },
+    {
+      "path": "food-cleave.html",
+      "sha256": "7525635db021d16f566c20ba1fe065d99bc68c7a3e9cc09c8ccf06ddfb76c869"
+    },
+    {
+      "path": "eslint.config.js",
+      "sha256": "51e149a055b7e82f31aaf8af2d747979318482d0ec5ae2015b7a9240451c860a"
+    },
+    {
+      "path": "vite.config.ts",
+      "sha256": "895307dd6dced17b2772c226c8d7b2c0f435625bdddc149e7d6d1bf748af8b9c"
+    },
+    {
+      "path": "tests/core-loop-fidelity.test.ts",
+      "sha256": "273da1c8c746e05f0d6b94cdd33027d6dd49494eca46fa14f03a57ba326c6a09"
+    },
+    {
+      "path": "tests/game-content.test.ts",
+      "sha256": "490cd1077f257f2bde9c1af54f4bd493d778c7eb67e4d2903019bf3e64dac0db"
+    },
+    {
+      "path": "tests/authored-cut-softbody.test.ts",
+      "sha256": "6b28038de69f1d844b6dc5df3572321476918239cc65d36084c52dbba06e04d2"
+    },
+    {
+      "path": "tests/game-core.test.ts",
+      "sha256": "a5d4897f60ee8d22561b257e27f5442f1a98f068724ef34d351191c6d9ccdec8"
+    },
+    {
+      "path": "tests/default-cleave-browser.ts",
+      "sha256": "9b2145f540c99fba4dcaf082a5f3a4296ae832cb354bf32b78df3a1ff1a906f9"
+    },
+    {
+      "path": "tests/browser-smoke.ts",
+      "sha256": "8c574046c553ceaa9f35e443c0cc6a0f697f663dc36f63c51bd30c95631a893a"
+    },
+    {
+      "path": "tests/fruit-cut-layers.test.ts",
+      "sha256": "a334839fb40eded6785acccc1233a41c0cc69398bb5d3829eff8e6910df7e24a"
+    },
+    {
+      "path": "tests/default-spatial-relations.test.ts",
+      "sha256": "1d10e9826b0f6db6d5f44ff1ac601631a026ea9e3a83a0094dc7952f1f1eaef3"
+    },
+    {
+      "path": "tests/a-style-basecolor.test.ts",
+      "sha256": "fc41d39ea56ee097c29948eb0b9d4efd86e42bc61d21bcfc96c2f02ee87640b1"
+    },
+    {
+      "path": "tests/three-presentation.test.ts",
+      "sha256": "20bdee9eebfd39b77154460738e5e018541ebfb76fbcfd3cf40b2e942e2b4f62"
+    },
+    {
+      "path": "tests/melon-softbody.test.ts",
+      "sha256": "7b981c36f41e14f396dce69c793dec909499fb1bd70248371c7f07ebe9739b0e"
+    },
+    {
+      "path": "tests/melon-material.test.ts",
+      "sha256": "8f045b56fcda3495aaa6064f16ea6334adba0cff9411cc51e564be8e5fb232d5"
+    },
+    {
+      "path": "tests/melon-visuals.test.ts",
+      "sha256": "2349aabb566fa4e925936e854aa87e3577e00b253da157535e77b0d246d2d8a4"
+    },
+    {
+      "path": "tests/food-cleave-browser.ts",
+      "sha256": "ee7f6a0fa27932adc319311bc382ad0a0ed61e2fef25f94b4fc13e630b527d49"
+    },
+    {
+      "path": "tests/watermelon-cleave.test.ts",
+      "sha256": "017775fd72a1a51d8978428ee71498bb3102e16261fe9fb8c31b2464ff024b45"
+    },
+    {
+      "path": "tests/opening-renderer-regression.test.ts",
+      "sha256": "7ff5342852769311506701d2a4860e4fdb5b6a9824fede6dbd21b8b02c1901db"
+    },
+    {
+      "path": "tests/level-pack-browser.ts",
+      "sha256": "f82453ee83977da72656ce5f1722a2b50125a234017cca987388b29a97a46042"
+    },
+    {
+      "path": "tests/food-theme.test.ts",
+      "sha256": "6739b3df1b7cc60f62a47f1f1b82f2c7409f8858d88e57c0958d322ef58fafe7"
+    },
+    {
+      "path": "tests/core-loop-natural-qa.ts",
+      "sha256": "9ee79ea5e76668cfca6a23866c717eb0294b974adfff5a4b49d585dd9ba3703d"
+    },
+    {
+      "path": "tests/cut-poc-3d-build.test.ts",
+      "sha256": "3fb9c6f2a90b4e135441234a5f8616fca31c09a3c273c8611819202eb7370b6a"
+    },
+    {
+      "path": "tests/asset-manifest.test.ts",
+      "sha256": "1665abdfe62dc51aea94ab20d76927106ce97ae3f3db85b94c96900baf427d5a"
+    },
+    {
+      "path": "tests/level-progress.test.ts",
+      "sha256": "2c9227f8dbbbf551786437653dc7ca809e51e75cf1618241a10b870820b74108"
+    },
+    {
+      "path": "tests/level-catalog.test.ts",
+      "sha256": "15985b7b0728030257cd2c8eea1e4319a27755986d59fcbae342d8b2ab52fa03"
+    },
+    {
+      "path": "tests/level1-recovery.test.ts",
+      "sha256": "802f1b7cae9be41c0dccebd2312c7973f160f2910bd6e5048982933e340415fa"
+    },
+    {
+      "path": "tests/hud-layout.test.ts",
+      "sha256": "662ce4af3f1541d83f9eb8c7a031fd072e61d716d7921f260cbbbebea139689c"
+    },
+    {
+      "path": "tests/level-ui.test.ts",
+      "sha256": "f80154330547a497ecb8e501063d3d2585a6af4d62d5e639722f01cfdeda2baa"
+    },
+    {
+      "path": "tests/build.test.ts",
+      "sha256": "87f100e3a13bbb97acb077589a80b6fd3941898d1f482fdf4386e2a4135a5b1f"
+    },
+    {
+      "path": "tests/melon-integration.test.ts",
+      "sha256": "f92c0ac9ab3dbc25c7a4da15a042add22ceae437cbdac3e271903d52244650a1"
+    },
+    {
+      "path": "tests/spike-finish-pressure.test.ts",
+      "sha256": "d835a07dd543cded7d3ba778a6e285e240d4ef9c8670fb73a73d9c074b0e8853"
+    },
+    {
+      "path": "tests/slice-alignment.test.ts",
+      "sha256": "5818ef0e72860396b8daec3c8363b0bd8cfe396aed283dcd8a0435548dabbca9"
+    },
+    {
+      "path": "tests/h5-session.test.ts",
+      "sha256": "c802bbdca1506d5fbb7283e9b0f4909283c15a7d904d766a51efb3a8ec7de030"
+    },
+    {
+      "path": "tests/cut-impact-presentation.test.ts",
+      "sha256": "cf185039f6e419d263eb36a12755b972dab41c5726114f7b920c4f6687bc2bd6"
+    },
+    {
+      "path": "tests/level1-dense-cutting.test.ts",
+      "sha256": "1262ace9f8f06f446f0b3558d65fae35825643a9254c7e252cf9adc5bc47f8e3"
+    },
+    {
+      "path": "tests/slice-impact-motion.test.ts",
+      "sha256": "739b0b94e8f746cb9573ccee4af8dc2ef9bdf2bc98487514cdf52510485fa789"
+    },
+    {
+      "path": "tests/cut-continuity.test.ts",
+      "sha256": "788e6502b91a7b100668252c1690fbd0f6416235d1d56e381c01df00855fd454"
+    },
+    {
+      "path": "tests/camera-framing.test.ts",
+      "sha256": "112d570d00cc51f4c1bd8c3f0a03858cffc15921eacb25adf43c1635e81af312"
+    },
+    {
+      "path": "tests/browser-smoke-3d.ts",
+      "sha256": "e37b045669712dcb69846098042b852d6e4debd2799de814cc180205ff79b77c"
+    },
+    {
+      "path": "tests/mechanics-v2.test.ts",
+      "sha256": "10909b396d8e5948b31bed2d0c93080f2a278749585c5ce7a7ad63f51e0fc037"
+    },
+    {
+      "path": "tests/level3-natural-qa.ts",
+      "sha256": "33337a926aa25ab92667fdd39cd40a60db768192363fe8fd08536fdcb6e59f76"
+    },
+    {
+      "path": "tests/perceptual-level-pressure.test.ts",
+      "sha256": "850019a2ae965c30f763b0cac420ac8101c713a190d3c0ab896da24f2440b533"
+    },
+    {
+      "path": "tests/level10-spike-policy.test.ts",
+      "sha256": "c0e8febb66ecf96b0cc86b89636070dec94b8f7eb10f1bc16c7d74e099402a2e"
+    },
+    {
+      "path": "tests/poc-3d-texture-routing.test.ts",
+      "sha256": "e6310d65aad10560bbf7e2228664e187f4975521661d295e7f26ab3b2e770e13"
+    },
+    {
+      "path": "tests/level4-spike-policy.test.ts",
+      "sha256": "aa00b42b99ffeface2721c8aa7dd842efaad474437fc8e347cd47851b0103c61"
+    },
+    {
+      "path": "tests/default-watermelon-cleave.test.ts",
+      "sha256": "3dad285fae4f95732c997e3f0b4acc6680eedb0da8f810e5a39f3ab10b5709b3"
+    },
+    {
+      "path": "tests/slice-master-alignment.test.ts",
+      "sha256": "5a7d66c9b984debb008d701f288d5c60924f687ec0fd919535c19eb1116b01c4"
+    },
+    {
+      "path": "tests/flight-envelope.test.ts",
+      "sha256": "48b8715cf1643165a306c054ac145b2af5004adfe49da7606628546496146206"
+    },
+    {
+      "path": "tests/watermelon-cleave-browser.ts",
+      "sha256": "59ae6f2ca13e4bdc6faefff73ac7ef151dbe5227a6d63e294bfd369332089ac0"
+    },
+    {
+      "path": "tests/food-cleave.test.ts",
+      "sha256": "e21b7ddf3932e86c584eb4aa39bf0d91458bf024def7048481153accf4bb91f2"
+    },
+    {
+      "path": "tests/formal-fix-hard-object-reachability.test.ts",
+      "sha256": "098b7b39a3d8ec7fe8aef87ee7e1d0fa776179e6e5512186ccc74f765c29fa51"
+    },
+    {
+      "path": "tests/finish-transition-hud.test.ts",
+      "sha256": "8234f0e08caafb0795f50ba0418745c8e116d6ae6709875ff9b2a6bf8d4fc6e1"
+    },
+    {
+      "path": "tests/level12-pressure-policy.test.ts",
+      "sha256": "24fc17b9fec04859225670ffb0ca01cf2e0fc5a55147fbfeec1ff03ee8dae95c"
+    },
+    {
+      "path": "tests/orphan-object-reachability.test.ts",
+      "sha256": "f9e932eca37c0626d3825d824c3832f872058ea94ec829d86fbaa33087eb13ba"
+    },
+    {
+      "path": "tests/theme.test.ts",
+      "sha256": "a2d9d0c3babd602b9684b1904e4de97bd91ea40b93cf1e236c9e585d56ff3bae"
+    },
+    {
+      "path": "tests/apple-cleave.test.ts",
+      "sha256": "68f76a7ee2fac81eff582026955bb457d2724e114eca30a16112bbeb36eb41f8"
+    },
+    {
+      "path": "tests/level-pressure.test.ts",
+      "sha256": "3af40d6ebd9a324cc3ec96a2eee6478ef58e818e9ac3976d3b65c1764dd756c5"
+    },
+    {
+      "path": "tests/cut-poc-3d.test.ts",
+      "sha256": "c145c5b1f292cabf318e27b3e85c0e9929cd3a8284b5b2234205cd340ae7823c"
+    },
+    {
+      "path": "tests/finish-label-layout.test.ts",
+      "sha256": "a6773b9dc777f281a36c6b7baa805957a0fa6b6158bda9aeff5d77e009b58777"
+    },
+    {
+      "path": "tests/fixtures/compatibility-simulation.ts",
+      "sha256": "fcc0dd479dbf3a8da917cf1342fcb4296b681190601c0bc9a8b50a09fa176c99"
+    },
+    {
+      "path": "tests/fixtures/compatibility-game-levels.ts",
+      "sha256": "1de41c29a00ced1b303aa69313a6539423bd475ae77c44831a83cb200175fcc4"
+    },
+    {
+      "path": "docs/watermelon-softbody-deprecated.md",
+      "sha256": "cd184cd48f8e114aa728ba950ff367478a1e56b2d960df4bc07c2eee81b314c6"
+    },
+    {
+      "path": "reference-evidence/manifest.json",
+      "sha256": "ebdb0c383083495dc5c0efb4354aab53264f19a335c2dce32e2e73b8db4370b8"
+    },
+    {
+      "path": "reference-evidence/verified/intact-d1228af1d3f5.png",
+      "sha256": "d1228af1d3f5aa303fcf8cbce602bc69a33e6a63b4a564d2116f59b40a760801"
+    },
+    {
+      "path": "reference-evidence/verified/settled-b719c01f71de.png",
+      "sha256": "b719c01f71de225c89161ed96dfcd81c1bb10cab030a45dda9f515fcb8e72637"
+    },
+    {
+      "path": "reference-evidence/verified/opening-014adfc8f425.png",
+      "sha256": "014adfc8f4256fc759e53b2f2ec6aa35ab87d7b448f8668062088785182af44d"
+    },
+    {
+      "path": "reference-evidence/reviews/apple-settled-20261003.json",
+      "sha256": "5878cab2f44dad1838480f309bd8267d4626f6577bf78651326fbf66064aadde"
+    },
+    {
+      "path": "reference-evidence/reviews/apple-opening-20261003.json",
+      "sha256": "2bed8dbbf58f234fa5da4cefd88b97d24f569aad363b2ef26bbebd3404e2d425"
+    },
+    {
+      "path": "reference-evidence/reviews/apple-intact-20261003.json",
+      "sha256": "3294f40d26369f2b39450f36939c5c8b2247dcdd8fe06499fcac3fcd13a8ca5d"
+    },
+    {
+      "path": "public/assets/kenney-nature/log_stack.glb",
+      "sha256": "90eaae4a01ba1f25c2f0c6d83087e4a7a8fac684f2452615245333968d118d68"
+    },
+    {
+      "path": "public/assets/kenney-nature/License.txt",
+      "sha256": "cb96b75e3560ac78d7a53ce6f083f4cdb5c53faea6141b62d63458dcfe1e4b9d"
+    },
+    {
+      "path": "public/assets/kenney-nature/tree_simple.glb",
+      "sha256": "93891ea740447634930de19c31a7c1c9f4add94122e6db03aca9f75aea32f9d6"
+    },
+    {
+      "path": "public/assets/kenney-food-kit/apple.glb",
+      "sha256": "2a80ab65d5bc2cb4f2bca1e8176cbb591849a288596d4b2e76e411338761a526"
+    },
+    {
+      "path": "public/assets/kenney-food-kit/cheese.glb",
+      "sha256": "092c9326a27fc51edfaa0353c411875993ac109ee5e8923b681cc39fbb6312d1"
+    },
+    {
+      "path": "public/assets/kenney-food-kit/banana.glb",
+      "sha256": "67c90aa8bef35b8886d6b67c0c4c3249556e28176c893d451b95cd83a156908c"
+    },
+    {
+      "path": "public/assets/kenney-food-kit/cake.glb",
+      "sha256": "9594766d701142c4f5ab1d36cc40957667cd966281757e887de4d40557e63e09"
+    },
+    {
+      "path": "public/assets/kenney-food-kit/bread.glb",
+      "sha256": "9bd9db117db654cf1157439d1257a8fc5915ea77a94fb876a5056522b9e49f46"
+    },
+    {
+      "path": "public/assets/kenney-food-kit/coconut.glb",
+      "sha256": "83b11a829c26c75068db48f4f89dd2e7143a076d00d181630975c73d5608c6c5"
+    },
+    {
+      "path": "public/assets/kenney-food-kit/License.txt",
+      "sha256": "32a081c2035dd4db47d850c83244da048165f0e53d71c076b76c1afc0590bc7f"
+    },
+    {
+      "path": "public/assets/draco/draco_decoder.wasm",
+      "sha256": "a680d927bed9cb864ddbd63521868891af2bfbe755092761b4837487618df8ac"
+    },
+    {
+      "path": "public/assets/draco/draco_wasm_wrapper.js",
+      "sha256": "8bb2952d2ba7d67e1414f8df819410cb0434a666be53f671fff75f68843d76f6"
+    },
+    {
+      "path": "public/assets/cc0-weapon/sword-6.glb",
+      "sha256": "273c7133513bdcf619abb24ffe44e8c642b48f993d8baeb7a6de0473955d488c"
+    },
+    {
+      "path": "public/assets/cc0-weapon/SOURCE.txt",
+      "sha256": "e4fa8f705d0cecc0f56266e32366a743f5a15848abe6d43811df4d068883e610"
+    },
+    {
+      "path": "scripts/validate-level-pack-checkpoint.ts",
+      "sha256": "1ef1bd22e738836621314e4d7f6cb244792a39276ab05fa1698e8ae010fc5a10"
+    },
+    {
+      "path": "scripts/build-watermelon-cleave.ts",
+      "sha256": "5b5b1695f8a03a0a78c9768e01855e33d5c1cf714f3050c7d795895eb435e90e"
+    },
+    {
+      "path": "scripts/.tmp-check-initial.ts",
+      "sha256": "c09258eb5153b5e1b40f3885762220b6fbd7ff0fa3b1b1f7e689402fa8035674"
+    },
+    {
+      "path": "scripts/build-food-cleave.ts",
+      "sha256": "89028b67028ef37c2455b2aca83c485f1d9f8c4147b2e1cfa6d1b0364a383d91"
+    },
+    {
+      "path": "scripts/build-3d.ts",
+      "sha256": "ca08562ecec75cc7b0f5d6bd00614607fb39a145f65ed87959bc654ea4a9133c"
+    },
+    {
+      "path": "scripts/build.ts",
+      "sha256": "b1879b25ccd4035fc0157204a705a1ede20fc47b8bdbc5f92fe596ea0d1438d1"
+    },
+    {
+      "path": "src/poc-3d-texture-routing.ts",
+      "sha256": "4af8718e1d9e53468bb54679c401c951f07747ce9e5cd551ecc98eed21dfacc2"
+    },
+    {
+      "path": "src/watermelon-cleave.ts",
+      "sha256": "1cd4a60309ea5e8c0504a3bb69e28cb449abe3a27864555e54a89034f4e41a20"
+    },
+    {
+      "path": "src/a-style-basecolor.ts",
+      "sha256": "00b11b79d832603d375c0c731d40e502acaefce426033009be66b45f05445aec"
+    },
+    {
+      "path": "src/main.ts",
+      "sha256": "a5649300a90f92bf7d4789bf3bef127e1d2cc09daca3abe3117083f9c7b77899"
+    },
+    {
+      "path": "src/level-progress.ts",
+      "sha256": "c1143784b08b9a0033689ac74850c818cf5ec566dd531c7c4ce72d653ec481ec"
+    },
+    {
+      "path": "src/watermelon-cleave-demo.ts",
+      "sha256": "38ed64d126bc2bd11f4ae308e43a1ad4cd7ccf5394f78a9421eab64d57d3149e"
+    },
+    {
+      "path": "src/level-one-guidance.ts",
+      "sha256": "2075bba6a38bc415ac95e2fa5cffdb7d9b0c7c0e809c5aa425c3db1c853b01f8"
+    },
+    {
+      "path": "src/cut-poc-3d-core.ts",
+      "sha256": "c2a04c5712b6944041bb5481c09b363e9450c0bce650fe53e5c38f7dd4dac41d"
+    },
+    {
+      "path": "src/fruit-cut-layers.ts",
+      "sha256": "a7d80421310e076c876cf643061b1026dcd62ce99bb243a912f659dc01918dbc"
+    },
+    {
+      "path": "src/finish-label-layout.ts",
+      "sha256": "2ec0e509df461b074ed4aa708680750cfa4231f0813608ca1c7b0287fa1cd56d"
+    },
+    {
+      "path": "src/melon-visuals.ts",
+      "sha256": "a80489e212f5ab4d65a9e0b799eb6d3282509188fcc09039adf1894c13b42b71"
+    },
+    {
+      "path": "src/melon-softbody.d.ts",
+      "sha256": "a00cd34cd75e7fc9a67fc9a5d44c93eb6f4c76250ba551e25926cbc8ef6cae61"
+    },
+    {
+      "path": "src/cleave-visuals.ts",
+      "sha256": "4cb08acce7ee23faec69ff67fd3e10409928c4c1ab472ea675690eb16ef65154"
+    },
+    {
+      "path": "src/poc-3d.ts",
+      "sha256": "389edf55147fc875458e4f85bb8a6b0bc0ddfa7e37bdbce6c988cd51ab41f9b8"
+    },
+    {
+      "path": "src/poc-3d.css",
+      "sha256": "8580bcaae219db4a7867ac1bac7424ed130a60717813801a5033993a0a4e327b"
+    },
+    {
+      "path": "src/three-presentation.ts",
+      "sha256": "f4ee1b3042566234367e9b8fdad303889e94bdfc69cf38d8713c508bed8e85f3"
+    },
+    {
+      "path": "src/a-style-texture-runtime.ts",
+      "sha256": "89d844a6741b218d2f7be9912e07be4c2797834159e2476530ead6121fdcae40"
+    },
+    {
+      "path": "src/game-core.ts",
+      "sha256": "8c77b0f89f0806051e75e1889c1d34ac912f878ac197cd430d737a9a4eff6fcb"
+    },
+    {
+      "path": "src/food-cleave.ts",
+      "sha256": "2510c689eb6d2e3fffcf8863689e1e237f1f6d67fddfde3482587b3fb7c588e6"
+    },
+    {
+      "path": "src/cleave-knife-profile.ts",
+      "sha256": "3998d42935db88d712b2ff3552ff780cf3157c955032e3a4e43625996b5e86fe"
+    },
+    {
+      "path": "src/game-content.ts",
+      "sha256": "465170a1e5a7be9e7d57c8c7d19c38a00f6558c2e19f6fac44492cf6842d3d7c"
+    },
+    {
+      "path": "src/three-world-renderer.ts",
+      "sha256": "458d82924880319bf2155477ad9a6f1cbac0b92e09db203375b604995cba0452"
+    },
+    {
+      "path": "src/cut-impact.ts",
+      "sha256": "cceefc30c47a74380361a9f826caa41d5db57f3ead709c782bc6957278eb1a7f"
+    },
+    {
+      "path": "src/melon-softbody.js",
+      "sha256": "33f6778d657aa11389f88dd6a700ed671085698a6731546a3b2315352f5531a5"
+    },
+    {
+      "path": "src/style.css",
+      "sha256": "f0a8628f8276da16c23caf709587a0769e8e83c8e439659c4ea926eed0e57571"
+    },
+    {
+      "path": "src/poc-3d-skin.ts",
+      "sha256": "dda5b03ea99b0da0678ec09f7219d4dfb11e302ed19ff4c35e29b0fa943017e3"
+    },
+    {
+      "path": "src/game-watermelon-visuals.ts",
+      "sha256": "29a817773b75b3f46ab52ae9bfad258ecf75888a4a109754b1e082831a3a4322"
+    },
+    {
+      "path": "src/three-cut-visuals.ts",
+      "sha256": "8e009bca2190b62d68a475a3ee322df94e153d95c6a4282961f0c8c569879f4e"
+    },
+    {
+      "path": "src/melon-material.ts",
+      "sha256": "79c430c1483d1746c45d7e099afcc2a5e56f6c0714fba57bb760c424ff192b0a"
+    },
+    {
+      "path": "src/theme.ts",
+      "sha256": "e810ca2e128ed859978a0d881d02b64c1552ae3d35734f6c3263a92d0b507b27"
+    },
+    {
+      "path": "src/h5-session.ts",
+      "sha256": "f394b24456911c096da4064c30eaccfeebdcf3538d39632a91f06116323d04a5"
+    },
+    {
+      "path": "src/assets.d.ts",
+      "sha256": "727c0f28bab9265e33e07f82cabc0ad317c8696ce3e6a59f9c1133e25c6dc79f"
+    },
+    {
+      "path": "src/food-cleave-demo.ts",
+      "sha256": "244e8083015af407b411a01f9c3b25bb6b9dade52514c04ebae3eb065b1dbb27"
+    },
+    {
+      "path": "src/cut-plane-geometry.ts",
+      "sha256": "6fd5f2afc82d4a9f8519b0996f6b1177b18767f14b070822d29e41523e709a1b"
+    },
+    {
+      "path": "src/game-levels.ts",
+      "sha256": "cb7b90bf93ebad7623bc72d9f444d6ccd7f79ec14e2c1193f7e0ee485323e41e"
+    },
+    {
+      "path": "src/assets/a-style/crate-basecolor.png",
+      "sha256": "36284f8d5c5092dbb73c08877ea22855cc844614514a036736c86e985d2788da"
+    },
+    {
+      "path": "src/assets/a-style/log-basecolor.png",
+      "sha256": "bca83ae3309698385d0e79611430d18dbd324d2ffbe7706ef2c73c3521ee588a"
+    },
+    {
+      "path": "src/assets/a-style/crystal-basecolor.png",
+      "sha256": "02c811c9de4601b24b59deee3fcbcaf2ea3f190f3c88bf3b8572a25416490603"
+    },
+    {
+      "path": "src/assets/a-style/knife-basecolor.png",
+      "sha256": "c85a3f77a9e7c40eee3c5530788261bcd86baca4adf9125e56f4d0a73fef7287"
+    }
+  ]
+}

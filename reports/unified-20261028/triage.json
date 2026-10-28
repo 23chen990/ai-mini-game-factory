@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "id": "FACTORY-UNIFICATION-20261028",
+  "targetGame": "shared AI Mini Game Factory (not a generated game)",
+  "workspace": "/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市",
+  "classification": [
+    "VERSION_SKEW",
+    "QA_OBSERVATION_HANDOFF",
+    "UPSTREAM_REWORK_EXECUTION",
+    "MODEL_CONFIGURATION_REJECTION"
+  ],
+  "scope": [
+    "Shared factory only, plus explicitly isolated experimental game clone.",
+    "Original user worktrees, ledger counts and unrelated game branches preserved."
+  ],
+  "reproductionEvidence": [
+    "PR82 9962db5f branches from main 5ff8d889, not PR81 0c3c498f.",
+    "red-qa-handoff.log: structured QA drops qaObservation.",
+    "red-directory-hash.log: directory build hashes are rejected by file-only observation guard.",
+    "red-model-upstream.log: design finding dispatches Blueprint once, then only waits.",
+    "experiment/logs/codex/executions/: two actual ChatGPT model_not_found rejections, no completed inference."
+  ],
+  "acceptanceCriteria": [
+    "Both PR81 and PR82 are ancestors of the integration commit.",
+    "Keep Research media bounds, provenance, unique outputs, accounting and read-only QA/write-scoped Fixer.",
+    "Independent QA receives hash-bound candidate PNGs/normal input and verified reference media.",
+    "Design and Research issues execute existing upstream providers; no-op output stops before rebuilding.",
+    "All lint/typecheck/regressions plus four real browser probes pass.",
+    "Do not mark autonomous discovery/repair or production release successful without independent inference and retest."
+  ],
+  "observations": [
+    "Both real requests reached a model-specific HTTP 400 rejection; browser readiness and frozen capture were not the rejecting stage.",
+    "The local model catalog lists the alias gpt-6.1-sol, but the native ChatGPT endpoint rejects it. A cache is not proof of account availability."
+  ],
+  "causalHypotheses": [
+    "The first rejection is caused by sending the display sentinel as a model id; fixed by omitting it.",
+    "The second rejection is a configured alias/native subscription mismatch; no model substitution was attempted afterward."
+  ],
+  "unknowns": [
+    "Which native model is available to this exact ChatGPT account.",
+    "Whether a real model can inspect these pixels, independently discover the injected defect, or repair it.",
+    "No monetary billing data was queried."
+  ],
+  "recordedAt": "2026-10-28T15:55:32.862918+00:00"
+}

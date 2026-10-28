@@ -1,0 +1,25 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-core-loop-20261028/妖怪夜市
+
+ ❯ tests/unit/reference-fidelity-qa.test.ts (23 tests | 1 failed | 22 skipped) 17ms
+   × loads retained discoveries from repair history even when audit callers omit retest arguments 16ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/reference-fidelity-qa.test.ts > loads retained discoveries from repair history even when audit callers omit retest arguments
+AssertionError: expected [] to include 'fidelity:check-missing:retained-outsi…'
+ ❯ tests/unit/reference-fidelity-qa.test.ts:150:41
+    148|  const dir=path.join(input.runRoot,'history/reference-repairs/attempt-…
+    149|  await writeFile(path.join(dir,'reference-fidelity-review.json'),JSON.…
+    150|  expect((await verify(input)).blockers).toContain('fidelity:check-miss…
+       |                                         ^
+    151| });
+    152|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 22 skipped (23)
+   Start at  15:48:42
+   Duration  647ms (transform 334ms, setup 0ms, import 530ms, tests 17ms, environment 0ms)

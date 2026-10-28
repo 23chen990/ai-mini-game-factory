@@ -55,3 +55,14 @@ describe('QA observation infrastructure failures', () => {
     expect(executionPolicyForAttempt('BLIND_PLAYTEST_QA', 2, kind)).toEqual(executionPolicyForStage('BLIND_PLAYTEST_QA'));
   });
 });
+
+it.each([
+ ['{"type":"invalid_request_error","code":"model_not_found","message":"Configured model is not supported when using Codex with a ChatGPT account."}', 'SPEC_ERROR'],
+ ['Failed to parse request body: invalid_request_error network', 'SPEC_ERROR'],
+ ['The model `unavailable-model` does not exist or you do not have access to it.', 'SPEC_ERROR'],
+ ['You do not have access to model `restricted-model`.', 'POLICY_BLOCK'],
+ ['research permission preflight rejected: research-network-allow-list-missing', 'POLICY_BLOCK'],
+] as const)('does not capability-escalate an explicit request/configuration rejection: %s', (message, expected) => {
+ const kind=classifyModelFailure(message);expect(kind).toBe(expected);
+ expect(executionPolicyForAttempt('UI_SKELETON',2,kind)).toEqual(executionPolicyForStage('UI_SKELETON'));
+});

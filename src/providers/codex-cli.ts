@@ -53,7 +53,7 @@ export type CodexJsonlResult = {
   usageIncomplete?: boolean;
 };
 
-export type CodexExecResult = CodexJsonlResult & { output: unknown; attempts: number; stdout: string; stderr: string; executionId?: string };
+export type CodexExecResult = CodexJsonlResult & { output: unknown; attempts: number; stdout: string; stderr: string; executionId?: string; model?: string };
 
 /**
  * Environment variables that are safe and useful for a Codex child process.
@@ -89,6 +89,7 @@ export function buildCodexExecArgs(input: { cwd: string; sandbox: CodexSandbox; 
   const args = input.resumeThreadId
     ? ['exec', 'resume', input.resumeThreadId, '--json', '-c', `sandbox_mode="${input.sandbox}"`]
     : ['exec', '--json', '--sandbox', input.sandbox, '--cd', input.cwd];
+  args.push('-c', 'model_provider="openai"', '-c', 'forced_login_method="chatgpt"');
   if (input.model) args.push('--model', input.model);
   if (input.schemaPath) args.push('--output-schema', input.schemaPath);
   if (input.imagePaths?.length) args.push('--image', ...input.imagePaths);
@@ -350,9 +351,9 @@ export class CodexCliProvider {
       try {
         if (!request.qaObservation) throw new Error('QA_OBSERVATIONS_REQUIRED: capture build-bound normal input and PNGs before spending model tokens; host browser readiness is insufficient');
         const observations = await verifyQaObservation(workingDirectory.runRoot, request.qaObservation);
-        imagePaths = observations.images.map((item) => item.path);
+        imagePaths = [...observations.images, ...observations.referenceImages].map((item) => item.path);
         await writeJsonAtomic(path.join(request.logDir, `${request.label}.qa-observations.json`), observations);
-        prompt += `\nQA observation mode: inspect the attached frozen gameplay PNGs and normal-input trace ${request.qaObservation.tracePath}. Do not inspect game source, gold labels, other reports or known answers. This handoff is not a browser tool grant. Do not claim to have operated a browser or watched uncaptured video. Unobserved branches and temporally incomplete absence claims remain BLOCKED. Return independent findings, evidence and uncertainty, not capture-runner acceptance.`;
+        prompt += `\nAttached image order (candidate then reference): ${JSON.stringify({candidate:observations.images,reference:observations.referenceImages})}\nQA observation mode: inspect the attached frozen gameplay PNGs and normal-input trace ${request.qaObservation.tracePath}. Do not inspect game source, gold labels, other reports or known answers. This handoff is not a browser tool grant. Do not claim to have operated a browser or watched uncaptured video. Unobserved branches and temporally incomplete absence claims remain BLOCKED. Return independent findings, evidence and uncertainty, not capture-runner acceptance.`;
       } catch (error) {
         await writeJsonAtomic(path.join(request.logDir, `${request.label}.qa-observations.json`), { scope: 'FROZEN_NATURAL_OBSERVATIONS_ONLY', status: 'BLOCKED', modelCalls: 0, reason: redactText(error instanceof Error ? error.message : String(error)) });
         throw error;
@@ -392,6 +393,11 @@ export class CodexCliProvider {
         try {
           const remainingTokens = maxTotalTokens === undefined ? undefined : maxTotalTokens - usage.totalTokens;
           if (remainingTokens !== undefined && remainingTokens <= 0) throw new Error('codex exec token budget exhausted');
+          await writeJsonAtomic(path.join(execution.logDir, `${request.label}.attempt-${attempt}.request.json`), redactValue({
+            executionId:execution.executionId, stage:request.stage, role:request.role, model, cwd:workingDirectory.cwd,
+            sandbox:request.sandbox, args, prompt, imagePaths, qaObservation:request.qaObservation,
+            timeoutMs:request.timeoutMs ?? this.timeoutMs, maxTotalTokens:remainingTokens,
+          }));
           const processResult = await this.runProcess(args, { cwd: workingDirectory.cwd, stdin: prompt, signal: request.signal, timeoutMs: request.timeoutMs, env: processEnv, maxTotalTokens: remainingTokens });
           const stdout = redactText(processResult.stdout); const stderr = redactText(processResult.stderr);
           const parsed = parseCodexJsonl(stdout);
@@ -433,7 +439,7 @@ export class CodexCliProvider {
           await writeFile(request.outputPath, outputText);
           let output: unknown = outputText;
           try { output = JSON.parse(outputText); } catch { /* unstructured Builder/Fixer summary */ }
-          return { ...parsed, usage, output, attempts, stdout, stderr, executionId: execution.executionId };
+          return { ...parsed, usage, output, attempts, stdout, stderr, executionId: execution.executionId, model };
         } catch (error) {
           lastError = error;
           // A failed budgeted process can have an unreported in-flight turn.

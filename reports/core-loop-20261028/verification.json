@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 1,
+  "status": "BLOCKED",
+  "repository": "https://github.com/23chen990/ai-mini-game-factory",
+  "baseCommit": "5ff8d88945d76fa7dc6b3dd65aa8f9aa58324217",
+  "factorySourceSnapshot": [
+    {
+      "path": "src/core/failure-routing.ts",
+      "sha256": "e36306446f0e93c3bf64709f384e3432c3de0f3f570db00d8378b7630e57f1e3"
+    },
+    {
+      "path": "src/core/permission-manifest.ts",
+      "sha256": "946f1822101aaa930bc691e01eb9cd495955da17748aa0ff3395d2509ede3ca8"
+    },
+    {
+      "path": "src/core/reference-evidence.ts",
+      "sha256": "837156228f532e073a026411dcb5c5f04a096595482e3930fdabf467825273b9"
+    },
+    {
+      "path": "src/factory.ts",
+      "sha256": "df4d9cea82c1498ee16bac31321af7ba6969f7380d7f124fddea3b3f16c175aa"
+    },
+    {
+      "path": "src/providers/codex-account.ts",
+      "sha256": "3326e89d127d43d660db3b2f279698d7a3d10a6cc0795e1fd257b92419072785"
+    },
+    {
+      "path": "src/providers/interfaces.ts",
+      "sha256": "d73f1f3ae95932e9a480a10129ce2d62cecd61cbbef8866d31003fcb3d1c7787"
+    },
+    {
+      "path": "src/providers/runtime-qa.ts",
+      "sha256": "5b5bd4a31d7b5215168cc95b11759d872e721e9fb423af4b8f4133a0961a9cac"
+    },
+    {
+      "path": "src/schemas/index.ts",
+      "sha256": "345e4b3241fd250cbe45d63e47825ae91768b8a4041ef61877d9bb05cd55f944"
+    },
+    {
+      "path": "src/schemas/qa-issue.ts",
+      "sha256": "72149ce8d62c3493094ce9319bb92932cd4cd99519229bd647c0ad818ca60b6e"
+    },
+    {
+      "path": "src/schemas/reference-fidelity.ts",
+      "sha256": "f8a80bae33a4848150324163e5f185e93384d5ae9e023177291040e296055a82"
+    },
+    {
+      "path": "tests/integration/orchestrator.test.ts",
+      "sha256": "6ccf640882de1f88a0ec08bc9ed08386379928da71fa8ceaadcc15f9f49e3b02"
+    },
+    {
+      "path": "tests/integration/reference-review-loop.test.ts",
+      "sha256": "b30252502639fcc37630bdec94fd2d1c8cd1c5190e2caf195182698fbcb90e6b"
+    },
+    {
+      "path": "tests/unit/reference-fidelity-qa.test.ts",
+      "sha256": "bb4d46aecc00b594b7bb2b41887fe691719325696c32a94ad5a58084548f6ff3"
+    },
+    {
+      "path": "tests/unit/reference-quality-audit.test.ts",
+      "sha256": "82cd1a8d06d9f94741380b96b5f5113eae878c7fa9e01856d5b80b3a7f71b67a"
+    },
+    {
+      "path": "tests/unit/reference-review-permissions.test.ts",
+      "sha256": "c53e2a6a750b8126c254df668e204c682e205979f937267aa895108d4a09faad"
+    },
+    {
+      "path": "tests/unit/reference-rework.test.ts",
+      "sha256": "be3c8482317b367684de477e6db3571e5140bd02615c4ca2d950d75236cccc35"
+    }
+  ],
+  "sourceSnapshotHash": "92aafd8d80d53f865d7f14bf0475b645eed074a18890238c59e7585c9b2893d7",
+  "targetGame": "mobile-slice-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+  "pilotRoot": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261028",
+  "generatedGameModified": false,
+  "platformPublishability": "NOT_PROVEN",
+  "experiments": [
+    {
+      "id": "research-to-builder",
+      "status": "BLOCKED",
+      "actual": "One real verified-frame study completed; no real Builder call or new prototype from it.",
+      "observations": 8,
+      "unknownGroups": 5
+    },
+    {
+      "id": "independent-comparison",
+      "status": "BLOCKED",
+      "actual": "Fresh normal-input candidate play at two viewports, separately for frozen attempt13 and current dist; reference recording inspected. Live reference dual-input session incomplete. A direct historical embed probe independently reached an Attention Required / Cloudflare page; no gameplay identity or bypass was claimed.",
+      "validAutonomousCoreFindings": 0,
+      "currentUiWarnings": 1,
+      "sealedDefectSensitivity": "NOT_ESTABLISHED"
+    },
+    {
+      "id": "gap-driven-game-repair",
+      "status": "NOT_EXECUTED",
+      "actual": "No credible core defect was established; no UI-only patch substituted for core improvement.",
+      "realGameRepairAttempts": 0
+    }
+  ],
+  "engineering": {
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "testFilesPassed": 175,
+    "testsPassed": 998,
+    "releaseRegistryTestsPassed": 4,
+    "fixturesAreGameplayProof": false,
+    "realDefaultOrchestratorModelLoop": "NOT_EXECUTED",
+    "upstreamResearchAndDesignRework": "PENDING_NOT_AUTOMATICALLY_EXECUTED"
+  },
+  "humanIntervention": {
+    "initialTask": 1,
+    "additionalQuestionsOrApprovalsRequested": 0,
+    "scope": "This turn only; existing human acceptance gates were not forged."
+  },
+  "historicalRepairCountsReset": false,
+  "elapsedSinceFirstSavedBaselineMs": 3665444.651611328,
+  "elapsedScope": "Measured from first saved baseline, excluding earlier intake and unobservable chat overhead.",
+  "tokenReductionComparedWithMatchedBaseline": null,
+  "qualitySuccessRate": null,
+  "unknownMeasurementReason": "No valid matched production baseline or complete core-comparison denominator.",
+  "generatedAt": "2026-10-28T07:57:36.872Z"
+}

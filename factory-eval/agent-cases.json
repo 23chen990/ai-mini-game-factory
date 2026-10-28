@@ -96,7 +96,7 @@
       "sourceEvidence": [
         {
           "path": "tests/unit/reference-comparison-mode.test.ts",
-          "sha256": "76ea5fbc8a50793230e6f097c55d9bd85a41c893a25600a1a6b31239644aaf64"
+          "sha256": "e1e72670bb092550667a44a2eb161c2a99e85f4e9bb18fddb197a9a151d7df04"
         }
       ],
       "labels": [

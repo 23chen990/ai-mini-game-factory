@@ -1,7 +1,9 @@
+import { ArtifactLedgerSchema } from './schemas/artifact-ledger.js';
 import { codexStageExecution, codexExecutionEvidence, readCodexUsageReceipts, unaccountedCodexUsage } from './core/codex-budget.js';
 import { captureReferenceUrl, promoteReferenceCapture, discardReferenceCapture } from './core/reference-web-capture.js';
 import { isReferenceWebCapturePath } from './schemas/reference-web-capture.js';
 import { appendFile, copyFile, lstat, mkdir, readFile, realpath, readdir, writeFile } from 'node:fs/promises';
+import { NaturalFlowEvidenceSchema } from './schemas/natural-flow.js';
 import path from 'node:path';
 import { ReferenceIntakeApprovalSchema, ReferenceIntakeBriefSchema, ReferenceIntakeDraftSchema } from './schemas/reference-intake.js';
 import { approvedReferenceIntakeSeed, evaluateReferenceIntakeDraft, loadReferenceIntakeEvidence } from './core/reference-intake.js';
@@ -39,9 +41,9 @@ import { buildPlatformSpineContract, evaluatePlatformSpine } from './core/platfo
 import { auditAssetFiles, evaluateArtQualityGate } from './core/art-quality.js';
 import { AssetProductionGateSchema, AssetVisualFitReviewSchema, evaluateAssetProductionReadiness } from './core/asset-production-gate.js';
 import { buildPreviewPresentationDisclosure } from './core/preview-presentation-disclosure.js';
-import { applyReferenceBehaviorAnalysis, buildReferenceEvidencePack, evaluateReferenceEvidence, evaluateReplicaPreviewEvidence, normalizeReferenceBehaviorAnalysis, safeRunFile, referenceBlockersRequirePause, verifyReferenceFidelityReview } from './core/reference-evidence.js';
+import { applyReferenceBehaviorAnalysis, buildReferenceEvidencePack, evaluateReferenceEvidence, evaluateReplicaPreviewEvidence, normalizeReferenceBehaviorAnalysis, referenceBlockersRequirePause, verifyReferenceFidelityReview, verifyReferenceRepairReview, readReviewEvidence, safeRunFile, readReferenceRetestChecks } from './core/reference-evidence.js';
 import { enforceRecordingAnalysisAuthority } from './core/reference-analysis-authority.js';
-import { REFERENCE_BEHAVIOR_DIMENSIONS, ReferenceFidelityContractSchema, ReferenceFidelityGateSchema } from './schemas/reference-fidelity.js';
+import { REFERENCE_BEHAVIOR_DIMENSIONS, ReferenceFidelityContractSchema, ReferenceFidelityGateSchema, ReferenceFidelityReviewSchema } from './schemas/reference-fidelity.js';
 import { BuildReportSchema, ProductionLineResolutionSchema } from './schemas/index.js';
 import { snapshotModelPolicy, buildModelRouteDecision, evaluateModelPolicySnapshot } from './core/model-policy-artifact.js';
 import { assertPermissionOperation, buildPermissionManifestBundle, evaluatePermissionManifest, evaluatePermissionManifestBundle } from './core/permission-manifest.js';
@@ -84,7 +86,7 @@ import { ProductionLinePlayEvidenceSchema, ProductionLinePlayEvaluationSchema } 
 import { buildVariationCoverageObservation, buildVariationCoveragePlan, evaluateVariationCoverage } from './core/variation-coverage.js';
 import { accountPortfolioHash, buildAccountCapacityPlan, canonicalAccountPortfolio, deriveActiveCountsFromPortfolio, evaluateAccountCapacity, evaluateAccountCapacityPortfolioBinding } from './core/account-capacity.js';
 import { costRateCardFromEnv, deriveCostUsage, evaluateCostPreflight, projectStageUsage, reserveForStage } from './core/cost-accounting.js';
-import { routeFailureClassFromMessage, routeFailureToEarliestStage } from './core/failure-routing.js';
+import { routeFailureClassFromMessage, routeFailureToEarliestStage, routeQaIssues } from './core/failure-routing.js';
 import { buildProfileExperienceBundle, evaluateProfileExperienceBundle } from './core/profile-contract.js';
 import { buildProductExperienceContract } from './core/product-experience.js';
 import { verifyPerceptualQaReview } from './core/product-experience-qa.js';
@@ -237,7 +239,7 @@ export function createFactory(options: FactoryOptions = {}) {
   const artMode = process.env.ART_PROVIDER ?? (mode === 'codex-account' ? 'codex-imagegen' : 'mock');
   if (artMode !== 'mock' && artMode !== 'codex-imagegen') throw new Error(`Unsupported ART_PROVIDER: ${artMode}`);
   if (mode === 'codex-account' && artMode === 'mock' && !options.previewImageProvider) throw new Error('FACTORY_MODE=codex-account cannot silently use ART_PROVIDER=mock; use ART_PROVIDER=codex-imagegen');
-  const agents = options.agentProvider ?? (mode === 'live-art' ? new OpenAIAgentProvider() : mode === 'codex-account' ? codexAccount! : new MockAgentProvider());
+  const agents: AgentProvider = options.agentProvider ?? (mode === 'live-art' ? new OpenAIAgentProvider() : mode === 'codex-account' ? codexAccount! : new MockAgentProvider());
   const previewImages = options.previewImageProvider ?? (mode === 'live-art' ? new OpenAIImageProvider() : artMode === 'codex-imagegen' ? new CodexImagegenProvider() : new MockImageProvider());
   const assetImages = options.assetImageProvider ?? (artMode === 'codex-imagegen' ? new CodexImagegenProvider() : new MockImageProvider());
   const codex = options.codexProvider ?? (mode === 'codex-account' ? codexAccount! : new MockCodexProvider());
@@ -260,7 +262,7 @@ export function createFactory(options: FactoryOptions = {}) {
   }
 
   /** Build a bounded, sanitized handoff packet. Providers must never receive a raw transcript. */
-  async function contextFor(stage: StageName, runRoot: string, outputPath: string, inputPaths: string[], summary: string, boundary?: { targetGameId?: string; targetWorkspaceRelative?: string; requiredArtifacts?: string[]; requiredContextPaths?: string[]; mediaInputs?: Array<{ path: string; sha256: string }> }) {
+  async function contextFor(stage: StageName, runRoot: string, outputPath: string, inputPaths: string[], summary: string, boundary?: { targetGameId?: string; targetWorkspaceRelative?: string; requiredArtifacts?: string[]; requiredContextPaths?: string[]; qaObservation?: import('./qa/browser-preflight.js').QaObservationInput; mediaInputs?: Array<{ path: string; sha256: string }> }) {
     // `begin()` persists the incremented attempt before a provider is called.
     // Read that small state record here so retries use the same model route that
     // is written to the audit artifact. We intentionally pass only the failure
@@ -963,16 +965,17 @@ export function createFactory(options: FactoryOptions = {}) {
     return analysis;
   }
 
-  async function analyzeReferenceBehavior(state: RunState, reference: ReferenceMechanicSpec, packValue: unknown, record: StageRecord, frameManifest?: ReferenceFrameManifest) {
+  async function analyzeReferenceBehavior(state: RunState, reference: ReferenceMechanicSpec, packValue: unknown, record: StageRecord, frameManifest?: ReferenceFrameManifest, reworkPath?: string) {
     const runId = state.runId;
     const pack = ReferenceEvidencePackSchema.parse(packValue);
     const runRoot = store.runRoot(runId);
     const levelCurrent = frameManifest ? await referenceLevelArtifactsCurrent(runRoot, frameManifest) : true;
-    if (!referenceBehaviorAnalysisNeeded(pack) && levelCurrent) return pack;
+    if (reworkPath === undefined && !referenceBehaviorAnalysisNeeded(pack) && levelCurrent) return pack;
     // Keep full per-frame provenance in run artifacts. Never put the enormous
     // original frame manifest in the model's isolated Research filesystem.
     const inputs = (await referenceResearchInputPaths(runId, reference))
       .filter((relative) => relative !== 'artifacts/reference-frame-manifest.json');
+    if (reworkPath !== undefined) inputs.push(reworkPath);
     // Persist the exact base pack before compiling context so source paths and
     // hashes seen by the ResearchAgent match the artifact merged below.
     await store.writeArtifact(runId, 'reference-evidence-pack.json', pack);
@@ -984,7 +987,7 @@ export function createFactory(options: FactoryOptions = {}) {
       [...inputs, ...(researchMedia ? [researchMedia.planPath] : [])],
       'Convert verified source evidence into QA cases for input/state, spatial relation, failure/recovery, feedback sequence and terminal/replay. Inspect only the bounded supplied visual sample; other manifest frames are unobserved metadata. Mark unsupported causal or temporal claims unknown, rather than inventing a continuous reconstruction. Do not copy protected expression.',
       {
-        requiredContextPaths: ['artifacts/reference-evidence-pack.json', ...(inputs.includes('reference-evidence/manifest.json') ? ['reference-evidence/manifest.json'] : []), ...(researchMedia ? [researchMedia.planPath] : [])],
+        requiredContextPaths: [...(reworkPath === undefined ? [] : [reworkPath]), 'artifacts/reference-evidence-pack.json', ...(inputs.includes('reference-evidence/manifest.json') ? ['reference-evidence/manifest.json'] : []), ...(researchMedia ? [researchMedia.planPath] : [])],
         ...(researchMedia ? { mediaInputs: researchMedia.media } : {}),
       },
     );
@@ -2056,10 +2059,10 @@ export function createFactory(options: FactoryOptions = {}) {
     await writeJsonAtomic(path.join(store.runRoot(runId), 'artifacts/codex-run-budget.json'), { schemaVersion: 1, maxAgentTokens: budget.maxAgentTokens });
   }
 
-  async function preflightCostBeforeStage(state: RunState, stage: StageName) {
+  async function preflightCostBeforeStage(state: RunState, stage: StageName, reserveOverride?: Parameters<typeof reserveForStage>[1]) {
     const { rateCard } = await ensureCostArtifacts(state.runId);
     const current = await usageForState(state);
-    const reserve = reserveForStage(stage);
+    const reserve = reserveForStage(stage, reserveOverride);
     const projected = projectStageUsage(current, stage, reserve, rateCard);
     const report = evaluateCostPreflight({ budget: await costBudgetForRun(state.runId), current, projected, stage, reserve });
     await store.writeArtifact(state.runId, 'cost-preflight.json', report);
@@ -2878,13 +2881,21 @@ export function createFactory(options: FactoryOptions = {}) {
       await store.writeArtifact(runId, 'iaa-contract.json', buildIaaContract({ gameId: await expectedGameId(runId), review: deferredIaaReview, sourceReview: 'replica-preview:deferred' }));
     }
     if (!done(state, 'BLUEPRINT')) {
-      const inputs = ['input/seed.yaml', 'artifacts/production-line-resolution.json', 'artifacts/reference-mechanic-spec.json', 'artifacts/reference-fidelity-contract.json', ...resolutionInputs, ...pressureInputs, ...recordingLevelInputs, 'artifacts/open-source-research.json', 'artifacts/iaa-contract.json'];
+      const reworkInputs = await store.hasArtifact(runId, 'reference-upstream-issues.json') ? ['artifacts/reference-upstream-issues.json'] : [];
+      const inputs = [...reworkInputs, 'input/seed.yaml', 'artifacts/production-line-resolution.json', 'artifacts/reference-mechanic-spec.json', 'artifacts/reference-fidelity-contract.json', ...resolutionInputs, ...pressureInputs, ...recordingLevelInputs, 'artifacts/open-source-research.json', 'artifacts/iaa-contract.json'];
       const record = await begin(state, 'BLUEPRINT', inputs);
       try {
-        const context = await contextFor('BLUEPRINT', runRoot, store.artifact(runId, 'game-blueprint.json'), inputs, 'Build a compact preview blueprint from the verified reference fidelity, production-line resolution, research-resolution, failure-pressure, and recording-level semantic contracts when present. Preserve which requirements were observed and which came from the human lock. Do not invent another game, and keep every expression field original.', { targetGameId: await expectedGameId(runId), requiredContextPaths: ['artifacts/production-line-resolution.json', 'artifacts/reference-evidence-pack.json', 'artifacts/reference-fidelity-contract.json', 'artifacts/reference-mechanic-spec.json', 'artifacts/open-source-research.json', ...resolutionInputs, ...pressureInputs, ...recordingLevelInputs] });
+        const context = await contextFor('BLUEPRINT', runRoot, store.artifact(runId, 'game-blueprint.json'), inputs, 'Build a compact preview blueprint from the verified reference fidelity, production-line resolution, research-resolution, failure-pressure, and recording-level semantic contracts when present. Preserve which requirements were observed and which came from the human lock. Do not invent another game, and keep every expression field original.', { targetGameId: await expectedGameId(runId), requiredContextPaths: [...reworkInputs, 'artifacts/production-line-resolution.json', 'artifacts/reference-evidence-pack.json', 'artifacts/reference-fidelity-contract.json', 'artifacts/reference-mechanic-spec.json', 'artifacts/open-source-research.json', ...resolutionInputs, ...pressureInputs, ...recordingLevelInputs] });
         const result = await producerAgent.run(seed, lockedReference, previewOpenSource, context);
         addAgentMetrics(record, result.metrics); await store.writeArtifact(runId, 'game-blueprint.json', result.value);
         const parsedBlueprint = GameBlueprintSchema.parse(result.value);
+        if (await store.hasArtifact(runId,'reference-upstream-baseline.json')) {
+          const baseline=GameBlueprintSchema.parse(await store.readArtifact(runId,'reference-upstream-baseline.json'));
+          if (sha256Text(JSON.stringify(baseline))===sha256Text(JSON.stringify(parsedBlueprint))) {
+            await saveUsage(state);
+            return setWaiting(state,'BLUEPRINT',inputs,['artifacts/game-blueprint.json'],['blocked:upstream-rework-no-progress']);
+          }
+        }
         const expectedBlueprintGameId = await expectedGameId(runId);
         if (parsedBlueprint.gameId !== expectedBlueprintGameId) throw new Error(`blueprint identity mismatch: ${parsedBlueprint.gameId} !== ${expectedBlueprintGameId}`);
         await saveUsage(state);
@@ -3045,6 +3056,88 @@ export function createFactory(options: FactoryOptions = {}) {
     const levelContract = recordingLevelInputs.length > 0
       ? ReferenceLevelImplementationContractSchema.parse(await store.readArtifact(runId, 'reference-level-implementation-contract.json'))
       : undefined;
+    async function repairPreview(report: ReturnType<typeof QaReportSchema.parse>): Promise<RunState> {
+      const issues = report.issues.filter(issue => issue.severity === 'error');
+      const route = routeQaIssues(issues);
+      if (route.stage==='FIX' && issues.some(issue=>issue.rootCause==='evidence' || issue.rootCause==='unknown')) {
+        const deferred=issues.filter(issue=>issue.rootCause==='evidence' || issue.rootCause==='unknown');
+        await store.writeArtifact(runId,'qa-deferred-issues.json',QaReportSchema.parse({...report,issues:deferred}));
+        report=QaReportSchema.parse({...report,checks:[],issues:issues.filter(issue=>issue.rootCause==='implementation')});
+      }
+      if (route.stage !== 'FIX' || issues.length === 0) {
+        await store.writeArtifact(runId, 'failure-report.json', makeFailureReport({stage:'QA',failureClass:'core_experience',routeTo:route.stage,owner:route.owner,
+          message:route.rationale, failureKind:'SPEC_ERROR',
+          hypotheses:issues.length ? issues.map(issue => ({cause:issue.hypothesis ?? issue.message,confidence:route.confidence,evidence:[issue.evidence]})) : [{cause:'QA has no actionable error issue.',confidence:0.5,evidence:['artifacts/qa-report.json']}]}));
+        if (route.stage === 'BLUEPRINT' || issues.some(issue=>issue.rootCause==='research')) {
+          const signature=sha256Text(JSON.stringify(issues.map(({id,rootCause})=>({id,rootCause})).sort((a,b)=>a.id.localeCompare(b.id))));
+          const checkpoint=`history/reference-repairs/upstream/${route.stage}-${previewBuildHash}-${signature}.json`;
+          if (await exists(path.join(runRoot,checkpoint))) return setWaiting(state,route.stage,['artifacts/qa-report.json'],[checkpoint],['blocked:upstream-rework-no-progress']);
+          await archiveRepairQaReport(state, report, previewBuild.webBuild);
+          await writeJsonAtomic(path.join(runRoot,checkpoint),report);
+          await store.writeArtifact(runId,'reference-upstream-issues.json',report);
+          if (issues.some(issue=>issue.rootCause==='research')) {
+            const record=await begin(state,'REFERENCE_DEEP_RESEARCH',['artifacts/reference-upstream-issues.json','artifacts/reference-evidence-pack.json']);
+            try {
+              const frames=await ensureReferenceFrameManifest(runId,blueprint.gameId,workspace);
+              const revised=await analyzeReferenceBehavior(state,lockedReference,evidencePack,record,frames,'artifacts/reference-upstream-issues.json');
+              const evaluation=evaluateReplicaPreviewEvidence(revised);
+              await store.writeArtifact(runId,'reference-evidence-pack.json',evaluation.pack);
+              await store.writeArtifact(runId,'reference-fidelity-contract.json',evaluation.fidelity);
+              if (!evaluation.passed || sha256Text(JSON.stringify(evaluation.fidelity))===sha256Text(JSON.stringify(fidelityContract))) return setWaiting(state,'REFERENCE_DEEP_RESEARCH',['artifacts/reference-upstream-issues.json'],['artifacts/reference-fidelity-contract.json'],['blocked:upstream-rework-no-progress',...evaluation.blockers]);
+              await complete(state,record,['artifacts/reference-evidence-pack.json','artifacts/reference-fidelity-contract.json','artifacts/reference-behavior-analysis.json'],['reference:evidence-pack','reference:five-dimension-behavior-contract','reference:failure-pressure-contract','reference:targeted-upstream-rework']);
+            } catch(error) {return fail(state,record,error);}
+          }
+          await store.writeArtifact(runId,'reference-upstream-baseline.json',blueprint);
+          invalidateDownstream(state,'BLUEPRINT');
+          const stalePaths=getDownstreamArtifactPaths('BLUEPRINT');
+          const ledger=ArtifactLedgerSchema.parse(await store.readArtifact(runId,'artifact-ledger.json'));
+          await store.writeArtifact(runId,'artifact-ledger.json',invalidateArtifacts(ledger,stalePaths,'qa:upstream-contract-rework'));
+          await clearRetryArtifacts(runId,'BLUEPRINT');
+          await archiveRunPaths(runRoot,['artifacts/reference-fidelity-review.json','artifacts/reference-fidelity-gate.json'],'upstream-contract-rework');
+          await store.save(state);
+          return executeReplicaPreview(state,seed);
+        }
+        return setWaiting(state, route.stage, ['artifacts/qa-report.json'], ['artifacts/failure-report.json'], [`blocked:targeted-evidence-required:${route.owner}`,route.rationale]);
+      }
+      const signature = sha256Text(JSON.stringify(issues.map(({id,rootCause}) => ({id,rootCause})).sort((a,b) => a.id.localeCompare(b.id))));
+      const checkpoint = `history/reference-repairs/inputs/${previewBuildHash}-${signature}.json`;
+      if (await exists(path.join(runRoot, checkpoint))) return setWaiting(state, 'QA', ['artifacts/qa-report.json'], [checkpoint], ['blocked:repair-no-progress']);
+      const fixInputs = ['artifacts/qa-report.json', ...resolutionInputs, ...pressureInputs, ...(levelContract ? [...recordingLevelInputs, 'artifacts/reference-level-runtime-trace.json', 'artifacts/reference-level-comparison-gate.json'] : [])];
+      const prepared = await prepareRepairAttempt(state, report, previewBuild.webBuild);
+      if (!prepared.decision.allowed) return setWaiting(state, 'FIX', fixInputs, ['artifacts/repair-policy-decision.json', prepared.qaReportPath, 'artifacts/repair-history.json'], [`repair-policy:${prepared.decision.reason}`]);
+      const fixRecord = await begin(state, 'FIX', fixInputs);
+      try {
+        const inputAttempt = await startRepairAttempt(state, fixRecord, prepared);
+        const attemptRoot = path.join(runRoot, `history/reference-repairs/attempt-${state.fixAttempts}`);
+        await writeJsonAtomic(path.join(runRoot, checkpoint), report);
+        await writeJsonAtomic(path.join(attemptRoot, 'qa-report.json'), report);
+        const oldReview = ReferenceFidelityReviewSchema.safeParse(await store.readArtifact(runId, 'reference-fidelity-review.json').catch(() => undefined));
+        const evidenceFiles = new Map<string,string|undefined>(report.screenshots.map(file => [file,undefined]));
+        if (oldReview.success) {
+          await writeJsonAtomic(path.join(attemptRoot, 'reference-fidelity-review.json'), oldReview.data);
+          for (const row of [...oldReview.data.cases, ...oldReview.data.retests, ...oldReview.data.discoveries]) {
+            evidenceFiles.set(row.trace.path,row.trace.sha256);
+            row.screenshots.forEach(image => evidenceFiles.set(image.path,image.sha256));
+          }
+        }
+        for (const [relative,expectedHash] of evidenceFiles) {
+          const bytes = expectedHash === undefined
+            ? await readFile(await safeRunFile(runRoot,relative))
+            : await readReviewEvidence(runRoot,{path:relative,sha256:expectedHash});
+          await mkdir(path.dirname(path.join(attemptRoot, relative)), {recursive:true});
+          await writeFile(path.join(attemptRoot,relative),bytes);
+        }
+        const fixContext = await contextFor('FIX', runRoot, path.join(runRoot, 'logs/codex/FIX.last-message.txt'), fixInputs, 'Route: formal-fixer. Repair only the explicit preview QA issues and their exact reproduction matrix. Preserve the locked core contract. Omit the conversation, unrelated research/history and known-answer lists. Use test-first development; the adapter rebuilds once, then independent QA must retest. Report changed files, tests and evidence gaps.', { targetGameId: blueprint.gameId, targetWorkspaceRelative: 'workspace/game' });
+        const fix = await fixerAgent.run(workspace, state.codexThreadId, report, fixContext);
+        await completeRepairAttempt(state, fixRecord, prepared, inputAttempt, fix, previewBuild.webBuild);
+        await writeJsonAtomic(path.join(attemptRoot,'result.json'), {route:'formal-fixer',attempt:state.fixAttempts,beforeBuildHash:previewBuildHash,afterBuildHash:await hashBuildDirectory(previewBuildPath),threadId:fix.threadId,verification:fix.verification,summary:fix.summary,status:'AWAITING_INDEPENDENT_RETEST'});
+        // Invalidate only mutable current QA projections. Every old review and
+        // counterexample is preserved above, including failed attempts.
+        await archiveRunPaths(runRoot, ['artifacts/reference-fidelity-review.json'], `reference-repair-${state.fixAttempts}`);
+        await store.writeArtifact(runId, 'qa-report.json', report);
+      } catch (error) { return fail(state, fixRecord, error); }
+      return executeReplicaPreview(state, seed);
+    }
     const previousFidelityGate = ReferenceFidelityGateSchema.safeParse(await store.readArtifact(runId, 'reference-fidelity-gate.json').catch(() => undefined));
     const savedQa = QaReportSchema.safeParse(await store.readArtifact(runId, 'qa-report.json').catch(() => undefined));
     const savedRuntime = RuntimeProductGateSchema.safeParse(await store.readArtifact(runId, 'runtime-product-gates.json').catch(() => undefined));
@@ -3077,27 +3170,63 @@ export function createFactory(options: FactoryOptions = {}) {
         }
         await store.writeArtifact(runId, 'qa-report.json', report);
         await complete(state, record, ['artifacts/qa-report.json', 'artifacts/qa-evidence.json', 'artifacts/runtime-product-gates.json', 'artifacts/completion-gates.json', ...referenceLevelEvidence], ['qa:preview', 'qa:core', 'qa:normal-flow', 'qa:natural-e2e', 'qa:runtime-product', ...(levelContract ? ['qa:recording-level-comparison-when-declared'] : []), `passed:${report.passed}`]);
-        if (report.passed) {
-          const unverifiedRepair = await waitForUnverifiedRepair(state, report, previewBuild.webBuild);
-          if (unverifiedRepair) return unverifiedRepair;
-        }
-        if (!report.passed) {
-          const fixInputs = ['artifacts/qa-report.json', ...resolutionInputs, ...pressureInputs, ...(levelContract ? [...recordingLevelInputs, 'artifacts/reference-level-runtime-trace.json', 'artifacts/reference-level-comparison-gate.json'] : [])];
-          const prepared = await prepareRepairAttempt(state, report, previewBuild.webBuild);
-          if (!prepared.decision.allowed) return setWaiting(state, 'FIX', fixInputs, ['artifacts/repair-policy-decision.json', prepared.qaReportPath, 'artifacts/repair-history.json'], [`repair-policy:${prepared.decision.reason}`]);
-          const fixRecord = await begin(state, 'FIX', fixInputs);
-          try {
-            const inputAttempt = await startRepairAttempt(state, fixRecord, prepared);
-            const fixContext = await contextFor('FIX', runRoot, path.join(runRoot, 'logs/codex/FIX.last-message.txt'), fixInputs, `Repair only the explicit preview QA issues against the frozen reference and recording-level contracts. Distinct evidence-backed hypothesis: ${prepared.hypothesis.summary}. Keep the core contract unchanged and add focused regression coverage.`);
-            const fix = await fixerAgent.run(workspace, inputAttempt.inputThreadId, report, fixContext);
-            await completeRepairAttempt(state, fixRecord, prepared, inputAttempt, fix, previewBuild.webBuild);
-          } catch (error) { return fail(state, fixRecord, error); }
-          return executeReplicaPreview(state, seed);
-        }
+        if (!report.passed) return repairPreview(report);
       } catch (error) { return fail(state, record, error); }
     }
-    const fidelityReview = await store.readArtifact(runId, 'reference-fidelity-review.json').catch(() => undefined);
-    const fidelityResult = await verifyReferenceFidelityReview({ runRoot, targetRunId: runId, workspace, buildHash: previewBuildHash, contract: fidelityContract, review: fidelityReview });
+    const requiredRetests = await readReferenceRetestChecks({runRoot,targetRunId:runId,workspace});
+    let fidelityReview = await store.readArtifact(runId, 'reference-fidelity-review.json').catch(() => undefined);
+    const parsedReview = ReferenceFidelityReviewSchema.safeParse(fidelityReview);
+    const currentReview = parsedReview.success
+      && parsedReview.data.reviewProtocol === 'reference-comparison-v1'
+      && parsedReview.data.targetRunId === runId && parsedReview.data.workspace === workspace
+      && parsedReview.data.buildHash === previewBuildHash
+      && parsedReview.data.contractHash === sha256Text(JSON.stringify(fidelityContract));
+    if (!currentReview && agents.reviewReferenceCandidate) {
+      // The independent reviewer sees source evidence and the shipped candidate,
+      // not the author's conclusions, known defects or an entire conversation.
+      const observedQa = QaReportSchema.parse(await store.readArtifact(runId, 'qa-report.json'));
+      const flowInputs:string[] = [];
+      if (observedQa.naturalFlow !== undefined) {
+        await store.writeArtifact(runId, 'reference-candidate-natural-flow.json', NaturalFlowEvidenceSchema.parse(observedQa.naturalFlow));
+        flowInputs.push('artifacts/reference-candidate-natural-flow.json');
+      }
+      const referenceMedia = await prepareBoundedResearchMedia(runId, 'reference-behavior',
+        await store.hasArtifact(runId, 'reference-frame-manifest.json')
+          ? ReferenceFrameManifestSchema.parse(await store.readArtifact(runId, 'reference-frame-manifest.json')) : undefined);
+      const observationTrace = flowInputs[0];
+      const qaObservation = observationTrace === undefined ? undefined : {
+        buildPath: previewBuild.webBuild.replace(/\/$/u, ''), buildSha256: previewBuildHash,
+        tracePath: observationTrace, traceSha256: await sha256File(path.join(runRoot, observationTrace)),
+        screenshots: await Promise.all(observedQa.naturalFlow!.screenshots.map(async file => ({path:file,sha256:await sha256File(await safeRunFile(runRoot,file))}))),
+        referenceImages: referenceMedia.media,
+      };
+      const reviewInputs = ['artifacts/reference-fidelity-contract.json', 'artifacts/reference-evidence-pack.json', 'artifacts/build-report.json', 'artifacts/runtime-product-journey.json', ...flowInputs, ...(levelContract ? ['artifacts/reference-level-runtime-trace.json'] : []), `${previewBuild.webBuild.replace(/\/$/u,'')}/`,
+        ...(await store.hasArtifact(runId, 'reference-frame-manifest.json') ? ['artifacts/reference-frame-manifest.json'] : [])];
+      // The comparison is part of this QA attempt, not a second attempt.
+      // Reserve projected usage explicitly; this is not a hard output-token cap.
+      await preflightCostBeforeStage(state, 'QA', {agentTokens:72_000});
+      const record = state.stages.QA!;
+      try {
+        for (const source of fidelityContract.provenance) {
+          const relative = assertSafeContextInputPath(source.path);
+          if (await sha256File(path.join(runRoot, relative)) !== source.sha256) throw new Error(`reference comparison source changed: ${relative}`);
+        }
+        const context = await contextFor('QA', runRoot, store.artifact(runId, 'reference-fidelity-review.json'), reviewInputs,
+          'Independently compare verified reference evidence with the current core slice. Inspect actual pixels and normal-input traces; discover important out-of-contract gaps. Unobserved is BLOCKED. Do not read prior defect answers or author conclusions.',
+          { targetGameId: blueprint.gameId, targetWorkspaceRelative: 'workspace/game', requiredContextPaths: reviewInputs, qaObservation });
+        const result = await agents.reviewReferenceCandidate({ workspace, buildHash: previewBuildHash, contractHash: sha256Text(JSON.stringify(fidelityContract)),requiredRetests }, context);
+        addAgentMetrics(record, result.metrics);
+        await saveUsage(state);
+        fidelityReview = ReferenceFidelityReviewSchema.parse({...ReferenceFidelityReviewSchema.parse(result.value),reviewProtocol:'reference-comparison-v1'});
+        await store.writeArtifact(runId, 'reference-fidelity-review.json', fidelityReview);
+        await complete(state, record, [...record.outputArtifacts, 'artifacts/reference-fidelity-review.json'], [...record.evidence, 'qa:independent-reference-model', 'qa:source-and-candidate-inputs']);
+      } catch (error) { return fail(state, record, error); }
+    }
+    if (fidelityReview !== undefined) {
+      const reviewHash = sha256Text(JSON.stringify(fidelityReview));
+      await writeJsonAtomic(path.join(runRoot, 'history/reference-reviews', `${reviewHash}.json`), fidelityReview);
+    }
+    const fidelityResult = await verifyReferenceFidelityReview({ runRoot, targetRunId: runId, workspace, buildHash: previewBuildHash, contract: fidelityContract, review: fidelityReview,requiredRetests });
     const runtimeProduct = RuntimeProductGateSchema.safeParse(await store.readArtifact(runId, 'runtime-product-gates.json').catch(() => undefined));
     const wiring = runtimeProduct.success ? await verifyRuntimeWiredFiles({ runRoot, files: runtimeProduct.data.runtimeWiredFiles }) : { passed: false };
     const fidelityGate = ReferenceFidelityGateSchema.parse({ ...fidelityResult,
@@ -3106,6 +3235,13 @@ export function createFactory(options: FactoryOptions = {}) {
     });
     await store.writeArtifact(runId, 'reference-fidelity-gate.json', fidelityGate);
     if (!fidelityGate.passed) {
+      if (fidelityReview !== undefined && ReferenceFidelityReviewSchema.safeParse(fidelityReview).success) {
+        const failure = await verifyReferenceRepairReview({runRoot,targetRunId:runId,workspace,buildHash:previewBuildHash,contract:fidelityContract,review:fidelityReview,requiredRetests});
+        if (failure.blockers.length === 0 && failure.report.issues.length > 0) {
+          await store.writeArtifact(runId, 'qa-report.json', failure.report);
+          return repairPreview(failure.report);
+        }
+      }
       return waitForReferenceComparison(state, workspace, fidelityGate, ['artifacts/qa-report.json', 'artifacts/reference-fidelity-contract.json', 'artifacts/reference-fidelity-gate.json', 'artifacts/runtime-product-gates.json', ...(fidelityReview === undefined ? [] : ['artifacts/reference-fidelity-review.json']), ...recordingLevelInputs]);
     }
     await recordControlStage(state, 'QA', 'completed',

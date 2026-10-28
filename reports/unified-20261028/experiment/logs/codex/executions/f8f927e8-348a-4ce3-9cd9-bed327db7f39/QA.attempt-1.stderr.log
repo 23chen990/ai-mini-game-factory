@@ -1,0 +1,4 @@
+2026-10-28T09:20:03.782161Z ERROR codex_models_manager::manager: failed to load models cache: missing field `supports_parallel_tool_calls` at line 139 column 5
+2026-10-28T09:20:07.268745Z ERROR codex_rmcp_client::oauth::refresh_transaction: error=failed to refresh OAuth tokens for server hyper3d: OAuth refresh token was rejected: Server returned error response: invalid_grant: OAuth authorization context has expired
+2026-10-28T09:20:07.440962Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer realm=\"mcp\", resource_metadata=\"https://mcp.runpod.io/.well-known/oauth-protected-resource\"" })
+2026-10-28T09:20:07.460012Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer realm=\"mcp\", resource_metadata=\"https://mcp.runpod.io/.well-known/oauth-protected-resource\"" })

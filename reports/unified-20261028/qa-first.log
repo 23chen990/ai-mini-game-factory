@@ -1,0 +1,15 @@
+/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/src/providers/codex-cli.ts:452
+      throw new CodexExecutionError(redactText(error instanceof Error ? error.message : String(error)), usage, attempts, execution.executionId, model);
+            ^
+
+CodexExecutionError: codex exec stopped: failed; observed completed-turn tokens 0
+    at CodexCliProvider.execute (/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/src/providers/codex-cli.ts:452:13)
+    at async CodexAccountProvider.structured (/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/src/providers/codex-account.ts:129:20)
+    at async <anonymous> (/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/tools/unified-agent-repair-pilot.ts:109:16) {
+  usage: { inputTokens: 0, outputTokens: 0, totalTokens: 0 },
+  attempts: 1,
+  executionId: 'f8f927e8-348a-4ce3-9cd9-bed327db7f39',
+  model: 'account-default'
+}
+
+Node.js v24.14.0

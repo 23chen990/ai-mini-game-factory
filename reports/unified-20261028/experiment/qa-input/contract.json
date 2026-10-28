@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "targetRunId": "unified-agent-repair-20261028",
+  "referenceName": "Verified historical Slice Master behavioral reference",
+  "provenance": [
+    {
+      "path": "reference-evidence/verified/_2026-09-06-135548-3781e4dcd3d2-3781e4dcd3d2-3781e4dcd3d2-3781e4dcd3d2.mp4",
+      "sha256": "3781e4dcd3d21094f186cf442b3ee30cddfbb2fbe68d87c5c7470a2c742bf75a"
+    }
+  ],
+  "coreLoopOrder": [
+    "fresh ready",
+    "normal action",
+    "visible result",
+    "terminal",
+    "replay"
+  ],
+  "inputStateTransitions": [],
+  "failureRecoveryRules": [],
+  "mustPreserveMechanics": [],
+  "progressionSystems": [],
+  "unlockRules": [],
+  "behaviorChecks": [],
+  "feedbackTimingBands": null,
+  "status": "BLOCKED",
+  "blockers": [
+    "Historical recording does not establish hidden input timing or every causal/failure/replay branch. Do not infer those."
+  ]
+}

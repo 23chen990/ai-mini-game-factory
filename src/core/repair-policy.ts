@@ -26,7 +26,7 @@ export function buildRepairHypothesis(report: QaReport, qaReportPath: string): R
   // Retry admission changes only when the failed behavior/issue changes.
   const signature = {
     failedChecks: failedChecks.map(({ name }) => name).sort(),
-    issues: issues.map(({ id, severity, message }) => ({ id, severity, message })).sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b))),
+    issues: report.issues.filter(issue => issue.severity === 'error').map(({ id, severity, rootCause, hypothesis }) => ({ id: id.trim(), severity, rootCause, hypothesis })).sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b))),
   };
   const summary = [
     failedChecks.length ? `Failed checks: ${failedChecks.map((check) => check.name).join(', ')}` : '',
@@ -55,7 +55,7 @@ export function decideRepairAttempt(input: {
   hypothesis: RepairHypothesis;
   previous?: RepairAttempt;
 }): RepairAdmission {
-  if (input.attempt > Math.min(5, input.maxFixAttempts ?? 5)) return { allowed: false, reason: 'configured-fix-attempt-ceiling' };
+  if (input.maxFixAttempts !== undefined && input.attempt > input.maxFixAttempts) return { allowed: false, reason: 'configured-fix-attempt-ceiling' };
   if (input.maxRepairLoops !== undefined && input.attempt > input.maxRepairLoops) return { allowed: false, reason: 'configured-repair-loop-ceiling' };
   if (input.previous?.status === 'started') return { allowed: false, reason: 'incomplete-prior-attempt' };
   if (input.previous && input.previous.inputBuildHash === input.previous.outputBuildHash) return { allowed: false, reason: 'unchanged-build' };

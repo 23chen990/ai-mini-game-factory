@@ -24,7 +24,7 @@ export const ReferenceComparisonSpecSchema = z.object({
 export const ReferenceComparisonCaptureSchema = z.object({
   schemaVersion: z.literal(1), targetRunId: Text, contractHash: Hash,
   target: z.enum(['reference', 'candidate']), artifactHash: Hash,
-  authority: z.enum(['normal-input', 'fixture']), startedFromReset: z.boolean(),
+  authority: z.enum(['normal-input', 'recording-observation', 'fixture']), startedFromReset: z.boolean(),
   actions: z.array(Text), forbiddenOperations: z.array(Text),
   observedAt: z.string().datetime(), durationMs: z.number().finite().positive(),
   observations: z.array(z.object({

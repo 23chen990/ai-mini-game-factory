@@ -90,11 +90,30 @@ describe('formal repair admission', () => {
 });
 
 
-describe('five-attempt production ceiling', () => {
-  it('does not admit a sixth repair even with a larger configured budget', () => {
+describe('explicit production ceilings', () => {
+  it('honors the configured ceiling without silently imposing five', () => {
     const hypothesis = buildRepairHypothesis({ schemaVersion: 1, passed: false, checks: [{ name: 'core', passed: false, evidence: 'qa trace' }], issues: [], screenshots: [], consoleLog: 'logs/console.log', testedAt: new Date(0).toISOString() }, 'qa.json');
-    for (const maxFixAttempts of [undefined, 10]) {
-      expect(decideRepairAttempt({ attempt: 6, maxFixAttempts, currentBuildHash: 'a'.repeat(64), hypothesis })).toEqual({ allowed: false, reason: 'configured-fix-attempt-ceiling' });
+    for (const maxFixAttempts of [undefined, 5, 10]) {
+      expect(decideRepairAttempt({ attempt: 6, maxFixAttempts, currentBuildHash: 'a'.repeat(64), hypothesis })).toEqual(maxFixAttempts === 5 ? {allowed:false,reason:'configured-fix-attempt-ceiling'} : {allowed:true,reason:'distinct-evidence-backed-hypothesis'});
     }
   });
+});
+
+it('has no implicit repair ceiling when neither operator ceiling is configured', () => {
+  const report = qaReport('new-counterexample');
+  const hypothesis = buildRepairHypothesis(report, 'artifacts/qa-report.json');
+  expect(decideRepairAttempt({attempt:6,currentBuildHash:'a'.repeat(64),hypothesis})).toEqual({allowed:true,reason:'distinct-evidence-backed-hypothesis'});
+});
+
+it('does not turn rewording the same issue into a distinct repair hypothesis', () => {
+ const first=qaReport('same-object-state');
+ const reworded={...first,issues:first.issues.map(issue=>({...issue,message:'The same counterexample described differently'}))};
+ expect(buildRepairHypothesis(reworded,'second.json').id).toBe(buildRepairHypothesis(first,'first.json').id);
+});
+
+it('admits a distinct evidence-backed causal hypothesis for the same still-open issue', () => {
+ const base=qaReport('same-object-state');
+ const first={...base,issues:base.issues.map(issue=>({...issue,rootCause:'implementation' as const,hypothesis:'The collider resolves before contact.',evidence:'logs/early-collision.json'}))};
+ const next={...base,issues:base.issues.map(issue=>({...issue,rootCause:'implementation' as const,hypothesis:'The input listener is registered on the wrong lifecycle owner.',evidence:'logs/listener-lifecycle.json'}))};
+ expect(buildRepairHypothesis(next,'next.json').id).not.toBe(buildRepairHypothesis(first,'first.json').id);
 });

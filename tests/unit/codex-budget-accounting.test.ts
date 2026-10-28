@@ -41,3 +41,10 @@ it('selects the latest uniquely bound execution for recovery instead of a first-
     await expect(codexStageExecution(root, 'FULL_BUILD', 'BUILD')).rejects.toThrow(/unresolved/u);
   } finally { await rm(root, { recursive: true, force: true }); }
 });
+
+it('sums completed invocation wall time without charging idle time between calls', async () => {
+ const budget=await import('../../src/core/codex-budget.js');
+ expect(budget).toHaveProperty('completedCodexExecutionMs');
+ expect(budget.completedCodexExecutionMs([{startedAt:'2026-10-28T09:00:00Z',finishedAt:'2026-10-28T09:00:10Z'},{startedAt:'2026-10-28T15:00:00Z',finishedAt:'2026-10-28T15:00:20Z'}])).toBe(30000);
+ expect(()=>budget.completedCodexExecutionMs([{startedAt:'2026-10-28T15:00:00Z',finishedAt:null}])).toThrow('unfinished');
+});

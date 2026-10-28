@@ -1,0 +1,30 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/reference-rework.test.ts (3 tests | 1 failed) 7ms
+   × can repair an independently evidenced implementation issue while retaining unrelated evidence gaps 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/reference-rework.test.ts > can repair an independently evidenced implementation issue while retaining unrelated evidence gaps
+AssertionError: expected 'REFERENCE_DEEP_RESEARCH' to be 'FIX' // Object.is equality
+
+Expected: "FIX"
+Received: "REFERENCE_DEEP_RESEARCH"
+
+ ❯ tests/unit/reference-rework.test.ts:31:134
+     29| it('can repair an independently evidenced implementation issue while r…
+     30|  const finding={id:'input',severity:'error',message:'Visible control h…
+     31|  expect(routing.routeQaIssues([{...finding,rootCause:'implementation'}…
+       |                                                                                                                                      ^
+     32| });
+     33|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  17:25:54
+   Duration  608ms (transform 313ms, setup 0ms, import 496ms, tests 7ms, environment 0ms)
+

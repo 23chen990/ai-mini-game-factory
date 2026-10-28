@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { ComparisonEvidenceFileSchema, ReferenceComparisonSpecSchema, ReferenceDifferenceSchema } from './reference-comparison.js';
+import { QaIssueSchema } from './qa-issue.js';
 
 const Text = z.string().trim().min(1);
 const Sha256 = z.string().regex(/^[a-f0-9]{64}$/iu);
@@ -52,28 +53,45 @@ export const ReferenceFidelityContractSchema = z.object({
 export type ReferenceFidelityContract = z.infer<typeof ReferenceFidelityContractSchema>;
 
 const EvidenceFile = z.object({ path: Text, sha256: Sha256 }).strict();
+export const ReferenceDiscoverySchema = QaIssueSchema.extend({
+  rootCause: QaIssueSchema.shape.rootCause.unwrap(),
+  hypothesis: Text,
+  objectType: Text,
+  stateBranch: Text,
+  viewport: ReferenceBehaviorCheckSchema.shape.viewport,
+  screenshots: z.array(EvidenceFile).min(1),
+  trace: EvidenceFile,
+}).strict();
+export const ReferenceReviewCaseSchema = z.object({
+  checkId: Text,
+  objectType: Text,
+  stateBranch: Text,
+  viewport: ReferenceBehaviorCheckSchema.shape.viewport,
+  passed: z.boolean(),
+  perceptualPassed: z.boolean(),
+  observedStateChange: Text,
+  observedFeedback: Text,
+  rootCause: QaIssueSchema.shape.rootCause,
+  hypothesis: QaIssueSchema.shape.hypothesis,
+  screenshots: z.array(EvidenceFile).min(1),
+  trace: EvidenceFile,
+}).strict();
 /** Authored by an independent QA reviewer after inspecting natural input and pixels. */
 export const ReferenceFidelityReviewSchema = z.object({
   schemaVersion: z.literal(1),
   targetRunId: Text,
   workspace: Text,
+  reviewProtocol: z.literal('reference-comparison-v1').optional(),
   contractHash: Sha256,
   buildHash: Sha256,
   reviewer: z.enum(['QAAgent', 'HumanReviewer']),
   authorIndependent: z.literal(true),
   comparison: z.object({ reference: ComparisonEvidenceFileSchema, candidate: ComparisonEvidenceFileSchema }).strict().optional(),
-  cases: z.array(z.object({
-    checkId: Text,
-    objectType: Text,
-    stateBranch: Text,
-    viewport: ReferenceBehaviorCheckSchema.shape.viewport,
-    passed: z.boolean(),
-    perceptualPassed: z.boolean(),
-    observedStateChange: Text,
-    observedFeedback: Text,
-    screenshots: z.array(EvidenceFile).min(1),
-    trace: EvidenceFile,
-  }).strict()),
+  /** Not restricted to the requirements Builder was given. */
+  discoveries: z.array(ReferenceDiscoverySchema).default([]),
+  cases: z.array(ReferenceReviewCaseSchema),
+  /** Explicit current-build closure evidence for earlier out-of-contract gaps. */
+  retests: z.array(ReferenceReviewCaseSchema).default([]),
 }).strict();
 
 export const ReferenceFidelityGateSchema = z.object({

@@ -15,6 +15,7 @@ async function fixture() {
   await mkdir(path.join(runRoot, 'screenshots'));
   await mkdir(path.join(runRoot, 'logs'));
   const source = { path: 'reference.txt', sha256: sha256Text('reference') };
+  await writeFile(path.join(runRoot,source.path),'reference');
   const behaviorChecks = referenceBehaviorChecks(source);
   const contract = ReferenceFidelityContractSchema.parse({
     schemaVersion: 1, targetRunId: 'run-1', referenceName: 'synthetic reference', provenance: [source],
@@ -37,7 +38,7 @@ async function fixture() {
   const workspace = path.join(runRoot, 'workspace/game');
   const review = {
     schemaVersion: 1, targetRunId: 'run-1', workspace, buildHash, contractHash: sha256Text(JSON.stringify(contract)),
-    reviewer: 'QAAgent', authorIndependent: true,
+    reviewer: 'QAAgent', authorIndependent: true, reviewProtocol:'reference-comparison-v1',
     cases: behaviorChecks.map((check) => ({
       checkId: check.id, objectType: check.objectType, stateBranch: check.stateBranch, viewport: check.viewport,
       passed: true, perceptualPassed: true, observedStateChange: check.expectedStateChange, observedFeedback: 'target-local reward follows resolution',
@@ -194,4 +195,94 @@ describe('reference fidelity QA gate', () => {
     }
     expect((await verify(input)).passed).toBe(false);
   });
+});
+
+it('does not pass when independent QA finds an important out-of-contract issue', async () => {
+  const input = await fixture();
+  const evidence = input.review.cases[0]!;
+  const review = { ...input.review, discoveries: [{
+    id: 'unexpected-bypass', severity: 'error', evidence: evidence.trace.path,
+    rootCause: 'design', hypothesis: 'The declared contract omitted the risk/reward decision.',
+    message: 'A normal-input route bypasses every risk.', objectType: 'hazard cluster', stateBranch: 'approach -> bypass',
+    viewport: evidence.viewport, screenshots: evidence.screenshots, trace: evidence.trace,
+  }] };
+  const result = await verify({ ...input, review });
+  expect(result.blockers).toContain('fidelity:discovery:unexpected-bypass');
+  expect(result.passed).toBe(false);
+});
+
+import * as referenceEvidence from '../../src/core/reference-evidence.js';
+it('accepts partial natural failure evidence for repair without accepting it as gameplay completion', async () => {
+  const input = await fixture();
+  const first = input.review.cases[0]!;
+  const review = { ...input.review, cases: [{ ...first, passed: false, rootCause: 'implementation', hypothesis: 'Collision resolves before visible contact.' }] };
+  const result = await referenceEvidence.verifyReferenceRepairReview({ ...input, review });
+  expect(result.blockers).toEqual([]);
+  expect(result.report.passed).toBe(false);
+  expect(result.report.issues[0]).toMatchObject({rootCause:'implementation', hypothesis:'Collision resolves before visible contact.'});
+});
+it('refuses stale or injected failure evidence before repair dispatch', async () => {
+  const input = await fixture();
+  const first = input.review.cases[0]!;
+  input.flow.forbiddenOperations.push('setState');
+  const body = JSON.stringify(input.flow);
+  await writeFile(path.join(input.runRoot, first.trace.path),body);
+  const review = { ...input.review, cases: [{ ...first, passed: false, trace:{...first.trace,sha256:sha256Text(body)} }] };
+  expect((await referenceEvidence.verifyReferenceRepairReview({...input,review})).blockers.length).toBeGreaterThan(0);
+  expect((await referenceEvidence.verifyReferenceRepairReview({...input,buildHash:'d'.repeat(64),review})).blockers).toContain('repair:review-identity-mismatch');
+});
+it('cannot lose a previously discovered gap when the next build passes only its original contract', async () => {
+  const input=await fixture();
+  const result=await verify({...input,requiredRetests:[{id:'historical-cluster-gap',objectType:'target cluster',stateBranch:'contact -> separate -> fall',viewport:{width:390,height:844}}]});
+  expect(result.passed).toBe(false);
+  expect(result.blockers).toContain('fidelity:check-missing:historical-cluster-gap');
+});
+
+it('invalidates an otherwise matching comparison when the reference bytes change',async()=>{
+ const input=await fixture();
+ await writeFile(path.join(input.runRoot,'reference.txt'),'different reference bytes');
+ expect((await verify(input)).blockers).toContain('fidelity:source-file-invalid:reference.txt');
+});
+
+it('blocks legacy comparison methodology even when all old evidence hashes match',async()=>{
+ const input=await fixture();
+ expect((await verify({...input,review:{...input.review,reviewProtocol:undefined}})).blockers).toContain('fidelity:review-protocol-missing');
+});
+it('does not dispatch a repair from a sibling branch mislabeled as a historical retest',async()=>{
+ const input=await fixture();const first=input.review.cases[0]!;
+ const row={...first,checkId:'prior-gap',objectType:'sibling-object',passed:false,rootCause:'implementation'};
+ const result=await referenceEvidence.verifyReferenceRepairReview({...input,review:{...input.review,cases:[],retests:[row]},requiredRetests:[{id:'prior-gap',objectType:'original-object',stateBranch:first.stateBranch,viewport:first.viewport}]});
+ expect(result.blockers).toContain('repair:branch-mismatch:prior-gap');
+});
+it('loads retained discoveries from repair history even when audit callers omit retest arguments',async()=>{
+ const input=await fixture();const first=input.review.cases[0]!;
+ const previous={...input.review,discoveries:[{id:'retained-outside-contract',severity:'error',rootCause:'implementation',hypothesis:'Wrong causal ordering.',message:'Earlier discovered branch',evidence:first.trace.path,objectType:'cluster',stateBranch:'contact -> separate',viewport:first.viewport,screenshots:first.screenshots,trace:first.trace}]};
+ const dir=path.join(input.runRoot,'history/reference-repairs/attempt-1');await mkdir(dir,{recursive:true});
+ await writeFile(path.join(dir,'reference-fidelity-review.json'),JSON.stringify(previous));
+ expect((await verify(input)).blockers).toContain('fidelity:check-missing:retained-outside-contract');
+});
+
+it('admits a frozen normal-input no-response counterexample without claiming a successful transition', async () => {
+ const input = await fixture(); const first = input.review.cases[0]!;
+ input.flow.transitions[0]!.changed = false;
+ input.flow.transitions[0]!.evidence = 'Normal tap observed; the visible state remained unchanged for two seconds.';
+ const body = JSON.stringify(input.flow); await writeFile(path.join(input.runRoot, first.trace.path), body);
+ const review = {...input.review,cases:[{...first,passed:false,perceptualPassed:false,rootCause:'implementation',hypothesis:'The input listener does not invoke the declared action.',trace:{...first.trace,sha256:sha256Text(body)}}]};
+ expect((await referenceEvidence.verifyReferenceRepairReview({...input,review})).blockers).toEqual([]);
+ expect((await verify({...input,review})).passed).toBe(false);
+});
+
+it('retains known gaps across upstream contract rework, not only Fixer attempts', async () => {
+ const input=await fixture();const first=input.review.cases[0]!;
+ const previous={...input.review,discoveries:[{id:'upstream-gap',severity:'error',rootCause:'design',hypothesis:'The contract omitted the choice.',message:'Observed choice gap',evidence:first.trace.path,objectType:'cluster',stateBranch:'approach',viewport:first.viewport,screenshots:first.screenshots,trace:first.trace}]};
+ const dir=path.join(input.runRoot,'history/reference-reviews');await mkdir(dir,{recursive:true});
+ await writeFile(path.join(dir,`${'a'.repeat(64)}.json`),JSON.stringify(previous));
+ expect((await verify(input)).blockers).toContain('fidelity:check-missing:upstream-gap');
+});
+
+it('cannot close a deferred evidence gap by repairing an unrelated implementation issue', async () => {
+ const input=await fixture();
+ await mkdir(path.join(input.runRoot,'artifacts'));
+ await writeFile(path.join(input.runRoot,'artifacts/qa-deferred-issues.json'),JSON.stringify({schemaVersion:1,passed:false,checks:[],issues:[{id:'unresolved-source-branch',severity:'error',rootCause:'evidence',hypothesis:'This branch lacks source observations.',message:'Source causality is unobserved',evidence:JSON.stringify({objectType:'source target',stateBranch:'contact',viewport:{width:390,height:844}})}],screenshots:[],consoleLog:'logs/console.log',testedAt:new Date().toISOString()}));
+ expect((await verify(input)).blockers).toContain('fidelity:check-missing:unresolved-source-branch');
 });

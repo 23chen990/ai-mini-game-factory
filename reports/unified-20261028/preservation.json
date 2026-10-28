@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "worktrees": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市",
+      "originalTrackedDiffSha256": "06d1b9639034be947cd8fcf58924145e33b5fe4cbb1a3d739df6d655892a7f48",
+      "currentTrackedDiffSha256": "06d1b9639034be947cd8fcf58924145e33b5fe4cbb1a3d739df6d655892a7f48",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/09a9/妖怪夜市",
+      "originalTrackedDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "currentTrackedDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/dc51/妖怪夜市",
+      "originalTrackedDiffSha256": "139da1d9692e3078ff7d61736eafdd54518a20c1be9f5049609da3c2eef08287",
+      "currentTrackedDiffSha256": "139da1d9692e3078ff7d61736eafdd54518a20c1be9f5049609da3c2eef08287",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市",
+      "originalTrackedDiffSha256": "6a4ac0ed23baa34b28c976fe3d99d2b0ff582142f78e699d842fa9f73396ffc5",
+      "currentTrackedDiffSha256": "6a4ac0ed23baa34b28c976fe3d99d2b0ff582142f78e699d842fa9f73396ffc5",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市",
+      "originalTrackedDiffSha256": "11b73f20b68175259126825b41adc4ad57d9acd7af6d900276af5133a496365d",
+      "currentTrackedDiffSha256": "11b73f20b68175259126825b41adc4ad57d9acd7af6d900276af5133a496365d",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-core-loop-20261028/妖怪夜市",
+      "originalTrackedDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "currentTrackedDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市",
+      "originalTrackedDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "currentTrackedDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-reference-upgrade/妖怪夜市",
+      "originalTrackedDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "currentTrackedDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-coast-v2/妖怪夜市",
+      "originalTrackedDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "currentTrackedDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市",
+      "originalTrackedDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "currentTrackedDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市",
+      "originalTrackedDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "currentTrackedDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/race-fuel-iaa/妖怪夜市",
+      "originalTrackedDiffSha256": "876b3d50f0dcd71e102abfdd063f95dd4babe4bb0759ed036326ddcd551832f0",
+      "currentTrackedDiffSha256": "876b3d50f0dcd71e102abfdd063f95dd4babe4bb0759ed036326ddcd551832f0",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/race-two-button/妖怪夜市",
+      "originalTrackedDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "currentTrackedDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市",
+      "originalTrackedDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "currentTrackedDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/reference-mechanism-chain/妖怪夜市",
+      "originalTrackedDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "currentTrackedDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "unchanged": true
+    }
+  ],
+  "allUnchanged": true,
+  "intentionallyInheritedUserEdits": [
+    "AGENTS.md proposal-discipline paragraph copied into the integration checkout only.",
+    "Existing model-policy request/configuration failure classification reused and extended with the two actual rejection cases; original files untouched."
+  ],
+  "notIntegratedUncommittedEdits": [
+    "PR81 worktree profile-contract.ts and its unrelated codex-account prompt/test edit; preserved in that checkout.",
+    "830 original working-tree deletions are left as user changes, not applied to the integration candidate."
+  ]
+}

@@ -1,0 +1,31 @@
+$ vitest run
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/integration/repair-recovery.test.ts (5 tests | 1 failed) 9856ms
+     × stops after five distinct evidenced repairs and resumes without duplicating the count or provider call 4163ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/integration/repair-recovery.test.ts > formal repair recovery > stops after five distinct evidenced repairs and resumes without duplicating the count or provider call
+Error: Stage FIX exceeded its bounded retry policy
+ ❯ begin src/factory.ts:2334:90
+    2332|       : store.record(stage, previous);
+    2333|     const unboundedRepairRetest = stage === 'QA' && options.repairRete…
+    2334|     if (!unboundedRepairRetest && !stageAttemptAllowed(contract, recor…
+       |                                                                                          ^
+    2335|     record.inputArtifacts = inputArtifacts; state.stage = stage; state…
+    2336|     await store.save(state);
+ ❯ executePipeline src/factory.ts:4176:29
+ ❯ execute src/factory.ts:4607:14
+ ❯ tests/integration/repair-recovery.test.ts:101:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 199 passed (200)
+      Tests  1 failed | 1292 passed (1293)
+   Start at  17:27:15
+   Duration  143.77s (transform 2.38s, setup 0ms, import 40.66s, tests 229.53s, environment 10ms)
+
+[ELIFECYCLE] Test failed. See above for more details.

@@ -1,0 +1,28 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/qa-observation-directory.test.ts (1 test | 1 failed) 6ms
+   × binds frozen QA to the complete build, not only index.html, and detects changed assets 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/qa-observation-directory.test.ts > binds frozen QA to the complete build, not only index.html, and detects changed assets
+Error: QA observation file escapes its run or is not a regular file
+ ❯ boundFile src/qa/browser-preflight.ts:21:100
+     19|     const actual = await realpath(file);
+     20|     const stat = await lstat(file);
+     21|     if (!actual.startsWith(`${root}${path.sep}`) || !stat.isFile() || …
+       |                                                                                                    ^
+     22|     return file;
+     23|   }
+ ❯ verifyQaObservation src/qa/browser-preflight.ts:24:21
+ ❯ tests/unit/qa-observation-directory.test.ts:19:10
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  17:10:20
+   Duration  773ms (transform 313ms, setup 0ms, import 679ms, tests 6ms, environment 0ms)
+

@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "factory-control-plane (pilot: mobile-slice-adaptation-20260830)",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市",
+  "report": "2026-10-28 user-requested production quality overhaul; Slice Master historical pilot workspace /Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a. Hypotheses require current-build revalidation; no old gameplay issue is assumed current.",
+  "classification": [
+    "reference-fidelity",
+    "qa-false-positive",
+    "factory-routing"
+  ],
+  "scope": {
+    "route": "shared-factory",
+    "rationale": "Inspect real replica-preview handoffs, independent comparison and repair dispatch; no added agents, stages or model migration. Historical game is read-only until formal issue validation.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "unrelated games",
+      "unverified media",
+      "credentials",
+      "known answers from blind QA inputs"
+    ]
+  },
+  "reproduction": {
+    "status": "PARTIALLY_REPRODUCED",
+    "steps": [
+      "Trace CLI factory run/resume into executeReplicaPreview",
+      "Replay failed independent fidelity review and engineering QA outcomes through integration fixtures",
+      "Verify exact historical video hash and current candidate before natural-input comparison"
+    ],
+    "observed": [
+      "Replica preview always dispatches engineering QA errors to FIX; independent fidelity failure below that branch only writes human review task and waits.",
+      "Baseline pnpm verify: lint/typecheck pass; 5 test files fail (15 failed, 1191 passed, 5 skipped); inspect deleted run fixtures separately without restoring user deletions.",
+      "Existing workspace contains 830 pre-existing tracked deletions and three modified files; preserve and exclude them from commit.",
+      "Isolated target-main factory code passes lint, typecheck and 998 tests; actual source/candidate gameplay comparison remains blocked. A direct historical embed resolves to a Cloudflare challenge. No new game prototype or core-gameplay repair was claimed."
+    ],
+    "evidence": [
+      {
+        "path": "src/factory.ts",
+        "sha256": "74711399ff344f73497a79cf90aba6f507873e1ccee03e3775518d885169d183",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      },
+      {
+        "path": "src/qa/reference-level-qa.ts",
+        "sha256": "015dd7c16c557ce176ae2aabdc760f28d45bd1c11300a92ea7c796a23401bf5c",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      },
+      {
+        "path": "runs/mobile-slice-adaptation-20260830/reference-evidence/manifest.json",
+        "sha256": "b826775ab76f3d782c2b594c35d79441950d76ae7416f43b6032ae7269a36d7a",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/mobile-slice-adaptation-20260830/research-slice-core-20260930/synthesis/gap-matrix.json",
+        "sha256": "7df9947211a0b24a4d7dd5fec45ad321277b266a69271c4838f8fb650f6b4020",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Independent failed comparison cannot advance or silently wait as though no repair is needed; missing evidence remains BLOCKED",
+    "Root-cause routing must distinguish evidence/research/design/implementation and prove actual invocation or explicitly pending state",
+    "Preserve prior build-specific issues, evidence and cumulative repair attempts",
+    "No new full-suite regression beyond reproducible baseline; lint and typecheck pass",
+    "Real-model tests and normal-input gameplay evidence report honest BLOCKED where unavailable; no mocks as gameplay success"
+  ],
+  "status": "BLOCKED",
+  "createdAt": "2026-10-28T06:58:40.651Z"
+}

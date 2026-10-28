@@ -121,3 +121,9 @@ describe('explicit reference comparison semantics', () => {
     });
   });
 });
+
+it('can preserve recording-only observations without representing them as logged normal input', () => {
+ const input=fixture('ordered');
+ const reference=ReferenceComparisonCaptureSchema.parse({...input.reference,authority:'recording-observation',startedFromReset:false,actions:[]});
+ expect(compareReferenceCaptures({...input,reference})).toContainEqual(expect.objectContaining({route:'QA',reason:'reference:natural-input-required'}));
+});

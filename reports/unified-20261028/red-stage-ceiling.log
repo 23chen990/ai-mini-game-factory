@@ -1,0 +1,33 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/stage-contracts.test.ts (17 tests | 1 failed) 18ms
+     × leaves formal FIX attempt limits to persisted operator budgets and repair admission 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/stage-contracts.test.ts > stage contracts > leaves formal FIX attempt limits to persisted operator budgets and repair admission
+AssertionError: expected 5 to be null
+
+- Expected:
+null
+
++ Received:
+5
+
+ ❯ tests/unit/stage-contracts.test.ts:130:31
+    128|     expect(fixer.ownerRole).toBe('FixerAgent');
+    129|     expect(fixer.verifierRole).toBe('QAAgent');
+    130|     expect(fixer.maxAttempts).toBeNull();
+       |                               ^
+    131|     expect(fixer.retryPolicy.maxAttempts).toBeNull();
+    132|     expect(fixer.retryPolicy.unboundedUntilPass).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 16 passed (17)
+   Start at  17:31:46
+   Duration  594ms (transform 312ms, setup 0ms, import 485ms, tests 18ms, environment 0ms)
+

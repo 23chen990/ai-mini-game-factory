@@ -1,17 +1,109 @@
-import { lstat, readFile, realpath } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import { lstat, readFile, readdir, realpath } from 'node:fs/promises';
 import path from 'node:path';
-import { sha256File, sha256Text } from './files.js';
+import { exists, sha256File, sha256Text } from './files.js';
 import { sanitizeUntrustedText } from './security-boundary.js';
 import { isInstructionShapedResearchText, isResearchHostAllowed, isSafeExternalResearchUrl } from './research-evidence.js';
 import { usableEvidenceEntries, verifyEvidenceFileBindings } from './evidence-provenance.js';
 import { ReferenceBehaviorAnalysisSchema, ReferenceEvidencePackSchema, type ReferenceEvidencePack } from '../schemas/reference-evidence.js';
-import { REFERENCE_BEHAVIOR_DIMENSIONS, ReferenceFidelityContractSchema, ReferenceFidelityGateSchema, ReferenceFidelityReviewSchema } from '../schemas/reference-fidelity.js';
+import { REFERENCE_BEHAVIOR_DIMENSIONS, ReferenceDiscoverySchema, ReferenceFidelityContractSchema, ReferenceFidelityGateSchema, ReferenceFidelityReviewSchema } from '../schemas/reference-fidelity.js';
 import { NaturalFlowEvidenceSchema } from '../schemas/natural-flow.js';
 import { evaluateQaEvidence } from './qa-evidence.js';
 import { ReferenceMechanicSpecSchema, type ReferenceMechanicSpec } from '../schemas/reference-mechanic.js';
 import { buildEvidenceClaimSet } from './evidence-claims.js';
 import { ReferenceComparisonCaptureSchema, type ReferenceDifference } from '../schemas/reference-comparison.js';
 import { compareReferenceCaptures, referenceComparisonContractDifferences } from './reference-comparison.js';
+import { QaReportSchema } from '../schemas/index.js';
+
+export async function readReviewEvidence(runRoot: string, ref: { path: string; sha256: string }) {
+  const bytes = await readFile(await safeRunFile(runRoot, ref.path));
+  if (createHash('sha256').update(bytes).digest('hex') !== ref.sha256) throw new Error('reference review evidence hash mismatch');
+  return bytes;
+}
+
+type RetestCheck = {id:string;objectType:string;stateBranch:string;viewport:{width:number;height:number}};
+
+/** Shared by the orchestrator and standalone audit, so neither can forget
+ * previously discovered branches when evaluating a later candidate. */
+export async function readReferenceRetestChecks(input:{runRoot:string;targetRunId:string;workspace:string}):Promise<RetestCheck[]> {
+  const repairs=path.join(input.runRoot,'history/reference-repairs');
+  const reviews=path.join(input.runRoot,'history/reference-reviews');
+  const paths:string[]=[];
+  if (await exists(repairs)) for (const entry of await readdir(repairs,{withFileTypes:true})) {
+    if (!entry.isDirectory() || !/^attempt-\d+$/u.test(entry.name)) continue;
+    const relative=`history/reference-repairs/${entry.name}/reference-fidelity-review.json`;
+    if (await exists(path.join(input.runRoot,relative))) paths.push(relative);
+  }
+  if (await exists(reviews)) for (const entry of await readdir(reviews)) {
+    if (/^[a-f0-9]{64}\.json$/u.test(entry)) paths.push(`history/reference-reviews/${entry}`);
+  }
+  const checks=new Map<string,RetestCheck>();
+  for (const relative of paths) {
+    const prior=ReferenceFidelityReviewSchema.parse(JSON.parse(await readFile(await safeRunFile(input.runRoot,relative),'utf8')));
+    if (prior.targetRunId !== input.targetRunId || prior.workspace !== input.workspace) throw new Error('reference repair history identity mismatch');
+    const failures=[...prior.discoveries.filter(issue=>issue.severity==='error'),...[...prior.cases,...prior.retests].filter(row=>!row.passed || !row.perceptualPassed).map(row=>({...row,id:row.checkId}))];
+    for (const issue of failures) {
+      const check={id:issue.id,objectType:issue.objectType,stateBranch:issue.stateBranch,viewport:issue.viewport};
+      const previous=checks.get(issue.id);
+      if (previous !== undefined && JSON.stringify(previous)!==JSON.stringify(check)) throw new Error(`reference issue id reused for a different branch: ${issue.id}`);
+      checks.set(issue.id,check);
+    }
+  }
+  const deferredPath='artifacts/qa-deferred-issues.json';
+  if (await exists(path.join(input.runRoot,deferredPath))) {
+    const deferred=QaReportSchema.parse(JSON.parse(await readFile(await safeRunFile(input.runRoot,deferredPath),'utf8')));
+    for (const issue of deferred.issues.filter(issue=>issue.severity==='error')) {
+      // Deferred issues are external QA data. Missing branch metadata must fail
+      // visibly rather than silently removing the obligation after another fix.
+      const branch=ReferenceDiscoverySchema.pick({objectType:true,stateBranch:true,viewport:true}).strip().parse(JSON.parse(issue.evidence));
+      const check={id:issue.id,...branch};
+      const previous=checks.get(issue.id);
+      if (previous !== undefined && JSON.stringify(previous)!==JSON.stringify(check)) throw new Error(`reference issue id reused for a different branch: ${issue.id}`);
+      checks.set(issue.id,check);
+    }
+  }
+  return [...checks.values()];
+}
+
+/** Failure traces can legitimately stop before settlement. Validate the exact
+ * natural-input counterexample without pretending it passed the product gate.
+ * Model/file inputs are untrusted, so identity, hashes and injection checks
+ * are required before granting a workspace repair capability. */
+export async function verifyReferenceRepairReview(input: {
+  runRoot: string; targetRunId: string; workspace: string; buildHash: string; contract: unknown; review: unknown;
+  requiredRetests?: Array<{id:string;objectType:string;stateBranch:string;viewport:{width:number;height:number}}>;
+}) {
+  const contract = ReferenceFidelityContractSchema.parse(input.contract);
+  const review = ReferenceFidelityReviewSchema.parse(input.review);
+  const blockers: string[] = [];
+  if (review.targetRunId !== input.targetRunId || review.workspace !== input.workspace || review.buildHash !== input.buildHash || review.contractHash !== sha256Text(JSON.stringify(contract))) blockers.push('repair:review-identity-mismatch');
+  for (const source of contract.provenance) {
+    try { await readReviewEvidence(input.runRoot,source); }
+    catch { blockers.push(`repair:source-file-invalid:${source.path}`); }
+  }
+  const failed = [...review.cases, ...review.retests].filter(row => !row.passed || !row.perceptualPassed);
+  const rows = [...failed.map(row => ({...row, id:row.checkId})), ...review.discoveries.filter(row => row.severity === 'error')];
+  for (const row of rows) {
+    try {
+      const trace = NaturalFlowEvidenceSchema.parse(JSON.parse((await readReviewEvidence(input.runRoot, row.trace)).toString('utf8')));
+      if (!trace.startedFromReset || trace.forbiddenOperations.length !== 0 || trace.actions.length === 0 || trace.buildHash !== input.buildHash || trace.device?.width !== row.viewport.width || trace.device?.height !== row.viewport.height || !trace.transitions.some(transition => transition.name === row.id)) blockers.push(`repair:natural-evidence-invalid:${row.id}`);
+      for (const image of row.screenshots) {
+        await readReviewEvidence(input.runRoot, image);
+        if (!trace.screenshots.includes(image.path)) blockers.push(`repair:screenshot-unbound:${row.id}`);
+      }
+    } catch { blockers.push(`repair:evidence-invalid:${row.id}`); }
+  }
+  const allowedChecks=[...contract.behaviorChecks,...await readReferenceRetestChecks(input),...(input.requiredRetests ?? [])];
+  for (const row of failed) {
+    const check = allowedChecks.find(check => check.id === row.checkId);
+    if (check && (row.objectType !== check.objectType || row.stateBranch !== check.stateBranch || row.viewport.width !== check.viewport.width || row.viewport.height !== check.viewport.height)) blockers.push(`repair:branch-mismatch:${row.checkId}`);
+    if (!check) blockers.push(`repair:branch-mismatch:${row.checkId}`);
+  }
+  const report = QaReportSchema.parse({schemaVersion:1,passed:false,checks:[],
+    issues: rows.map(row => ({id:row.id,severity:'error',message:'observedStateChange' in row ? `${row.observedStateChange}; ${row.observedFeedback}` : row.message,evidence:JSON.stringify({objectType:row.objectType,stateBranch:row.stateBranch,viewport:row.viewport,screenshots:row.screenshots,trace:row.trace}),rootCause:row.rootCause ?? 'unknown',...(row.hypothesis ? {hypothesis:row.hypothesis} : {})})),
+    screenshots:rows.flatMap(row => row.screenshots.map(image => image.path)),consoleLog:'logs/console.log',testedAt:new Date().toISOString()});
+  return {report,blockers};
+}
 
 /**
  * Resolve a research source without following a symlink.  Research inputs are
@@ -327,12 +419,16 @@ export function evaluateReplicaPreviewEvidence(value: unknown) {
 export async function verifyReferenceFidelityReview(input: {
   runRoot: string; targetRunId: string; workspace: string; buildHash: string;
   contract: unknown; review?: unknown;
+  requiredRetests?: Array<{id: string; objectType: string; stateBranch: string; viewport: {width:number;height:number}} >;
 }) {
   const contract = ReferenceFidelityContractSchema.safeParse(input.contract);
   const blockers: string[] = [];
   const checkedIds: string[] = [];
   const differences: ReferenceDifference[] = [];
-  const checks = contract.success ? contract.data.behaviorChecks : [];
+  const sourceChecks = contract.success ? contract.data.behaviorChecks : [];
+  const retained=contract.success ? await readReferenceRetestChecks(input) : [];
+  const retests=new Map([...(input.requiredRetests ?? []),...retained].map(check=>[check.id,check]));
+  const checks = [...sourceChecks, ...[...retests.values()].filter(row => !sourceChecks.some(check => check.id === row.id))];
   const contractHash = contract.success ? sha256Text(JSON.stringify(contract.data)) : null;
   const finish = () => ReferenceFidelityGateSchema.parse({
     schemaVersion: 1, targetRunId: input.targetRunId, contractHash, buildHash: input.buildHash,
@@ -344,11 +440,15 @@ export async function verifyReferenceFidelityReview(input: {
     blockers.push('fidelity:contract-blocked');
     differences.push(...contract.data.blockers.map((reason) => ({ checkId: '*', route: 'RESEARCH' as const, reason: `contract-blocked:${reason}` })));
   }
+  for (const source of contract.data.provenance) {
+    try { await readReviewEvidence(input.runRoot, source); }
+    catch { blockers.push(`fidelity:source-file-invalid:${source.path}`); }
+  }
   if (new Set(checks.map((check) => check.id)).size !== checks.length) blockers.push('fidelity:contract-duplicate-checks');
   for (const dimension of REFERENCE_BEHAVIOR_DIMENSIONS) {
-    if (!checks.some((check) => check.dimension === dimension)) blockers.push(`fidelity:dimension-missing:${dimension}`);
+    if (!sourceChecks.some((check) => check.dimension === dimension)) blockers.push(`fidelity:dimension-missing:${dimension}`);
   }
-  for (const check of checks) {
+  for (const check of sourceChecks) {
     for (const ref of check.sourceRefs) {
       if (!contract.data.provenance.some((source) => source.path === ref.path && source.sha256 === ref.sha256)) blockers.push(`fidelity:source-unbound:${check.id}`);
     }
@@ -360,8 +460,13 @@ export async function verifyReferenceFidelityReview(input: {
   if (review.data.workspace !== input.workspace) blockers.push('fidelity:workspace-mismatch');
   if (review.data.contractHash !== contractHash) blockers.push('fidelity:contract-hash-mismatch');
   if (review.data.buildHash !== input.buildHash) blockers.push('fidelity:build-hash-mismatch');
-  if (new Set(review.data.cases.map((row) => row.checkId)).size !== review.data.cases.length) blockers.push('fidelity:duplicate-results');
-  for (const row of review.data.cases) {
+  if (review.data.reviewProtocol !== 'reference-comparison-v1') blockers.push('fidelity:review-protocol-missing');
+  for (const issue of review.data.discoveries) {
+    if (issue.severity === 'error') blockers.push(`fidelity:discovery:${issue.id}`);
+  }
+  const results = [...review.data.cases, ...review.data.retests];
+  if (new Set(results.map((row) => row.checkId)).size !== results.length) blockers.push('fidelity:duplicate-results');
+  for (const row of results) {
     if (!checks.some((check) => check.id === row.checkId)) blockers.push(`fidelity:unknown-check:${row.checkId}`);
   }
   const readBoundFile = async (ref: { path: string; sha256: string }) => {
@@ -387,7 +492,7 @@ export async function verifyReferenceFidelityReview(input: {
     blockers.push(...differences.map((difference) => `fidelity:comparison:${difference.checkId}:${difference.reason}`));
   }
   for (const check of checks) {
-    const row = review.data.cases.find((candidate) => candidate.checkId === check.id);
+    const row = results.find((candidate) => candidate.checkId === check.id);
     if (!row) { blockers.push(`fidelity:check-missing:${check.id}`); continue; }
     const countBefore = blockers.length;
     if (row.objectType !== check.objectType || row.stateBranch !== check.stateBranch) blockers.push(`fidelity:branch-mismatch:${check.id}`);

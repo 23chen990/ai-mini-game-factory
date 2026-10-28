@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "mobile-slice-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+  "candidateSha256": "c4cc3c427fc52c9f91f6229c9aea0ae7cfe8220341be521df6c807626d101aae",
+  "referenceSha256": "3781e4dcd3d21094f186cf442b3ee30cddfbb2fbe68d87c5c7470a2c742bf75a",
+  "startedAt": "2026-10-28T07:09:48.236Z",
+  "finishedAt": "2026-10-28T07:19:11.814Z",
+  "status": "BLOCKED",
+  "report": {
+    "schemaVersion": 1,
+    "passed": false,
+    "checks": [
+      {
+        "name": "candidate 390x844 fresh start, primary action, and settlement",
+        "passed": true,
+        "evidence": "Fresh mobile context at 390x844. Touch start at 2026-10-28T07:13:25.728Z, then 35 touchscreen taps at roughly 900 ms cadence through 07:14:12.003Z. Visible score rose to 28 with ×4 and the stage-complete panel; it remained visible at 07:14:13.994Z. Screenshot candidate-390-35s-end.png SHA-256 b189c092328913f7c1d4e40158bf15a42f6f2ca8ef3afb01f99ee7674f69c37f; input log candidate-390-inputs.json SHA-256 9ac8028e29fe3f5e69a58a4cca382d7a06dac71840b45f1862d57bca3c9f050f."
+      },
+      {
+        "name": "candidate 1100x720 fresh start, primary action, and settlement",
+        "passed": true,
+        "evidence": "Fresh landscape context at 1100x720. Mouse start at 2026-10-28T07:16:54.710Z, then 35 normal clicks at roughly 900 ms cadence through 07:17:28.762Z. Fruit cutting/score and changing stage cues remained visible; the finish showed ×4, score 28, and both replay/next-stage actions. Terminal screenshot candidate-1100-35s-end.png SHA-256 c4f9177ccce0a7710694b9ad97961354aa32a62beb711453092cb2c4339b90f0; input log candidate-1100-inputs.json SHA-256 fe2d40b41fbc3e040ed1085302ef0144a11686d8de10caa8f28d2e15cd5a07c6."
+      },
+      {
+        "name": "candidate natural failure cause and retry on 390x844",
+        "passed": true,
+        "evidence": "In a fresh 390x844 context, after start plus 15 ordinary touchscreen taps, no input for 15 seconds produced visible “踏出路线 / 分数 8 / 本轮失败” and a “重玩” action at 2026-10-28T07:18:55.268Z. Touch at the visible retry control (195,534) at 07:19:10.498Z returned to Stage 1 with score/income 0 and the launch prompt by 07:19:11.783Z. Failure screenshot candidate-390-failure-before-replay.png SHA-256 15df60a2d3847bd87a51cfbee5103eb824e362c1eae77f3ca117607aeb4114ca; post-retry screenshot candidate-390-after-retry.png SHA-256 79baeac613c48b0a1b1cc7b79b56995a09ab72c2442bbb7d92a01894ea93656b; input log candidate-390-failure-replay-inputs.json SHA-256 1c40d334d0951f354955fbe3468dde140931ce4252b9c3968efda0a319e23760."
+      },
+      {
+        "name": "available verified reference recording: intent, pressure, and settlement",
+        "passed": true,
+        "evidence": "The identity-reviewed 36,492 ms, 1100x720 reference recording (SHA-256 3781e4dcd3d21094f186cf442b3ee30cddfbb2fbe68d87c5c7470a2c742bf75a; frame manifest SHA-256 c5b0c35f4f5bfb210827aac55b423db6381820cbb110a4c10510b05db3f0c440) shows the tap-to-jump/flip prompt, fruit slicing and score feedback, a visible spikes warning, a finish/checkered tower, then a tutorial-complete score/reward settlement. Relevant verified contact-sheet hashes: contact-000 b768d0eaee2a1bd34c550f5c6c58a5cdfabcd3b04b904d815bbead0eb0969437; contact-003 f4cd160beb3f622ea9be52a37e29f9d84f06da3ede9bffbafd369c92eb6ebaab; contact-010 f4ab9ff819382a0ac0685c20b1269692700aa37ecedbdecd29c897495ea5cf04; contact-015 aca2bf186c74226933efe639d4e0269b37a4f7b56fc8367c7595c3ed15705e14; contact-016 5d2af380e401d970985161f3ba132a3c009db2a2eae4a8bc677adf544fd8b1b0; contact-018 4b6272e8cbfbeac1bf0420e3fc133dd8e608bb462b7e3996bd2006d01bfbdd12. Candidate uses different expression, with a comparable visible tap/flight/slice/hazard/finish intent and explicit natural-failure recovery; no candidate defect was established from these observations."
+      },
+      {
+        "name": "live reference dual-input comparison at both viewports",
+        "passed": false,
+        "evidence": "BLOCKED. In a fresh 1100x720 Poki context the game area still showed loading artwork after 15 seconds (screenshot 2026-10-28T07:12:00.594Z, SHA-256 e6639ea9ee6cd6df0191b60c1df8dafce7bc2d75124232b7d38ae609f51a5bd3); after a normal mouse click at (550,324) at 07:12:00.601Z, the 07:12:12.883Z screenshot was blank white (SHA-256 16e8e00e026d2fc4ad01d1f4c4fd09161979d842abf1d99914bedd9e2ed34409). At 390x844, a normal touchscreen tap at (195,379) at 07:11:32.110Z yielded only a cropped first gameplay/instruction frame by 07:11:44.436Z (SHA-256 7b4db815dc3ca4002cec7d5401a49a22c912d42fe1d38196826bb33d0d6ad2de), not a 30–60 second attempt. Live input log live-check-inputs.json SHA-256 8494befeac7bc8bc212e12fdf6703d6f72067b7d30e4d989b4d3f2c27af7296e."
+      }
+    ],
+    "issues": [
+      {
+        "id": "live-reference-dual-input-incomplete",
+        "severity": "warning",
+        "message": "The live H5 reference could not support a full dual-input comparison; reference progression was evaluated from the identity-reviewed recording only.",
+        "evidence": "Object: embedded Slice Master game area; state: loading after wait and blank after one normal input at 1100x720; mobile 390x844 produced only a cropped first gameplay frame after one touch. Screenshot evidence: reference-live-1100-wait15s.png SHA-256 e6639ea9ee6cd6df0191b60c1df8dafce7bc2d75124232b7d38ae609f51a5bd3 at 2026-10-28T07:12:00.594Z; reference-live-1100-after-input.png SHA-256 16e8e00e026d2fc4ad01d1f4c4fd09161979d842abf1d99914bedd9e2ed34409 at 07:12:12.883Z; reference-live-390-after-input.png SHA-256 7b4db815dc3ca4002cec7d5401a49a22c912d42fe1d38196826bb33d0d6ad2de at 07:11:44.436Z. Live input log SHA-256 8494befeac7bc8bc212e12fdf6703d6f72067b7d30e4d989b4d3f2c27af7296e. Verified recording source SHA-256 3781e4dcd3d21094f186cf442b3ee30cddfbb2fbe68d87c5c7470a2c742bf75a, duration 36,492 ms; its final reward view does not establish replay behavior.",
+        "rootCause": "unknown",
+        "hypothesis": "An embed, network, or loader/browser condition could explain the live page behavior, but these observations do not distinguish among causes."
+      }
+    ],
+    "screenshots": [
+      "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/candidate-390-run-start.png",
+      "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/candidate-390-after-start.png",
+      "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/candidate-390-active-05.png",
+      "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/candidate-390-active-10.png",
+      "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/candidate-390-active-20.png",
+      "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/candidate-390-35s-end.png",
+      "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/candidate-390-replay-no-input-15s.png",
+      "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/candidate-390-failure-before-replay.png",
+      "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/candidate-390-after-retry.png",
+      "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/candidate-1100-run-start.png",
+      "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/candidate-1100-after-start.png",
+      "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/candidate-1100-active-05.png",
+      "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/candidate-1100-active-10.png",
+      "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/candidate-1100-active-20.png",
+      "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/candidate-1100-active-35.png",
+      "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/candidate-1100-35s-end.png",
+      "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/reference-live-390-wait15s.png",
+      "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/reference-live-390-after-input.png",
+      "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/reference-live-1100-wait15s.png",
+      "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/reference-live-1100-after-input.png"
+    ],
+    "consoleLog": "Not collected: blind player-only observation. No DOM inspection, game-state reads, hidden/debug API, state injection, or fixture controls were used.",
+    "testedAt": "2026-10-28T07:19:11.814Z"
+  },
+  "unobserved": [
+    "Live Poki reference 30–60 second normal-input run, failure/settlement, and replay at 1100x720; the game area remained on loading artwork and then blank after one normal click.",
+    "Live Poki reference sustained mobile attempt at 390x844; one touch exposed only a cropped first gameplay frame.",
+    "Reference replay/retry after its settlement; the verified 36.492-second recording ends in the reward/claim view.",
+    "Candidate next-stage selection after the stage-complete settlement; candidate failure retry was observed at 390x844."
+  ],
+  "sourceMode": "verified-recording-only",
+  "inputLogs": [
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/probe-inputs.json",
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/live-check-inputs.json",
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/candidate-390-inputs.json",
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/candidate-390-replay-inputs.json",
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/candidate-1100-inputs.json",
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/candidate-390-failure-replay-inputs.json"
+  ],
+  "videos": [
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/videos/page@34c9f83095bed5401aea494835abb383.webm",
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/videos/page@46eddc1a8f8e6e7db1f3089b348400a9.webm",
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/videos/page@4aa2f194fc7494f7a381319cf4e404fe.webm",
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/videos/page@4ea5486b6fa84e85584055e52e3b01aa.webm",
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/videos/page@59bd9de15e5b5efc495d9c112223cad2.webm",
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/videos/page@5bffbe151d71300ec2db680356d9a630.webm",
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/videos/page@7a6701eb2899b1ac0fd6d2e369bfa4b2.webm",
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/videos/page@a0ed4e04e390c6ecb248ec1ad2b6dfbd.webm",
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/videos/page@b3effc732694c924be7f46d9d6ef8979.webm",
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/videos/page@bef56f72ba81dcad9faf6e71991c7156.webm"
+  ],
+  "observedFrames": [
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/candidate-390-run-start.png sha256=7ab68a86848ffa11717b9c98e71f9ef4b54e08c9cda35e7851f89fd668872821",
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/candidate-390-35s-end.png sha256=b189c092328913f7c1d4e40158bf15a42f6f2ca8ef3afb01f99ee7674f69c37f",
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/candidate-390-failure-before-replay.png sha256=15df60a2d3847bd87a51cfbee5103eb824e362c1eae77f3ca117607aeb4114ca",
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/candidate-390-after-retry.png sha256=79baeac613c48b0a1b1cc7b79b56995a09ab72c2442bbb7d92a01894ea93656b",
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/candidate-1100-35s-end.png sha256=c4f9177ccce0a7710694b9ad97961354aa32a62beb711453092cb2c4339b90f0",
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/reference-live-1100-wait15s.png sha256=e6639ea9ee6cd6df0191b60c1df8dafce7bc2d75124232b7d38ae609f51a5bd3",
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/reference-live-1100-after-input.png sha256=16e8e00e026d2fc4ad01d1f4c4fd09161979d842abf1d99914bedd9e2ed34409",
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261028/blind-player-qa/reference-live-390-after-input.png sha256=7b4db815dc3ca4002cec7d5401a49a22c912d42fe1d38196826bb33d0d6ad2de",
+    "runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-000-00000-00015.jpg sha256=b768d0eaee2a1bd34c550f5c6c58a5cdfabcd3b04b904d815bbead0eb0969437",
+    "runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-003-00048-00063.jpg sha256=f4cd160beb3f622ea9be52a37e29f9d84f06da3ede9bffbafd369c92eb6ebaab",
+    "runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-010-00160-00175.jpg sha256=f4ab9ff819382a0ac0685c20b1269692700aa37ecedbdecd29c897495ea5cf04",
+    "runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-015-00240-00255.jpg sha256=aca2bf186c74226933efe639d4e0269b37a4f7b56fc8367c7595c3ed15705e14",
+    "runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-016-00256-00271.jpg sha256=5d2af380e401d970985161f3ba132a3c009db2a2eae4a8bc677adf544fd8b1b0",
+    "runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-018-00288-00291.jpg sha256=4b6272e8cbfbeac1bf0420e3fc133dd8e608bb462b7e3996bd2006d01bfbdd12"
+  ]
+}

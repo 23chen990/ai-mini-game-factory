@@ -127,7 +127,7 @@ QA 分开检验：
 
 `factory readiness <run-id>` 输出 **codeCorrectness / gameplayFidelity / experienceQuality / monetizationReadiness / platformReleaseReadiness** 五个独立维度、证据、缺口和下一步；不是另造一套 QA。完成预览的状态是 `PREVIEW_ACCEPTED`，不会冒充 `CANDIDATE_READY` 或 `RELEASE_READY`。
 
-自动 FIX 保留原 Builder 线程、累计次数、每次 QA/截图/轨迹、输入/输出构建哈希。自动修复最多五轮；更严格的项目次数、成本、时间、Token、平台上限优先生效，不能用较大的配置绕过五轮上限。没有新失败依据、构建未变、上一尝试中断或历史不一致时，**先停再花钱**，在 `repair-policy-decision.json` 写明原因。当前自动假设基于失败检查/问题签名；相同失败仍需新诊断，不能用重建或换时间戳充当修复成功。
+自动 FIX 保留原 Builder 线程、累计次数、每次 QA/截图/轨迹、输入/输出构建哈希。自动 FIX 没有固定次数上限；仅显式配置的项目次数、成本、累计执行时间、Token、平台上限生效。没有新失败依据、构建未变、上一尝试中断或历史不一致时，**先停再花钱**，在 `repair-policy-decision.json` 写明原因。当前自动假设基于失败检查/问题签名；相同失败仍需新诊断，不能用重建或换时间戳充当修复成功。
 
 `resume` 不盲目重做已完成的模型调用；工件漂移会失效下游。已完成 Builder turn 但本地验证失败时可用 `factory verify-build <run-id>`，它不再调用模型。历史 FIX 已有计数却无可恢复账本时会明确暂停，不能凭空补造旧证据。
 

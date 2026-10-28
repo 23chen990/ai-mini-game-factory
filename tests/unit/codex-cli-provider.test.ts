@@ -573,3 +573,20 @@ describe('CodexCliProvider', () => {
     expect(calls).toHaveLength(0);
   });
 });
+
+it('pins the subscription provider and ChatGPT authentication rather than inheriting a paid project provider', () => {
+ const args = buildCodexExecArgs({cwd:'/tmp/run',sandbox:'read-only',outputPath:'/tmp/run/out.json'});
+ expect(args).toContain('model_provider="openai"');
+ expect(args).toContain('forced_login_method="chatgpt"');
+});
+
+it('retains the exact sanitized invocation and resolved model in the unique execution directory', async () => {
+ const root=await mkdtemp(path.join(tmpdir(),'codex-request-evidence-'));
+ const calls:Array<{command:string;args:string[];cwd?:string;stdin:string}>=[];
+ const provider=new CodexCliProvider({model:'gpt-6.1-sol',spawn:fakeSpawn([{stdout:'{"type":"turn.completed","usage":{"input_tokens":1,"output_tokens":1}}\n',output:'observed'}],calls),maxRetries:0});
+ const result=await provider.execute({label:'PROBE',prompt:'Frozen evidence only',cwd:root,sandbox:'read-only',outputPath:path.join(root,'out.txt'),logDir:path.join(root,'logs')});
+ const request=JSON.parse(await readFile(path.join(root,`logs/codex/executions/${result.executionId}/PROBE.attempt-1.request.json`),'utf8'));
+ expect(request).toMatchObject({prompt:'Frozen evidence only',model:'gpt-6.1-sol',cwd:root,sandbox:'read-only'});
+ expect(request.args).toContain('forced_login_method="chatgpt"');
+ expect(result.model).toBe('gpt-6.1-sol');
+});

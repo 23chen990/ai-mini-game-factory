@@ -1,0 +1,52 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/reference-comparison-mode.test.ts (13 tests | 1 failed) 11ms
+   × can preserve recording-only observations without representing them as logged normal input 2ms
+ ❯ tests/unit/codex-cli-provider.test.ts (34 tests | 1 failed) 182ms
+   × retains the exact sanitized invocation and resolved model in the unique execution directory 8ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/codex-cli-provider.test.ts > retains the exact sanitized invocation and resolved model in the unique execution directory
+Error: ENOENT: no such file or directory, open '/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/codex-request-evidence-kOd6J0/logs/codex/executions/22ae9a79-f104-4785-bf35-c0924feb5052/PROBE.attempt-1.request.json'
+ ❯ tests/unit/codex-cli-provider.test.ts:588:27
+    586|  const provider=new CodexCliProvider({model:'gpt-6.1-sol',spawn:fakeSp…
+    587|  const result=await provider.execute({label:'PROBE',prompt:'Frozen evi…
+    588|  const request=JSON.parse(await readFile(path.join(root,`logs/codex/ex…
+       |                           ^
+    589|  expect(request).toMatchObject({prompt:'Frozen evidence only',model:'g…
+    590|  expect(request.args).toContain('forced_login_method="chatgpt"');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/unit/reference-comparison-mode.test.ts > can preserve recording-only observations without representing them as logged normal input
+ZodError: [
+  {
+    "code": "invalid_value",
+    "values": [
+      "normal-input",
+      "fixture"
+    ],
+    "path": [
+      "authority"
+    ],
+    "message": "Invalid option: expected one of \"normal-input\"|\"fixture\""
+  }
+]
+ ❯ tests/unit/reference-comparison-mode.test.ts:127:51
+    125| it('can preserve recording-only observations without representing them…
+    126|  const input=fixture('ordered');
+    127|  const reference=ReferenceComparisonCaptureSchema.parse({...input.refe…
+       |                                                   ^
+    128|  expect(compareReferenceCaptures({...input,reference})).toContainEqual…
+    129| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 45 passed (47)
+   Start at  17:32:49
+   Duration  1.01s (transform 410ms, setup 0ms, import 825ms, tests 193ms, environment 0ms)
+

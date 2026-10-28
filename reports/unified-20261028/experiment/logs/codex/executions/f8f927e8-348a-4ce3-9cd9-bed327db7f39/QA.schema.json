@@ -1,0 +1,468 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "targetRunId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "workspace": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reviewProtocol": {
+      "type": "string",
+      "const": "reference-comparison-v1"
+    },
+    "contractHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "buildHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "reviewer": {
+      "type": "string",
+      "enum": [
+        "QAAgent",
+        "HumanReviewer"
+      ]
+    },
+    "authorIndependent": {
+      "type": "boolean",
+      "const": true
+    },
+    "comparison": {
+      "type": "object",
+      "properties": {
+        "reference": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "additionalProperties": false
+        },
+        "candidate": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "reference",
+        "candidate"
+      ],
+      "additionalProperties": false
+    },
+    "discoveries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "error",
+              "warning"
+            ]
+          },
+          "message": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "string"
+          },
+          "rootCause": {
+            "type": "string",
+            "enum": [
+              "implementation",
+              "research",
+              "design",
+              "evidence",
+              "unknown"
+            ]
+          },
+          "hypothesis": {
+            "type": "string",
+            "minLength": 1
+          },
+          "objectType": {
+            "type": "string",
+            "minLength": 1
+          },
+          "stateBranch": {
+            "type": "string",
+            "minLength": 1
+          },
+          "viewport": {
+            "type": "object",
+            "properties": {
+              "width": {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 9007199254740991
+              },
+              "height": {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": [
+              "width",
+              "height"
+            ],
+            "additionalProperties": false
+          },
+          "screenshots": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              },
+              "required": [
+                "path",
+                "sha256"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "trace": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            },
+            "required": [
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "id",
+          "severity",
+          "message",
+          "evidence",
+          "rootCause",
+          "hypothesis",
+          "objectType",
+          "stateBranch",
+          "viewport",
+          "screenshots",
+          "trace"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "checkId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "objectType": {
+            "type": "string",
+            "minLength": 1
+          },
+          "stateBranch": {
+            "type": "string",
+            "minLength": 1
+          },
+          "viewport": {
+            "type": "object",
+            "properties": {
+              "width": {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 9007199254740991
+              },
+              "height": {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": [
+              "width",
+              "height"
+            ],
+            "additionalProperties": false
+          },
+          "passed": {
+            "type": "boolean"
+          },
+          "perceptualPassed": {
+            "type": "boolean"
+          },
+          "observedStateChange": {
+            "type": "string",
+            "minLength": 1
+          },
+          "observedFeedback": {
+            "type": "string",
+            "minLength": 1
+          },
+          "rootCause": {
+            "type": "string",
+            "enum": [
+              "implementation",
+              "research",
+              "design",
+              "evidence",
+              "unknown"
+            ]
+          },
+          "hypothesis": {
+            "type": "string",
+            "minLength": 1
+          },
+          "screenshots": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              },
+              "required": [
+                "path",
+                "sha256"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "trace": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            },
+            "required": [
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "checkId",
+          "objectType",
+          "stateBranch",
+          "viewport",
+          "passed",
+          "perceptualPassed",
+          "observedStateChange",
+          "observedFeedback",
+          "rootCause",
+          "hypothesis",
+          "screenshots",
+          "trace"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "retests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "checkId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "objectType": {
+            "type": "string",
+            "minLength": 1
+          },
+          "stateBranch": {
+            "type": "string",
+            "minLength": 1
+          },
+          "viewport": {
+            "type": "object",
+            "properties": {
+              "width": {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 9007199254740991
+              },
+              "height": {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": [
+              "width",
+              "height"
+            ],
+            "additionalProperties": false
+          },
+          "passed": {
+            "type": "boolean"
+          },
+          "perceptualPassed": {
+            "type": "boolean"
+          },
+          "observedStateChange": {
+            "type": "string",
+            "minLength": 1
+          },
+          "observedFeedback": {
+            "type": "string",
+            "minLength": 1
+          },
+          "rootCause": {
+            "type": "string",
+            "enum": [
+              "implementation",
+              "research",
+              "design",
+              "evidence",
+              "unknown"
+            ]
+          },
+          "hypothesis": {
+            "type": "string",
+            "minLength": 1
+          },
+          "screenshots": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              },
+              "required": [
+                "path",
+                "sha256"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "trace": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            },
+            "required": [
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "checkId",
+          "objectType",
+          "stateBranch",
+          "viewport",
+          "passed",
+          "perceptualPassed",
+          "observedStateChange",
+          "observedFeedback",
+          "rootCause",
+          "hypothesis",
+          "screenshots",
+          "trace"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "targetRunId",
+    "workspace",
+    "reviewProtocol",
+    "contractHash",
+    "buildHash",
+    "reviewer",
+    "authorIndependent",
+    "comparison",
+    "discoveries",
+    "cases",
+    "retests"
+  ],
+  "additionalProperties": false
+}

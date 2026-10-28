@@ -1,0 +1,143 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/integration/reference-review-loop.test.ts (9 tests | 9 failed) 908ms
+   × actually invokes the independent reference reviewer, rather than only writing a review task 172ms
+   × retests one no-op repair, then pauses without repeating the same repair 86ms
+   × does not send an explicit upstream design finding to Fixer 113ms
+   × counts a failed provider repair exactly once and preserves its input evidence 105ms
+   × reserves a model comparison before dispatch rather than treating it as free deterministic QA 98ms
+   × runs the mandatory third QA cycle after two distinct changed-build repairs 99ms
+   × does not reuse a legacy matching-hash review as evidence of the new independent discovery protocol 82ms
+   × does not copy outside bytes from stale model-authored symlink evidence into repair history 82ms
+   × does not restart an unchanged-build repair merely because QA rewords the same issue 71ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/integration/reference-review-loop.test.ts > actually invokes the independent reference reviewer, rather than only writing a review task
+Error: Run 20261028090756-da4901b2 is not waiting for reference mechanic approval
+ ❯ Object.approveReference src/factory.ts:5327:97
+    5325|     async approveReference(runId: string, input: { decision: string; n…
+    5326|       const state = await store.load(runId);
+    5327|       if (state.stage !== 'WAITING_FOR_REFERENCE_APPROVAL' || state.st…
+       |                                                                                                 ^
+    5328|       let intakeBinding: { intakeInputHash: string; intakeDraftSha256:…
+    5329|       if (state.runKind === 'reference-intake') {
+ ❯ tests/integration/reference-review-loop.test.ts:23:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  tests/integration/reference-review-loop.test.ts > retests one no-op repair, then pauses without repeating the same repair
+Error: Run 20261028090757-da4901b2 is not waiting for reference mechanic approval
+ ❯ Object.approveReference src/factory.ts:5327:97
+    5325|     async approveReference(runId: string, input: { decision: string; n…
+    5326|       const state = await store.load(runId);
+    5327|       if (state.stage !== 'WAITING_FOR_REFERENCE_APPROVAL' || state.st…
+       |                                                                                                 ^
+    5328|       let intakeBinding: { intakeInputHash: string; intakeDraftSha256:…
+    5329|       if (state.runKind === 'reference-intake') {
+ ❯ failedPreview tests/integration/reference-review-loop.test.ts:56:2
+ ❯ tests/integration/reference-review-loop.test.ts:62:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  tests/integration/reference-review-loop.test.ts > does not send an explicit upstream design finding to Fixer
+Error: Run 20261028090757-da4901b2 is not waiting for reference mechanic approval
+ ❯ Object.approveReference src/factory.ts:5327:97
+    5325|     async approveReference(runId: string, input: { decision: string; n…
+    5326|       const state = await store.load(runId);
+    5327|       if (state.stage !== 'WAITING_FOR_REFERENCE_APPROVAL' || state.st…
+       |                                                                                                 ^
+    5328|       let intakeBinding: { intakeInputHash: string; intakeDraftSha256:…
+    5329|       if (state.runKind === 'reference-intake') {
+ ❯ failedPreview tests/integration/reference-review-loop.test.ts:56:2
+ ❯ tests/integration/reference-review-loop.test.ts:69:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+ FAIL  tests/integration/reference-review-loop.test.ts > counts a failed provider repair exactly once and preserves its input evidence
+Error: Run 20261028090757-da4901b2 is not waiting for reference mechanic approval
+ ❯ Object.approveReference src/factory.ts:5327:97
+    5325|     async approveReference(runId: string, input: { decision: string; n…
+    5326|       const state = await store.load(runId);
+    5327|       if (state.stage !== 'WAITING_FOR_REFERENCE_APPROVAL' || state.st…
+       |                                                                                                 ^
+    5328|       let intakeBinding: { intakeInputHash: string; intakeDraftSha256:…
+    5329|       if (state.runKind === 'reference-intake') {
+ ❯ failedPreview tests/integration/reference-review-loop.test.ts:56:2
+ ❯ tests/integration/reference-review-loop.test.ts:77:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/9]⎯
+
+ FAIL  tests/integration/reference-review-loop.test.ts > reserves a model comparison before dispatch rather than treating it as free deterministic QA
+Error: Run 20261028090757-da4901b2 is not waiting for reference mechanic approval
+ ❯ Object.approveReference src/factory.ts:5327:97
+    5325|     async approveReference(runId: string, input: { decision: string; n…
+    5326|       const state = await store.load(runId);
+    5327|       if (state.stage !== 'WAITING_FOR_REFERENCE_APPROVAL' || state.st…
+       |                                                                                                 ^
+    5328|       let intakeBinding: { intakeInputHash: string; intakeDraftSha256:…
+    5329|       if (state.runKind === 'reference-intake') {
+ ❯ tests/integration/reference-review-loop.test.ts:91:25
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/9]⎯
+
+ FAIL  tests/integration/reference-review-loop.test.ts > runs the mandatory third QA cycle after two distinct changed-build repairs
+Error: Run 20261028090757-da4901b2 is not waiting for reference mechanic approval
+ ❯ Object.approveReference src/factory.ts:5327:97
+    5325|     async approveReference(runId: string, input: { decision: string; n…
+    5326|       const state = await store.load(runId);
+    5327|       if (state.stage !== 'WAITING_FOR_REFERENCE_APPROVAL' || state.st…
+       |                                                                                                 ^
+    5328|       let intakeBinding: { intakeInputHash: string; intakeDraftSha256:…
+    5329|       if (state.runKind === 'reference-intake') {
+ ❯ tests/integration/reference-review-loop.test.ts:114:28
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/9]⎯
+
+ FAIL  tests/integration/reference-review-loop.test.ts > does not reuse a legacy matching-hash review as evidence of the new independent discovery protocol
+Error: Run 20261028090757-da4901b2 is not waiting for reference mechanic approval
+ ❯ Object.approveReference src/factory.ts:5327:97
+    5325|     async approveReference(runId: string, input: { decision: string; n…
+    5326|       const state = await store.load(runId);
+    5327|       if (state.stage !== 'WAITING_FOR_REFERENCE_APPROVAL' || state.st…
+       |                                                                                                 ^
+    5328|       let intakeBinding: { intakeInputHash: string; intakeDraftSha256:…
+    5329|       if (state.runKind === 'reference-intake') {
+ ❯ tests/integration/reference-review-loop.test.ts:124:119
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/9]⎯
+
+ FAIL  tests/integration/reference-review-loop.test.ts > does not copy outside bytes from stale model-authored symlink evidence into repair history
+Error: Run 20261028090757-da4901b2 is not waiting for reference mechanic approval
+ ❯ Object.approveReference src/factory.ts:5327:97
+    5325|     async approveReference(runId: string, input: { decision: string; n…
+    5326|       const state = await store.load(runId);
+    5327|       if (state.stage !== 'WAITING_FOR_REFERENCE_APPROVAL' || state.st…
+       |                                                                                                 ^
+    5328|       let intakeBinding: { intakeInputHash: string; intakeDraftSha256:…
+    5329|       if (state.runKind === 'reference-intake') {
+ ❯ tests/integration/reference-review-loop.test.ts:139:118
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/9]⎯
+
+ FAIL  tests/integration/reference-review-loop.test.ts > does not restart an unchanged-build repair merely because QA rewords the same issue
+Error: Run 20261028090757-da4901b2 is not waiting for reference mechanic approval
+ ❯ Object.approveReference src/factory.ts:5327:97
+    5325|     async approveReference(runId: string, input: { decision: string; n…
+    5326|       const state = await store.load(runId);
+    5327|       if (state.stage !== 'WAITING_FOR_REFERENCE_APPROVAL' || state.st…
+       |                                                                                                 ^
+    5328|       let intakeBinding: { intakeInputHash: string; intakeDraftSha256:…
+    5329|       if (state.runKind === 'reference-intake') {
+ ❯ failedPreview tests/integration/reference-review-loop.test.ts:56:2
+ ❯ tests/integration/reference-review-loop.test.ts:152:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/9]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  9 failed | 42 passed (51)
+   Start at  17:07:55
+   Duration  2.62s (transform 1.22s, setup 0ms, import 2.28s, tests 1.22s, environment 0ms)
+

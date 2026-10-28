@@ -1,0 +1,30 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/repair-policy.test.ts (8 tests | 1 failed) 12ms
+   × does not turn rewording the same issue into a distinct repair hypothesis 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/repair-policy.test.ts > does not turn rewording the same issue into a distinct repair hypothesis
+AssertionError: expected 'f23391f7061e64dcf84fd57a7a526c01e58b0…' to be '12a8b55e455d543da6592494424308c0ea455…' // Object.is equality
+
+Expected: "12a8b55e455d543da6592494424308c0ea455aeeb769c3d2686362396e4b758b"
+Received: "f23391f7061e64dcf84fd57a7a526c01e58b03105766e10d226bd28c114af101"
+
+ ❯ tests/unit/repair-policy.test.ts:111:59
+    109|  const first=qaReport('same-object-state');
+    110|  const reworded={...first,issues:first.issues.map(issue=>({...issue,me…
+    111|  expect(buildRepairHypothesis(reworded,'second.json').id).toBe(buildRe…
+       |                                                           ^
+    112| });
+    113|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 7 passed (8)
+   Start at  17:30:34
+   Duration  178ms (transform 27ms, setup 0ms, import 69ms, tests 12ms, environment 0ms)
+

@@ -95,7 +95,8 @@ describe('formal repair recovery', () => {
         testedAt: new Date().toISOString(),
       };
     });
-    const factory = createFactory({ root, mode: 'mock', qaMode: 'stub', codexProvider: codex });
+    const profile=defaultOperatingProfile();profile.budget.maxFixAttempts=5;
+    const factory = createFactory({ root, mode: 'mock', qaMode: 'stub', codexProvider: codex, operatingProfile:profile });
     const runId = await approveDesign(factory, root, seed);
 
     const waiting = await factory.resume(runId);

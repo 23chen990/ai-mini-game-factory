@@ -76,8 +76,10 @@ export function modelPolicySignature(stages: StageName[] = [...StageNameSchema.o
 export function classifyModelFailure(message: string): ModelFailureKind {
   const text = String(message).toLowerCase();
   if (/qa_browser_unavailable|qa_observations_required|qa observation|qa screenshot/u.test(text)) return 'TOOL_ERROR';
+  // Request/configuration rejections are not evidence that a stronger model is needed.
+  if (/(?:invalid_request_error|model_not_found|the model [^\n]+ does not exist|not supported when using codex)/u.test(text)) return 'SPEC_ERROR';
+  if (/(?:policy|permission|forbidden|license|copyright|unsafe|blocked by|do not have access)/u.test(text)) return 'POLICY_BLOCK';
   if (/(?:timeout|timed out|rate limit|usage limit|quota|try again at|at capacity|429|temporar|econnreset|503|network)/u.test(text)) return 'TRANSIENT';
-  if (/(?:policy|permission|forbidden|license|copyright|unsafe|blocked by)/u.test(text)) return 'POLICY_BLOCK';
   if (/(?:schema|invalid input|spec|acceptance standard|unknown requirement)/u.test(text)) return 'SPEC_ERROR';
   if (/(?:tool|command|enoent|playwright|cannot spawn|file not found)/u.test(text)) return 'TOOL_ERROR';
   return 'CAPABILITY_ERROR';

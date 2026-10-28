@@ -1,0 +1,10 @@
+$ vitest run
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+
+ Test Files  200 passed (200)
+      Tests  1304 passed (1304)
+   Start at  23:59:49
+   Duration  153.57s (transform 2.53s, setup 0ms, import 44.80s, tests 242.70s, environment 14ms)
+

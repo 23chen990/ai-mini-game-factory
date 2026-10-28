@@ -1,0 +1,30 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/reference-fidelity-qa.test.ts (43 tests | 1 failed) 234ms
+   × admits a frozen normal-input no-response counterexample without claiming a successful transition 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/reference-fidelity-qa.test.ts > admits a frozen normal-input no-response counterexample without claiming a successful transition
+AssertionError: expected [ Array(1) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "repair:natural-evidence-invalid:reference-input_state",
++ ]
+
+ ❯ tests/unit/reference-fidelity-qa.test.ts:271:92
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 42 passed (43)
+   Start at  17:17:40
+   Duration  839ms (transform 323ms, setup 0ms, import 511ms, tests 234ms, environment 0ms)
+

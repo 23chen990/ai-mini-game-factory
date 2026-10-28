@@ -1,0 +1,42 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/codex-account-provider.test.ts (16 tests | 1 failed) 46ms
+     × hands frozen observations to independent QA without resuming the author thread 10ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/codex-account-provider.test.ts > CodexAccountProvider > hands frozen observations to independent QA without resuming the author thread
+AssertionError: expected { label: 'QA', …(10) } to match object { sandbox: 'read-only', …(2) }
+(14 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "qaObservation": {
+-     "buildPath": "workspace/game/dist",
+-     "buildSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-     "tracePath": "artifacts/natural.json",
+-     "traceSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+-   },
+    "sandbox": "read-only",
+    "stage": "QA",
+  }
+
+ ❯ tests/unit/codex-account-provider.test.ts:36:32
+     34|       inputPaths: ['artifacts/natural.json'], stage: 'QA', qaObservati…
+     35|     });
+     36|     expect(client.requests[0]).toMatchObject({ sandbox: 'read-only', s…
+       |                                ^
+     37|     expect(client.requests[0].resumeThreadId).toBeUndefined();
+     38|     const schema = JSON.stringify(client.requests[0].outputSchema);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 15 passed (16)
+   Start at  17:10:19
+   Duration  805ms (transform 427ms, setup 0ms, import 665ms, tests 46ms, environment 0ms)
+

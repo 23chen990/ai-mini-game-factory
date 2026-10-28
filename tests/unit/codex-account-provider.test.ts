@@ -24,6 +24,23 @@ class FakeExecutor implements CodexExecutor {
 }
 
 describe('CodexAccountProvider', () => {
+  it('hands frozen observations to independent QA without resuming the author thread', async () => {
+    const root = await mkdtemp(path.join(tmpdir(), 'codex-independent-qa-'));
+    const client = new FakeExecutor([{}]);
+    const provider = new CodexAccountProvider(client);
+    const qaObservation = { buildPath: 'workspace/game/dist', buildSha256: 'a'.repeat(64), tracePath: 'artifacts/natural.json', traceSha256: 'b'.repeat(64) };
+    await provider.reviewReferenceCandidate({ workspace: path.join(root, 'workspace/game'), buildHash: qaObservation.buildSha256, contractHash: 'c'.repeat(64), requiredRetests: [] }, {
+      runRoot: root, outputPath: path.join(root, 'artifacts/review.json'), logDir: path.join(root, 'logs'),
+      inputPaths: ['artifacts/natural.json'], stage: 'QA', qaObservation,
+    });
+    expect(client.requests[0]).toMatchObject({ sandbox: 'read-only', stage: 'QA', qaObservation });
+    expect(client.requests[0]?.resumeThreadId).toBeUndefined();
+    const schema = JSON.stringify(client.requests[0]?.outputSchema);
+    expect(schema).toContain('comparison');
+    expect(schema).toContain('discoveries');
+    expect(schema).toContain('rootCause');
+  });
+
   it('converts Zod JSON Schema to the strict Codex output subset', () => {
     const schema = codexOutputSchema(GameBlueprintSchema, { preferences: { tone: 'cozy', minutes: 3 } });
     const serialized = JSON.stringify(schema);
@@ -377,4 +394,21 @@ describe('CodexAccountProvider', () => {
     expect(client.requests[0]?.prompt).toMatch(/named checkpoint, object, placement, relation, action, camera, terminal, or replay blocker/i);
     expect(client.requests[0]?.prompt).toMatch(/must not weaken.*recording-level contract/i);
   });
+});
+
+it('starts a workspace-scoped replacement Fixer when no Builder thread exists', async () => {
+ const root = await mkdtemp(path.join(tmpdir(), 'replacement-fixer-'));
+ const workspace = path.join(root, 'workspace/game');
+ const client = new FakeExecutor(['fixed']); const provider = new CodexAccountProvider(client);
+ const result = await provider.fix({workspace,qaReport:{schemaVersion:1,passed:false,checks:[],issues:[{id:'input',severity:'error',message:'Observed no response',evidence:'logs/trace.json'}],screenshots:[],consoleLog:'logs/console.log',testedAt:new Date().toISOString()}});
+ expect(client.requests[0]).toMatchObject({cwd:workspace,runRoot:root,stage:'FIX',sandbox:'workspace-write'});
+ expect(client.requests[0]?.resumeThreadId).toBeUndefined();
+ expect(result.threadId).toBe('thread-FIX');
+});
+
+it('does not send the display-only account-default sentinel as a real model id', async () => {
+ const root = await mkdtemp(path.join(tmpdir(), 'codex-default-model-'));
+ const client = new FakeExecutor([blueprint]);
+ await new CodexAccountProvider(client).generateBlueprint({title:'Test',theme:'Test',runtime:'web-lite',template:'idle-shop-v1',designMode:'prototype_tournament',targetPlatforms:blueprint.targetPlatforms,preferences:{}},{runRoot:root,outputPath:path.join(root,'artifacts/blueprint.json'),logDir:path.join(root,'logs'),inputPaths:[]});
+ expect(client.requests[0]?.model).toBeUndefined();
 });
