@@ -1,0 +1,33 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/temporal-observations.test.ts (2 tests | 1 failed) 5ms
+   × keeps short recordings strictly chronological without repeated clamped seek times 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/temporal-observations.test.ts > keeps short recordings strictly chronological without repeated clamped seek times
+AssertionError: expected 14 to be 18 // Object.is equality
+
+- Expected
++ Received
+
+- 18
++ 14
+
+ ❯ tests/unit/temporal-observations.test.ts:12:31
+     10| it('keeps short recordings strictly chronological without repeated cla…
+     11|  const frames=temporalWindows(2_000).flat();
+     12|  expect(new Set(frames).size).toBe(frames.length);
+       |                               ^
+     13|  expect(frames).toEqual([...frames].sort((a,b)=>a-b));
+     14|  expect(frames.every(ms=>ms>=0 && ms<2_000)).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  17:20:22
+   Duration  370ms (transform 28ms, setup 0ms, import 252ms, tests 5ms, environment 0ms)
+

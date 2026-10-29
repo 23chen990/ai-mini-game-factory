@@ -1,0 +1,28 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/web-lite-runtime.test.ts (14 tests | 1 failed) 3060ms
+   × uses declared project scripts only when explicitly adapting an existing non-template game 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/web-lite-runtime.test.ts > uses declared project scripts only when explicitly adapting an existing non-template game
+Error: ENOENT: no such file or directory, scandir '/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/existing-project-runtime-duoIKg/src'
+ ❯ listFiles src/core/files.ts:32:23
+     30| export async function listFiles(root: string, base = root): Promise<st…
+     31|   const output: string[] = [];
+     32|   for (const entry of await readdir(root, { withFileTypes: true })) {
+       |                       ^
+     33|     const file = path.join(root, entry.name);
+     34|     if (entry.isDirectory()) output.push(...await listFiles(file, base…
+ ❯ WebLiteRuntimeAdapter.verifyProject src/adapters/web-lite.ts:192:26
+ ❯ tests/unit/web-lite-runtime.test.ts:239:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 13 passed (14)
+   Start at  17:11:34
+   Duration  3.23s (transform 42ms, setup 0ms, import 58ms, tests 3.06s, environment 0ms)
+

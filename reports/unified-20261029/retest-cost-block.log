@@ -1,0 +1,8 @@
+/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/tools/unified-agent-repair-pilot.ts:115
+ if(receipts.some(receipt=>receipt.status!=='complete')) throw new Error('Pilot unresolved usage must be audited, not reset or bypassed');
+                                                               ^
+
+Error: Pilot unresolved usage must be audited, not reset or bypassed
+    at <anonymous> (/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/tools/unified-agent-repair-pilot.ts:115:64)
+
+Node.js v24.14.0

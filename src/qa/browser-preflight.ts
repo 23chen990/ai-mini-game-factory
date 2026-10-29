@@ -63,7 +63,7 @@ export async function verifyQaObservation(runRoot: string, input: QaObservationI
     if (await sha256File(file) !== ref.sha256) throw new Error('QA reference image hash mismatch');
     return {path: file, sha256: ref.sha256};
   }));
-  return { scope: 'FROZEN_NATURAL_OBSERVATIONS_ONLY' as const, ...input, images, referenceImages, completion: trace.completion, replayObserved: trace.replayObserved };
+  return { scope: 'FROZEN_NATURAL_OBSERVATIONS_ONLY' as const, ...input, images, referenceImages, trace, completion: trace.completion, replayObserved: trace.replayObserved };
 }
 
 /**

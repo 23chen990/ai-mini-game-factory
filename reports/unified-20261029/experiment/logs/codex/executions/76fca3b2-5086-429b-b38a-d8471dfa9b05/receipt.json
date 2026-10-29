@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "executionId": "76fca3b2-5086-429b-b38a-d8471dfa9b05",
+  "sequence": 4,
+  "stage": "FIX",
+  "model": "account-default",
+  "status": "uncertain",
+  "usage": {
+    "inputTokens": 1506738,
+    "outputTokens": 10074,
+    "totalTokens": 1516812
+  },
+  "attempts": 1,
+  "maxTotalTokens": 172675,
+  "startedAt": "2026-10-29T09:15:14.948Z",
+  "finishedAt": "2026-10-29T09:18:25.306Z"
+}

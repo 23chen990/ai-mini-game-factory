@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [],
+  "issues": [
+    {
+      "id": "replay",
+      "severity": "error",
+      "message": "The visible replay control does not restart the completed level.",
+      "evidence": "{\"objectType\":\"replay-button\",\"stateBranch\":\"terminal-to-replay\",\"viewport\":{\"width\":390,\"height\":844},\"screenshots\":[{\"path\":\"qa-input/first/03-outcome.png\",\"sha256\":\"55a1dfefc9c476b6a4623a1ca70350adfa16410b7e60fab1a6e8d2f3c80c10c9\"},{\"path\":\"qa-input/first/04-after-control.png\",\"sha256\":\"0e714dd4a16605b5b72337e38cc7b816f9e262b099394dd8c00ae542936f4f6f\"},{\"path\":\"qa-input/first/05-after-second-control.png\",\"sha256\":\"0e714dd4a16605b5b72337e38cc7b816f9e262b099394dd8c00ae542936f4f6f\"},{\"path\":\"qa-input/first/temporal/sequence-3.png\",\"sha256\":\"08330f2fc3ed858a175317b51f6042923fab4b3e09668421983a8126d012d1bb\"}],\"trace\":{\"path\":\"qa-input/first/trace-continuous.json\",\"sha256\":\"383617c92d2efbdd58935d61b1b56b1f141d317a6e169b167c9a5dc623c229b4\"}}",
+      "rootCause": "implementation",
+      "hypothesis": "The replay button is visible but its activation handler does not reset or transition the game state."
+    }
+  ],
+  "screenshots": [
+    "qa-input/first/03-outcome.png",
+    "qa-input/first/04-after-control.png",
+    "qa-input/first/05-after-second-control.png",
+    "qa-input/first/temporal/sequence-3.png"
+  ],
+  "consoleLog": "logs/console.log",
+  "testedAt": "2026-10-29T09:09:34.332Z"
+}

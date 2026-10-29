@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "id": "REAL-EXECUTION-20261029",
+  "targetGame": "shared Factory and unchanged original repair sample",
+  "workspace": "/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市",
+  "experimentRun": "unified-agent-repair-20261028",
+  "gameWorkspace": "/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/runs/unified-agent-repair-20261028/workspace/game",
+  "route": "formal-fixer only after independent QA; shared provider engineering now",
+  "classification": [
+    "MODEL_CONFIG",
+    "QA_READ_ISOLATION",
+    "TEMPORAL_OBSERVABILITY"
+  ],
+  "reproductionEvidence": [
+    "Native CLI 0.156.1 login status: Logged in using ChatGPT.",
+    "Historical execution f8f927e8: HTTP400 model_not_found account-default.",
+    "Historical execution 7388c51e: HTTP400 model_not_found gpt-6.1-sol, status uncertain, 0 observed completed-turn tokens.",
+    "User config model is also gpt-6.1-sol; omission alone inherits the rejected alias.",
+    "CodexCliProvider QA uses run cwd plus read-only; no effective read boundary.",
+    "Pilot source hardcodes rejected gpt-6.1-sol."
+  ],
+  "observations": [
+    "No completed inference exists for either rejection.",
+    "Raw historical receipt and telemetry do not establish actual billed tokens or money."
+  ],
+  "hypotheses": [
+    "Invocation-only ignore-user-config plus omitted --model avoids inherited aliases without changing global config.",
+    "Frozen attached evidence with all local/remote tools disabled and enforced OS read boundary prevents answer leakage."
+  ],
+  "alternatives": [
+    "Keep current: repeats native rejection and exposes answers.",
+    "Small local provider/CLI fix plus reuse existing recording: no new Agent, service, workflow or model catalogue.",
+    "New model catalogue or execution architecture rejected: unnecessary token/coordination/maintenance cost."
+  ],
+  "acceptanceCriteria": [
+    "Default stage→account provider→CLI omits --model and ignores rejected global alias; explicit syntactically invalid IDs fail before spawn.",
+    "Login remains ChatGPT; no API keys forwarded; config/permission/model errors do not retry or escalate.",
+    "Original ledger/receipts stay byte-identical unless an evidence-based append-only reconciliation is independently justified; unresolved usage remains BLOCKED.",
+    "Actual negative sandbox tests deny source, oracle, history, sibling run, symlink escapes and network.",
+    "Time-ordered keyframes from existing video bind video, original trace and current build hashes, with unsynchronized clocks explicitly unknown.",
+    "QA/Fixer/retest success only from separately authorized real inference and exact visible evidence.",
+    "Full local and exact-HEAD remote CI pass."
+  ],
+  "retainRevert": "Retain smallest patch only if no-model regressions and actual boundary probes pass; retain explicit BLOCKED where independent inference, billing or required reference branches are absent.",
+  "recordedAt": "2026-10-29T08:49:16.393443+00:00"
+}

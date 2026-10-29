@@ -94,6 +94,10 @@ export async function verifyReferenceRepairReview(input: {
     } catch { blockers.push(`repair:evidence-invalid:${row.id}`); }
   }
   const allowedChecks=[...contract.behaviorChecks,...await readReferenceRetestChecks(input),...(input.requiredRetests ?? [])];
+  for (const row of review.discoveries) {
+    const check=allowedChecks.find(check=>check.id===row.id);
+    if(check && (row.objectType!==check.objectType || row.stateBranch!==check.stateBranch || row.viewport.width!==check.viewport.width || row.viewport.height!==check.viewport.height)) blockers.push(`repair:branch-mismatch:${row.id}`);
+  }
   for (const row of failed) {
     const check = allowedChecks.find(check => check.id === row.checkId);
     if (check && (row.objectType !== check.objectType || row.stateBranch !== check.stateBranch || row.viewport.width !== check.viewport.width || row.viewport.height !== check.viewport.height)) blockers.push(`repair:branch-mismatch:${row.checkId}`);
@@ -103,6 +107,14 @@ export async function verifyReferenceRepairReview(input: {
     issues: rows.map(row => ({id:row.id,severity:'error',message:'observedStateChange' in row ? `${row.observedStateChange}; ${row.observedFeedback}` : row.message,evidence:JSON.stringify({objectType:row.objectType,stateBranch:row.stateBranch,viewport:row.viewport,screenshots:row.screenshots,trace:row.trace}),rootCause:row.rootCause ?? 'unknown',...(row.hypothesis ? {hypothesis:row.hypothesis} : {})})),
     screenshots:rows.flatMap(row => row.screenshots.map(image => image.path)),consoleLog:'logs/console.log',testedAt:new Date().toISOString()});
   return {report,blockers};
+}
+
+/** Repair admission is not product acceptance. Independently discovered,
+ * hash-valid implementation counterexamples can be repaired while the original
+ * full review and unobserved/research/design branches remain BLOCKED. */
+export async function verifyImplementationDiscoveries(input: Parameters<typeof verifyReferenceRepairReview>[0]) {
+  const review = ReferenceFidelityReviewSchema.parse(input.review);
+  return verifyReferenceRepairReview({...input,review:{...review,cases:[],retests:[],discoveries:review.discoveries.filter(row=>row.severity==='error' && row.rootCause==='implementation')}});
 }
 
 /**

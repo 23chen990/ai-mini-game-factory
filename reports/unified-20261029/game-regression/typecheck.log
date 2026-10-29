@@ -1,0 +1,4 @@
+
+> rune-blade-night-run-prototype@0.1.0 typecheck
+> tsc --noEmit
+

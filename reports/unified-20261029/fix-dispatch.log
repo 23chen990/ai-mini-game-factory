@@ -1,0 +1,16 @@
+/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/src/providers/codex-cli.ts:482
+      throw new CodexExecutionError(redactText(error instanceof Error ? error.message : String(error)), usage, attempts, execution.executionId, model);
+            ^
+
+CodexExecutionError: codex exec stopped: token-budget; observed completed-turn tokens 1516812
+    at CodexCliProvider.execute (/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/src/providers/codex-cli.ts:482:13)
+    at async CodexAccountProvider.fix (/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/src/providers/codex-account.ts:359:20)
+    at async FixerAgent.runFormal (/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/src/agents/index.ts:539:20)
+    at async <anonymous> (/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/tools/unified-agent-repair-pilot.ts:135:16) {
+  usage: { inputTokens: 1506738, outputTokens: 10074, totalTokens: 1516812 },
+  attempts: 1,
+  executionId: '76fca3b2-5086-429b-b38a-d8471dfa9b05',
+  model: 'account-default'
+}
+
+Node.js v24.14.0

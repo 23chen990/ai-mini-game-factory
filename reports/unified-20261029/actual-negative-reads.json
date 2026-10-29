@@ -1,0 +1,30 @@
+{
+  "scope": "ACTUAL_FIRST_QA_SEATBELT_PROFILE_NO_MODEL",
+  "modelCalls": 0,
+  "checks": [
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/runs/unified-agent-repair-20261028/workspace/game/src/main.ts",
+      "readDataDenied": true,
+      "exitCode": 1,
+      "stderr": "cat: /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/runs/unified-agent-repair-20261028/workspace/game/src/main.ts: Operation not permitted"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/reports/unified-20261028/administrator/injection.json",
+      "readDataDenied": true,
+      "exitCode": 1,
+      "stderr": "cat: /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/reports/unified-20261028/administrator/injection.json: Operation not permitted"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/runs/unified-agent-repair-20261028/history/pilot-repair/attempt-1/before/src/main.ts",
+      "readDataDenied": true,
+      "exitCode": 1,
+      "stderr": "cat: /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/runs/unified-agent-repair-20261028/history/pilot-repair/attempt-1/before/src/main.ts: Operation not permitted"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/runs/unified-agent-repair-20261028/logs/codex/executions/76fca3b2-5086-429b-b38a-d8471dfa9b05/FIX.attempt-1.stdout.jsonl",
+      "readDataDenied": true,
+      "exitCode": 1,
+      "stderr": "cat: /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/runs/unified-agent-repair-20261028/logs/codex/executions/76fca3b2-5086-429b-b38a-d8471dfa9b05/FIX.attempt-1.stdout.jsonl: Operation not permitted"
+    }
+  ]
+}

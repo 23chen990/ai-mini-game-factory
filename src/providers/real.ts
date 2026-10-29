@@ -88,7 +88,8 @@ export class OpenAIAgentProvider implements AgentProvider {
 
   private async generate(name: string, instructions: string, input: unknown, schema: z.ZodType, context?: AgentExecutionContext): Promise<AgentProviderResult> {
     const safeContext = context ? safeExecutionContext(context) : undefined;
-    const model = safeContext?.model?.trim() || this.model;
+    const configured = safeContext?.model?.trim();
+    const model = configured === undefined || configured === 'account-default' ? this.model : configured;
     const rawResponses: unknown[] = [];
     const validationErrors: string[] = [];
     const usage = { inputTokens: 0, outputTokens: 0, totalTokens: 0 };
@@ -255,7 +256,8 @@ export class OpenAICodexProvider implements CodexProvider {
   async build(input: { workspace: string; blueprint: GameBlueprint; styleLock: StyleLock; assets: AssetManifest; assetSource?: string; template: string; gameplayRevision?: unknown; interactionContinuityContract?: unknown; context?: AgentExecutionContext }) {
     required(process.env.OPENAI_API_KEY, 'OPENAI_API_KEY');
     const execution = input.context ? safeExecutionContext({ ...input.context, stage: input.context.stage ?? 'FULL_BUILD', sandbox: input.context.sandbox ?? 'workspace-write' }) : undefined;
-    const model = execution?.model?.trim() || process.env.CODEX_MODEL;
+    const configured = execution?.model?.trim() ?? process.env.CODEX_MODEL;
+    const model = configured === 'account-default' ? undefined : configured;
     const thread = this.codex.startThread({ workingDirectory: input.workspace, skipGitRepoCheck: true, model, modelReasoningEffort: execution?.reasoning ?? 'max', sandboxMode: 'workspace-write', approvalPolicy: 'never', networkAccessEnabled: false });
     const fidelityInstruction = input.blueprint.designMode === 'reference_reskin'
       ? 'Perform maximum-fidelity core-mechanic reproduction across input-to-state transitions, core-loop order, progression topology, unlock dependencies, failure and recovery rules, and feedback timing bands. Treat competitor research as a behavioral contract, not a surface-style reference: reproduce the observed action-feedback-success/failure-retry loop and its failure-pressure structure. Identify whether pressure comes from hazards, timing, resource loss, wrong choices, pursuit, collapse, or another mechanism; preserve its signaling, escalation, attribution and recovery semantics. For physics-led interactions, validate natural fall motion with gravity, collision response, damping and readable settling across frame rates; tunneling, 3D mesh/collider penetration, explosive launch, teleporting or arbitrary velocity injection are acceptance failures. Use continuous collision detection or swept tests and assert contact poses remain outside floor/platform bounds. For any screenshot/repro, map object type × lifecycle/state branch × renderer path × viewport and verify the owning branch before fixing; sibling evidence is insufficient. Create a mechanic fidelity traceability matrix and add a regression test for every locked mechanic. Keep code, assets, names, text, UI layout, audio, and tuning values original.'
@@ -269,7 +271,8 @@ export class OpenAICodexProvider implements CodexProvider {
   async fix(input: { workspace: string; threadId?: string; qaReport: QaReport; context?: AgentExecutionContext }) {
     required(process.env.OPENAI_API_KEY, 'OPENAI_API_KEY');
     const execution = input.context ? safeExecutionContext({ ...input.context, stage: input.context.stage ?? 'FIX', sandbox: input.context.sandbox ?? 'workspace-write' }) : undefined;
-    const model = execution?.model?.trim() || process.env.CODEX_MODEL;
+    const configured = execution?.model?.trim() ?? process.env.CODEX_MODEL;
+    const model = configured === 'account-default' ? undefined : configured;
     const thread = input.threadId ? this.codex.resumeThread(input.threadId, { model, sandboxMode: 'workspace-write', approvalPolicy: 'never', networkAccessEnabled: false }) : this.codex.startThread({ workingDirectory: input.workspace, skipGitRepoCheck: true, model, modelReasoningEffort: execution?.reasoning ?? 'max', sandboxMode: 'workspace-write', approvalPolicy: 'never', networkAccessEnabled: false });
     const continuityInstruction = input.qaReport.interactionContinuity
       ? 'When interaction continuity failed, repair the owning node layout, feedback predicate, candidate selection, successor or recovery relation first. Do not widen thresholds or remove the contract; add a regression test for the exact failed node/scenario.'

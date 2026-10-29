@@ -411,9 +411,21 @@ it('starts a workspace-scoped replacement Fixer when no Builder thread exists', 
  expect(result.threadId).toBe('thread-FIX');
 });
 
-it('does not send the display-only account-default sentinel as a real model id', async () => {
+it('preserves the default sentinel to the CLI adapter so a provider fallback cannot replace it', async () => {
  const root = await mkdtemp(path.join(tmpdir(), 'codex-default-model-'));
  const client = new FakeExecutor([blueprint]);
  await new CodexAccountProvider(client).generateBlueprint({title:'Test',theme:'Test',runtime:'web-lite',template:'idle-shop-v1',designMode:'prototype_tournament',targetPlatforms:blueprint.targetPlatforms,preferences:{}},{runRoot:root,outputPath:path.join(root,'artifacts/blueprint.json'),logDir:path.join(root,'logs'),inputPaths:[]});
- expect(client.requests[0]?.model).toBeUndefined();
+ expect(client.requests[0]?.model).toBe('account-default');
+});
+
+it('does not smuggle author conclusions or caller summaries into the frozen QA prompt', async () => {
+ const root = await mkdtemp(path.join(tmpdir(), 'qa-neutral-packet-'));
+ const client = new FakeExecutor([{}]);
+ await new CodexAccountProvider(client).reviewReferenceCandidate({workspace:path.join(root,'workspace/game'),buildHash:'a'.repeat(64),contractHash:'b'.repeat(64),requiredRetests:[]}, {
+  runRoot:root,outputPath:path.join(root,'artifacts/review.json'),logDir:path.join(root,'logs'),inputPaths:['artifacts/build-report.json','artifacts/reference-fidelity-contract.json'],stage:'QA',
+  contextPacket:{schemaVersion:1,stage:'QA',summary:'CALLER_KNOWN_ANSWER',inputs:[{path:'artifacts/build-report.json',excerpt:'BUILDER_CONCLUSION',priority:'required'},{path:'artifacts/reference-fidelity-contract.json',excerpt:'NEUTRAL_ACCEPTANCE',priority:'required'}],omitted:[],totalChars:100}
+ });
+ expect(client.requests[0]?.prompt).not.toContain('CALLER_KNOWN_ANSWER');
+ expect(client.requests[0]?.prompt).not.toContain('BUILDER_CONCLUSION');
+ expect(client.requests[0]?.prompt).toContain('NEUTRAL_ACCEPTANCE');
 });

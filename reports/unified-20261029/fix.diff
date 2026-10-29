@@ -1,0 +1,151 @@
+diff --git "a/Users/kker/.codex/worktrees/factory-unified-20261028/\345\246\226\346\200\252\345\244\234\345\270\202/runs/unified-agent-repair-20261028/history/pilot-repair/attempt-1/after/artifacts/formal-fix-replay.json" "b/Users/kker/.codex/worktrees/factory-unified-20261028/\345\246\226\346\200\252\345\244\234\345\270\202/runs/unified-agent-repair-20261028/history/pilot-repair/attempt-1/after/artifacts/formal-fix-replay.json"
+new file mode 100644
+index 00000000..41ec1205
+--- /dev/null
++++ "b/Users/kker/.codex/worktrees/factory-unified-20261028/\345\246\226\346\200\252\345\244\234\345\270\202/runs/unified-agent-repair-20261028/history/pilot-repair/attempt-1/after/artifacts/formal-fix-replay.json"
+@@ -0,0 +1,113 @@
++{
++  "schemaVersion": 1,
++  "artifactType": "FormalFixEvidence",
++  "route": "formal-fixer",
++  "targetGame": "unified-agent-repair-20261028",
++  "workspace": "/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/runs/unified-agent-repair-20261028/workspace/game",
++  "replacementThread": {
++    "logicalId": "workspace-fixer-replacement-20261029-replay",
++    "scope": "workspace/game",
++    "hostThreadId": null,
++    "note": "No Builder thread or host thread identifier was supplied; this FIX session is the workspace-scoped replacement."
++  },
++  "attempt": 1,
++  "issue": {
++    "id": "replay",
++    "severity": "error",
++    "message": "The visible replay control does not restart the completed level.",
++    "classification": "implementation",
++    "scope": "terminal replay UI activation only",
++    "acceptanceCriteria": [
++      "At 390x844, a natural click/touch on the visible replay button leaves the terminal branch.",
++      "The same level returns to its visible opening state with the terminal overlay hidden.",
++      "The click does not leak through as a gameplay flip input."
++    ]
++  },
++  "reproductionMatrix": {
++    "objectType": "replay-button",
++    "lifecycleStateBranch": "terminal-to-replay",
++    "rendererPath": "index.html -> src/main.ts -> ThreeWorldRenderer via syncAndRender",
++    "viewport": { "width": 390, "height": 844 },
++    "siblingBranchesAcceptedAsCoverage": false
++  },
++  "diagnosis": {
++    "observation": "The production replay click listener stopped propagation but invoked no reset handler; the separate restart button already invoked replayLevel.",
++    "causalHypothesis": "The missing replayLevel call leaves simulation and rendered terminal state unchanged after visible replay activation.",
++    "alternativesChecked": [
++      "The same-level replayLevel implementation already resets simulation, presentation, HUD, and frame clock.",
++      "The terminal replay button exists and is visible according to the validated QA evidence.",
++      "No level-data, geometry, or renderer-argument change is required."
++    ],
++    "unknowns": [
++      "Current-build natural and perceptual behavior remains unobserved until the host performs its single build and QA retest."
++    ]
++  },
++  "allowedFiles": [
++    "src/main.ts",
++    "tests/level-ui.test.ts",
++    "artifacts/formal-fix-replay.json"
++  ],
++  "changedFiles": [
++    {
++      "path": "src/main.ts",
++      "change": "The visible replay button click handler now calls replayLevel after stopping propagation.",
++      "sha256": "a5649300a90f92bf7d4789bf3bef127e1d2cc09daca3abe3117083f9c7b77899"
++    },
++    {
++      "path": "tests/level-ui.test.ts",
++      "change": "Added a production-entrypoint regression that requires both propagation shielding and replayLevel activation.",
++      "sha256": "9f8a3774c66f8465bb13351a4eb6e4518b12bca0728a47587b10c4464d739d1d"
++    }
++  ],
++  "changedTestGuarantee": {
++    "test": "QA-replay production replay control invokes the same-level reset handler",
++    "oldGuarantee": "LEVEL-UI-RED-001 only established that a replay control and replayLevel symbol existed; it did not prove the visible control invoked the handler.",
++    "currentDefaultOwner": "src/main.ts production index.html entrypoint",
++    "intentionalDataChange": "none"
++  },
++  "evidence": {
++    "implementation": {
++      "status": "PASS",
++      "red": "node --import tsx --test tests/level-ui.test.ts: 9 passed, 1 failed because the replay handler body contained only event.stopPropagation().",
++      "green": "node --import tsx --test tests/level-ui.test.ts: 10 passed, 0 failed.",
++      "lint": "PASS",
++      "typecheck": "PASS",
++      "fullUnitSuite": "332 passed, 3 failed, 1 skipped; all three failures are unrelated and were preserved."
++    },
++    "playerVisibleProduct": {
++      "status": "BLOCKED",
++      "visibleSignalRequired": "After replay activation, the completion overlay and terminal controls disappear and the opening level scene/HUD returns.",
++      "currentSourceScreenshot": null,
++      "blocker": "The sandbox denied localhost preview binding with EPERM, and dist was intentionally not rebuilt or edited because the host owns the single build.",
++      "priorFailureScreenshots": [
++        { "path": "qa-input/first/03-outcome.png", "sha256": "55a1dfefc9c476b6a4623a1ca70350adfa16410b7e60fab1a6e8d2f3c80c10c9" },
++        { "path": "qa-input/first/04-after-control.png", "sha256": "0e714dd4a16605b5b72337e38cc7b816f9e262b099394dd8c00ae542936f4f6f" },
++        { "path": "qa-input/first/05-after-second-control.png", "sha256": "0e714dd4a16605b5b72337e38cc7b816f9e262b099394dd8c00ae542936f4f6f" }
++      ]
++    },
++    "naturalTrigger": {
++      "status": "BLOCKED",
++      "naturalPlayerActionRequired": "Reach terminal through normal play at 390x844, then click/touch the visible replay button once.",
++      "currentSourceTrace": null,
++      "priorFailureTrace": { "path": "qa-input/first/trace-continuous.json", "sha256": "383617c92d2efbdd58935d61b1b56b1f141d317a6e169b167c9a5dc623c229b4" },
++      "retestRequirement": "Host QA must exercise the exact replay-button x terminal-to-replay x production-renderer x 390x844 matrix cell with normal input and capture timestamped trace plus before/after screenshots."
++    }
++  },
++  "build": {
++    "performed": false,
++    "reason": "The user reserved the single build for the host adapter."
++  },
++  "intentionallyOmittedContext": [
++    "conversation history",
++    "administrator oracle",
++    "reference speculation",
++    "unrelated factory worktree changes",
++    "unrelated gameplay and visual redesign"
++  ],
++  "remainingEvidenceGaps": [
++    "Host build result and build hash.",
++    "Fresh normal-input 390x844 replay trace from terminal to ready.",
++    "Player-visible before/after screenshots from the rebuilt production entrypoint.",
++    "Independent deterministic, natural-journey, and perceptual QA acceptance."
++  ]
++}
+diff --git "a/Users/kker/.codex/worktrees/factory-unified-20261028/\345\246\226\346\200\252\345\244\234\345\270\202/runs/unified-agent-repair-20261028/history/pilot-repair/attempt-1/before/src/main.ts" "b/Users/kker/.codex/worktrees/factory-unified-20261028/\345\246\226\346\200\252\345\244\234\345\270\202/runs/unified-agent-repair-20261028/history/pilot-repair/attempt-1/after/src/main.ts"
+index 0232c72d..c28f1d3a 100644
+--- "a/Users/kker/.codex/worktrees/factory-unified-20261028/\345\246\226\346\200\252\345\244\234\345\270\202/runs/unified-agent-repair-20261028/history/pilot-repair/attempt-1/before/src/main.ts"
++++ "b/Users/kker/.codex/worktrees/factory-unified-20261028/\345\246\226\346\200\252\345\244\234\345\270\202/runs/unified-agent-repair-20261028/history/pilot-repair/attempt-1/after/src/main.ts"
+@@ -489,7 +489,7 @@ levelSelectorToggle.addEventListener('click', (event) => {
+   levelSelectorToggle.setAttribute('aria-expanded', String(!levelSelect.hidden));
+ });
+ replayButton.addEventListener('pointerdown', (event) => event.stopPropagation());
+-replayButton.addEventListener('click', (event) => { event.stopPropagation(); });
++replayButton.addEventListener('click', (event) => { event.stopPropagation(); replayLevel(); });
+ nextLevelButton.addEventListener('pointerdown', (event) => event.stopPropagation());
+ nextLevelButton.addEventListener('click', (event) => { event.stopPropagation(); nextLevel(); });
+ bonusTestButton.addEventListener('pointerdown', (event) => event.stopPropagation());
+diff --git "a/Users/kker/.codex/worktrees/factory-unified-20261028/\345\246\226\346\200\252\345\244\234\345\270\202/runs/unified-agent-repair-20261028/history/pilot-repair/attempt-1/before/tests/level-ui.test.ts" "b/Users/kker/.codex/worktrees/factory-unified-20261028/\345\246\226\346\200\252\345\244\234\345\270\202/runs/unified-agent-repair-20261028/history/pilot-repair/attempt-1/after/tests/level-ui.test.ts"
+index c31e8ab1..b7e37c4e 100644
+--- "a/Users/kker/.codex/worktrees/factory-unified-20261028/\345\246\226\346\200\252\345\244\234\345\270\202/runs/unified-agent-repair-20261028/history/pilot-repair/attempt-1/before/tests/level-ui.test.ts"
++++ "b/Users/kker/.codex/worktrees/factory-unified-20261028/\345\246\226\346\200\252\345\244\234\345\270\202/runs/unified-agent-repair-20261028/history/pilot-repair/attempt-1/after/tests/level-ui.test.ts"
+@@ -28,6 +28,14 @@ test('LEVEL-UI-RED-001 placeholder shell exposes numbered selector, replay and n
+   assert.doesNotMatch(`${html}\n${css}`, /url\([^)]*\.(png|webp|jpg)/i);
+ });
+ 
++test('QA-replay production replay control invokes the same-level reset handler', async () => {
++  const main = await readFile('src/main.ts', 'utf8');
++  const clickHandler = main.match(/replayButton\.addEventListener\('click',\s*\(event\)\s*=>\s*\{([^}]*)\}\);/)?.[1] ?? '';
++
++  assert.match(clickHandler, /event\.stopPropagation\(\)/, 'the replay control must not leak a gameplay tap');
++  assert.match(clickHandler, /replayLevel\(\)/, 'the visible replay control must reset the completed level');
++});
++
+ test('LEVEL-UI-RED-002 Level 1 guidance stages the observed tutorial beats without copying reference wording', () => {
+   assert.match(levelOnePrompt(1, 120, 'ready', [], [], 366, 0)!, /轻触|起跳/);
+   assert.match(levelOnePrompt(1, 700, 'airborne', [], [], 385, -80)!, /下落|观察|等待/);

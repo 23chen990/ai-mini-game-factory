@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "round": "20261029",
+  "basis": "explicit-user-reply",
+  "baselineExecutionIds": [
+    "f8f927e8-348a-4ce3-9cd9-bed327db7f39",
+    "7388c51e-8ba6-44e5-9f35-0bee83820bcb"
+  ],
+  "qaFirstCalls": 1,
+  "fixCalls": 1,
+  "qaRetestCalls": 1,
+  "wallMs": 1800000,
+  "observedTokenSoftStop": 200000,
+  "extraCredits": false,
+  "paidApi": false,
+  "userReply": "授权上述订阅实验",
+  "recordedAt": "2026-10-29T09:05:29.356Z"
+}

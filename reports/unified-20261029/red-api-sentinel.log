@@ -1,0 +1,36 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/live-agent-provider.test.ts (9 tests | 1 failed) 16ms
+   × does not send a subscription display sentinel to the separately authorized API provider 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/live-agent-provider.test.ts > does not send a subscription display sentinel to the separately authorized API provider
+AssertionError: expected { name: 'ProducerAgent', …(5) } to match object { model: 'explicit-api-model' }
+(26 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "model": "explicit-api-model",
++   "model": "account-default",
+  }
+
+ ❯ tests/unit/live-agent-provider.test.ts:127:27
+    125|  const provider = new OpenAIAgentProvider({runner,apiKey:'test-key',mo…
+    126|  await provider.generateBlueprint(seed,{runRoot:'/tmp/run',outputPath:…
+    127|  expect(runner.inputs[0]).toMatchObject({model:'explicit-api-model'});
+       |                           ^
+    128| });
+    129|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 8 passed (9)
+   Start at  17:01:55
+   Duration  1.24s (transform 519ms, setup 0ms, import 1.11s, tests 16ms, environment 0ms)
+

@@ -1,3 +1,4 @@
+import { captureTemporalObservations } from './qa/temporal-observations.js';
 import { ArtifactLedgerSchema } from './schemas/artifact-ledger.js';
 import { codexStageExecution, codexExecutionEvidence, readCodexUsageReceipts, unaccountedCodexUsage } from './core/codex-budget.js';
 import { captureReferenceUrl, promoteReferenceCapture, discardReferenceCapture } from './core/reference-web-capture.js';
@@ -41,7 +42,7 @@ import { buildPlatformSpineContract, evaluatePlatformSpine } from './core/platfo
 import { auditAssetFiles, evaluateArtQualityGate } from './core/art-quality.js';
 import { AssetProductionGateSchema, AssetVisualFitReviewSchema, evaluateAssetProductionReadiness } from './core/asset-production-gate.js';
 import { buildPreviewPresentationDisclosure } from './core/preview-presentation-disclosure.js';
-import { applyReferenceBehaviorAnalysis, buildReferenceEvidencePack, evaluateReferenceEvidence, evaluateReplicaPreviewEvidence, normalizeReferenceBehaviorAnalysis, referenceBlockersRequirePause, verifyReferenceFidelityReview, verifyReferenceRepairReview, readReviewEvidence, safeRunFile, readReferenceRetestChecks } from './core/reference-evidence.js';
+import { applyReferenceBehaviorAnalysis, buildReferenceEvidencePack, evaluateReferenceEvidence, evaluateReplicaPreviewEvidence, normalizeReferenceBehaviorAnalysis, referenceBlockersRequirePause, verifyReferenceFidelityReview, verifyImplementationDiscoveries, verifyReferenceRepairReview, readReviewEvidence, safeRunFile, readReferenceRetestChecks } from './core/reference-evidence.js';
 import { enforceRecordingAnalysisAuthority } from './core/reference-analysis-authority.js';
 import { REFERENCE_BEHAVIOR_DIMENSIONS, ReferenceFidelityContractSchema, ReferenceFidelityGateSchema, ReferenceFidelityReviewSchema } from './schemas/reference-fidelity.js';
 import { BuildReportSchema, ProductionLineResolutionSchema } from './schemas/index.js';
@@ -3187,20 +3188,31 @@ export function createFactory(options: FactoryOptions = {}) {
       const observedQa = QaReportSchema.parse(await store.readArtifact(runId, 'qa-report.json'));
       const flowInputs:string[] = [];
       if (observedQa.naturalFlow !== undefined) {
-        await store.writeArtifact(runId, 'reference-candidate-natural-flow.json', NaturalFlowEvidenceSchema.parse(observedQa.naturalFlow));
+        let flow = NaturalFlowEvidenceSchema.parse(observedQa.naturalFlow);
+        const videoPath = 'videos/cut-stack/natural.webm';
+        if (await exists(path.join(runRoot,videoPath))) {
+          const tracePath='artifacts/reference-candidate-natural-flow.json';
+          await store.writeArtifact(runId,'reference-candidate-natural-flow.json',flow);
+          const temporal=await captureTemporalObservations({runRoot,videoPath,outputDir:'artifacts/reference-candidate-temporal',buildHash:previewBuildHash,tracePath});
+          flow=NaturalFlowEvidenceSchema.parse({...flow,screenshots:[...selectStratifiedReferenceItems(flow.screenshots,5),...temporal.sheets.map(sheet=>sheet.path)]});
+          await store.writeArtifact(runId,'reference-candidate-natural-flow.json',flow);
+          await writeJsonAtomic(path.join(runRoot,'artifacts/reference-candidate-temporal/manifest.json'),{...temporal,trace:{path:tracePath,sha256:await sha256File(path.join(runRoot,tracePath))}});
+        }
+        await store.writeArtifact(runId, 'reference-candidate-natural-flow.json', flow);
         flowInputs.push('artifacts/reference-candidate-natural-flow.json');
       }
       const referenceMedia = await prepareBoundedResearchMedia(runId, 'reference-behavior',
         await store.hasArtifact(runId, 'reference-frame-manifest.json')
           ? ReferenceFrameManifestSchema.parse(await store.readArtifact(runId, 'reference-frame-manifest.json')) : undefined);
       const observationTrace = flowInputs[0];
+      const observedFlow = observationTrace === undefined ? undefined : NaturalFlowEvidenceSchema.parse(await store.readArtifact(runId,'reference-candidate-natural-flow.json'));
       const qaObservation = observationTrace === undefined ? undefined : {
         buildPath: previewBuild.webBuild.replace(/\/$/u, ''), buildSha256: previewBuildHash,
         tracePath: observationTrace, traceSha256: await sha256File(path.join(runRoot, observationTrace)),
-        screenshots: await Promise.all(observedQa.naturalFlow!.screenshots.map(async file => ({path:file,sha256:await sha256File(await safeRunFile(runRoot,file))}))),
+        screenshots: await Promise.all(observedFlow!.screenshots.map(async file => ({path:file,sha256:await sha256File(await safeRunFile(runRoot,file))}))),
         referenceImages: referenceMedia.media,
       };
-      const reviewInputs = ['artifacts/reference-fidelity-contract.json', 'artifacts/reference-evidence-pack.json', 'artifacts/build-report.json', 'artifacts/runtime-product-journey.json', ...flowInputs, ...(levelContract ? ['artifacts/reference-level-runtime-trace.json'] : []), `${previewBuild.webBuild.replace(/\/$/u,'')}/`,
+      const reviewInputs = ['artifacts/reference-fidelity-contract.json', 'artifacts/reference-evidence-pack.json', 'artifacts/build-report.json', 'artifacts/runtime-product-journey.json', ...flowInputs, ...(await exists(path.join(runRoot,'artifacts/reference-candidate-temporal/manifest.json')) ? ['artifacts/reference-candidate-temporal/manifest.json'] : []), ...(levelContract ? ['artifacts/reference-level-runtime-trace.json'] : []), `${previewBuild.webBuild.replace(/\/$/u,'')}/`,
         ...(await store.hasArtifact(runId, 'reference-frame-manifest.json') ? ['artifacts/reference-frame-manifest.json'] : [])];
       // The comparison is part of this QA attempt, not a second attempt.
       // Reserve projected usage explicitly; this is not a hard output-token cap.
@@ -3240,6 +3252,13 @@ export function createFactory(options: FactoryOptions = {}) {
         if (failure.blockers.length === 0 && failure.report.issues.length > 0) {
           await store.writeArtifact(runId, 'qa-report.json', failure.report);
           return repairPreview(failure.report);
+        }
+        const implementation = await verifyImplementationDiscoveries({runRoot,targetRunId:runId,workspace,buildHash:previewBuildHash,contract:fidelityContract,review:fidelityReview,requiredRetests});
+        if (implementation.blockers.length === 0 && implementation.report.issues.length > 0) {
+          const repairing = new Set(implementation.report.issues.map(issue=>issue.id));
+          await store.writeArtifact(runId,'qa-deferred-issues.json',QaReportSchema.parse({...failure.report,issues:failure.report.issues.filter(issue=>!repairing.has(issue.id) || issue.rootCause!=='implementation')}));
+          await store.writeArtifact(runId,'qa-report.json',implementation.report);
+          return repairPreview(implementation.report);
         }
       }
       return waitForReferenceComparison(state, workspace, fidelityGate, ['artifacts/qa-report.json', 'artifacts/reference-fidelity-contract.json', 'artifacts/reference-fidelity-gate.json', 'artifacts/runtime-product-gates.json', ...(fidelityReview === undefined ? [] : ['artifacts/reference-fidelity-review.json']), ...recordingLevelInputs]);

@@ -1,0 +1,64 @@
+✖ ASSET-MANIFEST-001 validates and hashes every approved local Kenney Food Kit asset (0.408292ms)
+✖ 3D POC build contains the local scene, renderer bridge and pinned GLB assets (2.625833ms)
+✔ L1-DENSE target data is the default first-level course and later levels are unchanged (1.490916ms)
+✔ L1-DENSE-STACK a released same-object layer remains cuttable by a real blade contact (2.625125ms)
+✔ L1-DENSE engineering policy cuts the named rack and releases then cuts the same stack (123.534042ms)
+✖ L1-DENSE real default cadence reaches the reviewed finish without sparse late travel (71.828125ms)
+✔ L1-CADENCE plain 1000/1300ms schedules keep opening fruit and the falling stack cuttable (36.85ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 4
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 490.411625
+
+✖ failing tests:
+
+test at tests/asset-manifest.test.ts:1:835
+✖ ASSET-MANIFEST-001 validates and hashes every approved local Kenney Food Kit asset (0.408292ms)
+  Error: ENOENT: no such file or directory, open '/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/runs/unified-agent-repair-20261028/history/pilot-repair/artifacts/asset-manifest.json'
+      at readFileSync (node:fs:440:20)
+      at TestContext.<anonymous> (/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/runs/unified-agent-repair-20261028/history/pilot-repair/attempt-1/before/tests/asset-manifest.test.ts:23:44)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.start (node:internal/test_runner/test:1015:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:358:17) {
+    errno: -2,
+    code: 'ENOENT',
+    syscall: 'open',
+    path: '/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/runs/unified-agent-repair-20261028/history/pilot-repair/artifacts/asset-manifest.json'
+  }
+
+test at tests/cut-poc-3d-build.test.ts:1:112
+✖ 3D POC build contains the local scene, renderer bridge and pinned GLB assets (2.625833ms)
+  AssertionError [ERR_ASSERTION]: expected built 3D POC HTML
+      at TestContext.<anonymous> (/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/runs/unified-agent-repair-20261028/history/pilot-repair/attempt-1/before/tests/cut-poc-3d-build.test.ts:7:10)
+      at async Test.run (node:internal/test_runner/test:1125:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:358:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests/level1-dense-cutting.test.ts:1:9094
+✖ L1-DENSE real default cadence reaches the reviewed finish without sparse late travel (71.828125ms)
+  AssertionError [ERR_ASSERTION]: 1300ms density fell below 60%
+      at TestContext.<anonymous> (/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/runs/unified-agent-repair-20261028/history/pilot-repair/attempt-1/before/tests/level1-dense-cutting.test.ts:206:12)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+      at Test.postRun (node:internal/test_runner/test:1247:19)
+      at Test.run (node:internal/test_runner/test:1175:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

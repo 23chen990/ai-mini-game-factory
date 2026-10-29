@@ -4,22 +4,22 @@ import { StageNameSchema } from '../../src/schemas/index.js';
 
 describe('model policy', () => {
   it('keeps high-risk design and experience decisions on a frontier model', () => {
-    expect(modelForStage('COMPETITOR_RESEARCH')).toMatchObject({ tier: 'frontier', model: 'gpt-5.6-luna', reasoning: 'max' });
-    expect(modelForStage('EXPERIENCE_REVIEW')).toMatchObject({ tier: 'frontier', model: 'gpt-5.6-luna', reasoning: 'max' });
-    expect(modelForStage('FULL_BUILD')).toMatchObject({ tier: 'builder', model: 'gpt-5.6-luna', reasoning: 'max' });
+    expect(modelForStage('COMPETITOR_RESEARCH')).toMatchObject({ tier: 'frontier', model: 'account-default', reasoning: 'max' });
+    expect(modelForStage('EXPERIENCE_REVIEW')).toMatchObject({ tier: 'frontier', model: 'account-default', reasoning: 'max' });
+    expect(modelForStage('FULL_BUILD')).toMatchObject({ tier: 'builder', model: 'account-default', reasoning: 'max' });
   });
 
   it('routes the narrative vertical slice to the writing-capable Builder tier', () => {
-    expect(modelForStage('STORY_VERTICAL_SLICE')).toMatchObject({ tier: 'builder', model: 'gpt-5.6-luna', reasoning: 'max' });
+    expect(modelForStage('STORY_VERTICAL_SLICE')).toMatchObject({ tier: 'builder', model: 'account-default', reasoning: 'max' });
     expect(executionPolicyForStage('STORY_VERTICAL_SLICE')).toMatchObject({ role: 'builder', sandbox: 'workspace-write', canModifyWorkspace: true });
   });
 
   it('keeps bounded execution and evidence tasks read-only while using the requested Luna worker', () => {
     const policy = getModelPolicy();
-    expect(modelForStage('UI_SKELETON')).toMatchObject({ tier: 'reviewer', model: 'gpt-5.6-luna', reasoning: 'max' });
-    expect(modelForStage('QA')).toMatchObject({ tier: 'reviewer', model: 'gpt-5.6-luna', reasoning: 'max' });
+    expect(modelForStage('UI_SKELETON')).toMatchObject({ tier: 'reviewer', model: 'account-default', reasoning: 'max' });
+    expect(modelForStage('QA')).toMatchObject({ tier: 'reviewer', model: 'account-default', reasoning: 'max' });
     for (const stage of ['VISUAL_EVIDENCE_QA', 'CONTENT_VARIATION_QA', 'PERCEPTUAL_QA', 'ASSETS', 'PRESENTATION_QA', 'SUPPLY_CHAIN_QA', 'COST_GATE', 'FACTORY_EVAL', 'QUALITY_BASELINE_QA'] as const) {
-      expect(modelForStage(stage)).toMatchObject({ tier: 'fast', model: 'gpt-5.6-luna', reasoning: 'max' });
+      expect(modelForStage(stage)).toMatchObject({ tier: 'fast', model: 'account-default', reasoning: 'max' });
       expect(executionPolicyForStage(stage)).toMatchObject({ sandbox: 'read-only', canModifyWorkspace: false, role: 'evidence-helper' });
     }
     expect(policy.FULL_BUILD?.tier).not.toBe('fast');
@@ -34,8 +34,8 @@ describe('model policy', () => {
   });
 
   it('escalates instead of retrying a weak model on a failed high-risk task', () => {
-    expect(nextModelAfterFailure('UI_SKELETON', 1)).toMatchObject({ model: 'gpt-5.6-luna', tier: 'frontier' });
-    expect(nextModelAfterFailure('EXPERIENCE_REVIEW', 1)).toMatchObject({ model: 'gpt-5.6-luna', tier: 'frontier' });
+    expect(nextModelAfterFailure('UI_SKELETON', 1)).toMatchObject({ model: 'account-default', tier: 'frontier' });
+    expect(nextModelAfterFailure('EXPERIENCE_REVIEW', 1)).toMatchObject({ model: 'account-default', tier: 'frontier' });
   });
 
   it('does not escalate for transient, specification or policy failures', () => {
@@ -65,4 +65,20 @@ it.each([
 ] as const)('does not capability-escalate an explicit request/configuration rejection: %s', (message, expected) => {
  const kind=classifyModelFailure(message);expect(kind).toBe(expected);
  expect(executionPolicyForAttempt('UI_SKELETON',2,kind)).toEqual(executionPolicyForStage('UI_SKELETON'));
+});
+
+it('rejects malformed explicit stage model configuration before provider dispatch', () => {
+ const key = 'FACTORY_STAGE_QA_MODEL';
+ const previous = process.env[key];
+ process.env[key] = '--model fake';
+ try { expect(() => modelForStage('QA')).toThrow(/model configuration/); }
+ finally { if (previous === undefined) delete process.env[key]; else process.env[key] = previous; }
+});
+it.each([
+ ['Invalid model configuration: --model bad','SPEC_ERROR'],
+ ['error: unexpected argument --unsupported found','SPEC_ERROR'],
+ ['Codex CLI is not logged in with ChatGPT','POLICY_BLOCK'],
+ ['QA_ISOLATION_UNAVAILABLE: host cannot enforce reads','TOOL_ERROR'],
+] as const)('never escalates configuration/authentication/isolation failure %s', (message, expected) => {
+ expect(classifyModelFailure(message)).toBe(expected);
 });

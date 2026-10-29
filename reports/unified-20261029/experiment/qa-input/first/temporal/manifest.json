@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "scope": "SAMPLED_VIDEO_PIXELS_NOT_AGENT_JUDGMENT",
+  "buildHash": "32a499d21023799d50a81236bf5461f28a35e09f210b8609ec037b22141ab5e0",
+  "video": {
+    "path": "qa-input/first/video/page@0bffa417b336e26550cfa0d840279017.webm",
+    "sha256": "b77cf5fe9e7ae0e2ded361a3ca26278fdc9f7789dfc72d6393d4c70fef3230c2",
+    "durationMs": 25520
+  },
+  "trace": {
+    "path": "qa-input/first/trace.json",
+    "sha256": "8b367cd353d52da6b35747197704de377c09dc47061738d608df5bc1185c73a4"
+  },
+  "sheets": [
+    {
+      "path": "qa-input/first/temporal/sequence-1.png",
+      "sha256": "56cc60a04a24cf0c6c49fe56e1084771780a1607553c1fc527a1b1a473b35b03",
+      "requestedVideoTimesMs": [
+        2152,
+        2312,
+        2472,
+        2632,
+        2792,
+        2952
+      ]
+    },
+    {
+      "path": "qa-input/first/temporal/sequence-2.png",
+      "sha256": "66a06a9b7a3a904816a429fa45567a094bdc3a8cae516f26125a8671745f2f9e",
+      "requestedVideoTimesMs": [
+        12360,
+        12520,
+        12680,
+        12840,
+        13000,
+        13160
+      ]
+    },
+    {
+      "path": "qa-input/first/temporal/sequence-3.png",
+      "sha256": "08330f2fc3ed858a175317b51f6042923fab4b3e09668421983a8126d012d1bb",
+      "requestedVideoTimesMs": [
+        22484,
+        22984,
+        23484,
+        23984,
+        24484,
+        24984
+      ]
+    }
+  ],
+  "limitations": [
+    "Labels are requested video seek times; nearest decoded frame may differ by one source frame.",
+    "Historical video and host input clocks were not synchronized; exact input-to-frame offset is UNKNOWN.",
+    "Gaps between samples cannot prove transient absence, exact collision timing, frame-rate independence or unseen branches."
+  ]
+}

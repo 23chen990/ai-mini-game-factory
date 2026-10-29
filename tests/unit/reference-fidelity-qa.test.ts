@@ -294,3 +294,20 @@ it('keeps unavailable paired captures explicitly unknown rather than requiring f
  expect(result.blockers).not.toContain('fidelity:review-invalid');
  expect(result.passed).toBe(false);
 });
+
+it('can independently validate an implementation discovery while retaining an unrelated unobserved branch as BLOCKED', async () => {
+ const input=await fixture(); const first=input.review.cases[0]!;
+ const review={...input.review,cases:[{...first,checkId:'uncaptured-failure',passed:false,perceptualPassed:false,rootCause:'evidence',hypothesis:'Unobserved branch'}],discoveries:[{id:first.checkId,severity:'error',rootCause:'implementation',hypothesis:'An ordinary activation produces no response',message:'Observed no response',evidence:first.trace.path,objectType:first.objectType,stateBranch:first.stateBranch,viewport:first.viewport,screenshots:first.screenshots,trace:first.trace}]};
+ expect((await referenceEvidence.verifyReferenceRepairReview({...input,review})).blockers.length).toBeGreaterThan(0);
+ const selected=await referenceEvidence.verifyImplementationDiscoveries({...input,review});
+ expect(selected.blockers).toEqual([]);expect(selected.report.issues).toHaveLength(1);expect(selected.report.issues[0]?.rootCause).toBe('implementation');
+ expect((await verify({...input,review})).passed).toBe(false);
+ expect((await referenceEvidence.verifyImplementationDiscoveries({...input,review,buildHash:'d'.repeat(64)})).blockers).toContain('repair:review-identity-mismatch');
+ await writeFile(path.join(input.runRoot,first.screenshots[0]!.path),'changed');
+ expect((await referenceEvidence.verifyImplementationDiscoveries({...input,review})).blockers.length).toBeGreaterThan(0);
+});
+it('cannot relabel a required retest as a fresh implementation discovery from a sibling branch', async () => {
+ const input=await fixture();const first=input.review.cases[0]!;
+ const discovery={id:first.checkId,severity:'error',rootCause:'implementation',hypothesis:'wrong branch',message:'No response',evidence:first.trace.path,objectType:'sibling-object',stateBranch:first.stateBranch,viewport:first.viewport,screenshots:first.screenshots,trace:first.trace};
+ expect((await referenceEvidence.verifyImplementationDiscoveries({...input,review:{...input.review,discoveries:[discovery]}})).blockers).toContain(`repair:branch-mismatch:${first.checkId}`);
+});

@@ -93,7 +93,7 @@ describe('CodexCliProvider', () => {
       .toMatchObject({ ready: false, scope: 'HOST_BROWSER_SMOKE_ONLY' });
   });
 
-  it('allows a budgeted blind QA call only after all four browser checks pass', async () => {
+  it.skipIf(process.platform !== 'darwin')('allows a budgeted blind QA call only after all four browser checks pass', async () => {
     const root = await mkdtemp(path.join(tmpdir(), 'codex-qa-browser-ready-'));
     const calls: Array<{ command: string; args: string[]; cwd?: string; stdin: string }> = [];
     let preflights = 0;
@@ -117,8 +117,13 @@ describe('CodexCliProvider', () => {
       prompt: 'evaluate independent evidence', cwd: root, runRoot: root, qaObservation: await qaObservation(root),
       outputPath: path.join(root, 'out.json'), logDir: path.join(root, 'logs'),
     });
+    expect(calls[0]!.command).toBe('/usr/bin/sandbox-exec');
+    expect(calls[0]!.args).toContain('shell_tool');
+    expect(calls[0]!.args).toContain('view_image');
+    expect(calls[0]!.args).toContain('--ignore-rules');
+    expect(calls[0]!.cwd).not.toBe(root);
     expect(calls[0]!.args).toContain('--image');
-    expect(calls[0]!.args).toContain(path.join(root, 'qa/frame.png'));
+    expect(calls[0]!.args.join(' ')).toMatch(/qa-isolation/);
     expect(preflights).toBe(1);
     expect(calls).toHaveLength(1);
     expect(result.usage.totalTokens).toBe(5);
@@ -605,4 +610,14 @@ it('retains the exact sanitized invocation and resolved model in the unique exec
  expect(request).toMatchObject({prompt:'Frozen evidence only',model:'gpt-6.1-sol',cwd:root,sandbox:'read-only'});
  expect(request.args).toContain('forced_login_method="chatgpt"');
  expect(result.model).toBe('gpt-6.1-sol');
+});
+
+it('ignores inherited user aliases and MCP configuration without changing ChatGPT authentication', () => {
+ const args = buildCodexExecArgs({ cwd:'/tmp/run', sandbox:'read-only', outputPath:'/tmp/run/out.json' });
+ expect(args).toContain('--ignore-user-config');
+ expect(args).toContain('forced_login_method="chatgpt"');
+ expect(args).not.toContain('--model');
+});
+it.each(['', '   ', '--model fake', 'model\nother', '../model'])('rejects malformed explicit model %j before argument construction', model => {
+ expect(() => buildCodexExecArgs({ cwd:'/tmp/run', sandbox:'read-only', outputPath:'/tmp/run/out.json', model })).toThrow(/model configuration/);
 });

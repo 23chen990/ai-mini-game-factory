@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "baseCommit": "f0ec40ead58aa1c8522711c17af894ce998107b7",
+  "binding": "Source SHA-256 manifest for this pre-commit local verification; exact pushed HEAD is bound by GitHub checks and PR status update.",
+  "lint": {
+    "passed": true,
+    "evidence": "lint-verified.log"
+  },
+  "typecheck": {
+    "passed": true,
+    "evidence": "typecheck-verified.log"
+  },
+  "factoryFullRegression": {
+    "passed": true,
+    "testFiles": 202,
+    "tests": 1334,
+    "evidence": "full-verified.log"
+  },
+  "releaseRegistry": {
+    "passed": true,
+    "tests": 4,
+    "evidence": [
+      "release-registry.log",
+      "release-regression.log"
+    ]
+  },
+  "gameRegression": "NOT_ALL_PASS: identical three failures in before and after; build once passes; independent model retest BLOCKED",
+  "sourceFiles": [
+    {
+      "path": "src/adapters/web-lite.ts",
+      "sha256": "7fe07fb785dd3b2df2abd0b683872cd9faa0ae945fc737529aabe35389aa17bf"
+    },
+    {
+      "path": "src/core/model-policy.ts",
+      "sha256": "a4130ed45073b4e483392154dd0cb7cba1889ad6bcb5c6d60450916bbe0bc422"
+    },
+    {
+      "path": "src/core/reference-evidence.ts",
+      "sha256": "b22a95b247df03d601488ec48785221efb0a83fcab7187c363a198f00c1ffb80"
+    },
+    {
+      "path": "src/factory.ts",
+      "sha256": "3c782c1da515e7856c75f2ea56a694bfe49d77be1da66d0e99f47127fb0c8916"
+    },
+    {
+      "path": "src/providers/codex-account.ts",
+      "sha256": "c795c641d0b7cf54f29b5bc5b7a58921e180d42ee6f70104f25165f688759d4e"
+    },
+    {
+      "path": "src/providers/codex-cli.ts",
+      "sha256": "de1bf3b44ef6008e79e90bba03a0c9ece34a20f783fb7863ef9a9cdc28e75ce6"
+    },
+    {
+      "path": "src/providers/real.ts",
+      "sha256": "552b4b1767160dbfcaedc68439cdab05d326c69c73cb3899502b25b6fb48fbc5"
+    },
+    {
+      "path": "src/qa/browser-preflight.ts",
+      "sha256": "182ff11fa9e8feeaa7366346eca067b6815b87319bee19966dcf6dc200b0d4ca"
+    },
+    {
+      "path": "src/qa/frozen-review.ts",
+      "sha256": "4a37f6aad23706ff807c8e05d283ada12b8e03efa332fefbe922322ebe96ead2"
+    },
+    {
+      "path": "src/qa/temporal-observations.ts",
+      "sha256": "9f22ac293110731bea03c49fcb02b8c840fb73a93b846a9160e7a000fb50f631"
+    },
+    {
+      "path": "tests/unit/codex-account-provider.test.ts",
+      "sha256": "5c043c9e880f64a2a7250d3e0df6dfae1a19e35a2ad5d1261da7d7998b9857d4"
+    },
+    {
+      "path": "tests/unit/codex-cli-provider.test.ts",
+      "sha256": "4176a1494d6764efe982e403bc1c7ad208c43f6809758e2722ae520ce8016df9"
+    },
+    {
+      "path": "tests/unit/frozen-qa-isolation.test.ts",
+      "sha256": "c12063e2ffdd0fa8f279db82ad3a0b9e8761a69cd7540bc1d8c3522f0d12dab5"
+    },
+    {
+      "path": "tests/unit/live-agent-provider.test.ts",
+      "sha256": "1ed2d56e8a40818a0eefee7087f092a030fb52676d4d008c4c9f0628fb813a2b"
+    },
+    {
+      "path": "tests/unit/model-policy.test.ts",
+      "sha256": "526eb9333fb7ae0601cfb495ea41dff8c08759714f8c705d6ffa045f4f087708"
+    },
+    {
+      "path": "tests/unit/reference-fidelity-qa.test.ts",
+      "sha256": "42ed113d8888bffd25e01305ebc56a8afdec29500b45e4dc8ffcb90d2c40f9e5"
+    },
+    {
+      "path": "tests/unit/temporal-observations.test.ts",
+      "sha256": "0561488b90e4b19754f443e005d814d5b383cbf3794a0ce633086cb9681131ce"
+    },
+    {
+      "path": "tests/unit/web-lite-runtime.test.ts",
+      "sha256": "9281661966eb0dbb7381b0b764baa84230770b0edd77a45b9e70389bf9fa3428"
+    },
+    {
+      "path": "tools/unified-agent-repair-pilot.ts",
+      "sha256": "031f37314cc04db45b6c1836295be1d1863ce2c0cbd25e76de80194fe08e331b"
+    }
+  ],
+  "recordedAt": "2026-10-29T09:44:17.696060+00:00"
+}

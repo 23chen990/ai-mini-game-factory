@@ -1,0 +1,5 @@
+
+> rune-blade-night-run-prototype@0.1.0 build
+> tsx scripts/build.ts
+
+built self-contained dist/index.html (2860504 bytes)

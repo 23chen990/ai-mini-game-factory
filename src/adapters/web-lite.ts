@@ -152,7 +152,7 @@ async function packageFinderPlayable(output: string): Promise<void> {
 
 export class WebLiteRuntimeAdapter implements RuntimeAdapter {
   private preview?: { stop: () => Promise<void> };
-  constructor(private readonly repositoryRoot: string) {}
+  constructor(private readonly repositoryRoot: string, private readonly options: {useDeclaredProjectScripts?: boolean} = {}) {}
   // Generated workspaces reuse the factory's node_modules through a symlink.
   // Never run the package manager inside such a workspace: pnpm 11's
   // verify-deps-before-run would reconcile the symlinked tree against the
@@ -188,6 +188,13 @@ export class WebLiteRuntimeAdapter implements RuntimeAdapter {
     await writeFile(configFile, `${JSON.stringify(config, null, 2)}\n`);
   }
   async verifyProject(workspace: string, options: { requireScripts: boolean }) {
+    // Explicitly imported existing games own their test runner and contract.
+    // Never impose idle-shop APIs on them or silently relax new template builds.
+    if (this.options.useDeclaredProjectScripts) {
+      const checks:string[]=[];
+      for (const script of ['lint','typecheck','test']) { await command('npm',['run',script],workspace); checks.push(`${script}:passed`); }
+      return checks;
+    }
     const sourceRoot = path.join(workspace, 'src');
     const sourceFiles = (await listFiles(sourceRoot)).filter((file) => file.endsWith('.ts'));
     const sources = await Promise.all(sourceFiles.map((file) => readFile(path.join(sourceRoot, file), 'utf8')));
@@ -217,6 +224,7 @@ export class WebLiteRuntimeAdapter implements RuntimeAdapter {
     return checks;
   }
   async verifyFormalProject(workspace: string) {
+    if (this.options.useDeclaredProjectScripts) return this.verifyProject(workspace,{requireScripts:true});
     const packageJson = JSON.parse(await readFile(path.join(workspace, 'package.json'), 'utf8')) as { scripts?: Record<string, string> };
     const missingScripts = ['lint', 'typecheck', 'test', 'build'].filter((name) => !packageJson.scripts?.[name]);
     if (missingScripts.length > 0) throw new Error(`Formal prototype verification requires package scripts: lint, typecheck, test, build; missing ${missingScripts.join(', ')}`);
@@ -232,6 +240,11 @@ export class WebLiteRuntimeAdapter implements RuntimeAdapter {
     return ['lint:passed', 'typecheck:passed', 'test:passed', 'formal-test-contract:v1'];
   }
   async buildWeb(workspace: string) {
+    if (this.options.useDeclaredProjectScripts) {
+      await command('npm',['run','build'],workspace);
+      if (!await exists(path.join(workspace,'dist/index.html'))) throw new Error('Declared project build did not produce dist/index.html');
+      return path.join(workspace,'dist');
+    }
     await command(path.join(this.repositoryRoot, 'node_modules/.bin/vite'), ['build'], workspace);
     const output = path.join(workspace, 'dist');
     if (!await exists(path.join(output, 'index.html'))) throw new Error('Vite did not produce dist/index.html');

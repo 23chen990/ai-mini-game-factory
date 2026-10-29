@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "startedFromReset": true,
+  "actions": [
+    "2628ms touchscreen.tap(195,400)",
+    "3120ms touchscreen.tap(195,400)",
+    "3547ms touchscreen.tap(195,400)",
+    "3982ms touchscreen.tap(195,400)",
+    "4416ms touchscreen.tap(195,400)",
+    "4839ms touchscreen.tap(195,400)",
+    "5321ms touchscreen.tap(195,400)",
+    "5747ms touchscreen.tap(195,400)",
+    "6171ms touchscreen.tap(195,400)",
+    "6596ms touchscreen.tap(195,400)",
+    "7034ms touchscreen.tap(195,400)",
+    "7455ms touchscreen.tap(195,400)",
+    "7880ms touchscreen.tap(195,400)",
+    "8305ms touchscreen.tap(195,400)",
+    "8730ms touchscreen.tap(195,400)",
+    "9177ms touchscreen.tap(195,400)",
+    "9605ms touchscreen.tap(195,400)",
+    "10052ms touchscreen.tap(195,400)",
+    "10472ms touchscreen.tap(195,400)",
+    "10907ms touchscreen.tap(195,400)",
+    "11339ms touchscreen.tap(195,400)",
+    "11776ms touchscreen.tap(195,400)",
+    "12217ms touchscreen.tap(195,400)",
+    "12647ms touchscreen.tap(195,400)",
+    "13081ms touchscreen.tap(195,400)",
+    "13505ms touchscreen.tap(195,400)",
+    "13930ms touchscreen.tap(195,400)",
+    "14354ms touchscreen.tap(195,400)",
+    "14779ms touchscreen.tap(195,400)",
+    "15213ms touchscreen.tap(195,400)",
+    "15638ms touchscreen.tap(195,400)",
+    "16076ms touchscreen.tap(195,400)",
+    "16496ms touchscreen.tap(195,400)",
+    "16921ms touchscreen.tap(195,400)",
+    "17346ms touchscreen.tap(195,400)",
+    "17771ms touchscreen.tap(195,400)",
+    "18196ms touchscreen.tap(195,400)",
+    "18659ms touchscreen.tap(195,400)",
+    "19080ms touchscreen.tap(195,400)",
+    "19504ms touchscreen.tap(195,400)",
+    "19930ms touchscreen.tap(195,400)",
+    "20354ms touchscreen.tap(195,400)",
+    "20780ms touchscreen.tap(195,400)",
+    "21204ms touchscreen.tap(195,400)",
+    "21628ms touchscreen.tap(195,400)",
+    "22054ms touchscreen.tap(195,400)",
+    "22571ms tap visible #replay-button",
+    "23852ms tap visible #replay-button again"
+  ],
+  "transitions": [
+    {
+      "name": "startup",
+      "changed": true,
+      "evidence": "Fresh context and ready pixels."
+    },
+    {
+      "name": "core-action",
+      "changed": true,
+      "evidence": "Normal touchscreen actions; consult chronological PNGs/video, not a state oracle."
+    },
+    {
+      "name": "terminal",
+      "changed": true,
+      "evidence": "关卡完成\n×4\n分数 4\n点击“重玩”按钮 · 重新开始"
+    },
+    {
+      "name": "replay",
+      "changed": false,
+      "evidence": "Visible terminal actions after ordinary replay taps: true. The recorder does not assign root cause."
+    }
+  ],
+  "completion": "terminal",
+  "replayObserved": false,
+  "forbiddenOperations": [],
+  "screenshots": [
+    "qa-input/first/01-ready.png",
+    "qa-input/first/02-action.png",
+    "qa-input/first/03-outcome.png",
+    "qa-input/first/04-after-control.png",
+    "qa-input/first/05-after-second-control.png",
+    "qa-input/first/temporal/sequence-1.png",
+    "qa-input/first/temporal/sequence-2.png",
+    "qa-input/first/temporal/sequence-3.png"
+  ],
+  "passed": false,
+  "blockers": [
+    "Capture only, not independent player-experience acceptance."
+  ],
+  "runner": "trusted-host-playwright-normal-input",
+  "buildHash": "32a499d21023799d50a81236bf5461f28a35e09f210b8609ec037b22141ab5e0",
+  "runtime": "web-lite",
+  "device": {
+    "width": 390,
+    "height": 844,
+    "label": "mobile"
+  },
+  "observedAt": "2026-10-28T09:19:39.545Z"
+}

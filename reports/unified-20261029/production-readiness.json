@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "status": "PREPARATION_READY_NOT_AUTHORIZED_FOR_NEW_PRODUCTION",
+  "reference": {
+    "target": "纸片风车",
+    "workspace": "/Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市/runs/20261026104326-reference-9094c978/workspace/game",
+    "source": "reference-evidence/verified/_2026-09-06-135548-3781e4dcd3d2-3781e4dcd3d2-3781e4dcd3d2.mp4",
+    "sha256": "3781e4dcd3d21094f186cf442b3ee30cddfbb2fbe68d87c5c7470a2c742bf75a",
+    "identity": "VERIFIED_TARGET",
+    "review": "VERIFIED",
+    "durationMs": 36492,
+    "frames": 292,
+    "sheets": 19
+  },
+  "rightsBoundary": "Verified user recording for behavioral observation only; no permission inferred to copy game code, names, assets, UI or tuning. No live site access or additional commercial license is claimed.",
+  "known": [
+    "Visible airborne motion/rotation and cutting of targets; exact controlling input remains unknown",
+    "Multiple targets/supports and visible score/result presentation",
+    "Exact source bytes, duration and historical target identity"
+  ],
+  "unknown": [
+    "Exact source input timings/hold behavior",
+    "Full danger/failure/recovery/replay causality",
+    "All collision/contact/lifecycle branches and natural physics acceptance",
+    "New run identity/rights binding and human adaptation direction"
+  ],
+  "minimalOriginalPrototype": {
+    "durationSeconds": [
+      30,
+      60
+    ],
+    "scope": [
+      "one original paper-mechanism course",
+      "one-button timing action",
+      "cuttable paper bundles and safe support",
+      "one clearly signaled danger/failure and a visible retry action",
+      "one terminal and replay"
+    ],
+    "excluded": [
+      "multiple levels",
+      "shop/economy",
+      "progression/metagame",
+      "ad SDK",
+      "new artwork generation",
+      "copied reference expression"
+    ]
+  },
+  "existingEntrypoints": {
+    "research": "pnpm factory new-reference <brief>; ingest exact source and identity-review; explicit bounded subscription authorization; existing REFERENCE_DEEP_RESEARCH",
+    "builder": "Existing replica-preview FULL_BUILD after reference admission, human lock, open-source research and production-line resolution",
+    "runtimeReuse": [
+      "cut-stack-dodge-v1 core/template",
+      "Phaser/Vite web-lite adapter",
+      "existing level projection/loader and read-only runtime probe",
+      "existing Playwright engineering + natural-input capture",
+      "new bounded temporal sheets + frozen independent reviewer"
+    ],
+    "runtimeReuseStatus": "Candidate existing infrastructure only; next run must produce its own approved open-source research artifact before technical design/build."
+  },
+  "loopAudit": {
+    "researchToBuilder": "Required research resolution, failure-pressure and level semantic contracts are mandatory context inputs; real new-game execution not done this round.",
+    "outOfContractQa": "PROVEN for independently discovered replay",
+    "designToBlueprint": "Existing upstream provider dispatch and unchanged-output stop are regression-tested, not newly model-proven.",
+    "researchCorrection": "Existing targeted upstream-issue analysis is regression-tested; no repeated full Research call in this round.",
+    "fixerImplementationOnly": "PROVEN minimal implementation discovery reaches real Fixer; design/evidence/unknown not sent.",
+    "rebuildRetest": "Normal success path exists; real FIX cost interruption required host-only diagnostic build/capture; independent model retest blocked.",
+    "historyResume": "Original review, issue branches, native receipt, thread and counted attempt retained; unresolved/over-limit receipt blocks new launches."
+  },
+  "canStartResearchAfterNewAuthorization": true,
+  "canDirectlyStartUnattendedFullProduction": false,
+  "remainingP0": [
+    "21-tool writer turn exceeded observed-token soft allowance before telemetry arrived; no validated affordable writer envelope yet.",
+    "Current interrupted FIX receipt and missing independent retest cannot be relabeled complete.",
+    "Existing reference admission still lacks several causal branches; must use directed evidence or an explicitly approved original adaptation, not fabricate observations."
+  ],
+  "releaseOnlyBlocks": [
+    "No WeChat/Douyin/TapTap package is validated by this H5 experiment.",
+    "Sample inherited three engineering failures remain open."
+  ],
+  "newRunCreated": false,
+  "newResearchCalls": 0,
+  "newGameCodeWritten": 0,
+  "recordedAt": "2026-10-29T09:38:22.209659+00:00"
+}

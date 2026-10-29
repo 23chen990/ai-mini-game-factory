@@ -1,0 +1,11 @@
+/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/src/core/reference-level-binding.ts:113
+  if (!checked.present) throw new Error(`reference-level-runtime: required artifact missing: ${relativePath}`);
+                              ^
+
+Error: reference-level-runtime: required artifact missing: artifacts/reference-level-implementation-contract.json
+    at requiredRunFile (/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/src/core/reference-level-binding.ts:113:31)
+    at async readReferenceLevelRuntimeData (/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/src/core/reference-level-binding.ts:150:24)
+    at async FixerAgent.run (/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/src/agents/index.ts:505:34)
+    at async <anonymous> (/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/tools/unified-agent-repair-pilot.ts:134:16)
+
+Node.js v24.14.0

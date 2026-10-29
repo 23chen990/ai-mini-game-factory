@@ -1,0 +1,17 @@
+{
+  "workspace": "/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/runs/unified-agent-repair-20261028/workspace/game",
+  "controllerSourceEdits": 0,
+  "changes": [
+    {
+      "path": "src/main.ts",
+      "beforeSha256": "9ac98da7f1731dfea3b047606493ee72900e8d7165e81a7f9fbd2e116c9e6a67",
+      "afterSha256": "a5649300a90f92bf7d4789bf3bef127e1d2cc09daca3abe3117083f9c7b77899"
+    },
+    {
+      "path": "tests/level-ui.test.ts",
+      "beforeSha256": "f80154330547a497ecb8e501063d3d2585a6af4d62d5e639722f01cfdeda2baa",
+      "afterSha256": "9f8a3774c66f8465bb13351a4eb6e4518b12bca0728a47587b10c4464d739d1d"
+    }
+  ],
+  "diff": "fix.diff"
+}

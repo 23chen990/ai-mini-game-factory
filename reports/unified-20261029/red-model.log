@@ -1,0 +1,174 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/model-policy.test.ts (15 tests | 5 failed) 14ms
+     × keeps high-risk design and experience decisions on a frontier model 6ms
+     × routes the narrative vertical slice to the writing-capable Builder tier 1ms
+     × keeps bounded execution and evidence tasks read-only while using the requested Luna worker 1ms
+     × escalates instead of retrying a weak model on a failed high-risk task 3ms
+   × rejects malformed explicit stage model configuration before provider dispatch 1ms
+ ❯ tests/unit/codex-cli-provider.test.ts (42 tests | 6 failed) 245ms
+   × ignores inherited user aliases and MCP configuration without changing ChatGPT authentication 3ms
+   × rejects malformed explicit model "" before argument construction 1ms
+   × rejects malformed explicit model "   " before argument construction 0ms
+   × rejects malformed explicit model "--model fake" before argument construction 0ms
+   × rejects malformed explicit model "model\nother" before argument construction 0ms
+   × rejects malformed explicit model "../model" before argument construction 0ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 11 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/codex-cli-provider.test.ts > ignores inherited user aliases and MCP configuration without changing ChatGPT authentication
+AssertionError: expected [ Array(13) ] to include '--ignore-user-config'
+ ❯ tests/unit/codex-cli-provider.test.ts:612:15
+    610| it('ignores inherited user aliases and MCP configuration without chang…
+    611|  const args = buildCodexExecArgs({ cwd:'/tmp/run', sandbox:'read-only'…
+    612|  expect(args).toContain('--ignore-user-config');
+       |               ^
+    613|  expect(args).toContain('forced_login_method="chatgpt"');
+    614|  expect(args).not.toContain('--model');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/11]⎯
+
+ FAIL  tests/unit/codex-cli-provider.test.ts > rejects malformed explicit model "" before argument construction
+ FAIL  tests/unit/codex-cli-provider.test.ts > rejects malformed explicit model "   " before argument construction
+ FAIL  tests/unit/codex-cli-provider.test.ts > rejects malformed explicit model "--model fake" before argument construction
+ FAIL  tests/unit/codex-cli-provider.test.ts > rejects malformed explicit model "model\nother" before argument construction
+ FAIL  tests/unit/codex-cli-provider.test.ts > rejects malformed explicit model "../model" before argument construction
+AssertionError: expected [Function] to throw an error
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ tests/unit/codex-cli-provider.test.ts:617:115
+    615| });
+    616| it.each(['', '   ', '--model fake', 'model\nother', '../model'])('reje…
+    617|  expect(() => buildCodexExecArgs({ cwd:'/tmp/run', sandbox:'read-only'…
+       |                                                                                                                   ^
+    618| });
+    619|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/11]⎯
+
+ FAIL  tests/unit/model-policy.test.ts > model policy > keeps high-risk design and experience decisions on a frontier model
+AssertionError: expected { tier: 'frontier', …(4) } to match object { tier: 'frontier', …(2) }
+(2 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "model": "account-default",
++   "model": "gpt-5.6-luna",
+    "reasoning": "max",
+    "tier": "frontier",
+  }
+
+ ❯ tests/unit/model-policy.test.ts:7:50
+      5| describe('model policy', () => {
+      6|   it('keeps high-risk design and experience decisions on a frontier mo…
+      7|     expect(modelForStage('COMPETITOR_RESEARCH')).toMatchObject({ tier:…
+       |                                                  ^
+      8|     expect(modelForStage('EXPERIENCE_REVIEW')).toMatchObject({ tier: '…
+      9|     expect(modelForStage('FULL_BUILD')).toMatchObject({ tier: 'builder…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/11]⎯
+
+ FAIL  tests/unit/model-policy.test.ts > model policy > routes the narrative vertical slice to the writing-capable Builder tier
+AssertionError: expected { tier: 'builder', …(4) } to match object { tier: 'builder', …(2) }
+(2 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "model": "account-default",
++   "model": "gpt-5.6-luna",
+    "reasoning": "max",
+    "tier": "builder",
+  }
+
+ ❯ tests/unit/model-policy.test.ts:13:51
+     11|
+     12|   it('routes the narrative vertical slice to the writing-capable Build…
+     13|     expect(modelForStage('STORY_VERTICAL_SLICE')).toMatchObject({ tier…
+       |                                                   ^
+     14|     expect(executionPolicyForStage('STORY_VERTICAL_SLICE')).toMatchObj…
+     15|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/11]⎯
+
+ FAIL  tests/unit/model-policy.test.ts > model policy > keeps bounded execution and evidence tasks read-only while using the requested Luna worker
+AssertionError: expected { tier: 'reviewer', …(4) } to match object { tier: 'reviewer', …(2) }
+(2 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "model": "account-default",
++   "model": "gpt-5.6-luna",
+    "reasoning": "max",
+    "tier": "reviewer",
+  }
+
+ ❯ tests/unit/model-policy.test.ts:19:42
+     17|   it('keeps bounded execution and evidence tasks read-only while using…
+     18|     const policy = getModelPolicy();
+     19|     expect(modelForStage('UI_SKELETON')).toMatchObject({ tier: 'review…
+       |                                          ^
+     20|     expect(modelForStage('QA')).toMatchObject({ tier: 'reviewer', mode…
+     21|     for (const stage of ['VISUAL_EVIDENCE_QA', 'CONTENT_VARIATION_QA',…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/11]⎯
+
+ FAIL  tests/unit/model-policy.test.ts > model policy > escalates instead of retrying a weak model on a failed high-risk task
+AssertionError: expected { tier: 'frontier', …(4) } to match object { model: 'account-default', …(1) }
+(3 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "model": "account-default",
++   "model": "gpt-5.6-luna",
+    "tier": "frontier",
+  }
+
+ ❯ tests/unit/model-policy.test.ts:37:53
+     35|
+     36|   it('escalates instead of retrying a weak model on a failed high-risk…
+     37|     expect(nextModelAfterFailure('UI_SKELETON', 1)).toMatchObject({ mo…
+       |                                                     ^
+     38|     expect(nextModelAfterFailure('EXPERIENCE_REVIEW', 1)).toMatchObjec…
+     39|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/11]⎯
+
+ FAIL  tests/unit/model-policy.test.ts > rejects malformed explicit stage model configuration before provider dispatch
+AssertionError: expected [Function] to throw an error
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ tests/unit/model-policy.test.ts:74:42
+     72|  const previous = process.env[key];
+     73|  process.env[key] = '--model fake';
+     74|  try { expect(() => modelForStage('QA')).toThrow(/model configuration/…
+       |                                          ^
+     75|  finally { if (previous === undefined) delete process.env[key]; else p…
+     76| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/11]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  11 failed | 46 passed (57)
+   Start at  16:52:17
+   Duration  1.63s (transform 1.53s, setup 0ms, import 2.25s, tests 259ms, environment 0ms)
+

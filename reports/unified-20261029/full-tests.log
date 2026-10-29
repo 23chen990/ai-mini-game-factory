@@ -1,0 +1,126 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/integration/cli.test.ts (9 tests | 9 failed) 6199ms
+   × CLI starts reference intake without a hand-authored mechanic specification 789ms
+   × CLI validates a seed with a machine-readable success result 681ms
+   × CLI creates a resumable action experiment run from a validated spec 683ms
+   × CLI approves a human-locked reference without auto-resuming the run 629ms
+   × CLI routes user input before factory execution 684ms
+   × CLI audits a historical reference run without modifying its game workspace 699ms
+   × CLI records a validated account portfolio without exposing credentials 676ms
+   × CLI records project feedback and reusable design lessons in one command 677ms
+   × CLI records and reconciles an external side effect through the durable journal 680ms
+ ❯ tests/integration/factory-agent-eval-cli.test.ts (3 tests | 2 failed) 2042ms
+   × extends the existing eval command with an explicit unverified Agent evidence report 692ms
+   × rejects an explicit Agent-results flag without its required operand 676ms
+ ❯ tests/integration/approval.test.ts (6 tests | 1 failed) 3602ms
+     × approve CLI validates and writes approval without auto-resume 1204ms
+ ❯ tests/unit/board-script.test.ts (1 test | 1 failed) 691ms
+     × passes the repository ESLint configuration 690ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 13 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/integration/approval.test.ts > art approval > approve CLI validates and writes approval without auto-resume
+Error: Command failed: pnpm factory approve 20261029090809-f16838e8 --direction direction_b --notes 降低饱和度
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/13]⎯
+
+ FAIL  tests/integration/cli.test.ts > CLI starts reference intake without a hand-authored mechanic specification
+Error: Command failed: pnpm factory new-reference /var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/factory-cli-intake-FhXY3e/brief.json
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/13]⎯
+
+ FAIL  tests/integration/cli.test.ts > CLI validates a seed with a machine-readable success result
+Error: Command failed: pnpm factory validate /var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/factory-cli-Pfdhxf/seed.yaml
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/13]⎯
+
+ FAIL  tests/integration/cli.test.ts > CLI creates a resumable action experiment run from a validated spec
+Error: Command failed: pnpm factory new-action /var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/factory-cli-action-bNLEcg/action-experiment.json
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/13]⎯
+
+ FAIL  tests/integration/cli.test.ts > CLI approves a human-locked reference without auto-resuming the run
+Error: Command failed: pnpm factory new /var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/factory-cli-reference-fSQOdn/reference-seed.yaml
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/13]⎯
+
+ FAIL  tests/integration/cli.test.ts > CLI routes user input before factory execution
+Error: Command failed: pnpm factory route 调整激励广告频控 --run existing-run
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/13]⎯
+
+ FAIL  tests/integration/cli.test.ts > CLI audits a historical reference run without modifying its game workspace
+Error: Command failed: pnpm factory audit-reference historical-reference --workspace /var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/factory-cli-reference-audit-uj7FtO/runs/historical-reference/workspace/prototype-a
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/13]⎯
+
+ FAIL  tests/integration/cli.test.ts > CLI records a validated account portfolio without exposing credentials
+Error: Command failed: pnpm factory set-portfolio /var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/factory-cli-portfolio-0R8HR2/portfolio.json
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/13]⎯
+
+ FAIL  tests/integration/cli.test.ts > CLI records project feedback and reusable design lessons in one command
+Error: Command failed: pnpm factory new /var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/factory-cli-feedback-1lrHKe/seed.yaml
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/13]⎯
+
+ FAIL  tests/integration/cli.test.ts > CLI records and reconciles an external side effect through the durable journal
+Error: Command failed: pnpm factory new /var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/factory-cli-side-effect-TvxnkQ/seed.yaml
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/13]⎯
+
+ FAIL  tests/integration/factory-agent-eval-cli.test.ts > extends the existing eval command with an explicit unverified Agent evidence report
+Error: Command failed: pnpm factory eval --agent-results /var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/factory-agent-eval-cli-ct1nND/observations.json
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/13]⎯
+
+ FAIL  tests/integration/factory-agent-eval-cli.test.ts > rejects an explicit Agent-results flag without its required operand
+AssertionError: expected Error: Command failed: pnpm factory eval … { …(6) } to match object { stderr: StringContaining{…} }
+(5 matching properties omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "stderr": StringContaining "Missing --agent-results file",
++ Error {
++   "stderr": "",
+  }
+
+ ❯ tests/integration/factory-agent-eval-cli.test.ts:35:162
+     33|   const root = await mkdtemp(path.join(tmpdir(), 'factory-agent-eval-c…
+     34|   try {
+     35|     await expect(exec('pnpm', ['factory', 'eval', '--agent-results'], …
+       |                                                                                                                                                                  ^
+     36|       .rejects.toMatchObject({ stderr: expect.stringContaining('Missin…
+     37|     await expect(readFile(path.join(root, 'factory-eval/latest.json'))…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/13]⎯
+
+ FAIL  tests/unit/board-script.test.ts > factory board script > passes the repository ESLint configuration
+AssertionError: expected [Function] to not throw an error but 'Error: Command failed: pnpm exec esli…' was thrown
+
+- Expected:
+undefined
+
++ Received:
+"Error: Command failed: pnpm exec eslint tools/board.mjs"
+
+ ❯ tests/unit/board-script.test.ts:9:13
+      7|       cwd: process.cwd(),
+      8|       stdio: 'pipe',
+      9|     })).not.toThrow();
+       |             ^
+     10|   });
+     11| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/13]⎯
+
+
+ Test Files  4 failed | 198 passed (202)
+      Tests  13 failed | 1317 passed (1330)
+   Start at  17:06:37
+   Duration  141.84s (transform 3.27s, setup 0ms, import 45.88s, tests 218.74s, environment 10ms)
+

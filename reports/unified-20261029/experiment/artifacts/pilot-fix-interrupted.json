@@ -1,0 +1,21 @@
+{
+  "realCliCalls": 1,
+  "realSourceChange": true,
+  "changedSourceFiles": [
+    "src/main.ts",
+    "tests/level-ui.test.ts"
+  ],
+  "additionalEvidenceFile": "artifacts/formal-fix-replay.json",
+  "controllerSourceEdits": 0,
+  "attempt": 1,
+  "threadId": "01a186f1-3a5c-7732-a954-4970b99b1bcb",
+  "beforeBuildHash": "32a499d21023799d50a81236bf5461f28a35e09f210b8609ec037b22141ab5e0",
+  "afterBuildHash": "ede85e168a738465002ccd2b70a22a666f2840d873dbc61edade15c556ba3e5e",
+  "hostBuilds": 1,
+  "providerAcceptedCompletion": false,
+  "reason": "Token ceiling observed only at final turn.completed; CLI terminated and receipt remains uncertain.",
+  "status": "INTERRUPTED_COST_CEILING",
+  "independentQaRetest": "BLOCKED",
+  "usageReceipt": "logs/codex/executions/76fca3b2-5086-429b-b38a-d8471dfa9b05/receipt.json",
+  "completeFormalFix": false
+}

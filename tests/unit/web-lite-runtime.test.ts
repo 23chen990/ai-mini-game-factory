@@ -231,3 +231,12 @@ describe('WebLiteRuntimeAdapter real assets', () => {
     expect(html.indexOf('<script>')).toBeGreaterThan(html.indexOf('</main>'));
   });
 });
+
+it('uses declared project scripts only when explicitly adapting an existing non-template game', async () => {
+ const workspace=await mkdtemp(path.join(tmpdir(),'existing-project-runtime-'));
+ await writeFile(path.join(workspace,'package.json'),JSON.stringify({scripts:{lint:'node -e "process.exit(0)"',typecheck:'node -e "process.exit(0)"',test:'node -e "process.exit(0)"',build:`node -e "require('fs').mkdirSync('dist',{recursive:true});require('fs').writeFileSync('dist/index.html','<html>original fixture</html>')"`}}));
+ const runtime=new WebLiteRuntimeAdapter(process.cwd(),{useDeclaredProjectScripts:true});
+ expect(await runtime.verifyProject(workspace,{requireScripts:true})).toEqual(['lint:passed','typecheck:passed','test:passed']);
+ expect(await runtime.buildWeb(workspace)).toBe(path.join(workspace,'dist'));
+ expect(await readFile(path.join(workspace,'dist/index.html'),'utf8')).toContain('original fixture');
+});

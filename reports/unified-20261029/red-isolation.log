@@ -1,0 +1,30 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/codex-cli-provider.test.ts (42 tests | 1 failed) 250ms
+     × allows a budgeted blind QA call only after all four browser checks pass 32ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/codex-cli-provider.test.ts > CodexCliProvider > allows a budgeted blind QA call only after all four browser checks pass
+AssertionError: expected 'codex' to be '/usr/bin/sandbox-exec' // Object.is equality
+
+Expected: "/usr/bin/sandbox-exec"
+Received: "codex"
+
+ ❯ tests/unit/codex-cli-provider.test.ts:120:31
+    118|       outputPath: path.join(root, 'out.json'), logDir: path.join(root,…
+    119|     });
+    120|     expect(calls[0]!.command).toBe('/usr/bin/sandbox-exec');
+       |                               ^
+    121|     expect(calls[0]!.args).toContain('shell_tool');
+    122|     expect(calls[0]!.args).toContain('view_image');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 41 passed (42)
+   Start at  16:54:15
+   Duration  1.27s (transform 457ms, setup 0ms, import 904ms, tests 250ms, environment 0ms)
+

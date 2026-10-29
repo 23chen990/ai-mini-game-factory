@@ -1,3 +1,4 @@
+import { prepareFrozenQaInput, frozenQaLaunch, frozenQaToolArgs } from '../qa/frozen-review.js';
 import { spawn as nodeSpawn, type ChildProcessWithoutNullStreams } from 'node:child_process';
 import { lstat, readFile, realpath, writeFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -5,7 +6,7 @@ import { z } from 'zod';
 import { ensureDir, exists, sha256File, writeJsonAtomic } from '../core/files.js';
 import { redactText, redactValue } from '../core/redaction.js';
 import { assertExecutionContext, assertSafeContextInputPath } from '../core/execution-boundary.js';
-import { classifyModelFailure, executionPolicyForStage } from '../core/model-policy.js';
+import { classifyModelFailure, executionPolicyForStage, normalizeModelId } from '../core/model-policy.js';
 import { StageNameSchema } from '../schemas/index.js';
 import type { TokenUsage } from './interfaces.js';
 import { beginCodexExecution } from '../core/codex-budget.js';
@@ -66,7 +67,7 @@ export type CodexExecResult = CodexJsonlResult & { output: unknown; attempts: nu
  * receives the smaller set below and therefore cannot discover that session.
  */
 const TRUSTED_ENV_KEYS = [
-  'PATH', 'HOME', 'USER', 'LOGNAME', 'SHELL',
+  'PATH', 'HOME', 'CODEX_HOME', 'USER', 'LOGNAME', 'SHELL',
   'TMPDIR', 'TMP', 'TEMP', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TERM',
   'NO_COLOR', 'CI', 'FORCE_COLOR', 'TZ', 'PATHEXT', 'SystemRoot',
 ] as const;
@@ -89,8 +90,9 @@ export function buildCodexExecArgs(input: { cwd: string; sandbox: CodexSandbox; 
   const args = input.resumeThreadId
     ? ['exec', 'resume', input.resumeThreadId, '--json', '-c', `sandbox_mode="${input.sandbox}"`]
     : ['exec', '--json', '--sandbox', input.sandbox, '--cd', input.cwd];
-  args.push('-c', 'model_provider="openai"', '-c', 'forced_login_method="chatgpt"');
-  if (input.model && input.model !== 'account-default') args.push('--model', input.model);
+  args.push('--ignore-user-config', '--disable', 'multi_agent', '-c', 'model_provider="openai"', '-c', 'forced_login_method="chatgpt"');
+  const model = normalizeModelId(input.model);
+  if (model !== 'account-default') args.push('--model', model);
   if (input.schemaPath) args.push('--output-schema', input.schemaPath);
   if (input.imagePaths?.length) args.push('--image', ...input.imagePaths);
   args.push('--output-last-message', input.outputPath, '-');
@@ -233,14 +235,14 @@ export class CodexCliProvider {
     this.command = options.command ?? 'codex';
     this.timeoutMs = Math.max(1, options.timeoutMs ?? Number(process.env.CODEX_EXEC_TIMEOUT_MS ?? 300_000));
     this.maxRetries = Math.min(1, Math.max(0, options.maxRetries ?? Number(process.env.CODEX_EXEC_MAX_RETRIES ?? 1)));
-    this.model = options.model ?? process.env.CODEX_MODEL;
+    this.model = normalizeModelId(options.model ?? process.env.CODEX_MODEL);
     this.qaBrowserPreflight = options.qaBrowserPreflight ?? runQaBrowserPreflight;
   }
 
-  private runProcess(args: string[], options: { cwd?: string; stdin?: string; signal?: AbortSignal; timeoutMs?: number; env?: NodeJS.ProcessEnv; maxTotalTokens?: number }) {
+  private runProcess(args: string[], options: { command?: string; cwd?: string; stdin?: string; signal?: AbortSignal; timeoutMs?: number; env?: NodeJS.ProcessEnv; maxTotalTokens?: number }) {
     return new Promise<ProcessResult>((resolve) => {
       const detached = process.platform !== 'win32';
-      const child = this.spawn(this.command, args, { cwd: options.cwd, stdio: ['pipe', 'pipe', 'pipe'], shell: false, env: options.env, detached });
+      const child = this.spawn(options.command ?? this.command, args, { cwd: options.cwd, stdio: ['pipe', 'pipe', 'pipe'], shell: false, env: options.env, detached });
       let stdout = ''; let stderr = ''; let settled = false;
       let pendingLine = ''; let observedTokens = 0; let stopReason: ProcessStopReason | undefined;
       let hardKillTimer: ReturnType<typeof setTimeout> | undefined;
@@ -315,7 +317,7 @@ export class CodexCliProvider {
 
   async execute(request: CodexExecRequest): Promise<CodexExecResult> {
     if (request.networkAccessEnabled === true) throw new Error('Codex execution boundary forbids network access');
-    if (request.model !== undefined && request.model.trim().length === 0) throw new Error('Codex model override cannot be empty');
+    const selectedModel = normalizeModelId(request.model ?? this.model);
     const workingDirectory = assertCodexWorkingDirectory(request);
     if (request.stage) {
       const checked = assertExecutionContext({ runRoot: workingDirectory.runRoot, outputPath: request.outputPath, logDir: request.logDir, inputPaths: [], stage: request.stage, model: request.model, sandbox: request.sandbox, enforceBoundary: true });
@@ -323,6 +325,7 @@ export class CodexCliProvider {
     }
     let processEnv: NodeJS.ProcessEnv;
     let imagePaths: string[] = [];
+    let frozenQa: Awaited<ReturnType<typeof prepareFrozenQaInput>> | undefined;
     let prompt = request.prompt;
     if (request.researchIsolation) {
       const manifestPath = request.researchIsolation.manifestPath ?? path.join(request.researchIsolation.root, 'SANDBOX_MANIFEST.json');
@@ -360,10 +363,14 @@ export class CodexCliProvider {
       assertQaBrowserPreflight(readiness);
       try {
         if (!request.qaObservation) throw new Error('QA_OBSERVATIONS_REQUIRED: capture build-bound normal input and PNGs before spending model tokens; host browser readiness is insufficient');
+        if (request.resumeThreadId !== undefined) throw new Error('QA_ISOLATION_UNAVAILABLE: independent review cannot resume an author thread');
         const observations = await verifyQaObservation(workingDirectory.runRoot, request.qaObservation);
-        imagePaths = [...observations.images, ...observations.referenceImages].map((item) => item.path);
+        frozenQa = await prepareFrozenQaInput(workingDirectory.runRoot, [...observations.images, ...observations.referenceImages]);
+        imagePaths = frozenQa.imagePaths;
+        const trace = observations.trace;
+        prompt += `\nFrozen normal-input timeline (capture facts, not QA acceptance): ${JSON.stringify({actions:trace.actions,device:trace.device,transitionIds:trace.transitions.map(transition=>transition.name),screenshots:trace.screenshots,buildHash:request.qaObservation.buildSha256,traceSha256:request.qaObservation.traceSha256})}`;
         await writeJsonAtomic(path.join(request.logDir, `${request.label}.qa-observations.json`), observations);
-        prompt += `\nAttached image order (candidate then reference): ${JSON.stringify({candidate:observations.images,reference:observations.referenceImages})}\nQA observation mode: inspect the attached frozen gameplay PNGs and normal-input trace ${request.qaObservation.tracePath}. Do not inspect game source, gold labels, other reports or known answers. This handoff is not a browser tool grant. Do not claim to have operated a browser or watched uncaptured video. Unobserved branches and temporally incomplete absence claims remain BLOCKED. Return independent findings, evidence and uncertainty, not capture-runner acceptance.`;
+        prompt += `\nAttached image order (candidate then reference): ${JSON.stringify({candidate:observations.images,reference:observations.referenceImages})}\nQA observation mode: inspect the attached frozen gameplay PNGs and normal-input trace ${request.qaObservation.tracePath}. Do not inspect game source, gold labels, other reports or known answers. This handoff is not a browser tool grant. Do not claim to have operated a browser or watched uncaptured video. Unobserved branches and temporally incomplete absence claims remain BLOCKED. Use a neutral transitionId from the timeline as the discovery id so evidence can be mechanically joined; it is not a supplied defect list. Return independent findings, evidence and uncertainty, not capture-runner acceptance.`;
       } catch (error) {
         await writeJsonAtomic(path.join(request.logDir, `${request.label}.qa-observations.json`), { scope: 'FROZEN_NATURAL_OBSERVATIONS_ONLY', status: 'BLOCKED', modelCalls: 0, reason: redactText(error instanceof Error ? error.message : String(error)) });
         throw error;
@@ -374,7 +381,7 @@ export class CodexCliProvider {
       : process.env.CODEX_EXEC_MAX_TOTAL_TOKENS;
     const limits = [request.maxTotalTokens, configuredBudget === undefined ? undefined : Number(configuredBudget), process.env.CODEX_EXEC_MAX_TOTAL_TOKENS === undefined ? undefined : Number(process.env.CODEX_EXEC_MAX_TOTAL_TOKENS)].filter((value): value is number => value !== undefined);
     if (limits.some((value) => !Number.isSafeInteger(value) || value <= 0)) throw new Error('Codex token budget must be a positive safe integer');
-    const model = request.model?.trim() || this.model || 'account-default';
+    const model = selectedModel;
     const execution = await beginCodexExecution(workingDirectory.runRoot, { stage: request.stage ?? request.label, model,
       maxTotalTokens: limits.length > 0 ? Math.min(...limits) : undefined,
       requireRunBudget: request.stage !== undefined && ['FULL_BUILD', 'FIX', 'BUILD_3_PROTOTYPES', 'BUILD_ACTION_PROTOTYPES'].includes(request.stage) });
@@ -384,7 +391,7 @@ export class CodexCliProvider {
     let attempts = 0;
     let uncertain = false;
     let lastError: unknown;
-    const maxRetries = Math.min(1, Math.max(0, request.maxRetries ?? this.maxRetries));
+    const maxRetries = frozenQa === undefined ? Math.min(1, Math.max(0, request.maxRetries ?? this.maxRetries)) : 0;
     try {
       if (schemaPath) {
         await writeJsonAtomic(schemaPath, request.outputSchema);
@@ -393,23 +400,27 @@ export class CodexCliProvider {
       }
       for (let attempt = 1; attempt <= maxRetries + 1; attempt += 1) {
         if (request.signal?.aborted) throw new Error('codex exec was cancelled before launch');
-        attempts = attempt;
-        await execution.save(usage, attempts, 'running');
         // Output-last-message is per-attempt, never a shared old stage artifact.
         // Without this isolation a successful exit without a new output file
         // could accidentally publish the previous attempt's result.
         const attemptOutputPath = path.join(execution.logDir, `${request.label}.attempt-${attempt}.last-message.txt`);
-        const args = buildCodexExecArgs({ cwd: workingDirectory.cwd, sandbox: request.sandbox, schemaPath, outputPath: attemptOutputPath, resumeThreadId: request.resumeThreadId, model: request.model?.trim() || this.model, imagePaths });
+        const args = buildCodexExecArgs({ cwd: frozenQa?.root ?? workingDirectory.cwd, sandbox: request.sandbox, schemaPath, outputPath: attemptOutputPath, resumeThreadId: request.resumeThreadId, model, imagePaths });
         let stopReason: ProcessStopReason | undefined;
         try {
+          const isolated = frozenQa === undefined ? undefined : await frozenQaLaunch({root:frozenQa.root,logDir:execution.logDir,command:this.command,env:processEnv});
+          if (frozenQa) args.splice(args.length - 1, 0, ...frozenQaToolArgs());
+          const launchArgs = isolated === undefined ? args : [...isolated.prefix, ...args];
+          attempts = attempt;
+          await execution.save(usage, attempts, 'running');
           const remainingTokens = maxTotalTokens === undefined ? undefined : maxTotalTokens - usage.totalTokens;
           if (remainingTokens !== undefined && remainingTokens <= 0) throw new Error('codex exec token budget exhausted');
           await writeJsonAtomic(path.join(execution.logDir, `${request.label}.attempt-${attempt}.request.json`), redactValue({
             executionId:execution.executionId, stage:request.stage, role:request.role, model, cwd:workingDirectory.cwd,
-            sandbox:request.sandbox, args, prompt, imagePaths, qaObservation:request.qaObservation,
+            sandbox:request.sandbox, command:isolated?.command ?? this.command, args:launchArgs, prompt, imagePaths, qaObservation:request.qaObservation,
+            effectiveCwd:frozenQa?.root ?? workingDirectory.cwd, isolationProfile:isolated?.profilePath, tools:frozenQa ? [] : undefined,
             timeoutMs:request.timeoutMs ?? this.timeoutMs, maxTotalTokens:remainingTokens,
           }));
-          const processResult = await this.runProcess(args, { cwd: workingDirectory.cwd, stdin: prompt, signal: request.signal, timeoutMs: request.timeoutMs, env: processEnv, maxTotalTokens: remainingTokens });
+          const processResult = await this.runProcess(launchArgs, { command: isolated?.command, cwd: frozenQa?.root ?? workingDirectory.cwd, stdin: prompt, signal: request.signal, timeoutMs: request.timeoutMs, env: isolated?.env ?? processEnv, maxTotalTokens: remainingTokens });
           stopReason = processResult.stopReason;
           const stdout = redactText(processResult.stdout); const stderr = redactText(processResult.stderr);
           const parsed = parseCodexJsonl(stdout);
