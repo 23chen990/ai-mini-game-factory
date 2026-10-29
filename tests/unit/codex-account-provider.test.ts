@@ -177,6 +177,8 @@ describe('CodexAccountProvider', () => {
     expect(client.requests[0]?.prompt).toMatch(/preload.*atlas/i);
     expect(client.requests[0]?.prompt).toContain('prefers-reduced-motion');
     expect(client.requests[0]?.prompt).toMatch(/different refresh rates/i);
+    expect(client.requests[0]?.prompt).toContain('same entrypoint, level data and complete renderer arguments');
+    expect(client.requests[0]?.prompt).toContain('unaccepted candidate is implementation material');
     expect(result.threadId).toBe('thread-BUILD');
     expect(result.verificationMode).toBe('full');
   });
@@ -393,6 +395,9 @@ describe('CodexAccountProvider', () => {
     expect(result.verificationMode).toBe('full');
     expect(client.requests[0]?.prompt).toMatch(/named checkpoint, object, placement, relation, action, camera, terminal, or replay blocker/i);
     expect(client.requests[0]?.prompt).toMatch(/must not weaken.*recording-level contract/i);
+    expect(client.requests[0]?.prompt).toContain('as FixerAgent');
+    expect(client.requests[0]?.prompt).toContain('Do not migrate current-default guarantees into compatibility fixtures');
+    expect(client.requests[0]?.prompt).toContain('leave the failing check visible');
   });
 });
 

@@ -86,7 +86,8 @@ export const ReferenceFidelityReviewSchema = z.object({
   buildHash: Sha256,
   reviewer: z.enum(['QAAgent', 'HumanReviewer']),
   authorIndependent: z.literal(true),
-  comparison: z.object({ reference: ComparisonEvidenceFileSchema, candidate: ComparisonEvidenceFileSchema }).strict().optional(),
+  /** A missing capture pair is explicit UNKNOWN, never invented evidence paths. */
+  comparison: z.object({ reference: ComparisonEvidenceFileSchema, candidate: ComparisonEvidenceFileSchema }).strict().nullable().optional(),
   /** Not restricted to the requirements Builder was given. */
   discoveries: z.array(ReferenceDiscoverySchema).default([]),
   cases: z.array(ReferenceReviewCaseSchema),

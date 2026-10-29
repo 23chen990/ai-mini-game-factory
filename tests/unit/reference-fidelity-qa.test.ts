@@ -286,3 +286,11 @@ it('cannot close a deferred evidence gap by repairing an unrelated implementatio
  await writeFile(path.join(input.runRoot,'artifacts/qa-deferred-issues.json'),JSON.stringify({schemaVersion:1,passed:false,checks:[],issues:[{id:'unresolved-source-branch',severity:'error',rootCause:'evidence',hypothesis:'This branch lacks source observations.',message:'Source causality is unobserved',evidence:JSON.stringify({objectType:'source target',stateBranch:'contact',viewport:{width:390,height:844}})}],screenshots:[],consoleLog:'logs/console.log',testedAt:new Date().toISOString()}));
  expect((await verify(input)).blockers).toContain('fidelity:check-missing:unresolved-source-branch');
 });
+
+it('keeps unavailable paired captures explicitly unknown rather than requiring fabricated file pointers', async () => {
+ const input=await fixture();
+ const result=await verify({...input,review:{...input.review,comparison:null}});
+ expect(result.blockers).toContain('fidelity:reference-comparison-missing');
+ expect(result.blockers).not.toContain('fidelity:review-invalid');
+ expect(result.passed).toBe(false);
+});

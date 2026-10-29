@@ -1,0 +1,26 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/reference-fidelity-qa.test.ts (46 tests | 1 failed) 299ms
+   × keeps unavailable paired captures explicitly unknown rather than requiring fabricated file pointers 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/reference-fidelity-qa.test.ts > keeps unavailable paired captures explicitly unknown rather than requiring fabricated file pointers
+AssertionError: expected [ 'fidelity:review-invalid' ] to include 'fidelity:reference-comparison-missing'
+ ❯ tests/unit/reference-fidelity-qa.test.ts:293:26
+    291|  const input=await fixture();
+    292|  const result=await verify({...input,review:{...input.review,compariso…
+    293|  expect(result.blockers).toContain('fidelity:reference-comparison-miss…
+       |                          ^
+    294|  expect(result.blockers).not.toContain('fidelity:review-invalid');
+    295|  expect(result.passed).toBe(false);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 45 passed (46)
+   Start at  00:14:32
+   Duration  1.05s (transform 411ms, setup 0ms, import 638ms, tests 299ms, environment 0ms)
+

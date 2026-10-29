@@ -16,7 +16,12 @@ export { ProductExperienceContractSchema } from '../schemas/product-experience.j
 export type { ProductExperienceContract } from '../schemas/product-experience.js';
 
 export function buildProductEvidenceInstruction() {
-  return 'For every feature, report implementation evidence separately from player-visible product evidence and natural trigger evidence. A state field, event, or unit test alone is not player-visible proof: include the visible signal, the natural player action, and screenshot/trace evidence. Never claim a feature complete when it is only wired internally.';
+  return [
+    'For every feature, report implementation evidence separately from player-visible product evidence and natural trigger evidence. A state field, event, or unit test alone is not player-visible proof: include the visible signal, the natural player action, and screenshot/trace evidence. Never claim a feature complete when it is only wired internally.',
+    'For spatial gameplay, derive support, stack and landing relationships from the bound reference or approved design, not a counter target; keep unobserved relationships unknown. An unaccepted candidate is implementation material, not proof that its gameplay design is approved.',
+    'Exercise the same entrypoint, level data and complete renderer arguments as production. Do not migrate current-default guarantees into compatibility fixtures; for every changed test identify its old guarantee, current-default owner and intentional data change.',
+    'Never remove survival, geometry, overlap or coverage assertions to obtain green tests; leave the failing check visible when the behavior is not repaired. Compare normal player intent and mistimed input outcomes, not only a fixed tap cadence reaching the terminal.',
+  ].join(' ');
 }
 
 type PrimaryExperienceProfile = z.infer<typeof PrimaryExperienceProfileSchema>;

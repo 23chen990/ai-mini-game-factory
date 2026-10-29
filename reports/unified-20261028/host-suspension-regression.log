@@ -1,0 +1,153 @@
+$ vitest run
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/web-lite-runtime.test.ts (13 tests | 1 failed) 914793ms
+     × packages the production entrypoint for direct Finder and Safari opening 911720ms
+ ❯ tests/e2e/reference-capture-session.test.ts (8 tests | 1 failed) 916304ms
+     × writes a blocked draft when the page cannot be opened 911440ms
+ ❯ tests/unit/gameplay-revision-build-loader.test.ts (8 tests | 1 failed) 974306ms
+     × retains automatic fix attempts when retrying the build without a new human review flow 974286ms
+ ❯ tests/integration/action-feel-evidence.test.ts (3 tests | 1 failed) 976968ms
+     × keeps an unchanged threshold failure repair-required without a generic rebuild attempt 974749ms
+ ❯ tests/unit/spatial-shop-runtime.test.ts (2 tests | 1 failed) 987430ms
+     × copies the selected template and writes its validated spatial configuration 987333ms
+ ❯ tests/integration/factory-stage-completeness.test.ts (3 tests | 1 failed) 987937ms
+     × records the blueprint, experience hypothesis, content expansion and UI skeleton as real stages 987119ms
+ ❯ tests/e2e/reference-level-runtime-binding.test.ts (4 tests | 1 failed) 997300ms
+     × checks stale-after-action data throughout natural settlement and replay 996376ms
+ ❯ tests/unit/factory-hardening-v11.test.ts (15 tests | 1 failed) 997585ms
+     × reconciles a completed run before the terminal fast path and reopens downstream evidence after drift 997527ms
+ ❯ tests/unit/action-prototype-builder.test.ts (9 tests | 1 failed) 948308ms
+     × rebuilds when output bytes or provenance binding changes 948004ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/e2e/reference-capture-session.test.ts > reference capture session > writes a blocked draft when the page cannot be opened
+Error: Test timed out in 60000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/e2e/reference-capture-session.test.ts:106:3
+    104|   });
+    105|
+    106|   it('writes a blocked draft when the page cannot be opened', async ()…
+       |   ^
+    107|     const { runRoot, workspace } = await fixture();
+    108|     const missing = pathToFileURL(path.join(workspace, 'missing-game.h…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/10]⎯
+
+ FAIL  tests/e2e/reference-level-runtime-binding.test.ts > recording runtime binding in a fresh browser > checks stale-after-action data throughout natural settlement and replay
+Error: Test timed out in 60000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/e2e/reference-level-runtime-binding.test.ts:98:65
+     96|   });
+     97|
+     98|   it.each(['current', 'missing', 'stale-after-action'] as const)('chec…
+       |                                                                 ^
+     99|     const input = await fixture(mode);
+    100|     const result = await runReferenceLevelQa(input);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/10]⎯
+
+ FAIL  tests/integration/action-feel-evidence.test.ts > action-feel independent evidence pause > keeps an unchanged threshold failure repair-required without a generic rebuild attempt
+Error: Test timed out in 30000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/action-feel-evidence.test.ts:393:3
+    391|   }, 30_000);
+    392|
+    393|   it('keeps an unchanged threshold failure repair-required without a g…
+       |   ^
+    394|     const root = await mkdtemp(path.join(tmpdir(), 'factory-action-fee…
+    395|     roots.push(root);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/10]⎯
+
+ FAIL  tests/integration/action-feel-evidence.test.ts > action-feel independent evidence pause > keeps an unchanged threshold failure repair-required without a generic rebuild attempt
+Error: ENOTEMPTY: directory not empty, rmdir '/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/factory-action-feel-threshold-PGjILr/runs/20261028163154-8c611b0a'
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/10]⎯
+
+ FAIL  tests/integration/factory-stage-completeness.test.ts > factory stage completeness > records the blueprint, experience hypothesis, content expansion and UI skeleton as real stages
+Error: Test timed out in 60000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/factory-stage-completeness.test.ts:11:3
+      9|
+     10| describe('factory stage completeness', () => {
+     11|   it('records the blueprint, experience hypothesis, content expansion …
+       |   ^
+     12|     const root = await mkdtemp(path.join(tmpdir(), 'factory-stage-comp…
+     13|     roots.push(root);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/10]⎯
+
+ FAIL  tests/unit/action-prototype-builder.test.ts > BuilderAgent action prototypes > rebuilds when output bytes or provenance binding changes
+Error: Test timed out in 60000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/unit/action-prototype-builder.test.ts:237:3
+    235|   });
+    236|
+    237|   it('rebuilds when output bytes or provenance binding changes', async…
+       |   ^
+    238|     const runRoot = await mkdtemp(path.join(tmpdir(), 'action-builder-…
+    239|     const source = await mkdtemp(path.join(tmpdir(), 'action-builder-i…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/10]⎯
+
+ FAIL  tests/unit/factory-hardening-v11.test.ts > factory hardening v11 > reconciles a completed run before the terminal fast path and reopens downstream evidence after drift
+Error: Test timed out in 60000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/unit/factory-hardening-v11.test.ts:139:3
+    137|   });
+    138|
+    139|   it('reconciles a completed run before the terminal fast path and reo…
+       |   ^
+    140|     class DriftReplayProvider extends MockAgentProvider {
+    141|       private blueprintCalls = 0;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/10]⎯
+
+ FAIL  tests/unit/gameplay-revision-build-loader.test.ts > FULL_BUILD retry budget > retains automatic fix attempts when retrying the build without a new human review flow
+Error: Test timed out in 30000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/unit/gameplay-revision-build-loader.test.ts:229:3
+    227|
+    228| describe('FULL_BUILD retry budget', () => {
+    229|   it('retains automatic fix attempts when retrying the build without a…
+       |   ^
+    230|     const root = await mkdtemp(path.join(tmpdir(), 'factory-build-retr…
+    231|     const factory = factoryModule.createFactory({ root, repositoryRoot…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/10]⎯
+
+ FAIL  tests/unit/spatial-shop-runtime.test.ts > spatial-shop-v1 runtime template > copies the selected template and writes its validated spatial configuration
+Error: Test timed out in 60000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/unit/spatial-shop-runtime.test.ts:43:3
+     41|
+     42| describe('spatial-shop-v1 runtime template', () => {
+     43|   it('copies the selected template and writes its validated spatial co…
+       |   ^
+     44|     const root = await mkdtemp(path.join(tmpdir(), 'spatial-shop-runti…
+     45|     const workspace = path.join(root, 'game');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/10]⎯
+
+ FAIL  tests/unit/web-lite-runtime.test.ts > WebLiteRuntimeAdapter real assets > packages the production entrypoint for direct Finder and Safari opening
+Error: Test timed out in 60000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/unit/web-lite-runtime.test.ts:211:3
+    209|   });
+    210|
+    211|   it('packages the production entrypoint for direct Finder and Safari …
+       |   ^
+    212|     const root = await mkdtemp(path.join(tmpdir(), 'web-lite-finder-bu…
+    213|     const workspace = path.join(root, 'game');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/10]⎯
+
+
+ Test Files  9 failed | 191 passed (200)
+      Tests  9 failed | 1296 passed (1305)
+   Start at  00:14:45
+   Duration  7107.92s (transform 3.48s, setup 0ms, import 4210.94s, tests 9970.11s, environment 20ms)
+
+[ELIFECYCLE] Test failed. See above for more details.
