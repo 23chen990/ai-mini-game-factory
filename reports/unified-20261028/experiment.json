@@ -127,5 +127,6 @@
     "Review the unresolved second usage receipt before any further budgeted request.",
     "A new bounded authorization is needed for another initial QA; unused Fixer/retest slots cannot be repurposed into blind retries."
   ],
-  "recordedAt": "2026-10-28T15:55:32.862918+00:00"
+  "recordedAt": "2026-10-28T15:55:32.862918+00:00",
+  "factoryVersionBinding": "Requests ran against the uncommitted integration state before the final merge/hardening commits. Exact raw schemas, request arguments, frozen observations and candidate build hashes are preserved. No model-inference claim is made for final factory HEAD."
 }

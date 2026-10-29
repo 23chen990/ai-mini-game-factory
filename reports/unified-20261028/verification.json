@@ -5,7 +5,7 @@
   "mergedHead": "9962db5fbc6f4498b7cae650b0aca755ab0ff5d8",
   "mainHead": "5ff8d88945d76fa7dc6b3dd65aa8f9aa58324217",
   "testFilesPassed": 200,
-  "testsPassed": 1304,
+  "testsPassed": 1305,
   "checks": [
     {
       "id": "lint",
@@ -23,7 +23,7 @@
       "id": "full-regression",
       "status": "PASS",
       "path": "reports/unified-20261028/full-regression-final.log",
-      "sha256": "62fcc2ee0a0e2923ce8dfea2704f73d89a41dd3e3cd60b730bc7c9800a194027"
+      "sha256": "f61c05b3d355429d5762f4ba32603f82d6cc5fa80ba2ab3fd69fccd480061bfe"
     },
     {
       "id": "chromium-webkit-four-cells",
@@ -41,7 +41,7 @@
       "id": "research-to-builder-handoff",
       "status": "PASS_CONTROL_PLANE_ONLY",
       "path": "reports/unified-20261028/full-regression-final.log",
-      "sha256": "62fcc2ee0a0e2923ce8dfea2704f73d89a41dd3e3cd60b730bc7c9800a194027"
+      "sha256": "f61c05b3d355429d5762f4ba32603f82d6cc5fa80ba2ab3fd69fccd480061bfe"
     },
     {
       "id": "independent-reference-candidate-capture-validation",
@@ -65,16 +65,16 @@
       "id": "budgets-timeouts-resume-and-rejections",
       "status": "PASS_CONTROL_PLANE_ONLY",
       "path": "reports/unified-20261028/full-regression-final.log",
-      "sha256": "62fcc2ee0a0e2923ce8dfea2704f73d89a41dd3e3cd60b730bc7c9800a194027"
+      "sha256": "f61c05b3d355429d5762f4ba32603f82d6cc5fa80ba2ab3fd69fccd480061bfe"
     },
     {
       "id": "actual-autonomous-qa-fixer-qa",
       "status": "BLOCKED",
       "path": "reports/unified-20261028/experiment.json",
-      "sha256": "5f08d847efdb7e5d8041e41b4adc800637f19000bb5fa442bdd6ae6f0000b9d2"
+      "sha256": "91fcaef238ac6a4c03f9665ac73c4903884791b7b5099546e3cde581c580b4ef"
     }
   ],
-  "testedSourceHash": "75b976c93b4433d4a3a384fc61710e766ddf36d75e53bc12c4fb0111720abdda",
+  "testedSourceHash": "af2d8fbd7477a087f7bd3493b8b544b9ffb9e6dcb1bd4abb1a9dfa555a45268c",
   "testedFiles": [
     {
       "path": "factory-eval/agent-cases.json",
@@ -378,7 +378,7 @@
     },
     {
       "path": "src/core/profile-contract.ts",
-      "sha256": "bf6a776a791086fdc3b24e9f9d5c6747b9fc5ac35108a9f1875546447ea3afee"
+      "sha256": "b6e8eafc9e26a59d4b80d01bda736378ae91a770fcc731c037b3c1245d74aa19"
     },
     {
       "path": "src/core/profile-qa.ts",
@@ -562,7 +562,7 @@
     },
     {
       "path": "src/providers/codex-account.ts",
-      "sha256": "1cf89f7edfeda4f9b36703c2a6624ed851f7ce865b6c413c9614af21462bb00e"
+      "sha256": "fb38cb80d1e003fb92fe96bdefbb59d5deee985a05809da9e6e137874ffa6d83"
     },
     {
       "path": "src/providers/codex-cli.ts",
@@ -898,7 +898,7 @@
     },
     {
       "path": "src/schemas/reference-fidelity.ts",
-      "sha256": "197b8ad86d15930f58eb17b9164b8a8d1ba23d3fd0196f18d8ddc18863a14b9e"
+      "sha256": "9703521fc88738ab001b7e8bbf9d79d232f5193edba28c2f6adcdee45f98e10d"
     },
     {
       "path": "src/schemas/reference-intake.ts",
@@ -1226,7 +1226,7 @@
     },
     {
       "path": "tests/unit/codex-account-provider.test.ts",
-      "sha256": "34ea6bebfb3436c4d3a8da42af7a60abf756ce8410a242529a2e338d637b4e0b"
+      "sha256": "07c8e2e244946eb622829dc6366cfa23f781660ac380b0b593f4e55b918fc6d6"
     },
     {
       "path": "tests/unit/codex-budget-accounting.test.ts",
@@ -1634,7 +1634,7 @@
     },
     {
       "path": "tests/unit/reference-fidelity-qa.test.ts",
-      "sha256": "662e78337014926beeace4f49b538e8157c10e7f4d73457e0dea058838de2122"
+      "sha256": "64905b71e40fbecc99f97163cce7a386fb14133429f740cb7a8f3187e4c87d7d"
     },
     {
       "path": "tests/unit/reference-intake-provider.test.ts",
@@ -1854,5 +1854,8 @@
   "additionalAgentsOrGates": false,
   "realAgentExperiment": "BLOCKED: two native subscription model_not_found rejections; no further model attempts",
   "exactHeadCi": "Read the integration PR head SHA and checks; no repository self-referential HEAD claim.",
-  "recordedAt": "2026-10-28T16:10:04.115362+00:00"
+  "recordedAt": "2026-10-29T03:02:46.598Z",
+  "localHostFailure": "Previous run crossed confirmed deep sleep and timed out; raw failure retained. Same assertions/timeouts passed under temporary caffeinate. No timeout increase or assertion removal.",
+  "testedSourceGitRevision": "9dd65c26d1722fd15b6aa6bfee9d56a509dea111",
+  "testedSourceHashAlgorithm": "SHA256 of UTF-8 JSON.stringify(testedFiles), in stored order"
 }

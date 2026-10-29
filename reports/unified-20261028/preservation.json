@@ -94,11 +94,12 @@
   ],
   "allUnchanged": true,
   "intentionallyInheritedUserEdits": [
-    "AGENTS.md proposal-discipline paragraph copied into the integration checkout only.",
-    "Existing model-policy request/configuration failure classification reused and extended with the two actual rejection cases; original files untouched."
+    "AGENTS.md proposal-discipline paragraph copied into integration only.",
+    "Existing model-policy request/configuration classification reused and extended by two actual rejection cases.",
+    "PR81 uncommitted profile-contract evidence instructions, Fixer wording and matching assertions selectively inherited after red/green checks."
   ],
   "notIntegratedUncommittedEdits": [
-    "PR81 worktree profile-contract.ts and its unrelated codex-account prompt/test edit; preserved in that checkout.",
-    "830 original working-tree deletions are left as user changes, not applied to the integration candidate."
+    "830 original checkout deletions remain user changes and are not imported.",
+    "Original untracked triage/cache/other-game artifacts stay at their original locations."
   ]
 }

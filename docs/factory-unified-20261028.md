@@ -34,7 +34,7 @@
 | 模型配置拒绝 | 显示值 `account-default` 不再作为模型 id；强制原生 ChatGPT 登录/provider，避免继承按量 API；配置/权限拒绝不会误当作弱模型而升级重试 |
 
 `AGENTS.md` 的用户提案纪律已继承。原始 checkout 中模型错误分类的未提交修正经本次真实拒绝证据验证后选择性纳入，未覆盖原文件。
-#81 工作树未提交的 profile-contract / 其他 prompt 改动没有盲目并入，原位置保留。
+Uncommitted #81 default-entrypoint/renderer/no-weakened-assertion evidence instructions, Fixer wording and matching assertions were selectively inherited after red/green verification. Their original worktree files remain untouched.
 原 checkout 的 830 项删除仍是原 checkout 的用户变更，没有作为集成补丁导入。
 
 ## 现有证据下的四问（没有增加 Agent / Gate / 默认模型调用）
@@ -79,3 +79,5 @@ Builder 角色构造了真实的终局重玩回调缺失；oracle 保留在 run 
 - 没有购买 Credits、没有使用按量 API；货币费用及主聊天模型用量未查询，不编造成功率或节省比例。
 
 `tools/unified-agent-repair-pilot.ts` 只是本次现有游戏/历史证据的有界实验复现脚本，复用现有 Provider/FixerAgent/Adapter；它不是新生产 Stage、平行工作流、默认 Research 或默认额外模型调用。
+
+Final hardening: unavailable paired Capture is explicit comparison:null and remains blocked by the fidelity gate. The preserved five-attempt assertion now belongs to an explicitly configured five-attempt budget, not an implicit global cap. A local run crossed confirmed host deep sleep and timed out; its raw failure is retained in host-suspension-regression.log. With the same assertions/timeouts, temporary caffeinate produced 200 passing files / 1305 passing tests.
