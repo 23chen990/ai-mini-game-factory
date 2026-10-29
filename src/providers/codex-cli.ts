@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { ensureDir, exists, sha256File, writeJsonAtomic } from '../core/files.js';
 import { redactText, redactValue } from '../core/redaction.js';
 import { assertExecutionContext, assertSafeContextInputPath } from '../core/execution-boundary.js';
-import { executionPolicyForStage } from '../core/model-policy.js';
+import { classifyModelFailure, executionPolicyForStage } from '../core/model-policy.js';
 import { StageNameSchema } from '../schemas/index.js';
 import type { TokenUsage } from './interfaces.js';
 import { beginCodexExecution } from '../core/codex-budget.js';
@@ -90,7 +90,7 @@ export function buildCodexExecArgs(input: { cwd: string; sandbox: CodexSandbox; 
     ? ['exec', 'resume', input.resumeThreadId, '--json', '-c', `sandbox_mode="${input.sandbox}"`]
     : ['exec', '--json', '--sandbox', input.sandbox, '--cd', input.cwd];
   args.push('-c', 'model_provider="openai"', '-c', 'forced_login_method="chatgpt"');
-  if (input.model) args.push('--model', input.model);
+  if (input.model && input.model !== 'account-default') args.push('--model', input.model);
   if (input.schemaPath) args.push('--output-schema', input.schemaPath);
   if (input.imagePaths?.length) args.push('--image', ...input.imagePaths);
   args.push('--output-last-message', input.outputPath, '-');
@@ -154,7 +154,7 @@ export function parseCodexJsonl(stdout: string): CodexJsonlResult {
   return { events, threadId, completed, failed, usage, errors, usageIncomplete };
 }
 
-type ProcessStopReason = 'failed' | 'token-budget' | 'usage-unavailable' | 'timeout' | 'cancelled';
+type ProcessStopReason = 'failed' | 'token-budget' | 'usage-unavailable' | 'timeout' | 'cancelled' | 'termination-failed';
 type ProcessResult = { code: number | null; signal: NodeJS.Signals | null; stdout: string; stderr: string; stopReason?: ProcessStopReason };
 
 async function redactAttemptOutput(outputPath: string): Promise<void> {
@@ -246,19 +246,29 @@ export class CodexCliProvider {
       let hardKillTimer: ReturnType<typeof setTimeout> | undefined;
       const timeout = options.timeoutMs ?? this.timeoutMs;
       const cleanup = () => { clearTimeout(timer); clearTimeout(hardKillTimer); options.signal?.removeEventListener('abort', abort); };
+      const settle = (code: number | null, signal: NodeJS.Signals | null) => {
+        if (settled) return;
+        settled = true; cleanup(); resolve({ code, signal, stdout, stderr, ...(stopReason ? { stopReason } : {}) });
+      };
       const kill = (signal: NodeJS.Signals) => {
         // POSIX group termination also covers tool processes spawned by Codex.
         // Injected test children have no pid; Windows can terminate only the CLI.
         if (detached && child.pid !== undefined) {
           try { process.kill(-child.pid, signal); }
-          catch (error) { if ((error as NodeJS.ErrnoException).code !== 'ESRCH') throw error; }
+          catch (error) {
+            if ((error as NodeJS.ErrnoException).code === 'ESRCH') return;
+            // Signal delivery is an external boundary. Return the failure and
+            // buffered usage, never throw out of a stream/timer callback.
+            stderr += `\nCodex process group ${child.pid} termination failed: ${(error as Error).message}; process may still be running`;
+            stopReason = 'termination-failed'; settle(null, null);
+          }
         } else child.kill(signal);
       };
       const terminate = (reason: ProcessStopReason) => {
         if (settled || stopReason) return;
         stopReason = reason;
         kill('SIGTERM');
-        hardKillTimer = setTimeout(() => kill('SIGKILL'), 1_000);
+        if (!settled) hardKillTimer = setTimeout(() => kill('SIGKILL'), 1_000);
       };
       const inspectLine = (line: string) => {
         if (!line.trim() || options.maxTotalTokens === undefined) return;
@@ -287,8 +297,8 @@ export class CodexCliProvider {
       child.on('close', (code, signal) => {
         if (settled) return;
         inspectLine(pendingLine);
-        if (stopReason && detached && child.pid !== undefined) kill('SIGKILL');
-        settled = true; cleanup(); resolve({ code, signal, stdout, stderr, ...(stopReason ? { stopReason } : {}) });
+        if (!settled && stopReason && detached && child.pid !== undefined) kill('SIGKILL');
+        settle(code, signal);
       });
       options.signal?.addEventListener('abort', abort, { once: true });
       if (options.signal?.aborted) terminate('cancelled');
@@ -390,6 +400,7 @@ export class CodexCliProvider {
         // could accidentally publish the previous attempt's result.
         const attemptOutputPath = path.join(execution.logDir, `${request.label}.attempt-${attempt}.last-message.txt`);
         const args = buildCodexExecArgs({ cwd: workingDirectory.cwd, sandbox: request.sandbox, schemaPath, outputPath: attemptOutputPath, resumeThreadId: request.resumeThreadId, model: request.model?.trim() || this.model, imagePaths });
+        let stopReason: ProcessStopReason | undefined;
         try {
           const remainingTokens = maxTotalTokens === undefined ? undefined : maxTotalTokens - usage.totalTokens;
           if (remainingTokens !== undefined && remainingTokens <= 0) throw new Error('codex exec token budget exhausted');
@@ -399,6 +410,7 @@ export class CodexCliProvider {
             timeoutMs:request.timeoutMs ?? this.timeoutMs, maxTotalTokens:remainingTokens,
           }));
           const processResult = await this.runProcess(args, { cwd: workingDirectory.cwd, stdin: prompt, signal: request.signal, timeoutMs: request.timeoutMs, env: processEnv, maxTotalTokens: remainingTokens });
+          stopReason = processResult.stopReason;
           const stdout = redactText(processResult.stdout); const stderr = redactText(processResult.stderr);
           const parsed = parseCodexJsonl(stdout);
           usage.inputTokens += parsed.usage.inputTokens;
@@ -425,9 +437,9 @@ export class CodexCliProvider {
             if (!await exists(legacyPath)) await writeFile(legacyPath, content);
           }
           await execution.save(usage, attempts, uncertain ? 'uncertain' : 'complete');
-          if (processResult.stopReason) throw new Error(processResult.stopReason === 'timeout'
+          if (processResult.stopReason && (processResult.stopReason !== 'failed' || parsed.errors.length === 0)) throw new Error(processResult.stopReason === 'timeout'
             ? `codex exec timed out after ${request.timeoutMs ?? this.timeoutMs}ms; observed completed-turn tokens ${usage.totalTokens}`
-            : `codex exec stopped: ${processResult.stopReason}; observed completed-turn tokens ${usage.totalTokens}`);
+            : `codex exec stopped: ${processResult.stopReason}; observed completed-turn tokens ${usage.totalTokens}${processResult.stopReason === 'termination-failed' ? `; ${stderr.trim()}` : ''}`);
           if (failed || (maxTotalTokens !== undefined && parsed.usageIncomplete)) throw new Error(parsed.errors.at(-1) ?? (stderr.trim() || `codex exec exited with code ${processResult.code}`));
           const outputStat = await lstat(attemptOutputPath);
           if (!outputStat.isFile() || outputStat.isSymbolicLink()) throw new Error('Codex current attempt output must be a regular file');
@@ -444,7 +456,9 @@ export class CodexCliProvider {
           lastError = error;
           // A failed budgeted process can have an unreported in-flight turn.
           // No retry is safe merely because its observed lower bound is small.
-          if (maxTotalTokens !== undefined || request.signal?.aborted) throw error;
+          if (maxTotalTokens !== undefined || request.signal?.aborted || stopReason === 'termination-failed') throw error;
+          const kind = classifyModelFailure(error instanceof Error ? error.message : String(error));
+          if (kind === 'SPEC_ERROR' || kind === 'POLICY_BLOCK') throw error;
         } finally {
           // A later successful retry must not leave an earlier partial message
           // unredacted, even though the outer error handler will not run.

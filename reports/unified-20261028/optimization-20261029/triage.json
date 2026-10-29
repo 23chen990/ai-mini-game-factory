@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "id": "FACTORY-CLI-REJECTION-PROPAGATION-20261029",
+  "targetGame": "Shared factory only; no generated game modified",
+  "workspace": "/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市",
+  "classification": [
+    "MODEL_CONFIGURATION_REJECTION",
+    "REDUNDANT_PROCESS_RETRY",
+    "UNHANDLED_EXTERNAL_TERMINATION_FAILURE"
+  ],
+  "reproductionEvidence": [
+    "reports/unified-20261028/experiment/logs/codex/executions/f8f927e8-348a-4ce3-9cd9-bed327db7f39/QA.attempt-1.stdout.jsonl",
+    "reports/unified-20261028/experiment/logs/codex/executions/7388c51e-8ba6-44e5-9f35-0bee83820bcb/QA.attempt-1.stdout.jsonl",
+    "src/providers/codex-cli.ts replaces stopReason failed with a generic error before surfacing parsed.errors; unbudgeted catch retries configuration errors",
+    "Code inspection: display sentinel is filtered only in CodexAccountProvider; CodexCliProvider constructor/environment/direct request can still pass account-default to buildCodexExecArgs.",
+    "First complete local regression: 200 files/1312 assertions passed, but uncaught kill EPERM in recorded native-rejection subprocess caused overall failure. Raw log retained as full-regression-initial-termination-error.log."
+  ],
+  "scope": [
+    "Existing CodexCliProvider subprocess error propagation and retry policy only",
+    "Retain all receipts and unknown-usage blocking; no changes to experiment or game code; no model selection or real inference"
+  ],
+  "acceptanceCriteria": [
+    "Replay both recorded rejections through real credential-free subprocesses: original model_not_found survives and classifies SPEC_ERROR",
+    "Unbudgeted configuration and policy rejections spawn once, preserve original rejection and uncertain receipt",
+    "Transient retry, completed-turn usage, timeout, cancellation and token-stop regressions stay passing",
+    "Lint, typecheck, complete tests and exact HEAD CI pass; no real model invocation",
+    "The same display-only account-default sentinel is never emitted as --model from either provider default or direct request; real model overrides remain unchanged.",
+    "Inject an OS EPERM at the real subprocess signal boundary: execution must reject promptly with original termination error, retain observed usage and uncertain receipt, never retry, and block the next budgeted launch. This is engineering fault injection, not Agent evidence."
+  ],
+  "proposal": {
+    "observedFailure": "Initial QA and authorized replacement rejected before inference; budgeted process overwrites the diagnostic, making higher-level failure classification incorrect.",
+    "causalEvidence": "Raw JSONL has explicit HTTP400 invalid_request_error/model_not_found; browser launch and capture already passed. Local replay discriminates error propagation from account availability, game behavior and inference quality. EPERM was not reproduced in 100 active-child and 30 closed-child probes, nor one standalone suite replay. Exit-race remains a hypothesis, not established causality. Confirmed defect: kill throws inside asynchronous data/timer callbacks outside the provider promise.",
+    "alternatives": "Keep uncertain-usage safety and current models. Smallest correction: surface existing parsed error and use existing classifier to stop configuration/policy retries. Do not add a catalog entitlement gate (official docs say app-server model/list may be cached), new Agent, provider or retry loop.",
+    "experiment": "Before/after same recorded JSONL through controlled Node subprocesses. Require one spawn and SPEC_ERROR, unchanged unresolved usage; retain if full regressions pass, otherwise revert local patch. Zero inference requests and no attempt ledger reconciliation."
+  },
+  "reproductionMatrix": [
+    {
+      "object": "Recorded native model rejection",
+      "lifecycle": "turn.started then error, no completed inference",
+      "presentationPath": "JSONL to CodexExecutionError to existing classifier",
+      "device": "POSIX child process; viewport not applicable",
+      "expected": "SPEC_ERROR, one spawn, unresolved usage retained"
+    },
+    {
+      "object": "Permission rejection",
+      "lifecycle": "process fails before accepted output",
+      "presentationPath": "stderr/JSONL to CodexExecutionError",
+      "device": "POSIX child process; viewport not applicable",
+      "expected": "POLICY_BLOCK, one spawn, no new model or retry"
+    },
+    {
+      "object": "Partial/complete inference followed by failure",
+      "lifecycle": "turn.completed or unfinished turn then failure",
+      "presentationPath": "usage receipt and stop reason",
+      "device": "POSIX child process; viewport not applicable",
+      "expected": "All observed usage retained; no uncertain-budget reuse"
+    }
+  ]
+}

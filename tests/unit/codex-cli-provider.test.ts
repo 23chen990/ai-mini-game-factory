@@ -254,6 +254,22 @@ describe('CodexCliProvider', () => {
     expect(calls[0]?.args).toContain('gpt-5.3-codex-spark');
   });
 
+  it.each(['provider-default', 'request-override'])('keeps the display-only model sentinel out of CLI args: %s', async (source) => {
+    const root = await mkdtemp(path.join(tmpdir(), 'codex-cli-default-sentinel-'));
+    const calls: Array<{ command: string; args: string[]; cwd?: string; stdin: string }> = [];
+    const provider = new CodexCliProvider({
+      model: source === 'provider-default' ? 'account-default' : 'configured-model',
+      spawn: fakeSpawn([{ stdout: '{"type":"turn.completed","usage":{"input_tokens":1,"output_tokens":1}}\n', output: 'ok' }], calls),
+      timeoutMs: 100,
+    });
+    await provider.execute({ label: 'BLUEPRINT', prompt: 'transport test only', cwd: root, sandbox: 'read-only',
+      model: source === 'request-override' ? 'account-default' : undefined,
+      outputPath: path.join(root, 'out.txt'), logDir: path.join(root, 'logs') });
+    expect(calls[0]!.args).not.toContain('--model');
+    expect(calls[0]!.args).not.toContain('account-default');
+    expect(calls[0]!.args).toContain('forced_login_method="chatgpt"');
+  });
+
   it('constructs safe read-only args with JSON, output schema and output file', async () => {
     const root = await mkdtemp(path.join(tmpdir(), 'codex-cli-provider-'));
     const calls: Array<{ command: string; args: string[]; cwd?: string; stdin: string }> = [];

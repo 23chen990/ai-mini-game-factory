@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "scope": "ENGINEERING_ERROR_PROPAGATION_NOT_AGENT_ACCEPTANCE",
+  "baseCommit": "2c86a23981ae3c60d8399e2c5065f574493571cd",
+  "testFilesPassed": 200,
+  "testsPassed": 1314,
+  "unhandledErrors": 0,
+  "targetedTestsPassed": 98,
+  "checks": {
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "completeRegression": "PASS",
+    "chromiumWebkit": "4/4 PASS"
+  },
+  "sourceBinding": {
+    "baselineManifest": "reports/unified-20261028/verification.json",
+    "baselineManifestSha256": "2e8c4ab16f5d5ecd4c1d4d7ae9a73a359f6ebf8559c69aaa969b1561362b345f",
+    "overrides": [
+      {
+        "path": "src/providers/codex-cli.ts",
+        "sha256": "cf1cca0380dd5c6f812f3710e7b4e5ea37779388e43226c3ddcfca41d43cc037"
+      },
+      {
+        "path": "tests/unit/codex-budget-process.test.ts",
+        "sha256": "b6b56b2e2d5b833f984ca6f8aeddf64931b8ad38f0b15636c719b34a7ce37099"
+      },
+      {
+        "path": "tests/unit/codex-cli-provider.test.ts",
+        "sha256": "5b90d18a5fa7894defb9f5842b10a6db8cc92c1c54ce4da2041cdaea3ffde819"
+      }
+    ],
+    "testedSourceHash": "26915214a2f11d9aed601d585e563f943dc1e4fea1dc446d21b3afc72a50b884",
+    "algorithm": "SHA256 of UTF8 JSON.stringify(baseline.testedFiles with overrides, in stored order)",
+    "files": 443
+  },
+  "originalEvidenceFilesUnchanged": 44,
+  "originalWorktrees": {
+    "checked": 14,
+    "allCheckedTrackedDiffsUnchanged": true,
+    "unavailable": [
+      "/Users/kker/.codex/worktrees/09a9/妖怪夜市"
+    ],
+    "note": "Unavailable worktree is not restored/pruned or claimed verified; all present originals remain byte-identical to prior tracked diffs."
+  },
+  "initialFullRegression": {
+    "result": "FAIL despite 1312 passing assertions: uncaught kill EPERM",
+    "rawLog": "reports/unified-20261028/optimization-20261029/full-regression-initial-termination-error.log",
+    "rootOfOsDenial": "UNKNOWN; exit-race hypothesis not established",
+    "fixedDefect": "Async signal failure now returns termination-failed with usage lower bound, uncertain receipt and no retry; process may remain running."
+  },
+  "faultInjection": "Real local Node child, OS signal permission boundary stub only; not a model/game/QA success simulation",
+  "cost": {
+    "additionalInferenceRequests": 0,
+    "additionalObservedInferenceTokens": 0,
+    "additionalCliInferenceWallMs": 0,
+    "paidApiUsed": false,
+    "creditsPurchased": false,
+    "priorExperiment": "Unchanged: 2 rejected requests, 0 completed inference turns, observed token lower bound 0, cached tokens/fees unknown, 23610ms execution"
+  },
+  "agentExperimentStatus": "BLOCKED_UNSUPPORTED_SUBSCRIPTION_MODEL",
+  "knownGaps": [
+    "Native account model access and autonomous QA/Fixer/retest remain unproved.",
+    "Original second uncertain receipt remains unresolved; no further initial QA was authorized.",
+    "OS source of intermittent EPERM not identified; only failure propagation/usage retention fixed."
+  ],
+  "files": [
+    {
+      "path": "reports/unified-20261028/optimization-20261029/browser-preflight.log",
+      "sha256": "66228d46d19351c3369fba15d7b5e7e7e0af0d8484f0a95652ee19cbee540526"
+    },
+    {
+      "path": "reports/unified-20261028/optimization-20261029/full-regression-initial-termination-error.log",
+      "sha256": "79add52249a943b04ac68d23a1cecfe74e08c085ba62d64c866efd19b03b33c8"
+    },
+    {
+      "path": "reports/unified-20261028/optimization-20261029/full-regression.log",
+      "sha256": "0c4b0308566c2d887eca639084fd4d19b3b23a124284f03972c62a24419c8140"
+    },
+    {
+      "path": "reports/unified-20261028/optimization-20261029/green-targeted.log",
+      "sha256": "7bd4429336e7dec7bd4b605586306048016ab7b4d63246eaeed90421018fe474"
+    },
+    {
+      "path": "reports/unified-20261028/optimization-20261029/lint.log",
+      "sha256": "050c69da23536758722729aeda55a8d0fb9d557495ef6d33d70873a3b64a71c1"
+    },
+    {
+      "path": "reports/unified-20261028/optimization-20261029/red-rejection.log",
+      "sha256": "387397637b8c8f9a1f5ae336b4785b0033b9b2a279d6ae55e4315c5d9193814d"
+    },
+    {
+      "path": "reports/unified-20261028/optimization-20261029/red-sentinel.log",
+      "sha256": "90f018f5e8b2d43e66718147279c3bd16def7fe6bd41e1f5892d05a83dc748af"
+    },
+    {
+      "path": "reports/unified-20261028/optimization-20261029/red-termination.log",
+      "sha256": "82cf70ee953379abcbecdb9b25429ba1ff46c5468e1312b54e3e1aeab26a1735"
+    },
+    {
+      "path": "reports/unified-20261028/optimization-20261029/triage.json",
+      "sha256": "0f0706429f6efc54cf67ad006816a6a584fe344c1570c293fabe7985d422d126"
+    },
+    {
+      "path": "reports/unified-20261028/optimization-20261029/typecheck.log",
+      "sha256": "8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92"
+    }
+  ],
+  "recordedAt": "2026-10-29T08:00:04.101Z"
+}

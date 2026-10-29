@@ -1,0 +1,28 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/codex-cli-provider.test.ts (36 tests | 2 failed | 34 skipped) 36ms
+     × keeps the display-only model sentinel out of CLI args: provider-default 29ms
+     × keeps the display-only model sentinel out of CLI args: request-override 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/codex-cli-provider.test.ts > CodexCliProvider > keeps the display-only model sentinel out of CLI args: provider-default
+ FAIL  tests/unit/codex-cli-provider.test.ts > CodexCliProvider > keeps the display-only model sentinel out of CLI args: request-override
+AssertionError: expected [ Array(15) ] to not include '--model'
+ ❯ tests/unit/codex-cli-provider.test.ts:268:32
+    266|       model: source === 'request-override' ? 'account-default' : undef…
+    267|       outputPath: path.join(root, 'out.txt'), logDir: path.join(root, …
+    268|     expect(calls[0]!.args).not.toContain('--model');
+       |                                ^
+    269|     expect(calls[0]!.args).not.toContain('account-default');
+    270|     expect(calls[0]!.args).toContain('forced_login_method="chatgpt"');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 34 skipped (36)
+   Start at  15:46:21
+   Duration  994ms (transform 428ms, setup 0ms, import 840ms, tests 36ms, environment 0ms)
+

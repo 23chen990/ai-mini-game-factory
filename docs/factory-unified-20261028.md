@@ -81,3 +81,16 @@ Builder 角色构造了真实的终局重玩回调缺失；oracle 保留在 run 
 `tools/unified-agent-repair-pilot.ts` 只是本次现有游戏/历史证据的有界实验复现脚本，复用现有 Provider/FixerAgent/Adapter；它不是新生产 Stage、平行工作流、默认 Research 或默认额外模型调用。
 
 Final hardening: unavailable paired Capture is explicit comparison:null and remains blocked by the fidelity gate. The preserved five-attempt assertion now belongs to an explicitly configured five-attempt budget, not an implicit global cap. A local run crossed confirmed host deep sleep and timed out; its raw failure is retained in host-suspension-regression.log. With the same assertions/timeouts, temporary caffeinate produced 200 passing files / 1305 passing tests.
+
+## 继续优化：原始拒绝、终止失败与重复调用（2026-10-29）
+
+继续在同一集成分支/PR #83 上修改，生产代码仅涉及现有 CodexCliProvider，不改任何生成游戏、默认模型或历史账本。
+
+- 预算子进程的 failed 停止仍保留原始厂商拒绝，因此 model_not_found/invalid_request_error 能进入现有 SPEC_ERROR 分类；没有具体消息时保留原有 stopped: failed 语义。超时、取消与 Token 停止继续优先，不伪装成模型配置错误。
+- 无预算的配置/权限拒绝也立即失败，不再原样重复进程调用；既有暂态重试边界不变。
+- CLI 最后出口不再把 account-default 展示标签当成模型 ID；显式真实模型选择与订阅认证限制保留。
+- 本轮首次完整回归 1312 项断言通过，但有一次未捕获 kill EPERM，整体判为失败，原始日志保留。100 次活跃子进程/30 次退出后探测及一次独立套件未稳定复现操作系统拒绝，退出竞争只是待验证假设。修复的是已确认的异步错误逸出：终止失败经执行结果如实上抛，保留已观测用量下界和 uncertain 账本，禁止自动重试，提示进程可能仍运行。绝不把“无法终止”记为“已终止”。
+
+同一原始拒绝 JSONL 的无凭据进程回放、信号边界 EPERM 故障注入均只证明工程错误处理，不能计入真实 Agent 观察/发现/修复。红绿测试、完整回归、浏览器结果及源码绑定见 reports/unified-20261028/optimization-20261029/verification.json。历史验证文件不重写。
+
+本轮新增推理调用为 0，未重授或核销第二次未决用量；真实 QA → Fixer → QA 仍为 BLOCKED。没有增加模型目录 Gate：[OpenAI 官方说明](https://developers.openai.com/siwc/token-sharing-open-source/codex-app-server)指出 app-server model/list 可能只是缓存目录，不能当作账号授权证明。

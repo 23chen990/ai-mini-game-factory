@@ -2,8 +2,10 @@ import { spawn } from 'node:child_process';
 import { mkdtemp, mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { CodexCliProvider, parseCodexJsonl, type SpawnFunction } from '../../src/providers/codex-cli.js';
+import { classifyModelFailure } from '../../src/core/model-policy.js';
+import { readCodexUsageReceipts } from '../../src/core/codex-budget.js';
 
 // Real credential-free OS processes, not EventEmitter kill acknowledgements.
 async function fixture(bodies: string[]) {
@@ -14,17 +16,19 @@ async function fixture(bodies: string[]) {
     return file;
   }));
   let calls = 0;
+  const children: ReturnType<typeof spawn>[] = [];
   const outputSignals: Promise<void>[] = [];
   const controlled: SpawnFunction = (_command, args, options) => {
     const script = scripts[calls];
     calls += 1;
     const child = spawn(process.execPath, [script!, args[args.indexOf('--output-last-message') + 1]!], options);
+    children.push(child);
     outputSignals.push(new Promise<void>((resolve) => child.stdout.once('data', () => resolve())));
     return child;
   };
   const request = { label: 'BLUEPRINT', prompt: 'local fixture only', cwd: root, runRoot: root,
     sandbox: 'read-only' as const, outputPath: path.join(root, 'output.txt'), logDir: path.join(root, 'logs') };
-  return { root, request, provider: () => new CodexCliProvider({ spawn: controlled, timeoutMs: 2000, maxRetries: 1 }), calls: () => calls, waitForOutput: async () => { while (outputSignals.length === 0) await new Promise((resolve) => setTimeout(resolve, 5)); await outputSignals[0]; } };
+  return { root, request, children, provider: () => new CodexCliProvider({ spawn: controlled, timeoutMs: 2000, maxRetries: 1 }), calls: () => calls, waitForOutput: async () => { while (outputSignals.length === 0) await new Promise((resolve) => setTimeout(resolve, 5)); await outputSignals[0]; } };
 }
 const turn = (tokens: number, newline = true) => `process.stdout.write(${JSON.stringify(JSON.stringify({ type: 'turn.completed', usage: { input_tokens: tokens - 1, output_tokens: 1 } }) + (newline ? '\n' : ''))});`;
 const success = (tokens: number) => `${turn(tokens)} fs.writeFileSync(output, 'ok');`;
@@ -35,6 +39,57 @@ async function cap(root: string, maxAgentTokens: number, priorTokens = 0) {
 }
 
 describe('Codex observed-token stop with real controlled processes', () => {
+  it.each([true, false])('reports signal permission failure with usage and no retry (budgeted=%s)', async (budgeted) => {
+    const f = await fixture([`${turn(40)} process.stdout.write('{"type":"error","message":"model_not_found"}\\n'); setInterval(() => {}, 1000);`]);
+    const originalKill = process.kill.bind(process);
+    const signal = vi.spyOn(process, 'kill').mockImplementation((pid, name) => {
+      if (f.children.some((child) => -child.pid! === pid)) throw Object.assign(new Error('kill EPERM'), { code: 'EPERM' });
+      return originalKill(pid, name);
+    });
+    const pending = f.provider().execute({ ...f.request, timeoutMs: 1000, ...(budgeted ? { maxTotalTokens: 100 } : {}) }).catch((error: unknown) => error);
+    try {
+      const error = await Promise.race([pending, new Promise((resolve) => setTimeout(() => resolve(new Error('termination failure did not settle')), 2000))]);
+      expect(String(error)).toMatch(/termination-failed.*EPERM/su);
+      expect(error).toMatchObject({ usage: { totalTokens: 40 }, attempts: 1 });
+      expect(f.calls()).toBe(1);
+      expect(await readCodexUsageReceipts(f.root)).toMatchObject([{ status: 'uncertain', attempts: 1, usage: { totalTokens: 40 } }]);
+      await expect(f.provider().execute({ ...f.request, maxTotalTokens: 100 })).rejects.toThrow(/unresolved/u);
+      expect(f.calls()).toBe(1);
+    } finally {
+      signal.mockRestore();
+      await Promise.all(f.children.map((child) => new Promise<void>((resolve) => { child.once('close', () => resolve()); child.kill('SIGKILL'); })));
+      await pending;
+    }
+  });
+
+  it.each([
+    'f8f927e8-348a-4ce3-9cd9-bed327db7f39',
+    '7388c51e-8ba6-44e5-9f35-0bee83820bcb',
+  ])('preserves recorded native model rejection %s through a budgeted process stop', async (executionId) => {
+    const recorded = await readFile(new URL(`../../reports/unified-20261028/experiment/logs/codex/executions/${executionId}/QA.attempt-1.stdout.jsonl`, import.meta.url), 'utf8');
+    const f = await fixture([`process.stdout.write(${JSON.stringify(recorded)}); process.exitCode = 1;`]);
+    await cap(f.root, 200_000);
+    let message = '';
+    await expect(f.provider().execute(f.request).catch((error: Error) => { message = error.message; throw error; }))
+      .rejects.toThrow('model_not_found');
+    expect(classifyModelFailure(message)).toBe('SPEC_ERROR');
+    expect(f.calls()).toBe(1);
+    expect(await readCodexUsageReceipts(f.root)).toMatchObject([{ status: 'uncertain', attempts: 1, usage: { totalTokens: 0 } }]);
+  });
+
+  it.each([
+    ['model_not_found: configured model is not supported when using Codex with a ChatGPT account', 'SPEC_ERROR'],
+    ['invalid_request_error: failed to parse request body', 'SPEC_ERROR'],
+    ['Permission denied by account policy', 'POLICY_BLOCK'],
+  ])('does not repeat an unbudgeted non-retryable rejection: %s', async (message, kind) => {
+    const event = JSON.stringify({ type: 'error', message }) + '\n';
+    const f = await fixture([`process.stdout.write(${JSON.stringify(event)}); process.exitCode = 1;`, success(10)]);
+    await expect(f.provider().execute(f.request)).rejects.toThrow(message);
+    expect(classifyModelFailure(message)).toBe(kind);
+    expect(f.calls()).toBe(1);
+    expect(await readCodexUsageReceipts(f.root)).toMatchObject([{ status: 'uncertain', attempts: 1, usage: { totalTokens: 0 } }]);
+  });
+
   it('does not retry a budgeted timeout and exposes/persists its observed lower bound', async () => {
     const f = await fixture([`${turn(40)} setInterval(() => {}, 1000);`, success(10)]);
     const error = await f.provider().execute({ ...f.request, maxTotalTokens: 100, timeoutMs: 1000 }).catch((error: unknown) => error);
