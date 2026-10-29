@@ -1,0 +1,9 @@
+$ eslint .
+
+/Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市/tests/unit/codex-cli-provider.test.ts
+  179:31  error  '_command' is defined but never used  @typescript-eslint/no-unused-vars
+  179:49  error  '_args' is defined but never used     @typescript-eslint/no-unused-vars
+
+✖ 2 problems (2 errors, 0 warnings)
+
+[ELIFECYCLE] Command failed with exit code 1.

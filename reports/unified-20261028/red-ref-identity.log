@@ -1,0 +1,49 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/qa-observation-directory.test.ts (2 tests | 1 failed) 15ms
+   × does not treat arbitrary run-local pictures as verified reference evidence 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/qa-observation-directory.test.ts > does not treat arbitrary run-local pictures as verified reference evidence
+AssertionError: promise resolved "{ …(9) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "buildPath": "dist/index.html",
++   "buildSha256": "3660315a9af3df255d8f19ab077e4797822b41488a0e2a04bc6af71213c23274",
++   "completion": "none",
++   "images": [
++     {
++       "path": "/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/qa-reference-identity-5jLyOM/evidence/frame.png",
++       "sha256": "68e4f5e20f674b60deddf95797ef14e1ce7414fd77f9eb04d82a25ca811ad193",
++     },
++   ],
++   "referenceImages": [
++     {
++       "path": "/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/qa-reference-identity-5jLyOM/evidence/frame.png",
++       "sha256": "68e4f5e20f674b60deddf95797ef14e1ce7414fd77f9eb04d82a25ca811ad193",
++     },
++   ],
++   "replayObserved": false,
++   "scope": "FROZEN_NATURAL_OBSERVATIONS_ONLY",
++   "tracePath": "trace.json",
++   "traceSha256": "eed684beaaa438f342bbc2feeb813a57d8615a5af6761218fd89caca10688acc",
+  }
+
+ ❯ tests/unit/qa-observation-directory.test.ts:34:241
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  17:22:58
+   Duration  758ms (transform 307ms, setup 0ms, import 654ms, tests 15ms, environment 0ms)
+

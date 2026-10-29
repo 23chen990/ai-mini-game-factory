@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "scope": "CONFIGURED_MCP_TRANSPORT_NO_MODEL",
+  "modelCalls": 0,
+  "configuredExecutable": "/Users/kker/.npm-global/bin/rea",
+  "environmentKeys": [
+    "HOME",
+    "LANG",
+    "LC_ALL",
+    "LC_CTYPE",
+    "LOGNAME",
+    "NO_COLOR",
+    "PATH",
+    "SHELL",
+    "TERM",
+    "TMPDIR",
+    "USER"
+  ],
+  "tool": "capture_browser_scenario",
+  "fixtureOnly": true,
+  "actualAgentSessionTested": false,
+  "responseBytes": 26276
+}

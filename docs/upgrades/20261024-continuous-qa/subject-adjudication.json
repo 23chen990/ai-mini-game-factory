@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "subjectResultSha256": "df2a73c7402c34a81f760bf1e294a254d09d76d7c36643c7189a85cce10b1e7b",
+  "subjectOutcome": {
+    "PASS": 0,
+    "FAIL": 0,
+    "UNOBSERVED": 12
+  },
+  "subjectStatus": "BLOCKED",
+  "primarySampleAccepted": false,
+  "coverage": "Only1FPS overview sheets inspected by subject; no dense windows or input-to-effect correlation. No confirmed defect discovery.",
+  "preparation": "~30min until controller stopped plan preparation; no plan/runner produced; all19 reference sheets viewed. Package-name resolution error was resolved but runner still absent.",
+  "reviewDurationMsReported": 908000,
+  "reviewLimitMs": 600000,
+  "reviewLimitHonored": false,
+  "reviewAdministrativeStops": 1,
+  "preparationAdministrativeStops": 1,
+  "controllerAssistance": [
+    "Controller authored sealed capture plan/runner",
+    "Controller performed eight normal-input sessions and offline overview extraction",
+    "No in-game hints supplied to subject; no game source/state hooks used"
+  ],
+  "claimAdjudication": [
+    {
+      "id": "390-spike-warning-visible",
+      "semantic": "warning UI visible",
+      "windowReliability": "incorrect localization: cited390steady18–24sec and390slow18–24sec do not bind warning as claimed; overview shows it elsewhere. Needs exact video check, not defect evidence."
+    },
+    {
+      "id": "390-failure-retry-prompt-visible",
+      "semantic": "failure overlay visible",
+      "windowReliability": "wrong cited22sec:390slow raw overview shows terminal near14sec and input trace replay14554ms;22sec is renewed play."
+    },
+    {
+      "id": "390-completion-panel-visible",
+      "semantic": "completion overlay visible",
+      "windowReliability": "wrong cited24–26sec:steady trace replays18382/34936ms;overview completion is near18/35sec, not24–26."
+    },
+    {
+      "id": "1100-completion-panel-visible",
+      "semantic": "completion overlay visible",
+      "windowReliability": "wrong cited24–26sec:steady trace replays19486/37454ms;overview result near19/37sec. No exact timing accepted from this report."
+    }
+  ],
+  "defectFalsePositives": 0,
+  "defectFalsePositiveRate": null,
+  "rateReason": "Subject made no defect FAIL claim; positive-UI time mislocalizations are report-quality errors, not game false-positive counts. No complete gold labels exist.",
+  "controllerNonBlindOverviewReview": "Root independently inspected all8 overviews. This does not replace a blind dense video review or close12case scope.",
+  "postCaptureReview": "One separate fresh independent video reviewer on existing data; does not overwrite or upgrade primary subject failure. No new gameplay permitted."
+}

@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import { ComparisonEvidenceFileSchema, ReferenceComparisonSpecSchema, ReferenceDifferenceSchema } from './reference-comparison.js';
+import { QaIssueSchema } from './qa-issue.js';
 
 const Text = z.string().trim().min(1);
 const Sha256 = z.string().regex(/^[a-f0-9]{64}$/iu);
@@ -16,6 +18,8 @@ export const ReferenceBehaviorCheckSchema = z.object({
   spatialRelationship: Text,
   visibleFeedback: z.object({ anchor: Text, eventOrder: z.array(Text).min(2) }).strict(),
   viewport: z.object({ width: z.number().int().positive(), height: z.number().int().positive() }).strict(),
+  /** Missing on legacy contracts: readable, but not sufficient for comparison acceptance. */
+  comparison: ReferenceComparisonSpecSchema.optional(),
 }).strict();
 export type ReferenceBehaviorCheck = z.infer<typeof ReferenceBehaviorCheckSchema>;
 
@@ -37,10 +41,11 @@ export const ReferenceFidelityContractSchema = z.object({
     immediateSeconds: z.number().positive().max(10),
     microGoalMinSeconds: z.number().positive().max(600),
     microGoalMaxSeconds: z.number().positive().max(600),
-  }).strict(),
+  }).strict().nullable(),
   status: z.enum(['READY', 'BLOCKED']),
   blockers: z.array(Text),
 }).strict().superRefine((value, context) => {
+  if (value.feedbackTimingBands === null && value.status === 'READY') context.addIssue({ code: 'custom', path: ['feedbackTimingBands'], message: 'unmeasured timing must remain BLOCKED, not invented' });
   if (value.status === 'READY' && value.blockers.length > 0) context.addIssue({ code: 'custom', path: ['status'], message: 'READY fidelity contracts cannot retain blockers' });
   if (value.status === 'BLOCKED' && value.blockers.length === 0) context.addIssue({ code: 'custom', path: ['blockers'], message: 'BLOCKED fidelity contracts require blockers' });
 });
@@ -48,27 +53,46 @@ export const ReferenceFidelityContractSchema = z.object({
 export type ReferenceFidelityContract = z.infer<typeof ReferenceFidelityContractSchema>;
 
 const EvidenceFile = z.object({ path: Text, sha256: Sha256 }).strict();
+export const ReferenceDiscoverySchema = QaIssueSchema.extend({
+  rootCause: QaIssueSchema.shape.rootCause.unwrap(),
+  hypothesis: Text,
+  objectType: Text,
+  stateBranch: Text,
+  viewport: ReferenceBehaviorCheckSchema.shape.viewport,
+  screenshots: z.array(EvidenceFile).min(1),
+  trace: EvidenceFile,
+}).strict();
+export const ReferenceReviewCaseSchema = z.object({
+  checkId: Text,
+  objectType: Text,
+  stateBranch: Text,
+  viewport: ReferenceBehaviorCheckSchema.shape.viewport,
+  passed: z.boolean(),
+  perceptualPassed: z.boolean(),
+  observedStateChange: Text,
+  observedFeedback: Text,
+  rootCause: QaIssueSchema.shape.rootCause,
+  hypothesis: QaIssueSchema.shape.hypothesis,
+  screenshots: z.array(EvidenceFile).min(1),
+  trace: EvidenceFile,
+}).strict();
 /** Authored by an independent QA reviewer after inspecting natural input and pixels. */
 export const ReferenceFidelityReviewSchema = z.object({
   schemaVersion: z.literal(1),
   targetRunId: Text,
   workspace: Text,
+  reviewProtocol: z.literal('reference-comparison-v1').optional(),
   contractHash: Sha256,
   buildHash: Sha256,
   reviewer: z.enum(['QAAgent', 'HumanReviewer']),
   authorIndependent: z.literal(true),
-  cases: z.array(z.object({
-    checkId: Text,
-    objectType: Text,
-    stateBranch: Text,
-    viewport: ReferenceBehaviorCheckSchema.shape.viewport,
-    passed: z.boolean(),
-    perceptualPassed: z.boolean(),
-    observedStateChange: Text,
-    observedFeedback: Text,
-    screenshots: z.array(EvidenceFile).min(1),
-    trace: EvidenceFile,
-  }).strict()),
+  /** A missing capture pair is explicit UNKNOWN, never invented evidence paths. */
+  comparison: z.object({ reference: ComparisonEvidenceFileSchema, candidate: ComparisonEvidenceFileSchema }).strict().nullable().optional(),
+  /** Not restricted to the requirements Builder was given. */
+  discoveries: z.array(ReferenceDiscoverySchema).default([]),
+  cases: z.array(ReferenceReviewCaseSchema),
+  /** Explicit current-build closure evidence for earlier out-of-contract gaps. */
+  retests: z.array(ReferenceReviewCaseSchema).default([]),
 }).strict();
 
 export const ReferenceFidelityGateSchema = z.object({
@@ -80,6 +104,7 @@ export const ReferenceFidelityGateSchema = z.object({
   blockers: z.array(Text),
   requiredCheckIds: z.array(Text),
   checkedIds: z.array(Text),
+  differences: z.array(ReferenceDifferenceSchema).optional(),
 }).strict().superRefine((gate, ctx) => {
   if (gate.passed !== (gate.blockers.length === 0)) ctx.addIssue({ code: 'custom', message: 'fidelity gate status must match its blockers' });
 });

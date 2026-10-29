@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "sourceContract": {
+    "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/qa-recovery-20260907/active-slice-contract.json",
+    "sha256": "0513fec6b10a2ad2cd778f6fb537a58fd5bbca2510da4d850e3059beccb9f9b2",
+    "oldBuildBinding": {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/dist/index.html",
+      "sha256": "6bb349f3a8fc89c0edb59fb0d88c8e02fa6c9e6472db03a57d952bf4dc5899f1"
+    }
+  },
+  "oracleSources": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/incoming/_2026-09-06-135548-3781e4dcd3d2.mp4",
+      "sha256": "3781e4dcd3d21094f186cf442b3ee30cddfbb2fbe68d87c5c7470a2c742bf75a",
+      "locator": "0–9s; verify pixels against fresh capture"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/qa-recovery-20260907/history-extract.json",
+      "sha256": "6254c39cb043c7a25a48e7a5a2947bae2309845e9d5d716fb31c526ae6b31865",
+      "locator": "turn 01a07716-2630-7a31-a476-ec28ca287927 user text: 台面也不能是悬空的"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/qa-recovery-20260907/history-extract.json",
+      "sha256": "6254c39cb043c7a25a48e7a5a2947bae2309845e9d5d716fb31c526ae6b31865",
+      "locator": "turn 01a076ee-4519-7240-a684-cabe37a38bd8 explicit user correction"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/incoming/_2026-09-06-135548-3781e4dcd3d2.mp4",
+      "sha256": "3781e4dcd3d21094f186cf442b3ee30cddfbb2fbe68d87c5c7470a2c742bf75a",
+      "locator": "10–17s; observed relation, not a coordinate template"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/artifacts/gameplay-retro-missed-topology-v2.json",
+      "sha256": "5b09ebcb5d6c90155273b54403034cf387cc43059cd783ccc9f4e6e4642cdc20",
+      "locator": "corrections[0]; supersedes rootMistakes TOPOLOGY-001 conflicting wording"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/incoming/_2026-09-06-135548-3781e4dcd3d2.mp4",
+      "sha256": "3781e4dcd3d21094f186cf442b3ee30cddfbb2fbe68d87c5c7470a2c742bf75a",
+      "locator": "18–24s hazard lesson"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/incoming/_2026-09-06-135548-3781e4dcd3d2.mp4",
+      "sha256": "3781e4dcd3d21094f186cf442b3ee30cddfbb2fbe68d87c5c7470a2c742bf75a",
+      "locator": "24–36.49s finish approach and settlement"
+    }
+  ],
+  "currentCandidateLabels": "UNAVAILABLE; no manufactured gold defect set",
+  "rubricFrozenBeforeExecution": true,
+  "knownAnswersShared": false
+}

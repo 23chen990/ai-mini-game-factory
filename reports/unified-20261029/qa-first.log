@@ -1,0 +1,1 @@
+{"phase":"qa-first","metrics":{"provider":"codex-cli","model":"account-default","calls":1,"usage":{"inputTokens":23283,"outputTokens":4042,"totalTokens":27325},"executionId":"6b74ddb8-4f3c-4e0c-8fd8-fc6e04d94c3d"},"discoveries":2,"validation":["repair:natural-evidence-invalid:danger-recovery","repair:branch-mismatch:danger-recovery","repair:branch-mismatch:replay"]}

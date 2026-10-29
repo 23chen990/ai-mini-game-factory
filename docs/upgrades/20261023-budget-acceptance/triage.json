@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "shared-factory (no generated game changed)",
+  "workspace": "/Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市",
+  "baseSha": "b3bd04275259db9c1f581ab263cb73b679f3c9df",
+  "classification": "run-cost-accounting-and-execution-control",
+  "scope": "Codex CLI boundary, shared run accounting, controlled subprocesses only",
+  "evidence": ["baseline-lint.log: two unused-parameter errors", "baseline-codex-tests.log: 18 passed", "baseline-full-regression.log: 179 files passed, 11 files failed; browser environment failures require classification", "../20261023/historical/research-provider-failure.json: observed token lower bound 1229593 against planned 200000; not a dollar bill"],
+  "observations": ["Invocation guard is not connected to maxAgentTokens", "Timeout error is retryable; failed usage receipts are absent from run cost state", "Successful retry returns only final-attempt usage", "RunStore has atomic writes but no execution reservation"],
+  "hypotheses": ["A durable run-owned execution receipt and exclusive launch lease can prevent known-usage budget reuse across providers, stages, restarts and concurrent clients", "Delayed or absent usage cannot be bounded by a local observed-token stop; uncertain calls must block further budgeted launches"],
+  "unknowns": ["Remote in-flight usage beyond last completed-turn event", "Installed CLI 0.147.0 resume telemetry semantics have not been proven by a paid experiment"],
+  "acceptance": ["Real controlled Node processes stop on reported threshold, timeout, cancellation and invalid telemetry without budgeted retry", "Preserve all valid observed usage before malformed events and failure", "Aggregate retry usage and return it through success/error metrics", "Persist unique execution evidence; no overwriting prior calls", "Shared remaining allowance includes historical stage usage and unacknowledged receipts exactly once", "Independent concurrent clients cannot spend one run allowance; unfinished/uncertain executions block continuation", "Lint, typecheck and full regression are reported honestly"],
+  "changeReview": {
+    "case": "Historical Slice research overspend evidence plus exact PR74 integration paths above; controlled regressions must demonstrate each local defect before implementation.",
+    "causality": "Static paths establish missing propagation/reconciliation. Controlled processes distinguish them from vendor delay, missing browser binaries or speculative model behavior. No claim that local code caused all historical spend.",
+    "alternatives": "Keep invocation-only guard: cheap but fails run-wide requirements. Passing a remainder alone: smaller but races and reuses allowance after failed/resumed calls. Use one filesystem lease and execution receipts at the existing provider boundary; no additional Agent, Gate, service or production dependency. Stage evidence IDs deduplicate accounting. Preserve existing model and stage graph.",
+    "experiment": "Before/after identical credential-free Node fixtures, zero paid model calls. Require token totals, bounded process termination, launch counts, retained receipts, resume/concurrency denial and exact-once accounting. Retain only if tests pass and full-suite regressions are unchanged or explained; otherwise revise/revert patch, never acceptance. Budget checks limit reported usage and further launches, not actual fees."
+  }
+}

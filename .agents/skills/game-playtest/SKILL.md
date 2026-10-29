@@ -20,6 +20,12 @@ source, or pass a run based only on screenshots.
   QA）、`artifacts/perceptual-qa-report.json`（感知/可读性 QA）、`logs/console.log`、
   `screenshots/gameplay.png`。三个报告必须记录各自的证据来源，禁止用一个报告的状态覆盖另一个报告。
 
+## Zero-model browser preflight (required before an independent blind QA invocation)
+
+Run `pnpm factory qa-preflight` **on the same host and with the same permissions as the QA capture runner** before spending any model tokens on a new QA evaluation. This actually launches Chromium and WebKit and proves DOM click → visible change → screenshot in mobile and desktop viewports. `factory doctor` with `FACTORY_MODE=codex-account` also performs this test; a Playwright version number alone is never sufficient. A failed preflight is an **infrastructure blocker**, not a missed gameplay defect. Stop before invoking an LLM, save the preflight report and fix the browser/tool installation or permissions locally.
+
+**Caveat:** This only verifies browser capability in the runner environment, **not** that a Codex read-only reviewer can itself open a browser. If the reviewer has no browser tools, the trusted host-side Playwright runner must collect actual normal-input video, screenshots and timestamps first; pass those frozen artifacts to a separate blind QA reviewer. Do not tell the reviewer the injected fault or have the controller supply the verdict. If there are no actual candidate observations, record UNOBSERVED/BLOCKED rather than burning model tokens to simulate an inaccessible browser. A smoke test does not prove real gameplay completion or autonomous QA.
+
 ## Procedure
 
 1. Start preview on localhost and launch headless Chromium at a fixed viewport.
@@ -48,10 +54,27 @@ source, or pass a run based only on screenshots.
    `BLOCKED` and route it back to Blueprint/Builder; level completion alone cannot waive it.
 6. Always close browser and preview in cleanup. Validate all report JSON before handoff.
 
+## Temporal evidence and bounded natural input
+
+- For an **absence claim** (e.g., missing reward, cue, animation, or collision feedback), a single still screenshot or a missed sampling instant is insufficient. First confirm that normal player input actually triggered the relevant state, then inspect the continuous recording or timestamped frame sequence across the expected response window, including both world-local and HUD overlays. Attempt an independent normal-input reproduction when practical. Bind the claim to input time, observed trigger, viewport, frame range and contradictory frames. If coverage is incomplete or the trigger was not observed, report `UNOBSERVED`/unknown, **not FAIL or PASS**. Never turn a later screenshot into proof that a transient event never occurred.
+- Plan natural input **before** the session: compactly execute the intended player actions using real Playwright mouse/touch/keyboard APIs, collect input timestamps and continuous video, and review the evidence afterward. Avoid long Agent/tool think-time gaps between gameplay actions; such idle intervals can cause legitimate failures unrelated to the mechanism under test. Compare intended actions and feedback, not arbitrary fixed tap cadence. Record timing gaps, early falls, skipped branches and elapsed wall time. If the frozen deadline is exceeded or a required journey is not observed, keep the relevant checks BLOCKED instead of treating an exploratory run as accepted.
+- Keep independent adjudication separate from the subject's narrative. An independently verified counterexample must invalidate the precise negative claim; do not silently replace the failed claim with a different hypothesis or promote that case to PASS. Preserve the raw claim, counterexample and original timestamps for Agent Eval.
+
 ## Acceptance
 
-For a reference preview, use the exact `behaviorChecks` in `reference-fidelity-contract.json`. Review each object's
+For a reference preview, first observe one complete reference core slice independently of the candidate's expected
+results. Prioritize the relationships producing the loop: target grouping and spacing relative to movement/reach,
+reward continuity, and the order of pressure and recovery. Compare the same player intent (for example, cut the
+next group and land safely), not merely identical tap intervals. Preserve counterexamples; different art or layout
+alone is not a failure. Reuse existing source-bound research and check known gaps/deferrals against the current build;
+neither discard them nor promote stale evidence to a current defect.
+
+Then use the exact `behaviorChecks` in `reference-fidelity-contract.json`. Review each object's
 declared state at its declared viewport, including causal spatial relationships, feedback attachment and event order.
+Record consequential reference observations outside those checks in the existing comparison capture's `observations`
+with their own check ids, measured samples and screenshot bindings. They trigger contract review, not an automatic
+new gameplay requirement or permission to copy a level. Do not invent a numeric sample when a claim is unmeasured;
+retain that evidence gap. The comparison gate must not silently pass by ignoring an unplanned observation.
 Write `reference-fidelity-review.json` using `ReferenceFidelityReviewSchema` from `src/schemas/reference-fidelity.ts`.
 Record actual observations, the normalized contract hash, current build hash, trace and screenshot file hashes.
 Each natural trace uses `NaturalFlowEvidenceSchema`; its transition name identifies the corresponding check id.

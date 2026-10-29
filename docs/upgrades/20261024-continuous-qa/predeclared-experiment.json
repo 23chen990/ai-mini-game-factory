@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "proposal": "Reuse existing QA role and positive scope, replace inter-tool REPL with predeclared compact normal-input recorder. No Agent/Gate/model/game generation added.",
+  "observedFailure": {
+    "case": "blind-qa-v2 / c4cc3c4",
+    "expected": "Independent core comparison with ordinary inputs inside600000ms",
+    "actual": "first/second portrait input25703/68697ms; first/second desktop35142/57018ms; six late branches unobserved; two transient absence claims refuted by raw video",
+    "evidence": "../20261023-budget-acceptance/blind-adjudication.json"
+  },
+  "causalAssessment": {
+    "observation": "Input records show long inter-tool idle gaps; independently reviewed videos show reward frames missed by subject.",
+    "hypothesis": "Compact unattended Playwright sequences remove agent think-time from active game timing; temporal review reduces absence-claim errors.",
+    "notEstablished": "This does not prove other product behavior is correct, guarantee reaching terminal, or demonstrate autonomous policy quality."
+  },
+  "alternatives": [
+    "Keep REPL: no implementation work but repeated model/tool latency contaminates natural play.",
+    "Smallest correction chosen: one case-local predeclared recorder and source-bound positive packet. Existing game/artifacts unchanged.",
+    "Adding new gameplay agents, training, or regenerated game is unnecessary and not proposed."
+  ],
+  "experiment": {
+    "before": "Preserve v2 outcome and timing; never rewrite it.",
+    "after": "Same c4 build/reference/12-case rubric; fresh label-unexposed subject; freeze packet+plan+runner before candidate navigation. Max4sessions/viewport; acquisition hard600000ms, reporting separately600000ms.",
+    "measure": [
+      "actual input gaps",
+      "reached objects/states",
+      "all claims independently video-adjudicated",
+      "failure/retry and terminal/replay recorded separately",
+      "actual time, hints, model costs/unknowns"
+    ],
+    "retain": "Retain compact execution only if watchdog honored and inputs match frozen plan. Scope pass still requires12/12 and complete journey.",
+    "revertOrBlocked": "Any omitted branch stays UNOBSERVED; unreviewable claims unknown; no new run to chase pass after deadline. Incomplete comparison remains BLOCKED.",
+    "costLimit": "No paid Factory model calls; one fresh desktop QA subagent whose tokens/price are not exposed. No absolute billing claim."
+  },
+  "implementationNote": "Independent subject reviewed19 reference sheets but produced no plan/runner before administrative stop (~33min preparation). Controller authored fixed ordinary-input acquisition policies, sealed before candidate navigation. Same subject remains label-unexposed for independent video judgment; this is controller-assisted acquisition, not autonomous play-policy success."
+}

@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "case": "20261027032048-reference-9094c978",
+  "targetGame": "纸片风车",
+  "workspace": "runs/20261027032048-reference-9094c978/workspace/game",
+  "classification": "factory-research-input-and-budget",
+  "scope": "shared Factory Codex Research provider and initial media selection; no generated game files",
+  "expected": "One evidence-bound Research draft with visually inspected source and observed usage within the 120000-token invocation allowance",
+  "actual": "No accepted draft. The single completed turn reported 294444 tokens and the receipt remained uncertain; the CLI invocation did not include --image and the event log contains no image-view call.",
+  "observedUsage": {
+    "inputTokens": 276724,
+    "outputTokens": 17720,
+    "totalTokens": 294444,
+    "invocationLimitTokens": 120000,
+    "receiptStatus": "uncertain",
+    "providerMonetaryCost": null
+  },
+  "evidenceHashes": {
+    "receiptSha256": "cd5f71c0c369bd5a33834d1ba297b50583d53618eda4a193f23b0de739aec7fa",
+    "mediaPlanSha256": "1e1f11d4c9b03a2ba11c5c2ca6cf4584e3c687db661a56b03582b07f11133497"
+  },
+  "evidence": [
+    "runs/20261027032048-reference-9094c978/artifacts/reference-intake-media-plan.json",
+    "runs/20261027032048-reference-9094c978/logs/codex/executions/1a89aa2a-5c07-4277-964b-79e1ebbd9da1/receipt.json",
+    "runs/20261027032048-reference-9094c978/logs/codex/executions/1a89aa2a-5c07-4277-964b-79e1ebbd9da1/REFERENCE_DEEP_RESEARCH.attempt-1.events.json"
+  ],
+  "observations": [
+    "Seven verified images were copied into the research sandbox but were not passed as Codex CLI image arguments.",
+    "The model opened the complete 120060-byte frame manifest as text.",
+    "The rejected response marked input causality, failure/recovery and replay unobserved."
+  ],
+  "causalHypotheses": [
+    "Missing CLI image attachment explains the lack of source-bound visual observations; an explicit image-view tool call was also absent.",
+    "Image count, manifest text, output schema and inherited Codex context may each contribute to token usage; the current receipt does not isolate their shares."
+  ],
+  "unknowns": [
+    "Actual provider monetary charge is unavailable; the local zero-rate card is not a billing receipt.",
+    "A smaller, correctly attached image sample has not yet completed a real paid Research call."
+  ],
+  "options": {
+    "unchanged": "Zero code cost but repeats an unobserved-image and over-budget failure risk.",
+    "smallestLocalCorrection": "Attach only the already-verified sample via --image and lower the initial image admission count; no new Agent, Gate, model or schema.",
+    "broaderChange": "New orchestration or evaluation layers add token, time, maintenance and coordination costs without evidence of benefit for this case."
+  },
+  "experiment": {
+    "baseline": "Same source: 7 copied images, zero CLI image arguments, 294444 observed tokens, no accepted draft.",
+    "after": "On the same source, assert the exact hash-bound sample reaches CLI image arguments; only after monetary accounting is available, run one fresh authorized Research attempt.",
+    "success": "Attached image paths equal the media plan, no foreign path can attach, the model cites actually viewed evidence or honestly blocks unknown branches, observed usage stays within the authorized allowance, and actual monetary spend is recorded.",
+    "limits": "No extra paid call while the actual monetary cost remains unavailable; no reuse or clearing of an uncertain receipt.",
+    "decision": "Retain the local correction only if regression tests pass; treat product Research as unverified until the real after-run meets every success condition."
+  },
+  "offlineAfter": {
+    "sameSourceFrameManifest": "runs/20261027032048-reference-9094c978/artifacts/reference-frame-manifest.json",
+    "selectedMediaCount": 4,
+    "selectedContactSheets": [
+      0
+    ],
+    "selectedDetailTimestampsMs": [
+      0,
+      18242,
+      36358
+    ],
+    "liveModelResult": "UNVERIFIED"
+  },
+  "acceptanceCriteria": [
+    "Verified selected images are actually passed to Codex CLI as --image arguments.",
+    "An unlisted, foreign or tampered image is rejected before model launch.",
+    "The initial visual admission set is smaller than the failed seven-image call and all omitted coverage remains explicitly unknown.",
+    "Existing failed and uncertain run receipts remain untouched."
+  ],
+  "workspaceLocator": "run-relative (the original historical receipt is unchanged)"
+}

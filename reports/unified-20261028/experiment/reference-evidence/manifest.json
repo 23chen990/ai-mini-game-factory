@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "小李飞刀 · 海岸试炼（独立实验副本）",
+  "workspace": "/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/runs/unified-agent-repair-20261028/workspace/game",
+  "directories": {
+    "incoming": "reference-evidence/incoming",
+    "verified": "reference-evidence/verified",
+    "excluded": "reference-evidence/excluded"
+  },
+  "entries": [
+    {
+      "id": "slice-reference",
+      "sourcePath": "/Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市/runs/20261026104326-reference-9094c978/reference-evidence/verified/_2026-09-06-135548-3781e4dcd3d2-3781e4dcd3d2-3781e4dcd3d2.mp4",
+      "storedPath": "reference-evidence/verified/_2026-09-06-135548-3781e4dcd3d2-3781e4dcd3d2-3781e4dcd3d2-3781e4dcd3d2.mp4",
+      "purpose": "gameplay-reference",
+      "sha256": "3781e4dcd3d21094f186cf442b3ee30cddfbb2fbe68d87c5c7470a2c742bf75a",
+      "targetGame": "小李飞刀 · 海岸试炼（独立实验副本）",
+      "workspace": "/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/runs/unified-agent-repair-20261028/workspace/game",
+      "identityStatus": "VERIFIED_TARGET",
+      "reviewStatus": "VERIFIED",
+      "usableAsEvidence": true,
+      "notes": "Identity reviewed by Controller identity review, not QA: Exact historical Slice Master recording hash from mobile-slice-adaptation lineage; contact-000 pixels inspected: jumping blade, fruit/support course. This evidence is a behavioral reference only, not code/assets or proof of hidden inputs."
+    }
+  ]
+}

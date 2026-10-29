@@ -1,0 +1,2 @@
+$ tsx scripts/build.ts
+built self-contained dist/index.html (2860499 bytes)

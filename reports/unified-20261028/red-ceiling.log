@@ -1,0 +1,37 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/repair-policy.test.ts (7 tests | 1 failed) 11ms
+   × has no implicit repair ceiling when neither operator ceiling is configured 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/repair-policy.test.ts > has no implicit repair ceiling when neither operator ceiling is configured
+AssertionError: expected { allowed: false, …(1) } to deeply equal { allowed: true, …(1) }
+
+- Expected
++ Received
+
+  {
+-   "allowed": true,
+-   "reason": "distinct-evidence-backed-hypothesis",
++   "allowed": false,
++   "reason": "configured-fix-attempt-ceiling",
+  }
+
+ ❯ tests/unit/repair-policy.test.ts:105:87
+    103|   const report = qaReport('new-counterexample');
+    104|   const hypothesis = buildRepairHypothesis(report, 'artifacts/qa-repor…
+    105|   expect(decideRepairAttempt({attempt:6,currentBuildHash:'a'.repeat(64…
+       |                                                                                       ^
+    106| });
+    107|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 passed (7)
+   Start at  17:15:15
+   Duration  184ms (transform 31ms, setup 0ms, import 71ms, tests 11ms, environment 0ms)
+

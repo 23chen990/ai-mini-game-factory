@@ -1,0 +1,25 @@
+{
+  "reviewType": "independent-read-only-code-review",
+  "reviewer": "audit_eval_existing",
+  "originalUnknownSeedFieldFinding": "WITHDRAWN: schema.parse return was not assigned; exact original parsed object is scanned; regression passes",
+  "acceptedFindings": [
+    {
+      "id": "bare-agent-results",
+      "disposition": "fixed-test-first",
+      "tests": "tests/integration/factory-agent-eval-cli.test.ts"
+    },
+    {
+      "id": "all-deterministic-score",
+      "disposition": "CONTROL_ONLY plus explicit executionCoverage; test-first"
+    },
+    {
+      "id": "blocked-repair-effort",
+      "disposition": "retain repairAttempts workload totals, exclude quality average; test-first"
+    }
+  ],
+  "remainingLimits": [
+    "reviewer identity, sourceRevision and label exposure remain independently reviewed attestations, not cryptographic proof",
+    "No eligible completed holdout or full production repair chain",
+    "QA autonomous mechanism diagnosis not demonstrated"
+  ]
+}

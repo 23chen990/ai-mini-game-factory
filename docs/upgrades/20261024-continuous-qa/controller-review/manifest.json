@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "items": [
+    {
+      "name": "input390",
+      "video": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-steady/page@78a7bbabaf1848ba6fdd308c478815c8.webm",
+      "videoSha256": "805703deb06fd2092ce2a6aa8b9ee4b9e3be3fba8100b3f1fd600afcb2b3dfc7",
+      "startSeconds": 1.0,
+      "durationSeconds": 2.4,
+      "sampleFps": 12,
+      "overview": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/controller-review/input390.jpg",
+      "command": [
+        "/Users/kker/Library/Caches/ms-playwright/ffmpeg-1011/ffmpeg-mac",
+        "-ss",
+        "1.0",
+        "-i",
+        "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-steady/page@78a7bbabaf1848ba6fdd308c478815c8.webm",
+        "-t",
+        "2.4",
+        "-r",
+        "12",
+        "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/controller-review/input390/frame-%03d.png"
+      ],
+      "timestampLimit": "ffmpeg seek/sample approximate video timestamps, not exact simulation clock; actual input log bound separately"
+    },
+    {
+      "name": "input1100",
+      "video": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-steady/page@3150f9369372beb62466664eef9a2c60.webm",
+      "videoSha256": "3b3d0c3ec43cbf7047e35064969ae54bfcdd4873460fd5faaa61f45ff47c2815",
+      "startSeconds": 1.0,
+      "durationSeconds": 2.4,
+      "sampleFps": 12,
+      "overview": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/controller-review/input1100.jpg",
+      "command": [
+        "/Users/kker/Library/Caches/ms-playwright/ffmpeg-1011/ffmpeg-mac",
+        "-ss",
+        "1.0",
+        "-i",
+        "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-steady/page@3150f9369372beb62466664eef9a2c60.webm",
+        "-t",
+        "2.4",
+        "-r",
+        "12",
+        "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/controller-review/input1100/frame-%03d.png"
+      ],
+      "timestampLimit": "ffmpeg seek/sample approximate video timestamps, not exact simulation clock; actual input log bound separately"
+    },
+    {
+      "name": "failure390",
+      "video": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-slow/page@952df565aced6606a0f08d35ee6d4a74.webm",
+      "videoSha256": "63d799ff089ff4eabf0cde9935138bc40c798bc7eb2363ca79e2310fcfd46f5b",
+      "startSeconds": 12.3,
+      "durationSeconds": 3.6,
+      "sampleFps": 12,
+      "overview": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/controller-review/failure390.jpg",
+      "command": [
+        "/Users/kker/Library/Caches/ms-playwright/ffmpeg-1011/ffmpeg-mac",
+        "-ss",
+        "12.3",
+        "-i",
+        "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-slow/page@952df565aced6606a0f08d35ee6d4a74.webm",
+        "-t",
+        "3.6",
+        "-r",
+        "12",
+        "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/controller-review/failure390/frame-%03d.png"
+      ],
+      "timestampLimit": "ffmpeg seek/sample approximate video timestamps, not exact simulation clock; actual input log bound separately"
+    },
+    {
+      "name": "finish390",
+      "video": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-steady/page@78a7bbabaf1848ba6fdd308c478815c8.webm",
+      "videoSha256": "805703deb06fd2092ce2a6aa8b9ee4b9e3be3fba8100b3f1fd600afcb2b3dfc7",
+      "startSeconds": 16.5,
+      "durationSeconds": 3.6,
+      "sampleFps": 12,
+      "overview": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/controller-review/finish390.jpg",
+      "command": [
+        "/Users/kker/Library/Caches/ms-playwright/ffmpeg-1011/ffmpeg-mac",
+        "-ss",
+        "16.5",
+        "-i",
+        "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-steady/page@78a7bbabaf1848ba6fdd308c478815c8.webm",
+        "-t",
+        "3.6",
+        "-r",
+        "12",
+        "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/controller-review/finish390/frame-%03d.png"
+      ],
+      "timestampLimit": "ffmpeg seek/sample approximate video timestamps, not exact simulation clock; actual input log bound separately"
+    },
+    {
+      "name": "finish1100",
+      "video": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-steady/page@3150f9369372beb62466664eef9a2c60.webm",
+      "videoSha256": "3b3d0c3ec43cbf7047e35064969ae54bfcdd4873460fd5faaa61f45ff47c2815",
+      "startSeconds": 17.5,
+      "durationSeconds": 3.6,
+      "sampleFps": 12,
+      "overview": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/controller-review/finish1100.jpg",
+      "command": [
+        "/Users/kker/Library/Caches/ms-playwright/ffmpeg-1011/ffmpeg-mac",
+        "-ss",
+        "17.5",
+        "-i",
+        "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-steady/page@3150f9369372beb62466664eef9a2c60.webm",
+        "-t",
+        "3.6",
+        "-r",
+        "12",
+        "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/controller-review/finish1100/frame-%03d.png"
+      ],
+      "timestampLimit": "ffmpeg seek/sample approximate video timestamps, not exact simulation clock; actual input log bound separately"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/codex-account-provider.test.ts (18 tests | 1 failed) 88ms
+   × does not send the display-only account-default sentinel as a real model id 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/codex-account-provider.test.ts > does not send the display-only account-default sentinel as a real model id
+AssertionError: expected 'account-default' to be undefined
+
+- Expected:
+undefined
+
++ Received:
+"account-default"
+
+ ❯ tests/unit/codex-account-provider.test.ts:418:36
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 74 passed (75)
+   Start at  16:52:44
+   Duration  1.40s (transform 966ms, setup 0ms, import 1.99s, tests 428ms, environment 0ms)
+

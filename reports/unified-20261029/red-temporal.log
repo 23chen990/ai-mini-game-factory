@@ -1,0 +1,24 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/temporal-observations.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/temporal-observations.test.ts [ tests/unit/temporal-observations.test.ts ]
+Error: Cannot find module '../../src/qa/temporal-observations.js' imported from /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/tests/unit/temporal-observations.test.ts
+ ❯ tests/unit/temporal-observations.test.ts:2:1
+      1| import { expect, it } from 'vitest';
+      2| import { temporalWindows } from '../../src/qa/temporal-observations.js…
+       | ^
+      3| it('selects bounded chronological samples around early action, middle …
+      4|  const windows = temporalWindows(25_520);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  17:01:57
+   Duration  119ms (transform 12ms, setup 0ms, import 0ms, tests 0ms, environment 0ms)
+

@@ -1,5 +1,7 @@
+import { buildPipelinePlan } from './pipeline-plan.js';
 import {
   RequestRouteSchema,
+  StageNameSchema,
   RequestRouterInputSchema,
   ReviewEscalationSchema,
   type OptionalReviewStage,
@@ -12,16 +14,7 @@ import {
 } from '../schemas/index.js';
 import { decideFeedbackRepairRoute } from './feedback-routing.js';
 
-const NEW_GAME_STAGES: StageName[] = [
-  'REFERENCE_DEEP_RESEARCH',
-  'REFERENCE_MECHANIC_LOCK',
-  'WAITING_FOR_REFERENCE_APPROVAL',
-  'BLUEPRINT',
-  'CORE_SPEC_FROZEN',
-  'FULL_BUILD',
-  'QA',
-  'COMPLETED',
-];
+const NEW_GAME_STAGES = buildPipelinePlan({ designMode: 'reference_reskin', productionLine: 'pending-review' }).mandatoryStages.map((stage) => StageNameSchema.parse(stage));
 
 const REVISION_STAGES: Record<Exclude<RequestType, 'NEW_GAME'>, StageName[]> = {
   GAMEPLAY_REVISION: ['FULL_BUILD', 'QA'],

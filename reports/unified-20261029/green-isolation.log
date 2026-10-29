@@ -1,0 +1,9 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+
+ Test Files  4 passed (4)
+      Tests  77 passed (77)
+   Start at  16:55:18
+   Duration  1.51s (transform 994ms, setup 0ms, import 1.95s, tests 432ms, environment 0ms)
+

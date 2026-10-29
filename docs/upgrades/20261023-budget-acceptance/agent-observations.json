@@ -1,0 +1,255 @@
+[
+  {
+    "caseId": "slice-research-provider",
+    "binding": {
+      "targetRunId": "mobile-slice-adaptation-20260830",
+      "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+      "contractHash": null,
+      "buildHash": "c4cc3c427fc52c9f91f6229c9aea0ae7cfe8220341be521df6c807626d101aae"
+    },
+    "sourceRevision": "3cd613dc509a24f818353cc7abd13075e7fb9199",
+    "status": "BLOCKED",
+    "blocker": "A1/A2超时，B1预算终止，无完成分析；token记录为下界不可当完整成本。",
+    "evidenceMode": "historical-agent",
+    "subject": "ReferenceResearchAgent-20261019",
+    "reviewer": "factory-audit-20261023",
+    "exposedToLabels": false,
+    "inputEvidence": [
+      {
+        "path": "docs/upgrades/20261023/historical/research-provider-failure.json",
+        "sha256": "4c9ef327b1ff0ed7dbd2040082d4e4b71371a36e6e371178c554ce3efc6fae22"
+      }
+    ],
+    "outputEvidence": {
+      "path": "docs/upgrades/20261023/historical/research-provider-failure.json",
+      "sha256": "4c9ef327b1ff0ed7dbd2040082d4e4b71371a36e6e371178c554ce3efc6fae22"
+    },
+    "reviewEvidence": {
+      "path": "docs/upgrades/20261023/historical/research-provider-failure.json",
+      "sha256": "4c9ef327b1ff0ed7dbd2040082d4e4b71371a36e6e371178c554ce3efc6fae22"
+    },
+    "protocolEvidence": {
+      "path": "docs/upgrades/20261023/change-review.json",
+      "sha256": "928fa1af7e80ca3f37ce42965e511bbaf6674d4edc37b9f24845066b595acb7c"
+    },
+    "judgments": [],
+    "measurements": {
+      "durationMs": 460375,
+      "totalTokens": null,
+      "costUsd": null
+    }
+  },
+  {
+    "caseId": "slice-blind-qa",
+    "binding": {
+      "targetRunId": "mobile-slice-adaptation-20260830",
+      "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+      "contractHash": null,
+      "buildHash": "c4cc3c427fc52c9f91f6229c9aea0ae7cfe8220341be521df6c807626d101aae"
+    },
+    "sourceRevision": null,
+    "status": "BLOCKED",
+    "blocker": "实际中性盲评PARTIAL；缺少当前构建独立标签、成功核心片段及成对输入。",
+    "evidenceMode": "live-agent",
+    "subject": "QAAgent-blind-20261023",
+    "reviewer": "factory-audit-20261023",
+    "exposedToLabels": false,
+    "inputEvidence": [
+      {
+        "path": "docs/upgrades/20261023/blind/neutral-task-copy.json",
+        "sha256": "cf66db981f0ba6afd87a649883cafbc47c60c3afa00d539eca21357a9d930351"
+      }
+    ],
+    "outputEvidence": {
+      "path": "docs/upgrades/20261023/blind/result.json",
+      "sha256": "d4cac4f3f1e6c4b89778a67c0d2bcee00ffc91f7e05df03d4e6e5ba7720164d9"
+    },
+    "reviewEvidence": {
+      "path": "docs/upgrades/20261023/blind/decision.json",
+      "sha256": "ef4d0c899d48d2ed043a945238a56891a373ca2fb6224b7201e09001cead65fc"
+    },
+    "protocolEvidence": {
+      "path": "docs/upgrades/20261023/blind/neutral-task-copy.json",
+      "sha256": "cf66db981f0ba6afd87a649883cafbc47c60c3afa00d539eca21357a9d930351"
+    },
+    "judgments": [],
+    "measurements": {
+      "durationMs": 473261,
+      "humanInterventions": 0,
+      "totalTokens": null,
+      "costUsd": null
+    }
+  },
+  {
+    "caseId": "slice-exact-repair",
+    "binding": {
+      "targetRunId": "mobile-slice-adaptation-20260830",
+      "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+      "contractHash": null,
+      "buildHash": "c4cc3c427fc52c9f91f6229c9aea0ae7cfe8220341be521df6c807626d101aae"
+    },
+    "sourceRevision": null,
+    "status": "BLOCKED",
+    "blocker": "历史RETEST并非当前精确分支通过；本轮未改游戏，未开启新FIX。",
+    "evidenceMode": "historical-agent",
+    "subject": "FixerAgent-attempt13",
+    "reviewer": "factory-audit-20261023",
+    "exposedToLabels": false,
+    "inputEvidence": [
+      {
+        "path": "docs/upgrades/20261023/historical/slice-repair-state.json",
+        "sha256": "b227463cbc8bc3c5377126e16f43469e8ae6377376fb694e7461948eaaae218e"
+      }
+    ],
+    "outputEvidence": {
+      "path": "docs/upgrades/20261023/historical/slice-repair-state.json",
+      "sha256": "b227463cbc8bc3c5377126e16f43469e8ae6377376fb694e7461948eaaae218e"
+    },
+    "reviewEvidence": {
+      "path": "docs/upgrades/20261023/blind/decision.json",
+      "sha256": "ef4d0c899d48d2ed043a945238a56891a373ca2fb6224b7201e09001cead65fc"
+    },
+    "protocolEvidence": {
+      "path": "docs/upgrades/20261023/change-review.json",
+      "sha256": "928fa1af7e80ca3f37ce42965e511bbaf6674d4edc37b9f24845066b595acb7c"
+    },
+    "judgments": [],
+    "measurements": {}
+  },
+  {
+    "caseId": "slice-end-to-end",
+    "binding": {
+      "targetRunId": "mobile-slice-adaptation-20260830",
+      "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+      "contractHash": null,
+      "buildHash": "c4cc3c427fc52c9f91f6229c9aea0ae7cfe8220341be521df6c807626d101aae"
+    },
+    "sourceRevision": null,
+    "status": "BLOCKED",
+    "blocker": "缺少canonical state/seed/permission；不可安全resume，也没有人工最终验收。",
+    "evidenceMode": "historical-agent",
+    "subject": "Historical-pipeline",
+    "reviewer": "factory-audit-20261023",
+    "exposedToLabels": false,
+    "inputEvidence": [
+      {
+        "path": "docs/upgrades/20261023/blind/reproduction-matrix.json",
+        "sha256": "eae56c2d6ab509e6b95ea3afcfd082904a12544b994e2990b7516f5d6257bdb9"
+      }
+    ],
+    "outputEvidence": {
+      "path": "docs/upgrades/20261023/blind/result.json",
+      "sha256": "d4cac4f3f1e6c4b89778a67c0d2bcee00ffc91f7e05df03d4e6e5ba7720164d9"
+    },
+    "reviewEvidence": {
+      "path": "docs/upgrades/20261023/blind/decision.json",
+      "sha256": "ef4d0c899d48d2ed043a945238a56891a373ca2fb6224b7201e09001cead65fc"
+    },
+    "protocolEvidence": {
+      "path": "docs/upgrades/20261023/change-review.json",
+      "sha256": "928fa1af7e80ca3f37ce42965e511bbaf6674d4edc37b9f24845066b595acb7c"
+    },
+    "judgments": [],
+    "measurements": {}
+  },
+  {
+    "caseId": "slice-blind-core-v2",
+    "binding": {
+      "targetRunId": "mobile-slice-adaptation-20260830",
+      "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+      "contractHash": "6194f64374ed10d582d1222b1e764ea23fda9f32d72aafd2c12d17c355066163",
+      "buildHash": "c4cc3c427fc52c9f91f6229c9aea0ae7cfe8220341be521df6c807626d101aae"
+    },
+    "sourceRevision": "b3bd04275259db9c1f581ab263cb73b679f3c9df",
+    "status": "COMPLETED",
+    "blocker": null,
+    "evidenceMode": "live-agent",
+    "subject": "Codex-app-QA-subagent-blind-v2",
+    "reviewer": "root-independent-video-review",
+    "exposedToLabels": false,
+    "inputEvidence": [
+      {
+        "path": "docs/upgrades/20261023-budget-acceptance/blind/protocol.json",
+        "sha256": "6194f64374ed10d582d1222b1e764ea23fda9f32d72aafd2c12d17c355066163"
+      }
+    ],
+    "outputEvidence": {
+      "path": "docs/upgrades/20261023-budget-acceptance/blind/result.json",
+      "sha256": "b725addb33a619911df434eb472bcdf3f031652745c020c8b9c48d80849a2a5b"
+    },
+    "reviewEvidence": {
+      "path": "docs/upgrades/20261023-budget-acceptance/blind-adjudication.json",
+      "sha256": "d5dde64b890adb21784af9397404fb7ae2c6d933f3e0545a161dbb3866ce37ad"
+    },
+    "protocolEvidence": {
+      "path": "docs/upgrades/20261023-budget-acceptance/blind/protocol.json",
+      "sha256": "6194f64374ed10d582d1222b1e764ea23fda9f32d72aafd2c12d17c355066163"
+    },
+    "judgments": [
+      {
+        "labelId": "normal-input-only",
+        "observed": true
+      },
+      {
+        "labelId": "reported-findings-supported",
+        "observed": false
+      },
+      {
+        "labelId": "unobserved-branches-not-passed",
+        "observed": true
+      },
+      {
+        "labelId": "within-frozen-wall-clock",
+        "observed": false
+      }
+    ],
+    "measurements": {
+      "firstPass": false,
+      "humanInterventions": 0,
+      "durationMs": null,
+      "totalTokens": null,
+      "costUsd": null
+    }
+  },
+  {
+    "caseId": "slice-gap-retest-attempt10",
+    "binding": {
+      "targetRunId": "mobile-slice-adaptation-20260830",
+      "workspace": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/workspace/prototype-a",
+      "contractHash": "fdec3adeae7a94e0cbafd8c1bb55e6c2af72bfb9ee0eef4265ba4db08e2938ef",
+      "buildHash": "28b2879d24d20c76d519fabb5dcc7a9ea19f96460b024057bf870f45ecea87fa"
+    },
+    "sourceRevision": null,
+    "status": "BLOCKED",
+    "blocker": "Independent engineering PASS, natural/perceptual BLOCKED: no exact low-descent compact/large cue pixels in both viewports; wall-clock exceeded. Existing Fixer attempt10 not invoked again.",
+    "evidenceMode": "historical-agent",
+    "subject": "existing-FixerAgent-attempt10",
+    "reviewer": "independent-QA-retest-20261023",
+    "exposedToLabels": true,
+    "inputEvidence": [
+      {
+        "path": "docs/upgrades/20261023-budget-acceptance/retest/packet.json",
+        "sha256": "fdec3adeae7a94e0cbafd8c1bb55e6c2af72bfb9ee0eef4265ba4db08e2938ef"
+      }
+    ],
+    "outputEvidence": {
+      "path": "docs/upgrades/20261023-budget-acceptance/retest/historical-fixer-report-attempt-10.json",
+      "sha256": "b4688d268e0cec61b5d6eec16e033b2244e540e6c813cc3cc075fdf573650b51"
+    },
+    "reviewEvidence": {
+      "path": "docs/upgrades/20261023-budget-acceptance/retest/result.json",
+      "sha256": "ed63828dcac41ff49f01734f49d2fcc2395c50a91cc61b6468905323f7b9e24f"
+    },
+    "protocolEvidence": {
+      "path": "docs/upgrades/20261023-budget-acceptance/retest/packet.json",
+      "sha256": "fdec3adeae7a94e0cbafd8c1bb55e6c2af72bfb9ee0eef4265ba4db08e2938ef"
+    },
+    "judgments": [],
+    "measurements": {
+      "humanInterventions": 0,
+      "durationMs": null,
+      "totalTokens": null,
+      "costUsd": null
+    }
+  }
+]

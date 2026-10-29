@@ -1,0 +1,441 @@
+{
+  "schemaVersion": 1,
+  "rawMedia": "retained locally; no third-party recording uploaded",
+  "files": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/administrator-oracle.json",
+      "sha256": "f6961fba8391817b2c0ed5fa106ab94534b0ac01dea941048544a3b45780cb41",
+      "bytes": 2972
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/browser-events.jsonl",
+      "sha256": "bfe2c44de9dc717e6003f0694f43c7a8823301d590c7c1b5af8c513e34d71de7",
+      "bytes": 937
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-1100-run1-after-replay.png",
+      "sha256": "52e186691d78d531eabd7d2ba395d82fcfe6b0bd468b41958cbb1ff67130ae36",
+      "bytes": 121835
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-1100-run1-batch14.png",
+      "sha256": "9f71f8a6740bb4e7e02a37c6338018b76d39baf20455ec0245584362da97ab82",
+      "bytes": 138680
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-1100-run1-batch7.png",
+      "sha256": "afd06cd31283bb09598d0dadcbd77b3c223c60b6b9e7af6a0dd50a731e14f9a6",
+      "bytes": 103600
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-1100-run1-first-tap.png",
+      "sha256": "c66098961b4f4bce4837352cd0023986227dca4d12b6295dc6a9105fc23e3276",
+      "bytes": 145249
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-1100-run1-start.png",
+      "sha256": "ad70ef125763656a1f4b72293bdcbd6b0112930c4ce7afeff838ae8c5e2d593f",
+      "bytes": 118094
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-390-run1-after-first-tap.png",
+      "sha256": "c11533f58c795299aa38a71aaa9e0008b7af50d25c127c970a2941290f7c7b45",
+      "bytes": 82829
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-390-run1-batch-3.png",
+      "sha256": "449383c556af9bc0b8fe29b30c1910cfc2d1a3c97484ab4035be1fe1b2fdac06",
+      "bytes": 74790
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-390-run1-run1-wait.png",
+      "sha256": "877fcc73d0b372ee654897c49419efe0dc3ee5c6e79481b71f9d3f9f00cac5a2",
+      "bytes": 60516
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-390-run1-second-tap.png",
+      "sha256": "8a2c6a5e3f4572eb8665e46672bcd9969d262796e1e5b1b56f064ad86bbb1b1e",
+      "bytes": 60643
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-390-run1-start.png",
+      "sha256": "859c66ed2f4ea775f829bce4834d6af20ba2f8a6c4ff7ed1760011777f3b8157",
+      "bytes": 68364
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-390-run2-after-first.png",
+      "sha256": "f15501c7fbf1ed9c92dfd323d7d0b7b62592bcfce0061408af1219a3410a6642",
+      "bytes": 82254
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-390-run2-batch.png",
+      "sha256": "383a0da845171d43b72e3bf53d200796135c8a93b6c1dc76ff638b556cc3f408",
+      "bytes": 55142
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-390-run2-batch6.png",
+      "sha256": "d1600ea717eea34ff785c1f4fc6de5be40f7569eb669ffa2e5d4f3af602a571c",
+      "bytes": 73524
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-390-run2-start.png",
+      "sha256": "4c6e1beb4f05a914f2432bd0575ecd62781d5d75e1043ec287b88fcdbd7d29a7",
+      "bytes": 68315
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-390-run3-idle-five.png",
+      "sha256": "39a8131a445e08cdd41c32aa50ea43c5e4998eddb4a9df8c0d2fc1e20836161c",
+      "bytes": 60669
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-390-run3-released-wait.png",
+      "sha256": "3c6207d9f8d35b93ed7fd491a956c8e1104fdba47dd42e74f5ae5e2b20200bb3",
+      "bytes": 74943
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-390-run3-released.png",
+      "sha256": "7d912e024bf5e347f8897a2565e32b2a1716fa407f2643f8f3fd78b81eb58977",
+      "bytes": 57487
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-390-run3-start.png",
+      "sha256": "d4ac08c95d16b5c0675865c53777def1150c74cedb81c919245d61643c871e28",
+      "bytes": 68351
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-390-run4-fast-batch.png",
+      "sha256": "7d6741f623dec21460b0cb4b1b726690043a9c7fb57ade0df4e509b99a734ac3",
+      "bytes": 82179
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-390-run4-fast-wait.png",
+      "sha256": "d9f886f40459552dc32c2e0e12e97d33ce9affe811836df546cf49fd11f14ecd",
+      "bytes": 70537
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/candidate-390-run4-start.png",
+      "sha256": "2714b2d82dffa13aeb9f84d2d7c8ee1ffe5c1485d35917f02e1f40c176a4b61c",
+      "bytes": 68338
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/first-cut-1100-sheet.png",
+      "sha256": "aa1fbdf182e4463c380cdd39cc017d1f074357f6ef5c6d8c25f500dad498740f",
+      "bytes": 2719600
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/first-cut-390-sheet.png",
+      "sha256": "ecf2d0b97dc4680d8bfd7ee197c025569c1b22c95960f42d45968c7cb8915970",
+      "bytes": 996024
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-1100/frame-01.png",
+      "sha256": "f2f89a02b85143646cfb342d1cdd912dd7e99cb741726e9e47eb146ab1d353aa",
+      "bytes": 410928
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-1100/frame-02.png",
+      "sha256": "22ac29188268ec2fe55b6302ad9f1368695f291c8829cb96a9db097f851a9dbb",
+      "bytes": 433305
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-1100/frame-03.png",
+      "sha256": "5cea6d661eda0996d1113e94edf5d5f6786720a2bee3e2ddca7f3d9651924723",
+      "bytes": 426315
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-1100/frame-04.png",
+      "sha256": "a59725e490f94235838f8e32add8de129a1e113461ebdb4141f03691c3d5e9db",
+      "bytes": 450899
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-1100/frame-05.png",
+      "sha256": "11afd1ebad3e1ce67da77e620c837b7f459bd8674bbd57081e30e1bf665be247",
+      "bytes": 461024
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-1100/frame-06.png",
+      "sha256": "b064b512972ab75054a3cab88a65819a467177af38cf6fb3c5d65b1a938aeba0",
+      "bytes": 466943
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-1100/frame-07.png",
+      "sha256": "2c77ab65b921ff8243ebcaa9d02ceb222ddc9d366a9217cf78331a32247fc02b",
+      "bytes": 465899
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-1100/frame-08.png",
+      "sha256": "f7a46c07e14ad2fd7bb98c3f21621933707042e717595783304bdfed7df146c5",
+      "bytes": 472385
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-1100/frame-09.png",
+      "sha256": "19923e60bb3201885c8b824ae777acd677575363127d4ff3c2aab134dbde153e",
+      "bytes": 495240
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-1100/frame-10.png",
+      "sha256": "f2024da1606176bd7284fa89ab614ae2c4525c9e6a02aca9c36c0954715f8bbb",
+      "bytes": 510770
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-1100/frame-11.png",
+      "sha256": "1025390da8545b8654a677c8ee2ba4e089dcd26af178b042008027388d89a9c9",
+      "bytes": 520000
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-1100/frame-12.png",
+      "sha256": "82cf725cb6f7d8961da3307ad6c57d105aab41f219193516e877498f5c6de52c",
+      "bytes": 510349
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-1100/frame-13.png",
+      "sha256": "e1f3a88695ddb40ad2528d22f84408261dd107d566ef82fae76d5222ce000d78",
+      "bytes": 529896
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-1100/frame-14.png",
+      "sha256": "c2f62ce0c888db67cbf79858e13aaf09a9911daa8cc848d5a61d5ba272ecffe1",
+      "bytes": 535822
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-1100/frame-15.png",
+      "sha256": "ef31c3428185d03560b477828b94e5ed5e0a57f168eb35aa2f7a97545cc53674",
+      "bytes": 355930
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-1100/frame-16.png",
+      "sha256": "aa0e3cc623c611ab4231e6df77011ad7e55928433112f936daace26532d4c8d0",
+      "bytes": 375538
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-1100/frame-17.png",
+      "sha256": "216d9e58d098274ab3536f9d8ec9438160e9683394a27c8430a979aafcdf05c6",
+      "bytes": 377915
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-1100/frame-18.png",
+      "sha256": "369cad8921d006215e0a0e145a1fd677a5653e640bf4e06debcb0bea8a343219",
+      "bytes": 397790
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-1100/frame-19.png",
+      "sha256": "bd5d58ef502358ac2f9ee78899034c690e2be936a0dd7a0fb90679a76de223f5",
+      "bytes": 417589
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-1100/frame-20.png",
+      "sha256": "b359d1ba07a91e08bfea3078231470c875b4ceda3212808624ab081b30550c8e",
+      "bytes": 426123
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-1100/frame-21.png",
+      "sha256": "453fadad22aa0708ea90d9da0257e361d92c57cf894e42272aa681f57297c2cd",
+      "bytes": 439312
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-1100/frame-22.png",
+      "sha256": "df5e0c1e71f0cef427008c3b809c57495576baab533797d10a0ff60873c874fa",
+      "bytes": 445841
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-1100/frame-23.png",
+      "sha256": "5db76473b9b221eec0e72d5ad74ad95c1c9852c85c59dee58127df10ec936332",
+      "bytes": 446426
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-1100/frame-24.png",
+      "sha256": "bfd532bbf84222a2f5d2acf6d007ad1b1319c0bfff0491716d60484bcda70227",
+      "bytes": 457587
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-390/frame-01.png",
+      "sha256": "fba3c24cfd339c856a52e2b47d47eaf16611e76c5c8115f147f35994db69e84a",
+      "bytes": 194337
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-390/frame-02.png",
+      "sha256": "bda42b1e849ec9d2ad4cafa24dfd5aac463516a80d1d1b52f77d9919faf981b8",
+      "bytes": 194929
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-390/frame-03.png",
+      "sha256": "16bd2b038b128116e259d815e94ea0bdc75ee33805120d7a05f06656669a65e8",
+      "bytes": 208270
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-390/frame-04.png",
+      "sha256": "ce96d54282840206258ad779e68a4a77694bc8eaffaea013a946f1cd53db071b",
+      "bytes": 218516
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-390/frame-05.png",
+      "sha256": "a697aae16e55e282ece080bd1669771bae46f75b286d5ff4ff6418229c4a59ee",
+      "bytes": 219295
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-390/frame-06.png",
+      "sha256": "570b758fe1dfaf4dd02eb36dded7e677004169a1d8ef168791232ade4136bd33",
+      "bytes": 221781
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-390/frame-07.png",
+      "sha256": "c7f87f2f61af5897bc5bafbed2845a69104c9ddb01590eaf736b9cc812bbf763",
+      "bytes": 223253
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-390/frame-08.png",
+      "sha256": "6f7b103b79a06c169a6cb60266c742f4dbc9d6d3251e7ece9b213edcdbbeadfb",
+      "bytes": 229992
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-390/frame-09.png",
+      "sha256": "a079f1daae4d22bdc98a7015db2b4d9d99db191e6ad879727f45890e98d60dd0",
+      "bytes": 202884
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-390/frame-10.png",
+      "sha256": "fc1ac6b3e89e59b7d17c63bbe5d446933e76b92583a54db8be5992cdc0c5dea4",
+      "bytes": 210743
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-390/frame-11.png",
+      "sha256": "19889610539ec57d456baf3ef88f1ff97bf2f80bdc803b728882fbe5dc0d077c",
+      "bytes": 222457
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-390/frame-12.png",
+      "sha256": "54ece2f90851cafc9448364a2a998ca80e67c984e0c7624a503852352ac1b667",
+      "bytes": 227526
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-390/frame-13.png",
+      "sha256": "fc144eccbe801f4fbdd9a554c7b67f4bfaa857f896a41ea00e4949baf183014d",
+      "bytes": 231456
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-390/frame-14.png",
+      "sha256": "d71a0721dc2971218a717e2c798dd73146e4ad8545061ee7b5ddc5d0db2163cf",
+      "bytes": 238855
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-390/frame-15.png",
+      "sha256": "b828a03b0f0243fe7cabbe19716aedb223d7077f2d8b44924ee00a7bdb5b5125",
+      "bytes": 240051
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-390/frame-16.png",
+      "sha256": "c43f5ad8028b44678fefc543769e21650092810feae002432a0d7f8f79dcf26e",
+      "bytes": 212606
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-390/frame-17.png",
+      "sha256": "1078bea90acb81aca33dead54145c6542161f96ec0285de7417a3f7047cec632",
+      "bytes": 213942
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-390/frame-18.png",
+      "sha256": "4ec9b91e3dae98db9ec3163051f22bf99fab2d1c4c54444e4ef135d784a646dd",
+      "bytes": 213853
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-390/frame-19.png",
+      "sha256": "6f6051cbbddbf1d12c775c8a8bbb4ce8ebeca451bc1c77b3d2f3d2954ab34cbd",
+      "bytes": 213862
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-390/frame-20.png",
+      "sha256": "c6100f163977dd93144e668aa01ee3607ce80da75715e2863384dd6463757ceb",
+      "bytes": 213918
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-390/frame-21.png",
+      "sha256": "27a81fb1f53ed10aca014de213efaa6ffddab214cc828ff4213a691ee0e5fcdf",
+      "bytes": 213928
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-390/frame-22.png",
+      "sha256": "a5ba9a12a4004fcda9c595f13594d2717ec1dd6b0947ce8ca85145ba35269f18",
+      "bytes": 213875
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-390/frame-23.png",
+      "sha256": "fef09f7c90ba21a29442ec44e9a081ced7706c1a0521a382ab93132e89566419",
+      "bytes": 215402
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-390/frame-24.png",
+      "sha256": "5a71b2c847d3140a53eeeb1989ca25de1cf79febe61ba47c1db5212f153e62b7",
+      "bytes": 215380
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/inputs-1100-run1.jsonl",
+      "sha256": "41f92a52b700410afbc26cbab561f27998c720211c804ee21e7bbf076041fbf4",
+      "bytes": 3170
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/inputs-390-run1.jsonl",
+      "sha256": "83e64134c809671352bdd0122034d444a7329b0ea3617c2c5ecaab6163b8d8e4",
+      "bytes": 1062
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/inputs-390-run2.jsonl",
+      "sha256": "0373ef84fb25f2fa37e0b4c5c28abe11928695c0a6fbf5cabdd6cbcc873bbf5c",
+      "bytes": 1940
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/inputs-390-run3.jsonl",
+      "sha256": "00e8d6a5b8cf246e3ac58bc9a31b2921f94184feb7d17378015b2214d05f5515",
+      "bytes": 478
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/inputs-390-run4.jsonl",
+      "sha256": "c7b4abbfc7ddaa80a04099d5a41b086c923ba4c047156ba2dae932ff3dc5028e",
+      "bytes": 1824
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/natural-runner.mjs",
+      "sha256": "38c17380e8aabc8a118c84e8d05c735fdf05c73f19db8e357fe6da7948e01a89",
+      "bytes": 4822
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/protocol.json",
+      "sha256": "6194f64374ed10d582d1222b1e764ea23fda9f32d72aafd2c12d17c355066163",
+      "bytes": 11879
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/result.json",
+      "sha256": "b725addb33a619911df434eb472bcdf3f031652745c020c8b9c48d80849a2a5b",
+      "bytes": 20371
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/validate-result.mjs",
+      "sha256": "e6d26d867db2f841c32152583ff4be00adf4a3c39dd79854110350ef1edc6ff3",
+      "bytes": 1979
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/video-1100-run1/page@235dcec036b9a559eda3ee08d4eacd1c.webm",
+      "sha256": "930a91b73bfcc56b635d7235ec7c26c299bd077042fb433841f433f61a43f396",
+      "bytes": 15306076
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/video-390-run1/page@7f561af4f071005e20a6a6863a30aa60.webm",
+      "sha256": "a04f99be28279a1384580d0ccdfbc7b1674a157fd398f154b07bc303e4af8e6b",
+      "bytes": 5546718
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/video-390-run2/page@274aa25734b8efaac5800e89404f1257.webm",
+      "sha256": "a35ab902d1c5777fb87ff1880dd25fabe5782e7921aed826bbd5f6cf0a75038c",
+      "bytes": 4632090
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/video-390-run3/page@ea0693efae2788622ea712852f515f9b.webm",
+      "sha256": "0ade7d4cb944e94b1e6c61cc6461365359bb0b2c3d7af368e95e1771d490f6ad",
+      "bytes": 3516578
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/video-390-run4/page@8d00831b3fa34a39b95a885c006bc578.webm",
+      "sha256": "8981824b64fce1b0194f0fb2ee58901f02270a41aa3ae7aca1139ebc80e41392",
+      "bytes": 3309073
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "independent-blind-qa-adjudication",
+  "subject": "/root/blind_qa_v2 (Codex app external QA subagent; not a Factory provider invocation)",
+  "reviewer": "root acceptance reviewer",
+  "protocolSha256": "6194f64374ed10d582d1222b1e764ea23fda9f32d72aafd2c12d17c355066163",
+  "originalReportSha256": "b725addb33a619911df434eb472bcdf3f031652745c020c8b9c48d80849a2a5b",
+  "originalReportPreserved": true,
+  "subjectCounts": {
+    "PASS": 4,
+    "FAIL": 2,
+    "UNOBSERVED": 6
+  },
+  "overall": "UNSUCCESSFUL_PARTIAL_COMPARISON",
+  "claimReviews": [
+    {
+      "caseId": "L1-REWARD-390",
+      "claim": "World-local reward absent; only HUD +1 exists",
+      "disposition": "REFUTED_BY_SUBJECT_RAW_VIDEO",
+      "evidence": {
+        "videoPath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/video-390-run1/page@7f561af4f071005e20a6a6863a30aa60.webm",
+        "videoSha256": "a04f99be28279a1384580d0ccdfbc7b1674a157fd398f154b07bc303e4af8e6b",
+        "extractionSeekStartSeconds": 24.8,
+        "frameOffsetAt8Fps": 2,
+        "approximateVideoSeconds": 25.05,
+        "framePath": "docs/upgrades/20261023-budget-acceptance/qa-review/frames-390-frame-03.png",
+        "frameSha256": "16bd2b038b128116e259d815e94ea0bdc75ee33805120d7a05f06656669a65e8"
+      },
+      "visibleObservation": "A cyan +1 is visible at/above the first watermelon, spatially distinct from the HUD toast. A later still screenshot missed this transient feedback.",
+      "replacementGameVerdict": "UNOBSERVED: full frozen reward/separation/sync sequence not adjudicated; not a PASS substituted for the rejected FAIL."
+    },
+    {
+      "caseId": "L1-REWARD-1100",
+      "claim": "World-local reward absent; only HUD +1 exists",
+      "disposition": "REFUTED_BY_SUBJECT_RAW_VIDEO",
+      "evidence": {
+        "videoPath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/video-1100-run1/page@235dcec036b9a559eda3ee08d4eacd1c.webm",
+        "videoSha256": "930a91b73bfcc56b635d7235ec7c26c299bd077042fb433841f433f61a43f396",
+        "extractionSeekStartSeconds": 34.3,
+        "frameOffsetAt8Fps": 1,
+        "approximateVideoSeconds": 34.425,
+        "framePath": "docs/upgrades/20261023-budget-acceptance/qa-review/frames-1100-frame-02.png",
+        "frameSha256": "22ac29188268ec2fe55b6302ad9f1368695f291c8829cb96a9db097f851a9dbb"
+      },
+      "visibleObservation": "A cyan +1 is visible at/above the first watermelon, spatially distinct from the HUD toast. A later still screenshot missed this transient feedback.",
+      "replacementGameVerdict": "UNOBSERVED: full frozen reward/separation/sync sequence not adjudicated; not a PASS substituted for the rejected FAIL."
+    }
+  ],
+  "coverage": "Stack, hazard attribution and terminal/settlement/replay remain UNOBSERVED at both viewports. First-input/support subcases are observed; this is not a complete successful core journey.",
+  "inputLatencyEvidence": {
+    "portraitFirstTapMs": 25703,
+    "portraitSecondTapMs": 68697,
+    "desktopFirstTapMs": 35142,
+    "desktopSecondTapMs": 57018,
+    "meaning": "Long real-time inspection/tool gaps occurred between normal inputs; early falls cannot alone establish a game mechanism defect."
+  },
+  "protocolCompliance": {
+    "answerHints": 0,
+    "controllerAdministrativeStops": 1,
+    "humanGameplayHints": 0,
+    "timeLimitMs": 600000,
+    "reportedDurationLowerBoundMs": 721000,
+    "exactFirstToolTimeKnown": false,
+    "wallClockPassed": false,
+    "filesystemIsolation": "instruction boundary, not an OS sandbox; file-read list is subject attestation"
+  },
+  "newReviewObservations": [
+    "A world-local +1 is directly visible in the original videos. HUD synchronizes early; exact separation/reward/HUD order is not adjudicated as a new defect here. Do not retrofit that different hypothesis to rescue the rejected absence claim."
+  ],
+  "noRates": "No complete current-build defect gold set: do not calculate detection rate, miss rate or recall. These are two reviewed assertions, not a global false-positive rate.",
+  "measurements": {
+    "totalTokens": null,
+    "costUsd": null,
+    "newPaidFactoryModelInvocations": 0
+  },
+  "judgments": [
+    {
+      "labelId": "normal-input-only",
+      "observed": true
+    },
+    {
+      "labelId": "complete-core-journey-observed",
+      "observed": false
+    },
+    {
+      "labelId": "evidence-backed-core-deviation-found",
+      "observed": false
+    },
+    {
+      "labelId": "within-frozen-wall-clock",
+      "observed": false
+    }
+  ]
+}

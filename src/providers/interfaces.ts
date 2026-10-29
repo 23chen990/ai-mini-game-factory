@@ -1,12 +1,18 @@
+import type { QaObservationInput } from '../qa/browser-preflight.js';
 import type { ArtDirections, ArtPreviewManifest, AssetManifest, CompetitorResearch, GameBlueprint, GameplayRevisionLock, IaaMonetizationReview, InteractionContinuityContract, OpenSourceResearch, ProductionCostReview, QaReport, ReferenceEvidencePack, ReferenceMechanicSpec, RuntimeName, Seed, StyleLock, ProductExperienceContract, PerceptualQaReport } from '../schemas/index.js';
 import type { GameplayIdea, IdeaGeneration, LowCostFilter, PlaytestTournament, PrototypeBuildReport } from '../schemas/gameplay-experiment.js';
 import type { ActionMechanicExperimentSpec, ActionPrototypeBuildReport } from '../schemas/action-mechanic-experiment.js';
 import type { FormalPrototypeFollowupConstraints, OpenSourceResearchArtifact } from '../schemas/index.js';
 import type { RuntimeAdapter } from '../adapters/runtime.js';
+import type { ReferenceIntakeEvidence } from '../schemas/reference-intake.js';
 
 export type TokenUsage = { inputTokens: number; outputTokens: number; totalTokens: number };
-export type AgentCallMetrics = { provider: string; model: string; calls: number; usage?: TokenUsage };
+export type AgentCallMetrics = { provider: string; model: string; calls: number; usage?: TokenUsage; executionId?: string };
 export type AgentProviderResult = { value: unknown; metrics: AgentCallMetrics };
+export type ReferenceReviewRequest = {
+  workspace: string; buildHash: string; contractHash: string;
+  requiredRetests: Array<{id:string;objectType:string;stateBranch:string;viewport:{width:number;height:number}} >;
+};
 export type AgentExecutionContext = {
   runRoot: string;
   outputPath: string;
@@ -15,6 +21,7 @@ export type AgentExecutionContext = {
   /** Verified run-local image evidence copied byte-for-byte into an isolated
    * research sandbox. The hash is checked again immediately before copying. */
   mediaInputs?: Array<{ path: string; sha256: string }>;
+  qaObservation?: QaObservationInput;
   /** Identity and contract inputs used by workspace writers at the hard boundary. */
   targetGameId?: string;
   targetWorkspaceRelative?: string;
@@ -29,6 +36,8 @@ export type AgentExecutionContext = {
   enforceBoundary?: boolean;
 };
 export interface AgentProvider {
+  draftReference(input: ReferenceIntakeEvidence, context?: AgentExecutionContext): Promise<AgentProviderResult>;
+  reviewReferenceCandidate?(input: ReferenceReviewRequest, context: AgentExecutionContext): Promise<AgentProviderResult>;
   analyzeReferenceEvidence(pack: ReferenceEvidencePack, context?: AgentExecutionContext): Promise<AgentProviderResult>;
   generateCompetitorResearch(seed: Seed, context?: AgentExecutionContext): Promise<AgentProviderResult>;
   generateOpenSourceResearch(seed: Seed, gameplay: GameplayIdea | ReferenceMechanicSpec, context?: AgentExecutionContext): Promise<AgentProviderResult>;
@@ -61,7 +70,7 @@ export interface CodexProvider {
   prototype?(input: { workspace: string; idea: GameplayIdea; slot: 'a' | 'b' | 'c'; context?: AgentExecutionContext }): Promise<CodexBuildResult>;
   actionPrototype?(input: { workspace: string; spec: ActionMechanicExperimentSpec; variant: ActionMechanicExperimentSpec['prototypes'][number]; context?: AgentExecutionContext }): Promise<CodexBuildResult>;
   formalPrototype?(input: FormalPrototypeBuildInput & { workspace: string; context?: AgentExecutionContext }): Promise<CodexBuildResult>;
-  build(input: { workspace: string; blueprint: GameBlueprint; styleLock: StyleLock; assets: AssetManifest; template: string; gameplayRevision?: GameplayRevisionLock; interactionContinuityContract?: InteractionContinuityContract; context?: AgentExecutionContext }): Promise<CodexBuildResult>;
+  build(input: { workspace: string; blueprint: GameBlueprint; styleLock: StyleLock; assets: AssetManifest; assetSource?: string; template: string; gameplayRevision?: GameplayRevisionLock; interactionContinuityContract?: InteractionContinuityContract; context?: AgentExecutionContext }): Promise<CodexBuildResult>;
   fix(input: { workspace: string; threadId?: string; qaReport: QaReport; context?: AgentExecutionContext }): Promise<CodexFixResult>;
 }
 export interface ImageProvider { produce(input: { outputDir: string; blueprint: GameBlueprint; styleLock: StyleLock }): Promise<unknown>; producePreviews?(input: { outputDir: string; directions: ArtDirections }): Promise<ArtPreviewManifest>; }

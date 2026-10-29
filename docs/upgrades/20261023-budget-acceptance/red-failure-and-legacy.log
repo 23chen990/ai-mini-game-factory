@@ -1,0 +1,75 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市
+
+ ❯ tests/unit/codex-budget-process.test.ts (13 tests | 2 failed) 4760ms
+   × stops a terminal failure event even when it has no diagnostic text 2021ms
+   × does not silently reuse budget from pre-ledger failure receipts 51ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/codex-budget-process.test.ts > stops a terminal failure event even when it has no diagnostic text
+AssertionError: expected 'CodexExecutionError: codex exec timed…' to match /stopped: failed/u
+
+- Expected:
+/stopped: failed/u
+
++ Received:
+"CodexExecutionError: codex exec timed out after 2000ms; observed completed-turn tokens 40"
+
+ ❯ tests/unit/codex-budget-process.test.ts:141:25
+    139|   const f = await fixture([`${turn(40)} process.stdout.write('{"type":…
+    140|   const error = await f.provider().execute({ ...f.request, maxTotalTok…
+    141|   expect(String(error)).toMatch(/stopped: failed/u);
+       |                         ^
+    142|   expect(error).toMatchObject({ usage: { totalTokens: 40 } });
+    143|   expect(f.calls()).toBe(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/unit/codex-budget-process.test.ts > does not silently reuse budget from pre-ledger failure receipts
+AssertionError: promise resolved "{ events: [ { …(2) } ], …(11) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "attempts": 1,
++   "completed": true,
++   "errors": [],
++   "events": [
++     {
++       "type": "turn.completed",
++       "usage": {
++         "input_tokens": 9,
++         "output_tokens": 1,
++       },
++     },
++   ],
++   "executionId": "b4d028fd-228e-48cd-b752-8ae3191ba5a3",
++   "failed": false,
++   "output": "ok",
++   "stderr": "",
++   "stdout": "{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":9,\"output_tokens\":1}}
++ ",
++   "threadId": undefined,
++   "usage": {
++     "inputTokens": 9,
++     "outputTokens": 1,
++     "totalTokens": 10,
++   },
++   "usageIncomplete": false,
+  }
+
+ ❯ tests/unit/codex-budget-process.test.ts:151:48
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 11 passed (13)
+   Start at  23:34:11
+   Duration  5.62s (transform 490ms, setup 0ms, import 735ms, tests 4.76s, environment 0ms)
+

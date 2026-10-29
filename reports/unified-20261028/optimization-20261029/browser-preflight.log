@@ -1,0 +1,53 @@
+$ tsx src/cli/factory.ts qa-preflight
+{
+  "schemaVersion": 1,
+  "scope": "HOST_BROWSER_SMOKE_ONLY",
+  "ready": true,
+  "checkedAt": "2026-10-29T07:59:12.322Z",
+  "checks": [
+    {
+      "engine": "chromium",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "label": "mobile",
+      "passed": true,
+      "screenshotBytes": 4458,
+      "blocker": null
+    },
+    {
+      "engine": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "label": "desktop",
+      "passed": true,
+      "screenshotBytes": 6551,
+      "blocker": null
+    },
+    {
+      "engine": "webkit",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "label": "mobile",
+      "passed": true,
+      "screenshotBytes": 10560,
+      "blocker": null
+    },
+    {
+      "engine": "webkit",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "label": "desktop",
+      "passed": true,
+      "screenshotBytes": 22973,
+      "blocker": null
+    }
+  ]
+}

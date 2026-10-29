@@ -1,0 +1,301 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/codex-cli-provider.test.ts (34 tests | 19 failed) 100ms
+     × allows a budgeted blind QA call only after all four browser checks pass 21ms
+     × passes only a safe environment to trusted Codex stages and strips credentials 2ms
+     × uses an even smaller environment for the isolated Research stage 3ms
+     × attaches a verified Research image to the Codex prompt instead of only copying it into the sandbox 5ms
+     × uses a per-stage model override while preserving the provider default 2ms
+     × constructs safe read-only args with JSON, output schema and output file 3ms
+     × never accepts a stale shared result when the current Codex attempt produces no last message 5ms
+     × retains and redacts the failed attempt output without overwriting an earlier successful artifact 4ms
+     × rejects a final unfinished turn even when an earlier turn completed 3ms
+     × redacts a failed attempt even when the next unbudgeted attempt succeeds 2ms
+     × fails when JSONL reports an error even if completion and process exit succeed 3ms
+     × resumes the Builder thread in workspace-write without unsafe sandbox flags 2ms
+     × times out, kills the child and reports a bounded failure 2ms
+     × kills a still-running Codex process when its completed-turn usage reaches budget 3ms
+     × allows a long-running Builder request to override the text-stage timeout 2ms
+     × allows a workspace-writing request to disable automatic process retries 2ms
+     × retries only up to the configured maximum 2ms
+     × redacts authentication material from event logs and final output 2ms
+   × retains the exact sanitized invocation and resolved model in the unique execution directory 2ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 19 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/codex-cli-provider.test.ts > CodexCliProvider > allows a budgeted blind QA call only after all four browser checks pass
+CodexExecutionError: remainingTokens is not defined
+ ❯ CodexCliProvider.execute src/providers/codex-cli.ts:457:13
+    455|     } catch (error) {
+    456|       await execution.save(usage, attempts, uncertain || attempts > 0 …
+    457|       throw new CodexExecutionError(redactText(error instanceof Error …
+       |             ^
+    458|     } finally { await execution.release(); }
+    459|   }
+ ❯ tests/unit/codex-cli-provider.test.ts:115:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/19]⎯
+
+ FAIL  tests/unit/codex-cli-provider.test.ts > CodexCliProvider > passes only a safe environment to trusted Codex stages and strips credentials
+CodexExecutionError: remainingTokens is not defined
+ ❯ CodexCliProvider.execute src/providers/codex-cli.ts:457:13
+    455|     } catch (error) {
+    456|       await execution.save(usage, attempts, uncertain || attempts > 0 …
+    457|       throw new CodexExecutionError(redactText(error instanceof Error …
+       |             ^
+    458|     } finally { await execution.release(); }
+    459|   }
+ ❯ tests/unit/codex-cli-provider.test.ts:168:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/19]⎯
+
+ FAIL  tests/unit/codex-cli-provider.test.ts > CodexCliProvider > uses an even smaller environment for the isolated Research stage
+CodexExecutionError: remainingTokens is not defined
+ ❯ CodexCliProvider.execute src/providers/codex-cli.ts:457:13
+    455|     } catch (error) {
+    456|       await execution.save(usage, attempts, uncertain || attempts > 0 …
+    457|       throw new CodexExecutionError(redactText(error instanceof Error …
+       |             ^
+    458|     } finally { await execution.release(); }
+    459|   }
+ ❯ tests/unit/codex-cli-provider.test.ts:192:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/19]⎯
+
+ FAIL  tests/unit/codex-cli-provider.test.ts > CodexCliProvider > attaches a verified Research image to the Codex prompt instead of only copying it into the sandbox
+CodexExecutionError: remainingTokens is not defined
+ ❯ CodexCliProvider.execute src/providers/codex-cli.ts:457:13
+    455|     } catch (error) {
+    456|       await execution.save(usage, attempts, uncertain || attempts > 0 …
+    457|       throw new CodexExecutionError(redactText(error instanceof Error …
+       |             ^
+    458|     } finally { await execution.release(); }
+    459|   }
+ ❯ tests/unit/codex-cli-provider.test.ts:219:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/19]⎯
+
+ FAIL  tests/unit/codex-cli-provider.test.ts > CodexCliProvider > uses a per-stage model override while preserving the provider default
+CodexExecutionError: remainingTokens is not defined
+ ❯ CodexCliProvider.execute src/providers/codex-cli.ts:457:13
+    455|     } catch (error) {
+    456|       await execution.save(usage, attempts, uncertain || attempts > 0 …
+    457|       throw new CodexExecutionError(redactText(error instanceof Error …
+       |             ^
+    458|     } finally { await execution.release(); }
+    459|   }
+ ❯ tests/unit/codex-cli-provider.test.ts:253:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/19]⎯
+
+ FAIL  tests/unit/codex-cli-provider.test.ts > CodexCliProvider > constructs safe read-only args with JSON, output schema and output file
+CodexExecutionError: remainingTokens is not defined
+ ❯ CodexCliProvider.execute src/providers/codex-cli.ts:457:13
+    455|     } catch (error) {
+    456|       await execution.save(usage, attempts, uncertain || attempts > 0 …
+    457|       throw new CodexExecutionError(redactText(error instanceof Error …
+       |             ^
+    458|     } finally { await execution.release(); }
+    459|   }
+ ❯ tests/unit/codex-cli-provider.test.ts:262:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/19]⎯
+
+ FAIL  tests/unit/codex-cli-provider.test.ts > CodexCliProvider > never accepts a stale shared result when the current Codex attempt produces no last message
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ tests/unit/codex-cli-provider.test.ts:286:19
+    284|     })).rejects.toThrow();
+    285|     expect(await readFile(outputPath, 'utf8')).toBe('{"old":true}');
+    286|     expect(calls).toHaveLength(1);
+       |                   ^
+    287|     expect(calls[0]?.args[calls[0].args.indexOf('--output-last-message…
+    288|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/19]⎯
+
+ FAIL  tests/unit/codex-cli-provider.test.ts > CodexCliProvider > retains and redacts the failed attempt output without overwriting an earlier successful artifact
+Error: ENOENT: no such file or directory, open '/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/codex-cli-failed-output-2lGUeO/logs/codex/executions/d0dadc66-f76b-4c25-96a8-b59df61dcbd5/BLUEPRINT.attempt-1.last-message.txt'
+ ❯ tests/unit/codex-cli-provider.test.ts:308:22
+    306|     const executions = await readdir(path.join(root, 'logs/codex/execu…
+    307|     expect(executions).toHaveLength(1);
+    308|     const retained = await readFile(path.join(root, 'logs/codex/execut…
+       |                      ^
+    309|     expect(retained).not.toContain(secret);
+    310|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/19]⎯
+
+ FAIL  tests/unit/codex-cli-provider.test.ts > CodexCliProvider > rejects a final unfinished turn even when an earlier turn completed
+AssertionError: expected [Function] to throw error matching /exited|failed/i but got 'remainingTokens is not defined'
+
+- Expected:
+/exited|failed/i
+
++ Received:
+"remainingTokens is not defined"
+
+ ❯ tests/unit/codex-cli-provider.test.ts:332:8
+    330|       label: 'BLUEPRINT', prompt: 'complete the task', cwd: root, sand…
+    331|       outputPath, logDir: path.join(root, 'logs'),
+    332|     })).rejects.toThrow(/exited|failed/i);
+       |        ^
+    333|     expect(await readFile(outputPath, 'utf8')).toBe('previous approved…
+    334|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/19]⎯
+
+ FAIL  tests/unit/codex-cli-provider.test.ts > CodexCliProvider > redacts a failed attempt even when the next unbudgeted attempt succeeds
+CodexExecutionError: remainingTokens is not defined
+ ❯ CodexCliProvider.execute src/providers/codex-cli.ts:457:13
+    455|     } catch (error) {
+    456|       await execution.save(usage, attempts, uncertain || attempts > 0 …
+    457|       throw new CodexExecutionError(redactText(error instanceof Error …
+       |             ^
+    458|     } finally { await execution.release(); }
+    459|   }
+ ❯ tests/unit/codex-cli-provider.test.ts:347:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/19]⎯
+
+ FAIL  tests/unit/codex-cli-provider.test.ts > CodexCliProvider > fails when JSONL reports an error even if completion and process exit succeed
+AssertionError: expected [Function] to throw error including 'provider failure' but got 'remainingTokens is not defined'
+
+Expected: "provider failure"
+Received: "remainingTokens is not defined"
+
+ ❯ tests/unit/codex-cli-provider.test.ts:391:8
+    389|       outputPath: path.join(root, 'out.json'),
+    390|       logDir: path.join(root, 'logs'),
+    391|     })).rejects.toThrow('provider failure');
+       |        ^
+    392|   });
+    393|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/19]⎯
+
+ FAIL  tests/unit/codex-cli-provider.test.ts > CodexCliProvider > resumes the Builder thread in workspace-write without unsafe sandbox flags
+CodexExecutionError: remainingTokens is not defined
+ ❯ CodexCliProvider.execute src/providers/codex-cli.ts:457:13
+    455|     } catch (error) {
+    456|       await execution.save(usage, attempts, uncertain || attempts > 0 …
+    457|       throw new CodexExecutionError(redactText(error instanceof Error …
+       |             ^
+    458|     } finally { await execution.release(); }
+    459|   }
+ ❯ tests/unit/codex-cli-provider.test.ts:399:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/19]⎯
+
+ FAIL  tests/unit/codex-cli-provider.test.ts > CodexCliProvider > times out, kills the child and reports a bounded failure
+AssertionError: expected [Function] to throw error matching /timed out/i but got 'remainingTokens is not defined'
+
+- Expected:
+/timed out/i
+
++ Received:
+"remainingTokens is not defined"
+
+ ❯ tests/unit/codex-cli-provider.test.ts:414:185
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/19]⎯
+
+ FAIL  tests/unit/codex-cli-provider.test.ts > CodexCliProvider > kills a still-running Codex process when its completed-turn usage reaches budget
+AssertionError: expected [Function] to throw error including 'token-budget' but got 'remainingTokens is not defined'
+
+Expected: "token-budget"
+Received: "remainingTokens is not defined"
+
+ ❯ tests/unit/codex-cli-provider.test.ts:443:103
+    441|     const provider = new CodexCliProvider({ spawn: controlledSpawn, ti…
+    442|     await expect(provider.execute({ label: 'BLUEPRINT', prompt: 'read'…
+    443|       outputPath: path.join(root, 'out.json'), logDir: path.join(root,…
+       |                                                                                                       ^
+    444|     expect(killed).toBe(true);
+    445|     expect(calls).toEqual(['SIGTERM']);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/19]⎯
+
+ FAIL  tests/unit/codex-cli-provider.test.ts > CodexCliProvider > allows a long-running Builder request to override the text-stage timeout
+CodexExecutionError: remainingTokens is not defined
+ ❯ CodexCliProvider.execute src/providers/codex-cli.ts:457:13
+    455|     } catch (error) {
+    456|       await execution.save(usage, attempts, uncertain || attempts > 0 …
+    457|       throw new CodexExecutionError(redactText(error instanceof Error …
+       |             ^
+    458|     } finally { await execution.release(); }
+    459|   }
+ ❯ tests/unit/codex-cli-provider.test.ts:463:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/19]⎯
+
+ FAIL  tests/unit/codex-cli-provider.test.ts > CodexCliProvider > allows a workspace-writing request to disable automatic process retries
+AssertionError: expected [Function] to throw error including 'failed once' but got 'remainingTokens is not defined'
+
+Expected: "failed once"
+Received: "remainingTokens is not defined"
+
+ ❯ tests/unit/codex-cli-provider.test.ts:493:8
+    491|       logDir: path.join(root, 'logs'),
+    492|       maxRetries: 0,
+    493|     })).rejects.toThrow('failed once');
+       |        ^
+    494|
+    495|     expect(calls).toHaveLength(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/19]⎯
+
+ FAIL  tests/unit/codex-cli-provider.test.ts > CodexCliProvider > retries only up to the configured maximum
+AssertionError: expected [] to have a length of 2 but got +0
+
+- Expected
++ Received
+
+- 2
++ 0
+
+ ❯ tests/unit/codex-cli-provider.test.ts:504:19
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/19]⎯
+
+ FAIL  tests/unit/codex-cli-provider.test.ts > CodexCliProvider > redacts authentication material from event logs and final output
+CodexExecutionError: remainingTokens is not defined
+ ❯ CodexCliProvider.execute src/providers/codex-cli.ts:457:13
+    455|     } catch (error) {
+    456|       await execution.save(usage, attempts, uncertain || attempts > 0 …
+    457|       throw new CodexExecutionError(redactText(error instanceof Error …
+       |             ^
+    458|     } finally { await execution.release(); }
+    459|   }
+ ❯ tests/unit/codex-cli-provider.test.ts:522:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/19]⎯
+
+ FAIL  tests/unit/codex-cli-provider.test.ts > retains the exact sanitized invocation and resolved model in the unique execution directory
+CodexExecutionError: remainingTokens is not defined
+ ❯ CodexCliProvider.execute src/providers/codex-cli.ts:457:13
+    455|     } catch (error) {
+    456|       await execution.save(usage, attempts, uncertain || attempts > 0 …
+    457|       throw new CodexExecutionError(redactText(error instanceof Error …
+       |             ^
+    458|     } finally { await execution.release(); }
+    459|   }
+ ❯ tests/unit/codex-cli-provider.test.ts:587:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/19]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  19 failed | 28 passed (47)
+   Start at  17:32:50
+   Duration  865ms (transform 370ms, setup 0ms, import 755ms, tests 110ms, environment 0ms)
+

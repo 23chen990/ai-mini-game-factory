@@ -1,8 +1,9 @@
-import { mkdtemp, readFile, readdir, writeFile } from 'node:fs/promises';
+import { mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { OpenSourceResearchSchema } from '../../src/schemas/index.js';
 import { createFactory } from '../../src/factory.js';
 import { MockAgentProvider } from '../../src/providers/mock.js';
 import { MockQAProvider } from '../../src/providers/runtime-qa.js';
@@ -13,23 +14,10 @@ import { evaluateReferenceLevelRuntimeTrace } from '../../src/core/reference-lev
 import { ReferenceLevelRuntimeTraceSchema, type ReferenceLevelRuntimeTrace } from '../../src/schemas/reference-recording.js';
 import { lockProductionLine } from '../../src/core/production-lines.js';
 import { RunArchiveManifestSchema } from '../../src/core/run-preservation.js';
+import { ReferenceBehaviorAnalysisSchema, ReferenceEvidencePackSchema } from '../../src/schemas/reference-evidence.js';
+import { SyntheticReferenceProvider, writeSyntheticComparison } from '../fixtures/reference-comparison.js';
 
-const roots: string[] = [];
-async function fixture() {
-  const root = await mkdtemp(path.join(tmpdir(), 'factory-test-'));
-  roots.push(root);
-  const seed = path.join(root, 'seed.yaml');
-  await writeFile(seed, 'title: 妖怪夜市\ntheme: 夜市妖怪\ntemplate: idle-shop-v1\ndesignMode: prototype_tournament\npreferences:\n  tone: cozy\n');
-  return { root, seed, factory: createFactory({ root, mode: 'mock', qaMode: 'stub' }) };
-}
-afterEach(async () => { vi.restoreAllMocks(); const { rm } = await import('node:fs/promises'); await Promise.all(roots.splice(0).map((p) => rm(p, { recursive: true, force: true }))); });
-
-describe('orchestrator integration', () => {
-  it.each(['completed', 'pending'] as const)('preserves legacy preview contracts and assets before regenerating the resolved production line with a %s core lock', async (coreStatus) => {
-    const root = await mkdtemp(path.join(tmpdir(), 'factory-preview-preserve-'));
-    roots.push(root);
-    const seed = path.join(root, 'seed.yaml');
-    await writeFile(seed, `title: Factory Archive Fixture
+const syntheticReferenceSeed = `title: Factory Archive Fixture
 theme: original shop orders
 template: idle-shop-v1
 designMode: reference_reskin
@@ -51,8 +39,25 @@ referenceMechanics:
     originalUiLayout: true
     originalAudio: true
     originalTuningValues: true
-`);
-    const factory = createFactory({ root, mode: 'mock', qaMode: 'stub' });
+`;
+
+const roots: string[] = [];
+async function fixture() {
+  const root = await mkdtemp(path.join(tmpdir(), 'factory-test-'));
+  roots.push(root);
+  const seed = path.join(root, 'seed.yaml');
+  await writeFile(seed, 'title: 妖怪夜市\ntheme: 夜市妖怪\ntemplate: idle-shop-v1\ndesignMode: prototype_tournament\npreferences:\n  tone: cozy\n');
+  return { root, seed, factory: createFactory({ root, mode: 'mock', qaMode: 'stub' }) };
+}
+afterEach(async () => { vi.restoreAllMocks(); await Promise.all(roots.splice(0).map((p) => rm(p, { recursive: true, force: true }))); });
+
+describe('orchestrator integration', () => {
+  it.each(['completed', 'pending'] as const)('preserves legacy preview contracts and assets before regenerating the resolved production line with a %s core lock', async (coreStatus) => {
+    const root = await mkdtemp(path.join(tmpdir(), 'factory-preview-preserve-'));
+    roots.push(root);
+    const seed = path.join(root, 'seed.yaml');
+    await writeFile(seed, syntheticReferenceSeed);
+    const factory = createFactory({ root, mode: 'mock', qaMode: 'stub', agentProvider: new SyntheticReferenceProvider() });
     const runId = await factory.newRun(seed);
     const runRoot = path.join(root, 'runs', runId);
     await writeFile(path.join(runRoot, 'input/reference-report.txt'), 'Observed act, earn, upgrade, retry.');
@@ -144,15 +149,15 @@ referenceMechanics:
   });
 
   it('locks a human-designated reference and never asks agents to invent or tournament-test game ideas', async () => {
-    class NoIdeationProvider extends MockAgentProvider {
+    class NoIdeationProvider extends SyntheticReferenceProvider {
       openSourceWasDurableBeforeBlueprint = false;
       override async generateCompetitorResearch(): Promise<never> { throw new Error('reference mode must not run competitor ideation'); }
       override async generateIdeas(): Promise<never> { throw new Error('reference mode must not generate ideas'); }
       override async generateBlueprint(...args: Parameters<MockAgentProvider['generateBlueprint']>) {
         const context = args[1];
         if (context) {
-          const artifact = JSON.parse(await readFile(path.join(context.runRoot, 'artifacts/open-source-research.json'), 'utf8')) as { unknowns?: string[] };
-          this.openSourceWasDurableBeforeBlueprint = Array.isArray(artifact.unknowns) && artifact.unknowns.length === 0;
+          const artifact = OpenSourceResearchSchema.parse(JSON.parse(await readFile(path.join(context.runRoot, 'artifacts/open-source-research.json'), 'utf8')));
+          this.openSourceWasDurableBeforeBlueprint = artifact.outcome === 'REUSE_APPROVED' && artifact.selectedCandidateIds.includes('vite') && artifact.selectedCandidateIds.includes('phaser');
         }
         return super.generateBlueprint(...args);
       }
@@ -222,6 +227,11 @@ referenceMechanics:
     const reviewTask = await readFile(path.join(root, 'runs', runId, 'human/reference-fidelity-review-task.md'), 'utf8');
     expect(reviewTask).toContain(fidelityGate.buildHash);
     expect(reviewTask).toContain('reference-fidelity-review.json');
+    expect(reviewTask).toContain('ReferenceComparisonCaptureSchema');
+    expect(reviewTask).toContain('comparison.reference');
+    expect(reviewTask).toContain('comparison.candidate');
+    const comparisonTask = JSON.parse(await readFile(path.join(root, 'runs', runId, 'artifacts/reference-comparison-task.json'), 'utf8'));
+    expect(comparisonTask).toMatchObject({ stage: done.stage, owner: 'QAAgent', execution: 'waiting-handoff', buildHash: fidelityGate.buildHash });
     const coreSpec = JSON.parse(await readFile(path.join(root, 'runs', runId, 'artifacts/core-spec-lock.json'), 'utf8'));
     expect(coreSpec.acceptanceDimensions).toContain('reference:reference-spatial_relation');
     expect(done.stages.OPEN_SOURCE_RESEARCH).toBeUndefined();
@@ -249,11 +259,17 @@ referenceMechanics:
     await writeFile(artifact('runtime-product-gates.json'), JSON.stringify(deriveRuntimeProductGate({ naturalFlow: flow, runtimeWiredFiles: ['workspace/game/index.html'], browserEvidence: [image.path] })));
     await writeFile(artifact('reference-fidelity-review.json'), JSON.stringify({
       schemaVersion: 1, targetRunId: runId, workspace: path.join(runRoot, 'workspace/game'), contractHash: fidelityGate.contractHash, buildHash: fidelityGate.buildHash,
-      reviewer: 'QAAgent', authorIndependent: true,
+      reviewer: 'QAAgent', authorIndependent: true, reviewProtocol:'reference-comparison-v1',
       cases: contract.behaviorChecks.map((check) => ({ checkId: check.id, objectType: check.objectType, stateBranch: check.stateBranch, viewport: check.viewport,
         passed: true, perceptualPassed: true, observedStateChange: 'synthetic observed state', observedFeedback: 'synthetic visible feedback', screenshots: [image], trace })),
     }));
     vi.spyOn(MockQAProvider.prototype, 'playtest').mockImplementation(async () => { throw new Error('review resume must preserve the existing evidence'); });
+    const candidateOnly = await factory.resume(runId);
+    expect(candidateOnly).toMatchObject({stage:'QA',status:'waiting'});
+    expect(JSON.parse(await readFile(artifact('reference-fidelity-gate.json'),'utf8')).blockers).toContain('fidelity:reference-comparison-missing');
+    expect(JSON.parse(await readFile(artifact('reference-comparison-task.json'), 'utf8')).inputArtifacts).toContain('artifacts/reference-fidelity-review.json');
+    const review = JSON.parse(await readFile(artifact('reference-fidelity-review.json'),'utf8'));
+    await writeFile(artifact('reference-fidelity-review.json'),JSON.stringify({...review,comparison:await writeSyntheticComparison(runRoot,contract,fidelityGate.buildHash,image)}));
     const awaitingCoreDemo = await factory.resume(runId);
     expect(awaitingCoreDemo).toMatchObject({ stage: 'WAITING_FOR_HUMAN_PLAYTEST', status: 'waiting' });
     await expect(readFile(path.join(runRoot, 'artifacts/content-expansion.json'), 'utf8')).rejects.toThrow();
@@ -269,6 +285,42 @@ referenceMechanics:
     expect(JSON.parse(await readFile(artifact('reference-fidelity-gate.json'), 'utf8')).passed).toBe(true);
   });
 
+  it.each(['replica-preview', 'full-validation'] as const)('rechecks completed legacy research before continuing %s without repeating model work', async (pipelineMode) => {
+    const root = await mkdtemp(path.join(tmpdir(), 'factory-legacy-research-'));
+    roots.push(root);
+    const seed = path.join(root, 'seed.yaml');
+    await writeFile(seed, syntheticReferenceSeed);
+    const provider = new SyntheticReferenceProvider();
+    const factory = createFactory({ root, mode: 'mock', qaMode: 'stub', agentProvider: provider, operatingProfile: { pipelineMode } });
+    const runId = await factory.newRun(seed);
+    const runRoot = path.join(root, 'runs', runId);
+    await writeFile(path.join(runRoot, 'input/reference-report.txt'), 'Synthetic research fixture, not gameplay evidence.');
+    expect(await factory.run(runId)).toMatchObject({ stage: 'WAITING_FOR_REFERENCE_APPROVAL', status: 'waiting' });
+    await factory.approveReference(runId, { decision: 'APPROVE', notes: 'Synthetic legacy approval before Builder.' });
+
+    // Reproduce a legacy completed stage whose persisted contract predates comparison protocols.
+    const packPath = path.join(runRoot, 'artifacts/reference-evidence-pack.json');
+    const pack = ReferenceEvidencePackSchema.parse(JSON.parse(await readFile(packPath, 'utf8')));
+    for (const check of pack.behaviorChecks) delete check.comparison;
+    await writeFile(packPath, JSON.stringify(pack));
+    const analysisPath = path.join(runRoot, 'artifacts/reference-behavior-analysis.json');
+    const analysis = ReferenceBehaviorAnalysisSchema.parse(JSON.parse(await readFile(analysisPath, 'utf8')));
+    for (const check of analysis.behaviorChecks) delete check.comparison;
+    await writeFile(analysisPath, JSON.stringify(analysis));
+    await rm(path.join(runRoot, 'artifacts/artifact-ledger.json'));
+
+    const resumed = await factory.resume(runId);
+    expect(resumed).toMatchObject({ stage: 'REFERENCE_DEEP_RESEARCH', status: 'waiting' });
+    expect(resumed.stages.FULL_BUILD).toBeUndefined();
+    expect(resumed.stages.REFERENCE_DEEP_RESEARCH?.evidence.join(' ')).toContain('measurement-protocol-missing');
+    for (let retry = 0; retry < 4; retry++) {
+      const unchanged = await factory.resume(runId);
+      expect(unchanged).toMatchObject({ stage: 'REFERENCE_DEEP_RESEARCH', status: 'waiting' });
+      expect(unchanged.stages.REFERENCE_DEEP_RESEARCH?.attempts).toBe(resumed.stages.REFERENCE_DEEP_RESEARCH?.attempts);
+    }
+    expect(provider.researchCalls).toBe(1);
+  });
+
   it('runs the recording-level comparison during preview QA and binds it to the exact build', async () => {
     const root = await mkdtemp(path.join(tmpdir(), 'factory-recording-level-test-'));
     roots.push(root);
@@ -276,10 +328,12 @@ referenceMechanics:
     const sourceSeed = path.join(process.cwd(), 'examples/seeds/relic-revival-workshop.yaml');
     await writeFile(seed, (await readFile(sourceSeed, 'utf8')).replace('researchFiles: []', 'researchFiles: [input/reference-report.txt]').replace('preferences:\n', 'identity:\n  canonicalGameId: relic-revival\n  aliases: []\n  variantId: relic-revival-preview\n  variantOf: relic-revival\npreferences:\n'));
     let qaCalls = 0;
+    const syntheticReferenceProvider = new SyntheticReferenceProvider();
     const factory = createFactory({
       root,
       mode: 'mock',
       qaMode: 'stub',
+      agentProvider: syntheticReferenceProvider,
       enforceStageContracts: true,
       enforceExplicitStageContracts: true,
       allowSyntheticReferenceAnalysisForTests: true,
@@ -349,6 +403,9 @@ referenceMechanics:
     }));
 
     expect(await factory.run(runId)).toMatchObject({ stage: 'WAITING_FOR_REFERENCE_APPROVAL', status: 'waiting' });
+    expect(syntheticReferenceProvider.researchCalls).toBe(1);
+    expect(syntheticReferenceProvider.lastResearchInputPaths).toContain('artifacts/reference-behavior-media-plan.json');
+    expect(syntheticReferenceProvider.lastResearchInputPaths).not.toContain('artifacts/reference-frame-manifest.json');
     await factory.approveReference(runId, { decision: 'APPROVE', notes: 'recording semantics approved' });
     const paused = await factory.resume(runId);
 

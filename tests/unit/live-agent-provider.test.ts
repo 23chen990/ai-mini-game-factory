@@ -119,3 +119,10 @@ describe('OpenAIAgentProvider', () => {
     expect(result.metrics.calls).toBe(2);
   });
 });
+
+it('does not send a subscription display sentinel to the separately authorized API provider', async () => {
+ const runner = new FakeRunner([blueprint]);
+ const provider = new OpenAIAgentProvider({runner,apiKey:'test-key',model:'explicit-api-model'});
+ await provider.generateBlueprint(seed,{runRoot:'/tmp/run',outputPath:'/tmp/out.json',logDir:'/tmp/logs',inputPaths:[],stage:'BLUEPRINT',sandbox:'read-only',model:'account-default'});
+ expect(runner.inputs[0]).toMatchObject({model:'explicit-api-model'});
+});

@@ -1,0 +1,37 @@
+{
+  "browser": {
+    "mode": "launch",
+    "executable_path": "/Users/kker/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+    "headless": true
+  },
+  "start_url": {
+    "url": "http://127.0.0.1:63921"
+  },
+  "environment": {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    }
+  },
+  "actions": [
+    {
+      "step_id": "tap",
+      "action": "click",
+      "locator": {
+        "kind": "css",
+        "selector": "#tap"
+      },
+      "timeout_ms": 5000
+    }
+  ],
+  "capture": {
+    "at_end": [
+      "screenshot",
+      "dom"
+    ],
+    "events": [
+      "page-errors",
+      "console"
+    ]
+  }
+}

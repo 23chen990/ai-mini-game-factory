@@ -1,0 +1,21 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/reference-fidelity-qa.test.ts (47 tests | 1 failed) 357ms
+   × can independently validate an implementation discovery while retaining an unrelated unobserved branch as BLOCKED 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/reference-fidelity-qa.test.ts > can independently validate an implementation discovery while retaining an unrelated unobserved branch as BLOCKED
+TypeError: verifyImplementationDiscoveries is not a function
+ ❯ tests/unit/reference-fidelity-qa.test.ts:302:41
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 46 passed (47)
+   Start at  17:09:31
+   Duration  1.15s (transform 433ms, setup 0ms, import 667ms, tests 357ms, environment 0ms)
+

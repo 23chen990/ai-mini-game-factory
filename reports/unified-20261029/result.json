@@ -1,0 +1,223 @@
+{
+  "schemaVersion": 1,
+  "status": "PARTIAL_COST_CEILING_BLOCKED",
+  "targetRunId": "unified-agent-repair-20261028",
+  "workspace": "/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/runs/unified-agent-repair-20261028/workspace/game",
+  "route": "formal-fixer; existing FixerAgent.runFormal with explicit declared-package-script adapter for legacy prototype",
+  "modelEntry": {
+    "actualCliVersion": "0.147.0",
+    "otherInstalledCliVersion": "0.156.1",
+    "actualPath": "/usr/local/lib/node_modules/@openai/codex/bin/codex.js",
+    "authentication": "ChatGPT",
+    "modelArgument": "OMITTED",
+    "ignoreUserConfig": true,
+    "nativeFixerSessionModel": "gpt-5.6-sol",
+    "nativeModelEvidence": "session turn_context, not cached model catalogue",
+    "extraCreditsPurchased": false,
+    "paidApiUsed": false
+  },
+  "qa": {
+    "realCliCalls": 1,
+    "completed": true,
+    "attachedImages": 11,
+    "sourceCodeTools": false,
+    "oracleSupplied": false,
+    "autonomousImplementationDiscoveries": 1,
+    "verifiedIssueId": "replay",
+    "confirmedImplementationFalsePositives": 0,
+    "protocolDefects": [
+      "comparison points to image files rather than validated capture JSON; complete reference acceptance remains BLOCKED"
+    ],
+    "unobserved": [
+      "failure/recovery branch",
+      "precise source input timing",
+      "unsampled collisions/feedback",
+      "other gameplay viewport/engine branches"
+    ]
+  },
+  "fixer": {
+    "realCliCalls": 1,
+    "realSourceChange": true,
+    "changedSourceFiles": [
+      "src/main.ts",
+      "tests/level-ui.test.ts"
+    ],
+    "additionalEvidenceFile": "artifacts/formal-fix-replay.json",
+    "controllerSourceEdits": 0,
+    "attempt": 1,
+    "threadId": "01a186f1-3a5c-7732-a954-4970b99b1bcb",
+    "beforeBuildHash": "32a499d21023799d50a81236bf5461f28a35e09f210b8609ec037b22141ab5e0",
+    "afterBuildHash": "ede85e168a738465002ccd2b70a22a666f2840d873dbc61edade15c556ba3e5e",
+    "hostBuilds": 1,
+    "providerAcceptedCompletion": false,
+    "reason": "Token ceiling observed only at final turn.completed; CLI terminated and receipt remains uncertain."
+  },
+  "retest": {
+    "independentModelCalls": 0,
+    "independentStatus": "BLOCKED_COST_CEILING",
+    "hostNormalInputOnly": true,
+    "hostActions": 46,
+    "hostReplayObserved": true,
+    "screenshots": [
+      "qa-input/retest/01-ready.png",
+      "qa-input/retest/02-action.png",
+      "qa-input/retest/03-outcome.png",
+      "qa-input/retest/04-after-control.png",
+      "qa-input/retest/05-new-action.png",
+      "qa-input/retest/temporal/sequence-1.png",
+      "qa-input/retest/temporal/sequence-2.png",
+      "qa-input/retest/temporal/sequence-3.png"
+    ],
+    "interpretation": "Host verification is not an independent QA pass."
+  },
+  "gameRegression": {
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "testPass": 332,
+    "testFail": 3,
+    "testSkip": 1,
+    "sameFailuresReproducedBeforeFix": true,
+    "failures": [
+      "ASSET-MANIFEST-001 missing historical approved asset artifact",
+      "3D POC packaged build absent",
+      "L1-DENSE existing default-cadence density assertion"
+    ],
+    "build": "PASS",
+    "allAssertionsPreserved": true
+  },
+  "cost": {
+    "roundCliCalls": 2,
+    "roundCompletedTurns": 2,
+    "historicalRejectedCliCalls": 2,
+    "underlyingModelRequestCount": "UNKNOWN: CLI JSONL groups a tool loop into one turn",
+    "observedTokens": 1544137,
+    "cachedInputTokensIncludedInObserved": 1417216,
+    "observedTokensExcludingCachedInput": 126921,
+    "softStop": 200000,
+    "fixerSoftRemainderAtLaunch": 172675,
+    "cumulativeCliWallSecondsIncludingHistory": 280.326,
+    "monetaryCost": "UNKNOWN: subscription receipt supplies no billing amount; no extra paid API or credits authorized",
+    "newInferenceAfterStop": 0,
+    "mainChatTokens": "NOT_EXPOSED by CLI receipts",
+    "roundFirstQaToHostCaptureWallSeconds": 1109.406
+  },
+  "receipts": [
+    {
+      "schemaVersion": 1,
+      "executionId": "f8f927e8-348a-4ce3-9cd9-bed327db7f39",
+      "sequence": 1,
+      "stage": "QA",
+      "model": "account-default",
+      "status": "complete",
+      "usage": {
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "totalTokens": 0
+      },
+      "attempts": 1,
+      "maxTotalTokens": 200000,
+      "startedAt": "2026-10-28T09:20:03.489Z",
+      "finishedAt": "2026-10-28T09:20:12.970Z"
+    },
+    {
+      "schemaVersion": 1,
+      "executionId": "7388c51e-8ba6-44e5-9f35-0bee83820bcb",
+      "sequence": 2,
+      "stage": "QA",
+      "model": "gpt-6.1-sol",
+      "status": "complete",
+      "usage": {
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "totalTokens": 0
+      },
+      "attempts": 1,
+      "maxTotalTokens": 200000,
+      "startedAt": "2026-10-28T15:42:21.332Z",
+      "finishedAt": "2026-10-28T15:42:35.461Z"
+    },
+    {
+      "schemaVersion": 1,
+      "executionId": "6b74ddb8-4f3c-4e0c-8fd8-fc6e04d94c3d",
+      "sequence": 3,
+      "stage": "QA",
+      "model": "account-default",
+      "status": "complete",
+      "usage": {
+        "inputTokens": 23283,
+        "outputTokens": 4042,
+        "totalTokens": 27325
+      },
+      "attempts": 1,
+      "maxTotalTokens": 200000,
+      "startedAt": "2026-10-29T09:05:33.462Z",
+      "finishedAt": "2026-10-29T09:06:39.820Z"
+    },
+    {
+      "schemaVersion": 1,
+      "executionId": "76fca3b2-5086-429b-b38a-d8471dfa9b05",
+      "sequence": 4,
+      "stage": "FIX",
+      "model": "account-default",
+      "status": "uncertain",
+      "usage": {
+        "inputTokens": 1506738,
+        "outputTokens": 10074,
+        "totalTokens": 1516812
+      },
+      "attempts": 1,
+      "maxTotalTokens": 172675,
+      "startedAt": "2026-10-29T09:15:14.948Z",
+      "finishedAt": "2026-10-29T09:18:25.306Z"
+    }
+  ],
+  "nativeUsage": [
+    {
+      "executionId": "6b74ddb8-4f3c-4e0c-8fd8-fc6e04d94c3d",
+      "completedTurns": 1,
+      "rawUsage": [
+        {
+          "input_tokens": 23283,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 4042,
+          "reasoning_output_tokens": 785
+        }
+      ],
+      "toolCommands": 0
+    },
+    {
+      "executionId": "7388c51e-8ba6-44e5-9f35-0bee83820bcb",
+      "completedTurns": 0,
+      "rawUsage": [],
+      "toolCommands": 0
+    },
+    {
+      "executionId": "f8f927e8-348a-4ce3-9cd9-bed327db7f39",
+      "completedTurns": 0,
+      "rawUsage": [],
+      "toolCommands": 0
+    },
+    {
+      "executionId": "76fca3b2-5086-429b-b38a-d8471dfa9b05",
+      "completedTurns": 1,
+      "rawUsage": [
+        {
+          "input_tokens": 1506738,
+          "cached_input_tokens": 1417216,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 10074,
+          "reasoning_output_tokens": 2987
+        }
+      ],
+      "toolCommands": 18
+    }
+  ],
+  "productionAccepted": false,
+  "remainingP0": [
+    "Low-cost writer execution unproven: turn-end-only usage reporting let a 21-tool Fixer turn overrun the observed-token soft stop.",
+    "Independent model retest not run; current uncertain FIX receipt cannot be reused or cleared.",
+    "Three inherited sample engineering failures and missing full reference failure/replay causality remain release blockers."
+  ],
+  "recordedAt": "2026-10-29T09:35:01.840606+00:00"
+}

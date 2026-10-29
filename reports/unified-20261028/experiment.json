@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "runId": "unified-agent-repair-20261028",
+  "targetGame": "小李飞刀 · 海岸试炼（独立实验副本）",
+  "workspace": "/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/runs/unified-agent-repair-20261028/workspace/game",
+  "parentWorkspace": "/Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市/runs/slice-h5-candidate-20261027/workspace/game",
+  "status": "BLOCKED_UNSUPPORTED_SUBSCRIPTION_MODEL",
+  "beforeFixBuildHash": "32a499d21023799d50a81236bf5461f28a35e09f210b8609ec037b22141ab5e0",
+  "afterFixBuildHash": null,
+  "sampleConstruction": "Controller acting as BuilderAgent introduced a real missing replay callback in the isolated copy; no repair was performed. Oracle is outside QA run root.",
+  "firstQa": {
+    "initialRequest": "REJECTED account-default; original uncertain receipt preserved before explicit reconciliation.",
+    "authorizedReplacement": "REJECTED gpt-6.1-sol; model_not_found from ChatGPT endpoint.",
+    "candidateImages": 5,
+    "verifiedReferenceImages": 3,
+    "normalActions": 48,
+    "hiddenStateInjection": false,
+    "pixelObservationByModel": "NOT_ESTABLISHED: rejection before inference",
+    "completedIndependentReviews": 0,
+    "autonomousDiscoveries": 0,
+    "discoveryRate": null
+  },
+  "rootCauseJudgment": {
+    "gameplayFinding": "NONE: no independent finding exists, so no game repair was authorized.",
+    "experimentBlocker": "Native subscription rejects the configured alias. Browser failure, game failure or bad reference causality are not established by this API rejection."
+  },
+  "fixer": {
+    "calls": 0,
+    "actualCodeDiff": null,
+    "status": "NOT_EXECUTED"
+  },
+  "independentRetest": {
+    "calls": 0,
+    "status": "NOT_EXECUTED"
+  },
+  "referenceComparison": {
+    "referenceCaptureAuthority": "recording-observation",
+    "candidateCaptureAuthority": "normal-input",
+    "numericDualInputAcceptance": "UNKNOWN/BLOCKED",
+    "sourceLimitations": [
+      "Source recording has pixels, but no logged input timings. Exact causal source comparisons remain UNKNOWN.",
+      "Only candidate has fresh normal-input capture.",
+      "Screenshots and video are observations, not expected outcomes."
+    ]
+  },
+  "receipts": [
+    {
+      "schemaVersion": 1,
+      "executionId": "f8f927e8-348a-4ce3-9cd9-bed327db7f39",
+      "sequence": 1,
+      "stage": "QA",
+      "model": "account-default",
+      "status": "complete",
+      "usage": {
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "totalTokens": 0
+      },
+      "attempts": 1,
+      "maxTotalTokens": 200000,
+      "startedAt": "2026-10-28T09:20:03.489Z",
+      "finishedAt": "2026-10-28T09:20:12.970Z",
+      "elapsedMs": 9481,
+      "completedTurns": 0,
+      "errorEvents": [
+        {
+          "type": "error",
+          "message": "{\"type\":\"error\",\"status\":400,\"error\":{\"type\":\"invalid_request_error\",\"message\":\"The 'account-default' model is not supported when using Codex with a ChatGPT account.\",\"code\":\"model_not_found\"}}"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "executionId": "7388c51e-8ba6-44e5-9f35-0bee83820bcb",
+      "sequence": 2,
+      "stage": "QA",
+      "model": "gpt-6.1-sol",
+      "status": "uncertain",
+      "usage": {
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "totalTokens": 0
+      },
+      "attempts": 1,
+      "maxTotalTokens": 200000,
+      "startedAt": "2026-10-28T15:42:21.332Z",
+      "finishedAt": "2026-10-28T15:42:35.461Z",
+      "elapsedMs": 14129,
+      "completedTurns": 0,
+      "errorEvents": [
+        {
+          "type": "error",
+          "message": "{\"type\":\"error\",\"status\":400,\"error\":{\"type\":\"invalid_request_error\",\"message\":\"The 'gpt-6.1-sol' model is not supported when using Codex with a ChatGPT account.\",\"code\":\"model_not_found\"}}"
+        }
+      ]
+    }
+  ],
+  "cost": {
+    "requestAttempts": 2,
+    "completedInferenceTurns": 0,
+    "observedTokens": 0,
+    "cachedTokens": null,
+    "cachedTokenReason": "No completed-turn usage event was returned.",
+    "usageIsLowerBound": true,
+    "cumulativeExecutionWallMs": 23610,
+    "wallClockLimitMs": 1800000,
+    "humanIdleExcluded": true,
+    "observedTokenSoftStop": 200000,
+    "extraCreditsPurchased": false,
+    "paidApiUsed": false,
+    "nativeChatGptProviderForced": true,
+    "monetaryCost": "UNKNOWN; no billing API queried",
+    "mainChatUsage": "Outside CLI receipts; unknown",
+    "extraHumanAuthorizations": 1,
+    "authorization": "User allowed exactly one replacement initial QA; consumed. No further model requests launched."
+  },
+  "productionClaims": {
+    "engineeringControlPlane": "See verification.json; separate from model/product proof.",
+    "independentQaObservedPixels": false,
+    "autonomousDiscoveryProven": false,
+    "autonomousFixProven": false,
+    "referenceFirstNewGameProductionComplete": false,
+    "miniGamePlatformPackagesAccepted": false
+  },
+  "resumeRequirements": [
+    "Choose and authorize a model actually available to the native ChatGPT account; do not infer support from the custom cached catalog.",
+    "Review the unresolved second usage receipt before any further budgeted request.",
+    "A new bounded authorization is needed for another initial QA; unused Fixer/retest slots cannot be repurposed into blind retries."
+  ],
+  "recordedAt": "2026-10-28T15:55:32.862918+00:00",
+  "factoryVersionBinding": "Requests ran against the uncommitted integration state before the final merge/hardening commits. Exact raw schemas, request arguments, frozen observations and candidate build hashes are preserved. No model-inference claim is made for final factory HEAD."
+}

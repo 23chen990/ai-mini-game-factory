@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "FormalFixEvidence",
+  "route": "formal-fixer",
+  "targetGame": "unified-agent-repair-20261028",
+  "workspace": "/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/runs/unified-agent-repair-20261028/workspace/game",
+  "replacementThread": {
+    "logicalId": "workspace-fixer-replacement-20261029-replay",
+    "scope": "workspace/game",
+    "hostThreadId": null,
+    "note": "No Builder thread or host thread identifier was supplied; this FIX session is the workspace-scoped replacement."
+  },
+  "attempt": 1,
+  "issue": {
+    "id": "replay",
+    "severity": "error",
+    "message": "The visible replay control does not restart the completed level.",
+    "classification": "implementation",
+    "scope": "terminal replay UI activation only",
+    "acceptanceCriteria": [
+      "At 390x844, a natural click/touch on the visible replay button leaves the terminal branch.",
+      "The same level returns to its visible opening state with the terminal overlay hidden.",
+      "The click does not leak through as a gameplay flip input."
+    ]
+  },
+  "reproductionMatrix": {
+    "objectType": "replay-button",
+    "lifecycleStateBranch": "terminal-to-replay",
+    "rendererPath": "index.html -> src/main.ts -> ThreeWorldRenderer via syncAndRender",
+    "viewport": { "width": 390, "height": 844 },
+    "siblingBranchesAcceptedAsCoverage": false
+  },
+  "diagnosis": {
+    "observation": "The production replay click listener stopped propagation but invoked no reset handler; the separate restart button already invoked replayLevel.",
+    "causalHypothesis": "The missing replayLevel call leaves simulation and rendered terminal state unchanged after visible replay activation.",
+    "alternativesChecked": [
+      "The same-level replayLevel implementation already resets simulation, presentation, HUD, and frame clock.",
+      "The terminal replay button exists and is visible according to the validated QA evidence.",
+      "No level-data, geometry, or renderer-argument change is required."
+    ],
+    "unknowns": [
+      "Current-build natural and perceptual behavior remains unobserved until the host performs its single build and QA retest."
+    ]
+  },
+  "allowedFiles": [
+    "src/main.ts",
+    "tests/level-ui.test.ts",
+    "artifacts/formal-fix-replay.json"
+  ],
+  "changedFiles": [
+    {
+      "path": "src/main.ts",
+      "change": "The visible replay button click handler now calls replayLevel after stopping propagation.",
+      "sha256": "a5649300a90f92bf7d4789bf3bef127e1d2cc09daca3abe3117083f9c7b77899"
+    },
+    {
+      "path": "tests/level-ui.test.ts",
+      "change": "Added a production-entrypoint regression that requires both propagation shielding and replayLevel activation.",
+      "sha256": "9f8a3774c66f8465bb13351a4eb6e4518b12bca0728a47587b10c4464d739d1d"
+    }
+  ],
+  "changedTestGuarantee": {
+    "test": "QA-replay production replay control invokes the same-level reset handler",
+    "oldGuarantee": "LEVEL-UI-RED-001 only established that a replay control and replayLevel symbol existed; it did not prove the visible control invoked the handler.",
+    "currentDefaultOwner": "src/main.ts production index.html entrypoint",
+    "intentionalDataChange": "none"
+  },
+  "evidence": {
+    "implementation": {
+      "status": "PASS",
+      "red": "node --import tsx --test tests/level-ui.test.ts: 9 passed, 1 failed because the replay handler body contained only event.stopPropagation().",
+      "green": "node --import tsx --test tests/level-ui.test.ts: 10 passed, 0 failed.",
+      "lint": "PASS",
+      "typecheck": "PASS",
+      "fullUnitSuite": "332 passed, 3 failed, 1 skipped; all three failures are unrelated and were preserved."
+    },
+    "playerVisibleProduct": {
+      "status": "BLOCKED",
+      "visibleSignalRequired": "After replay activation, the completion overlay and terminal controls disappear and the opening level scene/HUD returns.",
+      "currentSourceScreenshot": null,
+      "blocker": "The sandbox denied localhost preview binding with EPERM, and dist was intentionally not rebuilt or edited because the host owns the single build.",
+      "priorFailureScreenshots": [
+        { "path": "qa-input/first/03-outcome.png", "sha256": "55a1dfefc9c476b6a4623a1ca70350adfa16410b7e60fab1a6e8d2f3c80c10c9" },
+        { "path": "qa-input/first/04-after-control.png", "sha256": "0e714dd4a16605b5b72337e38cc7b816f9e262b099394dd8c00ae542936f4f6f" },
+        { "path": "qa-input/first/05-after-second-control.png", "sha256": "0e714dd4a16605b5b72337e38cc7b816f9e262b099394dd8c00ae542936f4f6f" }
+      ]
+    },
+    "naturalTrigger": {
+      "status": "BLOCKED",
+      "naturalPlayerActionRequired": "Reach terminal through normal play at 390x844, then click/touch the visible replay button once.",
+      "currentSourceTrace": null,
+      "priorFailureTrace": { "path": "qa-input/first/trace-continuous.json", "sha256": "383617c92d2efbdd58935d61b1b56b1f141d317a6e169b167c9a5dc623c229b4" },
+      "retestRequirement": "Host QA must exercise the exact replay-button x terminal-to-replay x production-renderer x 390x844 matrix cell with normal input and capture timestamped trace plus before/after screenshots."
+    }
+  },
+  "build": {
+    "performed": false,
+    "reason": "The user reserved the single build for the host adapter."
+  },
+  "intentionallyOmittedContext": [
+    "conversation history",
+    "administrator oracle",
+    "reference speculation",
+    "unrelated factory worktree changes",
+    "unrelated gameplay and visual redesign"
+  ],
+  "remainingEvidenceGaps": [
+    "Host build result and build hash.",
+    "Fresh normal-input 390x844 replay trace from terminal to ready.",
+    "Player-visible before/after screenshots from the rebuilt production entrypoint.",
+    "Independent deterministic, natural-journey, and perceptual QA acceptance."
+  ]
+}

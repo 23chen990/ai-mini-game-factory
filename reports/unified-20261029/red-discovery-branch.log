@@ -1,0 +1,21 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/reference-fidelity-qa.test.ts (48 tests | 1 failed) 375ms
+   × cannot relabel a required retest as a fresh implementation discovery from a sibling branch 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/reference-fidelity-qa.test.ts > cannot relabel a required retest as a fresh implementation discovery from a sibling branch
+AssertionError: expected [] to include 'repair:branch-mismatch:reference-inpu…'
+ ❯ tests/unit/reference-fidelity-qa.test.ts:312:138
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 47 passed (48)
+   Start at  17:27:58
+   Duration  1.22s (transform 471ms, setup 0ms, import 706ms, tests 375ms, environment 0ms)
+

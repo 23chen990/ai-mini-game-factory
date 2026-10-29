@@ -1,0 +1,186 @@
+{
+  "recordedAt": "2026-10-19T10:57:21.359Z",
+  "scope": "Read-only existing-code inventory; not a component release or license/runtime approval",
+  "checkouts": [
+    "race-two-button owning checkout HEAD: e2ecde84f41566d6b9f9bb630c529467133c1057",
+    "race-fuel-iaa owning checkout HEAD: 658bb6f00c9436941958d11f4a43dd64e6e756a3",
+    "pelican-final-acceptance owning checkout HEAD: 5e7590558149a198ae67c82397db97600285a970"
+  ],
+  "sources": [
+    {
+      "checkout": "race-two-button",
+      "path": "runs/h5-qq-mobile-20261013/workspace/game/engine.mjs",
+      "sha256": "2558c7f3c9dce4090e9866ce66215cdb04f0204f08477b0db85a78860ec4f9e8",
+      "lines": [
+        8,
+        17,
+        19,
+        25,
+        32
+      ]
+    },
+    {
+      "checkout": "race-two-button",
+      "path": "runs/h5-qq-mobile-20261013/workspace/game/tests/engine.test.mjs",
+      "sha256": "83d77ee481f125e2d4f1fa0ab6eac889602e9728b6dc7f40c9818366eb0ccef4",
+      "lines": [
+        21,
+        41,
+        9
+      ]
+    },
+    {
+      "checkout": "race-two-button",
+      "path": "runs/h5-qq-mobile-20261013/workspace/game/main.mjs",
+      "sha256": "c47f751fb87d575c1a73a39e4b093919a979bc206eabc7cc3c4b59ee483eda1c",
+      "lines": [
+        24,
+        27,
+        29,
+        62,
+        66
+      ]
+    },
+    {
+      "checkout": "race-two-button",
+      "path": "runs/h5-qq-mobile-20261013/workspace/game/index.html",
+      "sha256": "b1943c72857a57db7de4c175fee3cbb6ba116b058d4bd64f1f8a3a7b0d87c953",
+      "lines": [
+        4392
+      ]
+    },
+    {
+      "checkout": "race-two-button",
+      "path": "runs/h5-qq-mobile-20261013/artifacts/qa-final.json",
+      "sha256": "93925766ea18c23c1b968590c2357c1b39824a57a68b6166d475f71a1285afcd",
+      "lines": [
+        1
+      ]
+    },
+    {
+      "checkout": "race-two-button",
+      "path": "runs/h5-qq-mobile-20261013/artifacts/runtime-product-gate.json",
+      "sha256": "bb813c34bc86e8811d87da225f94c1eb5e5956a321b430511f694b2a5bc98577",
+      "lines": [
+        1
+      ]
+    },
+    {
+      "checkout": "race-two-button",
+      "path": "runs/h5-qq-mobile-20261013/workspace/game/themes.mjs",
+      "sha256": "0753983c593393a79d95c05af2ec8208f5637a02577d78ebd1321028d39b1de3",
+      "lines": [
+        13,
+        15,
+        23
+      ]
+    },
+    {
+      "checkout": "race-two-button",
+      "path": "runs/h5-qq-mobile-20261013/workspace/game/tests/ads.test.mjs",
+      "sha256": "3d6e2799d96247932ff3ad3f56207235b00213ed70aac77f6b2378ff31aeff28",
+      "lines": [
+        5,
+        21,
+        41
+      ]
+    },
+    {
+      "checkout": "race-fuel-iaa",
+      "path": "runs/h5-qq-challenges-20261013/workspace/game/fuel.mjs",
+      "sha256": "3df8a73a6e9a61f2f28fa6ceaf50ce5f9c3f5186edc1e006a71ad0e60ff47ffd",
+      "lines": [
+        5,
+        25,
+        54
+      ]
+    },
+    {
+      "checkout": "race-fuel-iaa",
+      "path": "runs/h5-qq-challenges-20261013/workspace/game/main.mjs",
+      "sha256": "b18f36ae1ef2cf79c3cc4e88069fd94ce33218ed9f23d7192cecb63f09d3da9c",
+      "lines": [
+        82,
+        154,
+        160,
+        175
+      ]
+    },
+    {
+      "checkout": "race-fuel-iaa",
+      "path": "runs/h5-qq-challenges-20261013/workspace/game/engine.mjs",
+      "sha256": "d41a72f5057845d13077bf2bd46c8bb56afc14ce79acccf9687cc54722e72cf2",
+      "lines": [
+        45
+      ]
+    },
+    {
+      "checkout": "race-fuel-iaa",
+      "path": "runs/h5-qq-challenges-20261013/workspace/game/tests/challenges.test.mjs",
+      "sha256": "90763c0128b5717be17e49dd218e5c1d88d1515f8bbcb248907344f22469d6db",
+      "lines": [
+        21
+      ]
+    },
+    {
+      "checkout": "race-fuel-iaa",
+      "path": "runs/h5-qq-challenges-20261013/workspace/game/tests/ads.test.mjs",
+      "sha256": "3d6e2799d96247932ff3ad3f56207235b00213ed70aac77f6b2378ff31aeff28",
+      "lines": [
+        5
+      ]
+    },
+    {
+      "checkout": "race-fuel-iaa",
+      "path": "runs/h5-qq-challenges-20261013/artifacts/fuel-iaa/final-handoff.json",
+      "sha256": "dc8f51a158fd21fc92386824061b275601345c8da55f12a97e64d19c71286fa8",
+      "lines": [
+        1
+      ]
+    },
+    {
+      "checkout": "race-fuel-iaa",
+      "path": "runs/h5-qq-challenges-20261013/artifacts/fuel-iaa/natural-webkit/runtime-product-gate.json",
+      "sha256": "98300e4ad28ad13b714090c1aa8c0b4f24e557e0f966d1ecfcbc986b441996f6",
+      "lines": [
+        1
+      ]
+    },
+    {
+      "checkout": "pelican-final-acceptance",
+      "path": "runs/pelican-coast-v2-20261014/workspace/game/index.html",
+      "sha256": "84c968357921563b57bb63df85f55eca3c8f9b7d4e69ef92c2186676f083a441",
+      "lines": [
+        382,
+        383
+      ]
+    },
+    {
+      "checkout": "pelican-final-acceptance",
+      "path": "runs/pelican-coast-v2-20261014/final-acceptance-20261015/webkit-final/report.json",
+      "sha256": "83655ae39874042c26c19ff1c6e4e309024367a40e4d7ee9817706b173193ee2",
+      "lines": [
+        1
+      ]
+    },
+    {
+      "checkout": "pelican-final-acceptance",
+      "path": "runs/pelican-coast-v2-20261014/final-acceptance-20261015/final-ci-5e75905.json",
+      "sha256": "02e66ab576807aee1c010f9f4eb66b59891071e409bdf04d7649ea7c362d6223",
+      "lines": [
+        1
+      ]
+    }
+  ],
+  "sourceHashesRevalidated": true,
+  "newGameBuilds": 0,
+  "sourceFilesModified": 0,
+  "rightsReview": "NOT_PERFORMED",
+  "physicalDeviceAndLiveIaa": "NOT_RUN",
+  "limitations": [
+    "No source files, generated games, tests, browser, or build output were modified or rerun by this audit; QA references are summaries from existing run-local artifacts, not new verification.",
+    "No license/ownership review was performed. These sources are candidates for inspection, not approved for direct reuse; any implementation must use the required open-source research/ownership gate and avoid third-party expression, assets, names, UI, and tuning values.",
+    "No actual mobile background transition was proven across these runs: race-two-button's final QA/product gate records the background gate BLOCKED; race-fuel-iaa's final handoff records physicalPhone and liveIAA NOT_RUN; pelican coast final CI leaves backgroundAndStunUx BLOCKED_PENDING_USER_PHONE_REVIEW.",
+    "The pelican coast game is an inline bundled index.html with no game-local tests directory; its source line locations are coarse, and no asset, third-party source directory, secret, or full historical log was inspected."
+  ]
+}

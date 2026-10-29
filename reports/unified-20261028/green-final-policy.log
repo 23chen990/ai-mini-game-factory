@@ -1,0 +1,202 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/repair-policy.test.ts (9 tests | 7 failed) 12ms
+     × allows five distinct evidenced repairs within the production ceiling 6ms
+     × stops at a configured fix ceiling before the next provider call 1ms
+     × stops unchanged builds and repeated hypotheses before another provider call 0ms
+     × does not treat a new screenshot path, measured value or capture time as a new repair hypothesis 0ms
+   × has no implicit repair ceiling when neither operator ceiling is configured 1ms
+   × does not turn rewording the same issue into a distinct repair hypothesis 0ms
+   × admits a distinct evidence-backed causal hypothesis for the same still-open issue 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/repair-policy.test.ts > formal repair admission > allows five distinct evidenced repairs within the production ceiling
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "rootCause",
+      "hypothesis"
+    ],
+    "path": [
+      "issues",
+      0
+    ],
+    "message": "Unrecognized keys: \"rootCause\", \"hypothesis\""
+  }
+]
+ ❯ buildRepairHypothesis src/core/repair-policy.ts:35:33
+     33|     issues.length ? `QA issues: ${issues.map((issue) => `${issue.id} (…
+     34|   ].filter(Boolean).join('. ');
+     35|   return RepairHypothesisSchema.parse({
+       |                                 ^
+     36|     id: sha256Text(JSON.stringify(signature)),
+     37|     qaReportPath,
+ ❯ tests/unit/repair-policy.test.ts:38:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  tests/unit/repair-policy.test.ts > formal repair admission > stops at a configured fix ceiling before the next provider call
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "rootCause",
+      "hypothesis"
+    ],
+    "path": [
+      "issues",
+      0
+    ],
+    "message": "Unrecognized keys: \"rootCause\", \"hypothesis\""
+  }
+]
+ ❯ buildRepairHypothesis src/core/repair-policy.ts:35:33
+     33|     issues.length ? `QA issues: ${issues.map((issue) => `${issue.id} (…
+     34|   ].filter(Boolean).join('. ');
+     35|   return RepairHypothesisSchema.parse({
+       |                                 ^
+     36|     id: sha256Text(JSON.stringify(signature)),
+     37|     qaReportPath,
+ ❯ tests/unit/repair-policy.test.ts:51:24
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  tests/unit/repair-policy.test.ts > formal repair admission > stops unchanged builds and repeated hypotheses before another provider call
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "rootCause",
+      "hypothesis"
+    ],
+    "path": [
+      "issues",
+      0
+    ],
+    "message": "Unrecognized keys: \"rootCause\", \"hypothesis\""
+  }
+]
+ ❯ buildRepairHypothesis src/core/repair-policy.ts:35:33
+     33|     issues.length ? `QA issues: ${issues.map((issue) => `${issue.id} (…
+     34|   ].filter(Boolean).join('. ');
+     35|   return RepairHypothesisSchema.parse({
+       |                                 ^
+     36|     id: sha256Text(JSON.stringify(signature)),
+     37|     qaReportPath,
+ ❯ tests/unit/repair-policy.test.ts:68:24
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  tests/unit/repair-policy.test.ts > formal repair admission > does not treat a new screenshot path, measured value or capture time as a new repair hypothesis
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "rootCause",
+      "hypothesis"
+    ],
+    "path": [
+      "issues",
+      0
+    ],
+    "message": "Unrecognized keys: \"rootCause\", \"hypothesis\""
+  }
+]
+ ❯ buildRepairHypothesis src/core/repair-policy.ts:35:33
+     33|     issues.length ? `QA issues: ${issues.map((issue) => `${issue.id} (…
+     34|   ].filter(Boolean).join('. ');
+     35|   return RepairHypothesisSchema.parse({
+       |                                 ^
+     36|     id: sha256Text(JSON.stringify(signature)),
+     37|     qaReportPath,
+ ❯ tests/unit/repair-policy.test.ts:80:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  tests/unit/repair-policy.test.ts > has no implicit repair ceiling when neither operator ceiling is configured
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "rootCause",
+      "hypothesis"
+    ],
+    "path": [
+      "issues",
+      0
+    ],
+    "message": "Unrecognized keys: \"rootCause\", \"hypothesis\""
+  }
+]
+ ❯ buildRepairHypothesis src/core/repair-policy.ts:35:33
+     33|     issues.length ? `QA issues: ${issues.map((issue) => `${issue.id} (…
+     34|   ].filter(Boolean).join('. ');
+     35|   return RepairHypothesisSchema.parse({
+       |                                 ^
+     36|     id: sha256Text(JSON.stringify(signature)),
+     37|     qaReportPath,
+ ❯ tests/unit/repair-policy.test.ts:104:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+ FAIL  tests/unit/repair-policy.test.ts > does not turn rewording the same issue into a distinct repair hypothesis
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "rootCause",
+      "hypothesis"
+    ],
+    "path": [
+      "issues",
+      0
+    ],
+    "message": "Unrecognized keys: \"rootCause\", \"hypothesis\""
+  }
+]
+ ❯ buildRepairHypothesis src/core/repair-policy.ts:35:33
+     33|     issues.length ? `QA issues: ${issues.map((issue) => `${issue.id} (…
+     34|   ].filter(Boolean).join('. ');
+     35|   return RepairHypothesisSchema.parse({
+       |                                 ^
+     36|     id: sha256Text(JSON.stringify(signature)),
+     37|     qaReportPath,
+ ❯ tests/unit/repair-policy.test.ts:111:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
+
+ FAIL  tests/unit/repair-policy.test.ts > admits a distinct evidence-backed causal hypothesis for the same still-open issue
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "rootCause",
+      "hypothesis"
+    ],
+    "path": [
+      "issues",
+      0
+    ],
+    "message": "Unrecognized keys: \"rootCause\", \"hypothesis\""
+  }
+]
+ ❯ buildRepairHypothesis src/core/repair-policy.ts:35:33
+     33|     issues.length ? `QA issues: ${issues.map((issue) => `${issue.id} (…
+     34|   ].filter(Boolean).join('. ');
+     35|   return RepairHypothesisSchema.parse({
+       |                                 ^
+     36|     id: sha256Text(JSON.stringify(signature)),
+     37|     qaReportPath,
+ ❯ tests/unit/repair-policy.test.ts:118:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/7]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  7 failed | 16 passed (23)
+   Start at  23:49:35
+   Duration  714ms (transform 443ms, setup 0ms, import 703ms, tests 21ms, environment 0ms)
+

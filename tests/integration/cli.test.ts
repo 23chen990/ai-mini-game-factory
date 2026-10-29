@@ -6,9 +6,23 @@ import path from 'node:path';
 import { promisify } from 'node:util';
 import { expect, it } from 'vitest';
 import { referenceBehaviorChecks } from '../fixtures/reference-behavior.js';
+import { syntheticComparisonChecks } from '../fixtures/reference-comparison.js';
 
 const exec = promisify(execFile);
 const hash = (character: string) => `sha256:${character.repeat(64)}`;
+
+it('CLI starts reference intake without a hand-authored mechanic specification', async () => {
+  const root = await mkdtemp(path.join(tmpdir(), 'factory-cli-intake-'));
+  const brief = path.join(root, 'brief.json');
+  await writeFile(brief, JSON.stringify({ schemaVersion: 1, title: 'Moon Course', theme: 'Original night garden', source: { name: 'Authorized source', url: 'https://example.com/game' } }));
+  const env = { ...process.env, FACTORY_ROOT: root, FACTORY_MODE: 'mock' };
+  const created = await exec('pnpm', ['factory', 'new-reference', brief], { cwd: process.cwd(), env });
+  const runId = created.stdout.trim();
+  const run = await exec('pnpm', ['factory', 'run', runId], { cwd: process.cwd(), env });
+  expect(JSON.parse(run.stdout)).toMatchObject({ runId, runKind: 'reference-intake', stage: 'REFERENCE_DEEP_RESEARCH', status: 'waiting' });
+  const report = await exec('pnpm', ['factory', 'readiness', runId], { cwd: process.cwd(), env });
+  expect(JSON.parse(report.stdout)).toMatchObject({ candidate: { runId, status: 'UNFROZEN' }, dimensions: { codeCorrectness: { status: 'NOT_ASSESSED' }, experienceQuality: { status: 'NOT_ASSESSED' } } });
+});
 
 async function writeActionExperiment(file: string) {
   await writeFile(file, `${JSON.stringify({
@@ -75,7 +89,7 @@ it('CLI approves a human-locked reference without auto-resuming the run', async 
   await exec('pnpm', ['factory', 'run', runId], { cwd: process.cwd(), env });
   const packPath = path.join(root, 'runs', runId, 'artifacts/reference-evidence-pack.json');
   const pack = JSON.parse(await readFile(packPath, 'utf8'));
-  pack.behaviorChecks = referenceBehaviorChecks(pack.sourceFiles[0]);
+  pack.behaviorChecks = syntheticComparisonChecks(referenceBehaviorChecks(pack.sourceFiles[0]));
   await writeFile(packPath, JSON.stringify(pack));
   await exec('pnpm', ['factory', 'resume', runId], { cwd: process.cwd(), env });
 

@@ -1,4 +1,8 @@
+import { BUILDER_CONTINUATION_INSTRUCTION } from '../core/builder-continuation.js';
+import { REFERENCE_COMPARISON_RESEARCH_INSTRUCTION } from '../core/reference-comparison.js';
 import { Agent, run } from '@openai/agents';
+import { ReferenceIntakeDraftSchema, type ReferenceIntakeEvidence } from '../schemas/reference-intake.js';
+import { blockedReferenceIntakeDraft, REFERENCE_INTAKE_INSTRUCTION } from '../core/reference-intake.js';
 import { Codex } from '@openai/codex-sdk';
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -84,7 +88,8 @@ export class OpenAIAgentProvider implements AgentProvider {
 
   private async generate(name: string, instructions: string, input: unknown, schema: z.ZodType, context?: AgentExecutionContext): Promise<AgentProviderResult> {
     const safeContext = context ? safeExecutionContext(context) : undefined;
-    const model = safeContext?.model?.trim() || this.model;
+    const configured = safeContext?.model?.trim();
+    const model = configured === undefined || configured === 'account-default' ? this.model : configured;
     const rawResponses: unknown[] = [];
     const validationErrors: string[] = [];
     const usage = { inputTokens: 0, outputTokens: 0, totalTokens: 0 };
@@ -111,12 +116,19 @@ export class OpenAIAgentProvider implements AgentProvider {
     throw new ProviderOutputError(`${name} returned invalid structured output after ${MAX_AGENT_CALLS} calls`, { provider: 'openai-agents', model, calls: MAX_AGENT_CALLS, usage }, rawResponses, validationErrors);
   }
 
+  async draftReference(input: ReferenceIntakeEvidence, context?: AgentExecutionContext) {
+    if (context?.mediaInputs?.length || input.sources.some((source) => /\.(?:png|jpe?g|webp|mp4|mov)$/iu.test(source.path))) {
+      return { value: blockedReferenceIntakeDraft(input, 'This text-only provider cannot inspect reference pixels; use codex-account with verified visual inputs.'), metrics: { provider: 'openai-agents', model: this.model, calls: 0 } };
+    }
+    return this.generate('ReferenceResearchAgent', REFERENCE_INTAKE_INSTRUCTION, input, ReferenceIntakeDraftSchema, context);
+  }
+
   analyzeReferenceEvidence(pack: ReferenceEvidencePack, context?: AgentExecutionContext) {
     const hasFrames = context?.inputPaths.includes('artifacts/reference-frame-manifest.json') === true;
     const recordingInstruction = hasFrames
       ? 'The text-only OpenAI provider cannot inspect run-local frame pixels. Return a non-null BLOCKED levelReconstruction with this limitation as an explicit unknown; never infer frames from filenames.'
       : 'Return levelReconstruction as null because no verified frame manifest is present.';
-    return this.generate('ReferenceResearchAgent', `Read only the sanitized, run-bound reference evidence in the context packet. ${recordingInstruction} Convert observed behavior into exact QA cases for all five dimensions: input_state, spatial_relation, failure_recovery, feedback_sequence and terminal_replay. Every case must cite a source path, SHA-256 and precise locator already present in the supplied evidence pack; keep object type, lifecycle/state branch, natural player input, expected state change, causal spatial relationship, world/screen feedback anchor, ordered visible events and the observed mobile viewport explicit. Also produce failurePressureContract with source-bound observed versus inferred pressure, applicability, player signal, escalation, attributable failure, recovery/replay, implementation implications and a no-copy boundary. Each pressure evidence sourceRefs value must exactly match a source path or SHA-256 in the evidence pack. Separate observations, inferences and unknowns. Never turn unknowns into facts, and never copy tuning, names, assets, text or UI expression. Return BLOCKED when any required dimension or pressure rule lacks source evidence. Return only ReferenceBehaviorAnalysisSchema.`, pack, ReferenceBehaviorAnalysisSchema, context);
+    return this.generate('ReferenceResearchAgent', `Read only the sanitized, run-bound reference evidence in the context packet. ${recordingInstruction} Convert observed behavior into exact QA cases for all five dimensions: input_state, spatial_relation, failure_recovery, feedback_sequence and terminal_replay. Every case must cite a source path, SHA-256 and precise locator already present in the supplied evidence pack; keep object type, lifecycle/state branch, natural player input, expected state change, causal spatial relationship, world/screen feedback anchor, ordered visible events and the observed mobile viewport explicit. Also produce failurePressureContract with source-bound observed versus inferred pressure, applicability, player signal, escalation, attributable failure, recovery/replay, implementation implications and a no-copy boundary. Each pressure evidence sourceRefs value must exactly match a source path or SHA-256 in the evidence pack. Separate observations, inferences and unknowns. Never turn unknowns into facts, and never copy tuning, names, assets, text or UI expression. Return BLOCKED when any required dimension or pressure rule lacks source evidence. ${REFERENCE_COMPARISON_RESEARCH_INSTRUCTION} Return only ReferenceBehaviorAnalysisSchema.`, pack, ReferenceBehaviorAnalysisSchema, context);
   }
 
   generateCompetitorResearch(seed: Seed, context?: AgentExecutionContext) {
@@ -241,10 +253,11 @@ export class OpenAIImageProvider implements ImageProvider {
 
 export class OpenAICodexProvider implements CodexProvider {
   private readonly codex = new Codex();
-  async build(input: { workspace: string; blueprint: GameBlueprint; styleLock: StyleLock; assets: AssetManifest; template: string; gameplayRevision?: unknown; interactionContinuityContract?: unknown; context?: AgentExecutionContext }) {
+  async build(input: { workspace: string; blueprint: GameBlueprint; styleLock: StyleLock; assets: AssetManifest; assetSource?: string; template: string; gameplayRevision?: unknown; interactionContinuityContract?: unknown; context?: AgentExecutionContext }) {
     required(process.env.OPENAI_API_KEY, 'OPENAI_API_KEY');
     const execution = input.context ? safeExecutionContext({ ...input.context, stage: input.context.stage ?? 'FULL_BUILD', sandbox: input.context.sandbox ?? 'workspace-write' }) : undefined;
-    const model = execution?.model?.trim() || process.env.CODEX_MODEL;
+    const configured = execution?.model?.trim() ?? process.env.CODEX_MODEL;
+    const model = configured === 'account-default' ? undefined : configured;
     const thread = this.codex.startThread({ workingDirectory: input.workspace, skipGitRepoCheck: true, model, modelReasoningEffort: execution?.reasoning ?? 'max', sandboxMode: 'workspace-write', approvalPolicy: 'never', networkAccessEnabled: false });
     const fidelityInstruction = input.blueprint.designMode === 'reference_reskin'
       ? 'Perform maximum-fidelity core-mechanic reproduction across input-to-state transitions, core-loop order, progression topology, unlock dependencies, failure and recovery rules, and feedback timing bands. Treat competitor research as a behavioral contract, not a surface-style reference: reproduce the observed action-feedback-success/failure-retry loop and its failure-pressure structure. Identify whether pressure comes from hazards, timing, resource loss, wrong choices, pursuit, collapse, or another mechanism; preserve its signaling, escalation, attribution and recovery semantics. For physics-led interactions, validate natural fall motion with gravity, collision response, damping and readable settling across frame rates; tunneling, 3D mesh/collider penetration, explosive launch, teleporting or arbitrary velocity injection are acceptance failures. Use continuous collision detection or swept tests and assert contact poses remain outside floor/platform bounds. For any screenshot/repro, map object type × lifecycle/state branch × renderer path × viewport and verify the owning branch before fixing; sibling evidence is insufficient. Create a mechanic fidelity traceability matrix and add a regression test for every locked mechanic. Keep code, assets, names, text, UI layout, audio, and tuning values original.'
@@ -252,13 +265,14 @@ export class OpenAICodexProvider implements CodexProvider {
     const continuityInstruction = input.interactionContinuityContract
       ? 'For every declared interaction, emit machine-readable node facts (feedback visibility, actual action candidates, success successors, failure recovery and physical result) into the run artifact requested by the factory. Use fixed-step traces; never substitute geometry distance or a state label for an observed result.'
       : '';
-    await thread.run(`Modify only this generated game workspace. Implement the supplied validated blueprint/style/assets without broad rewrites. ${fidelityInstruction} ${continuityInstruction} ${builderUiAnimationInstruction()} Sanitized factory context:\n${JSON.stringify(execution?.contextPacket ?? {})}\nInputs:\n${JSON.stringify(builderInputWithUiAnimationStandard(input))}`);
+    await thread.run(`Modify only this generated game workspace. Implement the supplied validated blueprint/style/assets without broad rewrites. ${BUILDER_CONTINUATION_INSTRUCTION} ${fidelityInstruction} ${continuityInstruction} ${builderUiAnimationInstruction()} Sanitized factory context:\n${JSON.stringify(execution?.contextPacket ?? {})}\nInputs:\n${JSON.stringify(builderInputWithUiAnimationStandard(input))}`);
     return { threadId: thread.id ?? undefined, verificationMode: 'full' as const, metrics: { provider: 'openai-codex', model: model ?? 'account-default', calls: 1 } };
   }
   async fix(input: { workspace: string; threadId?: string; qaReport: QaReport; context?: AgentExecutionContext }) {
     required(process.env.OPENAI_API_KEY, 'OPENAI_API_KEY');
     const execution = input.context ? safeExecutionContext({ ...input.context, stage: input.context.stage ?? 'FIX', sandbox: input.context.sandbox ?? 'workspace-write' }) : undefined;
-    const model = execution?.model?.trim() || process.env.CODEX_MODEL;
+    const configured = execution?.model?.trim() ?? process.env.CODEX_MODEL;
+    const model = configured === 'account-default' ? undefined : configured;
     const thread = input.threadId ? this.codex.resumeThread(input.threadId, { model, sandboxMode: 'workspace-write', approvalPolicy: 'never', networkAccessEnabled: false }) : this.codex.startThread({ workingDirectory: input.workspace, skipGitRepoCheck: true, model, modelReasoningEffort: execution?.reasoning ?? 'max', sandboxMode: 'workspace-write', approvalPolicy: 'never', networkAccessEnabled: false });
     const continuityInstruction = input.qaReport.interactionContinuity
       ? 'When interaction continuity failed, repair the owning node layout, feedback predicate, candidate selection, successor or recovery relation first. Do not widen thresholds or remove the contract; add a regression test for the exact failed node/scenario.'

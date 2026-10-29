@@ -1,0 +1,384 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "historical cutting game isolated eval",
+  "workspace": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/workspace/r4",
+  "axes": {
+    "objectTypes": [
+      "replay button"
+    ],
+    "lifecycleStateBranches": [
+      "failed→replay",
+      "won→replay"
+    ],
+    "rendererPaths": [
+      "DOM hit-testing on green-r4-390 / single-launch-then-coast",
+      "DOM hit-testing on green-r4-390 / spaced-flips",
+      "DOM hit-testing on green-r4-390 / sustained-flips",
+      "DOM hit-testing on red2-r4-390 / single-launch-then-coast",
+      "DOM hit-testing on red2-r4-390 / spaced-flips",
+      "DOM hit-testing on red2-r4-390 / sustained-flips"
+    ],
+    "viewports": [
+      {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "label": "desktop-landscape",
+        "width": 1100,
+        "height": 720
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "natural-1",
+      "objectType": "replay button",
+      "lifecycleStateBranch": "failed→replay",
+      "rendererPath": "DOM hit-testing on red2-r4-390 / single-launch-then-coast",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "If naturally reached, replay must restart a playable level; no acceptance requires a particular input cadence to cause failure.",
+      "observed": "One launch landed/stopped without reaching a failed terminal; failure branch UNOBSERVED, not a product FAIL.",
+      "evidence": [
+        {
+          "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/red2-r4-390-390-single-launch-then-coast/blocked.png",
+          "sha256": "249265e33558b3cc91a2fda91ed9d582e1cf605966c1c6537f39d02152b66818",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/red2-r4-390-390-single-launch-then-coast/inputs.json",
+          "sha256": "f942780f8e8ae33e02b05860f3b7b938face3aebdb35ba6305bb3a766f055842",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "natural-2",
+      "objectType": "replay button",
+      "lifecycleStateBranch": "won→replay",
+      "rendererPath": "DOM hit-testing on red2-r4-390 / sustained-flips",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "REPRODUCED",
+      "expected": "If naturally reached, replay must restart a playable level; no acceptance requires a particular input cadence to cause failure.",
+      "observed": "Natural touch leaves completion panel visible.",
+      "evidence": [
+        {
+          "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/red2-r4-390-390-sustained-flips/after-replay.png",
+          "sha256": "34b1701caf7662045e720b47e52428160795352afa8a6d3e4f9c3b5df7203c35",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/red2-r4-390-390-sustained-flips/inputs.json",
+          "sha256": "9947cf6f5ff461b2f720523c36d821943f541b46db23314911006d60d85fa0b6",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "natural-3",
+      "objectType": "replay button",
+      "lifecycleStateBranch": "failed→replay",
+      "rendererPath": "DOM hit-testing on red2-r4-390 / single-launch-then-coast",
+      "viewport": {
+        "label": "desktop-landscape",
+        "width": 1100,
+        "height": 720
+      },
+      "status": "BLOCKED",
+      "expected": "If naturally reached, replay must restart a playable level; no acceptance requires a particular input cadence to cause failure.",
+      "observed": "One launch landed/stopped without reaching a failed terminal; failure branch UNOBSERVED, not a product FAIL.",
+      "evidence": [
+        {
+          "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/red2-r4-390-1100-single-launch-then-coast/blocked.png",
+          "sha256": "cdad0a84e8494ec7aceb1bc6aad9a701d482e4fd5284f72ace7b8eb948fb9cff",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/red2-r4-390-1100-single-launch-then-coast/inputs.json",
+          "sha256": "bae4e7e77b42270c44e7bbf3ab6ded7bfa55cce530d0540a31c41f6ce2b9bdea",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "natural-4",
+      "objectType": "replay button",
+      "lifecycleStateBranch": "won→replay",
+      "rendererPath": "DOM hit-testing on red2-r4-390 / sustained-flips",
+      "viewport": {
+        "label": "desktop-landscape",
+        "width": 1100,
+        "height": 720
+      },
+      "status": "REPRODUCED",
+      "expected": "If naturally reached, replay must restart a playable level; no acceptance requires a particular input cadence to cause failure.",
+      "observed": "Natural touch leaves completion panel visible.",
+      "evidence": [
+        {
+          "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/red2-r4-390-1100-sustained-flips/after-replay.png",
+          "sha256": "c02f4319cbb6616dabd2c2b35174730c010eea66035ef6908683134120909918",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/red2-r4-390-1100-sustained-flips/inputs.json",
+          "sha256": "2490c48983c656f2b043273c329a67131262de8ffe5c2004c690ea63c6be5b0e",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "natural-5",
+      "objectType": "replay button",
+      "lifecycleStateBranch": "failed→replay",
+      "rendererPath": "DOM hit-testing on green-r4-390 / single-launch-then-coast",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "If naturally reached, replay must restart a playable level; no acceptance requires a particular input cadence to cause failure.",
+      "observed": "One launch landed/stopped without reaching a failed terminal; failure branch UNOBSERVED, not a product FAIL.",
+      "evidence": [
+        {
+          "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/green-r4-390-390-single-launch-then-coast/blocked.png",
+          "sha256": "278bf74943b79515c52972271964ecd870764de2bba9529aff739ce89dd715bf",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/green-r4-390-390-single-launch-then-coast/inputs.json",
+          "sha256": "83ef96cbc258c0fdb17c5f42e5a697b527c99a32089509a98d4be76b4d2036a4",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "natural-6",
+      "objectType": "replay button",
+      "lifecycleStateBranch": "won→replay",
+      "rendererPath": "DOM hit-testing on green-r4-390 / sustained-flips",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "If naturally reached, replay must restart a playable level; no acceptance requires a particular input cadence to cause failure.",
+      "observed": "Natural touch resets to startup and renewed touch enters visible core play.",
+      "evidence": [
+        {
+          "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/green-r4-390-390-sustained-flips/after-replay.png",
+          "sha256": "1b75f8b94436782cb41aba4cab7f2729a39dd7619535cf8dc8c261461bfb8198",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/green-r4-390-390-sustained-flips/inputs.json",
+          "sha256": "d500e3586ca12857c868328f7c9ac2d93e02fcd1662def1db3d37044947e4e15",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "natural-7",
+      "objectType": "replay button",
+      "lifecycleStateBranch": "failed→replay",
+      "rendererPath": "DOM hit-testing on green-r4-390 / single-launch-then-coast",
+      "viewport": {
+        "label": "desktop-landscape",
+        "width": 1100,
+        "height": 720
+      },
+      "status": "BLOCKED",
+      "expected": "If naturally reached, replay must restart a playable level; no acceptance requires a particular input cadence to cause failure.",
+      "observed": "One launch landed/stopped without reaching a failed terminal; failure branch UNOBSERVED, not a product FAIL.",
+      "evidence": [
+        {
+          "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/green-r4-390-1100-single-launch-then-coast/blocked.png",
+          "sha256": "ca9b510036079e3cfc25ee59eed981cae9ddff5c29d6665aec0672cd0a829d11",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/green-r4-390-1100-single-launch-then-coast/inputs.json",
+          "sha256": "1e813f58241de978f164bb9cfa544056329b95b7ec0f3c3ee250f7494390f3f1",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "natural-8",
+      "objectType": "replay button",
+      "lifecycleStateBranch": "won→replay",
+      "rendererPath": "DOM hit-testing on green-r4-390 / sustained-flips",
+      "viewport": {
+        "label": "desktop-landscape",
+        "width": 1100,
+        "height": 720
+      },
+      "status": "PASS",
+      "expected": "If naturally reached, replay must restart a playable level; no acceptance requires a particular input cadence to cause failure.",
+      "observed": "Natural touch resets to startup and renewed touch enters visible core play.",
+      "evidence": [
+        {
+          "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/green-r4-390-1100-sustained-flips/after-replay.png",
+          "sha256": "ce8f4c143dc20ccb2529c41db9f292b1cc858749eceeec5ccebab8dfd4dd3a36",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/normal-validation-20261027-0918/green-r4-390-1100-sustained-flips/inputs.json",
+          "sha256": "0e897a5c4652bee1895f2cbec47f53b5550c40b3aefcaf0c65e42be727c857d7",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "natural-9",
+      "objectType": "replay button",
+      "lifecycleStateBranch": "won→replay",
+      "rendererPath": "DOM hit-testing on red2-r4-390 / spaced-flips",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "REPRODUCED",
+      "expected": "If naturally reached, replay must restart a playable level; no acceptance requires a particular input cadence to cause failure.",
+      "observed": "Natural touch leaves completion panel visible.",
+      "evidence": [
+        {
+          "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/spaced-validation-20261027-0921/red2-r4-390-390-spaced-flips/after-replay.png",
+          "sha256": "3f13386d6807e76765f4a063d06c4785a40a4252008c08f822b5378102168e9c",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/spaced-validation-20261027-0921/red2-r4-390-390-spaced-flips/inputs.json",
+          "sha256": "829d593b38407d8e113ac458b11d0ca38af048f6956114708af4b4b358d82e7f",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "natural-10",
+      "objectType": "replay button",
+      "lifecycleStateBranch": "won→replay",
+      "rendererPath": "DOM hit-testing on red2-r4-390 / spaced-flips",
+      "viewport": {
+        "label": "desktop-landscape",
+        "width": 1100,
+        "height": 720
+      },
+      "status": "REPRODUCED",
+      "expected": "If naturally reached, replay must restart a playable level; no acceptance requires a particular input cadence to cause failure.",
+      "observed": "Natural touch leaves completion panel visible.",
+      "evidence": [
+        {
+          "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/spaced-validation-20261027-0921/red2-r4-390-1100-spaced-flips/after-replay.png",
+          "sha256": "6923ae4a56b4022638657d253b964887eb65b89429564c5e8a5fb1d7331e32bb",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/spaced-validation-20261027-0921/red2-r4-390-1100-spaced-flips/inputs.json",
+          "sha256": "ce518b214577ea42738fadc2dd2d8387e1722392ed28b94b6367d23c1f38f5d3",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "natural-11",
+      "objectType": "replay button",
+      "lifecycleStateBranch": "won→replay",
+      "rendererPath": "DOM hit-testing on green-r4-390 / spaced-flips",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "If naturally reached, replay must restart a playable level; no acceptance requires a particular input cadence to cause failure.",
+      "observed": "Natural touch resets to startup and renewed touch enters visible core play.",
+      "evidence": [
+        {
+          "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/spaced-validation-20261027-0921/green-r4-390-390-spaced-flips/after-replay.png",
+          "sha256": "95f6b1817cc7b747ef613f0468ea58f9cdde21264b3df1e83ee2e506665a33f3",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/spaced-validation-20261027-0921/green-r4-390-390-spaced-flips/inputs.json",
+          "sha256": "891d15608281f65f8b9466dd67c42cce7489fadebbc9cd2e24f9f9b88aa82913",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "natural-12",
+      "objectType": "replay button",
+      "lifecycleStateBranch": "won→replay",
+      "rendererPath": "DOM hit-testing on green-r4-390 / spaced-flips",
+      "viewport": {
+        "label": "desktop-landscape",
+        "width": 1100,
+        "height": 720
+      },
+      "status": "PASS",
+      "expected": "If naturally reached, replay must restart a playable level; no acceptance requires a particular input cadence to cause failure.",
+      "observed": "Natural touch resets to startup and renewed touch enters visible core play.",
+      "evidence": [
+        {
+          "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/spaced-validation-20261027-0921/green-r4-390-1100-spaced-flips/after-replay.png",
+          "sha256": "25d26d0a3b129f338ad419cb0526206e367e4409e1fc8f5831489a0520c8874d",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/qa/spaced-validation-20261027-0921/green-r4-390-1100-spaced-flips/inputs.json",
+          "sha256": "9a392194cae17913c9580b8f2d76e8a5e1424524702f8d2ca9de19369ef0ab22",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "Controller replication: exact red trace response blocks won→replay in both viewports at two input cadences; exact repaired response permits replay at both viewports/cadences. This was already known and is NOT an autonomous discovery."
+  ],
+  "remainingGaps": [
+    "Failed terminal and its replay branch not observed in this fresh capture",
+    "No authorized independent QA/Fixer invocation this round",
+    "No independent perceptual acceptance",
+    "No new deterministic physics/persistence regression of frozen game",
+    "WeChat, Douyin, TapTap packages and mobile landscape not assessed"
+  ],
+  "createdAt": "2026-10-27T09:26:12.917925Z"
+}

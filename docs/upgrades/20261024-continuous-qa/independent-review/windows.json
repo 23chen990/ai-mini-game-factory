@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "candidateSha256": "c4cc3c427fc52c9f91f6229c9aea0ae7cfe8220341be521df6c807626d101aae",
+  "captureRoot": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture",
+  "windows": [
+    {
+      "session": "390-steady",
+      "video": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-steady/page@78a7bbabaf1848ba6fdd308c478815c8.webm",
+      "inputs": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-steady/inputs.jsonl",
+      "initialWindowMs": [
+        1021,
+        3621
+      ],
+      "firstReplayWindowMs": [
+        14882,
+        20182
+      ],
+      "timestamps": "Input ms relative navigation; video starts slightly before navigation. Inspect actual pixels, do not assume outcome from timing."
+    },
+    {
+      "session": "390-slow",
+      "video": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-slow/page@952df565aced6606a0f08d35ee6d4a74.webm",
+      "inputs": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-slow/inputs.jsonl",
+      "initialWindowMs": [
+        828,
+        3428
+      ],
+      "firstReplayWindowMs": [
+        11054,
+        16354
+      ],
+      "timestamps": "Input ms relative navigation; video starts slightly before navigation. Inspect actual pixels, do not assume outcome from timing."
+    },
+    {
+      "session": "1100-steady",
+      "video": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-steady/page@3150f9369372beb62466664eef9a2c60.webm",
+      "inputs": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-steady/inputs.jsonl",
+      "initialWindowMs": [
+        880,
+        3480
+      ],
+      "firstReplayWindowMs": [
+        15986,
+        21286
+      ],
+      "timestamps": "Input ms relative navigation; video starts slightly before navigation. Inspect actual pixels, do not assume outcome from timing."
+    },
+    {
+      "session": "1100-mixed",
+      "video": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-mixed/page@acd7fed5be690bd1b592f87264aa648f.webm",
+      "inputs": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-mixed/inputs.jsonl",
+      "initialWindowMs": [
+        3626,
+        6226
+      ],
+      "firstReplayWindowMs": [
+        11674,
+        16974
+      ],
+      "timestamps": "Input ms relative navigation; video starts slightly before navigation. Inspect actual pixels, do not assume outcome from timing."
+    }
+  ]
+}

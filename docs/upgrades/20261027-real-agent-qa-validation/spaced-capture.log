@@ -1,0 +1,4 @@
+{"version":"red2-r4-390","viewport":{"width":390,"height":844},"intent":"spaced-flips","terminalText":"关卡完成\n÷3\n分数 4\n点击“重玩”按钮 · 重新开始","replayRestarted":false,"blocked":null,"errors":[]}
+{"version":"red2-r4-390","viewport":{"width":1100,"height":720},"intent":"spaced-flips","terminalText":"关卡完成\n÷3\n分数 4\n点击“重玩”按钮 · 重新开始","replayRestarted":false,"blocked":null,"errors":[]}
+{"version":"green-r4-390","viewport":{"width":390,"height":844},"intent":"spaced-flips","terminalText":"关卡完成\n×1\n分数 18\n点击“重玩”按钮 · 重新开始","replayRestarted":true,"blocked":null,"errors":[]}
+{"version":"green-r4-390","viewport":{"width":1100,"height":720},"intent":"spaced-flips","terminalText":"关卡完成\n×0.5\n分数 4.5\n点击“重玩”按钮 · 重新开始","replayRestarted":true,"blocked":null,"errors":[]}

@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "scope": "shared-factory; generated game read-only",
+  "sourceRevision": "ed326beee233e73f206da0f37edb05525e2b640c",
+  "integrationRevision": "c025751a41cee4be867f2c3c24f98f142361ce67",
+  "pullRequest": "https://github.com/23chen990/ai-mini-game-factory/pull/73",
+  "ci": {
+    "url": "https://github.com/23chen990/ai-mini-game-factory/actions/runs/39935524987",
+    "headSha": "ed326beee233e73f206da0f37edb05525e2b640c",
+    "conclusion": "success",
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "testFiles": 190,
+    "testsPassed": 1202,
+    "testsFailed": 0,
+    "browserEngines": [
+      "Chromium",
+      "WebKit"
+    ],
+    "releaseRegistry": "PASS"
+  },
+  "local": {
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "firstFullRun": {
+      "passed": 1154,
+      "failed": 41,
+      "status": "FAILED_RETAINED",
+      "causes": [
+        "missing Playwright binaries in 39 browser-dependent tests",
+        "missing not-yet-written Agent corpus in one in-progress new CLI test",
+        "one Research fixture omitted newly required on-disk prerequisites; corrected without weakening assertions"
+      ]
+    },
+    "initialBrowserInstallation": "Optional local download stopped after CI proved complete pinned-engine suite; cached downloads retained",
+    "targetedRegressionTests": 79,
+    "cacheAndRepairRecoveryTests": 12
+  },
+  "logs": [
+    {
+      "path": "docs/upgrades/20261023/red-shared.log",
+      "sha256": "171cb67b421720212031ee55bbfb87f505a6c1f86ec94f88567e0ca81b8696af",
+      "committed": true
+    },
+    {
+      "path": "docs/upgrades/20261023/green-shared.log",
+      "sha256": "5d83bfa9205cb2f933798da8d904f9a8e14aba308635b2bb06414073aff0d3ee",
+      "committed": true
+    },
+    {
+      "path": "docs/upgrades/20261023/red-agent-eval.log",
+      "sha256": "7ef2dbc3314830ad93da3af13d84fd1c6aec96c0ff6edccdb795372d3f4040f5",
+      "committed": true
+    },
+    {
+      "path": "docs/upgrades/20261023/red-accounting-ceiling.log",
+      "sha256": "24494c77a6eb6643f5c26530abc5e15117e05bb8626b2ff6c532dffb11e75cff",
+      "committed": true
+    },
+    {
+      "path": "docs/upgrades/20261023/red-agent-cli.log",
+      "sha256": "77ba98cc471566bba0379be283130cbd1edda2292087d7e0b78aa93a7a8983af",
+      "committed": true
+    },
+    {
+      "path": "docs/upgrades/20261023/red-review.log",
+      "sha256": "9865a4226d8071b1a5c6145ead43df68224ab47c36ab422d68ff26954f0a547b",
+      "committed": true
+    },
+    {
+      "path": "docs/upgrades/20261023/green-review.log",
+      "sha256": "5e47355292022674309c93b069d3748b7b981491b39f7d556b3a2396d5bd2ad1",
+      "committed": true
+    },
+    {
+      "path": "docs/upgrades/20261023/lint.log",
+      "sha256": "050c69da23536758722729aeda55a8d0fb9d557495ef6d33d70873a3b64a71c1",
+      "committed": true
+    },
+    {
+      "path": "docs/upgrades/20261023/typecheck.log",
+      "sha256": "8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92",
+      "committed": true
+    },
+    {
+      "path": "docs/upgrades/20261023/legacy-readiness.log",
+      "sha256": "715c3f4c6612b6309671bb17ac1701979415f019f2839d89857ac8039655fe79",
+      "committed": true
+    },
+    {
+      "path": "docs/upgrades/20261023/full-tests-first.log",
+      "sha256": "e5dd8d6cb8c2776af5c782802962305028ded3643185ee7122b9d8f2d9ebbd20",
+      "committed": false
+    }
+  ],
+  "pilot": {
+    "targetGame": "mobile-slice-adaptation-20260830",
+    "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+    "candidateIndexSha256": "c4cc3c427fc52c9f91f6229c9aea0ae7cfe8220341be521df6c807626d101aae",
+    "sourceChanged": false,
+    "builds": 0,
+    "fixAttemptsStarted": 0,
+    "autonomousCoreDiscovery": "NOT_DEMONSTRATED",
+    "formalFix": "NOT_EXECUTED_BLOCKED",
+    "productAccepted": false,
+    "platformReleaseApproved": false
+  },
+  "subagentAndMainModelCostUsd": null,
+  "reverseEngineeringCalls": 0,
+  "unknowns": [
+    "No completed live/historical Agent quality sample",
+    "No executed eligible holdout",
+    "No full real production/repair chain",
+    "No validated monetary or human-cost saving"
+  ],
+  "newExternalProductionProviderTrials": 0,
+  "route": "shared-factory",
+  "contextIntentionallyOmitted": [
+    "unrelated generated-game branches and assets",
+    "entire legacy conversations",
+    "unreviewed adjacent media",
+    "model changes and new production agents/gates"
+  ]
+}

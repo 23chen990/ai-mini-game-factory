@@ -1,0 +1,312 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "blind-core-comparison-input-packet",
+  "createdAt": "2026-10-24",
+  "targetRunId": "mobile-slice-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+  "candidate": {
+    "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/qa-builds/attempt13/index.html",
+    "sha256": "c4cc3c427fc52c9f91f6229c9aea0ae7cfe8220341be521df6c807626d101aae"
+  },
+  "reference": {
+    "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/incoming/_2026-09-06-135548-3781e4dcd3d2.mp4",
+    "sha256": "3781e4dcd3d21094f186cf442b3ee30cddfbb2fbe68d87c5c7470a2c742bf75a",
+    "durationMs": 36492,
+    "viewport": {
+      "width": 1100,
+      "height": 720
+    },
+    "frameManifest": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/artifacts/reference-frame-manifest.json"
+  },
+  "sourceContractSha256": "0513fec6b10a2ad2cd778f6fb537a58fd5bbca2510da4d850e3059beccb9f9b2",
+  "scope": "首关默认入口完整片段，6行为×2视口=12项；不评价第二关、源码、发布平台包或整体游戏通过。当前用户授权本次新评测，不冒充历史批准或旧契约build绑定。",
+  "cases": [
+    {
+      "id": "L1-INPUT-390",
+      "dimension": "input_state",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "objectType": "blade + first cuttable",
+      "stateBranch": "startup → first input → airborne → contact",
+      "requirement": "普通点击触发可见起跳/翻转，刀接触首个可切物后切开；刀、目标和承托面在交互窗口内同时可辨。",
+      "eventOrder": [
+        "输入",
+        "起跳/翻转",
+        "接触",
+        "切开"
+      ],
+      "referenceWindowMs": [
+        0,
+        9000
+      ],
+      "basis": "verified-reference-window"
+    },
+    {
+      "id": "L1-GROUND-390",
+      "dimension": "spatial_relation",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "objectType": "visible tabletop base",
+      "stateBranch": "startup/intact → approach",
+      "requirement": "开场台面有可读厚度且底部接地，物品底部与可见承托面相接；接近和接触过程中该关系保持可解释。",
+      "eventOrder": [
+        "接触关系可见",
+        "刀接近时关系保持一致"
+      ],
+      "referenceWindowMs": null,
+      "basis": "product-requirement"
+    },
+    {
+      "id": "L1-STACK-390",
+      "dimension": "spatial_relation",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "objectType": "overlapping cuttable stack and its support",
+      "stateBranch": "intact overlap → blade contact → cut/separate → unsupported falling",
+      "requirement": "通过正常输入接触可见重叠可切物堆叠，观察原堆叠接触→切开/分离→失去承托部分下落→落地；另一次自然重玩尝试避开。",
+      "eventOrder": [
+        "接触",
+        "切开/散开",
+        "失去承托部分下落",
+        "落地"
+      ],
+      "referenceWindowMs": [
+        10000,
+        17000
+      ],
+      "basis": "reference-plus-product-requirement"
+    },
+    {
+      "id": "L1-REWARD-390",
+      "dimension": "feedback_sequence",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "objectType": "cut object + local reward + cumulative HUD",
+      "stateBranch": "contact → cut completed → separated → reward → total sync",
+      "requirement": "正常完成切割后观察物体分离→该切割世界位置的局部奖励动画→累计值同步，保留可辨的事件顺序。",
+      "eventOrder": [
+        "切割完成",
+        "物体分离",
+        "局部奖励动画",
+        "累计值同步"
+      ],
+      "referenceWindowMs": null,
+      "basis": "product-requirement"
+    },
+    {
+      "id": "L1-PRESSURE-390",
+      "dimension": "failure_recovery",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "objectType": "spike hazard + blade + failure/recovery affordance",
+      "stateBranch": "warning → approach → collision/avoidance → failure or recovery",
+      "requirement": "危险在接近前有与实际物体关联的可见信号；通过自然输入观察避开与接触的不同后果、可归因失败和可见重试返回可玩状态。",
+      "eventOrder": [
+        "提前显示危险",
+        "操作选择",
+        "可归因后果",
+        "恢复/重试"
+      ],
+      "referenceWindowMs": [
+        18000,
+        24000
+      ],
+      "basis": "verified-reference-window"
+    },
+    {
+      "id": "L1-FINISH-390",
+      "dimension": "terminal_replay",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "objectType": "finish outcome lanes + settlement + replay",
+      "stateBranch": "approach → choose/contact → world result → settlement → replay",
+      "requirement": "终点结果区域在选择前可见，正常选择/接触→世界结果反馈→结算，使用可见重玩入口返回可操作首关。",
+      "eventOrder": [
+        "结果区可见",
+        "接触/选择",
+        "世界结果反馈",
+        "结算",
+        "重玩"
+      ],
+      "referenceWindowMs": [
+        24000,
+        36492
+      ],
+      "basis": "reference-plus-product-requirement"
+    },
+    {
+      "id": "L1-INPUT-1100",
+      "dimension": "input_state",
+      "viewport": {
+        "width": 1100,
+        "height": 720
+      },
+      "objectType": "blade + first cuttable",
+      "stateBranch": "startup → first input → airborne → contact",
+      "requirement": "普通点击触发可见起跳/翻转，刀接触首个可切物后切开；刀、目标和承托面在交互窗口内同时可辨。",
+      "eventOrder": [
+        "输入",
+        "起跳/翻转",
+        "接触",
+        "切开"
+      ],
+      "referenceWindowMs": [
+        0,
+        9000
+      ],
+      "basis": "verified-reference-window"
+    },
+    {
+      "id": "L1-GROUND-1100",
+      "dimension": "spatial_relation",
+      "viewport": {
+        "width": 1100,
+        "height": 720
+      },
+      "objectType": "visible tabletop base",
+      "stateBranch": "startup/intact → approach",
+      "requirement": "开场台面有可读厚度且底部接地，物品底部与可见承托面相接；接近和接触过程中该关系保持可解释。",
+      "eventOrder": [
+        "接触关系可见",
+        "刀接近时关系保持一致"
+      ],
+      "referenceWindowMs": null,
+      "basis": "product-requirement"
+    },
+    {
+      "id": "L1-STACK-1100",
+      "dimension": "spatial_relation",
+      "viewport": {
+        "width": 1100,
+        "height": 720
+      },
+      "objectType": "overlapping cuttable stack and its support",
+      "stateBranch": "intact overlap → blade contact → cut/separate → unsupported falling",
+      "requirement": "通过正常输入接触可见重叠可切物堆叠，观察原堆叠接触→切开/分离→失去承托部分下落→落地；另一次自然重玩尝试避开。",
+      "eventOrder": [
+        "接触",
+        "切开/散开",
+        "失去承托部分下落",
+        "落地"
+      ],
+      "referenceWindowMs": [
+        10000,
+        17000
+      ],
+      "basis": "reference-plus-product-requirement"
+    },
+    {
+      "id": "L1-REWARD-1100",
+      "dimension": "feedback_sequence",
+      "viewport": {
+        "width": 1100,
+        "height": 720
+      },
+      "objectType": "cut object + local reward + cumulative HUD",
+      "stateBranch": "contact → cut completed → separated → reward → total sync",
+      "requirement": "正常完成切割后观察物体分离→该切割世界位置的局部奖励动画→累计值同步，保留可辨的事件顺序。",
+      "eventOrder": [
+        "切割完成",
+        "物体分离",
+        "局部奖励动画",
+        "累计值同步"
+      ],
+      "referenceWindowMs": null,
+      "basis": "product-requirement"
+    },
+    {
+      "id": "L1-PRESSURE-1100",
+      "dimension": "failure_recovery",
+      "viewport": {
+        "width": 1100,
+        "height": 720
+      },
+      "objectType": "spike hazard + blade + failure/recovery affordance",
+      "stateBranch": "warning → approach → collision/avoidance → failure or recovery",
+      "requirement": "危险在接近前有与实际物体关联的可见信号；通过自然输入观察避开与接触的不同后果、可归因失败和可见重试返回可玩状态。",
+      "eventOrder": [
+        "提前显示危险",
+        "操作选择",
+        "可归因后果",
+        "恢复/重试"
+      ],
+      "referenceWindowMs": [
+        18000,
+        24000
+      ],
+      "basis": "verified-reference-window"
+    },
+    {
+      "id": "L1-FINISH-1100",
+      "dimension": "terminal_replay",
+      "viewport": {
+        "width": 1100,
+        "height": 720
+      },
+      "objectType": "finish outcome lanes + settlement + replay",
+      "stateBranch": "approach → choose/contact → world result → settlement → replay",
+      "requirement": "终点结果区域在选择前可见，正常选择/接触→世界结果反馈→结算，使用可见重玩入口返回可操作首关。",
+      "eventOrder": [
+        "结果区可见",
+        "接触/选择",
+        "世界结果反馈",
+        "结算",
+        "重玩"
+      ],
+      "referenceWindowMs": [
+        24000,
+        36492
+      ],
+      "basis": "reference-plus-product-requirement"
+    }
+  ],
+  "provenanceLimits": [
+    "视频窗口是独立来源定位而非当前候选标签；需实际查看参考像素。",
+    "重玩是产品要求，所引用视频结尾窗口不单独证明重玩。",
+    "手机表现与任何精准数值参数不由1100×720录像证明。",
+    "无当前候选完整已知缺陷标签集，不计算检出率、漏检率或精确率。",
+    "This is positive requirement projection only; no current candidate gold labels exist. Do not read raw source contract or other QA history."
+  ],
+  "rubric": {
+    "PASS": "本case的所有要求与子路径均有正常输入的直接可见证据，无相反证据。",
+    "FAIL": "本case已自然到达的具体对象/状态有直接可见反例；给出视频/轨迹/截图及事件顺序。",
+    "UNOBSERVED": "分支未到达、关键对象或反馈不可读、记录不足；不计通过。已有明确反例可FAIL，同时列出其余未观察子路径。",
+    "overall": "12/12 PASS并有完整默认旅程才能称本限定范围通过；任一FAIL或UNOBSERVED阻断本范围通过。"
+  },
+  "method": {
+    "natural": "fresh browser and normal pointer/touch/keyboard input only; no source reading, test hooks, state injection, saves, fixtures, internal event dispatch or scripted game API.",
+    "referenceComparison": "先看完整36.492s来源片段，再玩候选；比较相同玩家意图和因果顺序而非照抄点击间隔。",
+    "viewportIsolation": "390×844与1100×720分别新context；不可互相替代。可在同一自然旅程中为多个case取证。",
+    "timeLimitMs": 600000,
+    "sessionLimitPerViewport": 4,
+    "controllerHints": 0,
+    "stop": "Hard watchdog closes contexts at acquisition deadline. Max four sessions per viewport. No extra runs beyond frozen plan. Deadline begins first candidate navigation, before that reference review and plan preparation are allowed. Reporting is separately bounded, no further gameplay during reporting.",
+    "acquisitionLimitMs": 600000,
+    "reportingLimitMs": 600000,
+    "continuous": "Execute compact uninterrupted ordinary-input sessions with continuous video and timestamped actions, not REPL commands separated by agent deliberation. Submit your reference observations and intended policy/schedule before running candidate. Policy may react only to visible pixels or visible DOM. No hidden game state or source. Freeze plan and runner before acquisition; do not alter between sessions. Capture visible replay and post-replay new input. Any unplanned branch remains unobserved."
+  },
+  "output": {
+    "directory": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/blind-continuous",
+    "result": "result.json",
+    "required": [
+      "12项逐项判定和证据",
+      "原始输入时间轨迹、浏览器视频、关键截图、console/page errors",
+      "自然旅程和感知独立结论",
+      "失败与未覆盖子路径、额外观察、人工介入",
+      "开始结束时间、实际成本未知写null",
+      "读过文件清单与标签暴露声明"
+    ]
+  }
+}

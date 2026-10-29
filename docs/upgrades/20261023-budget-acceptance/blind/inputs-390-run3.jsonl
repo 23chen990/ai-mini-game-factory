@@ -1,0 +1,5 @@
+{"elapsedMs":8561,"viewport":{"width":390,"height":844},"runNo":3,"type":"touch-tap","x":195,"y":380}
+{"elapsedMs":8587,"viewport":{"width":390,"height":844},"runNo":3,"type":"wait","ms":5000}
+{"elapsedMs":40084,"viewport":{"width":390,"height":844},"runNo":3,"type":"touch-tap","x":195,"y":380}
+{"elapsedMs":40113,"viewport":{"width":390,"height":844},"runNo":3,"type":"wait","ms":300}
+{"elapsedMs":58952,"viewport":{"width":390,"height":844},"runNo":3,"type":"wait","ms":700}

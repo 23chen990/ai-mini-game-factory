@@ -1,0 +1,493 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-27T09:26:14.055Z",
+  "sourceSessionLog": "/Users/kker/.codex/sessions/2026/10/27/rollout-2026-10-27T17-06-26-01a17c9c-636e-7213-97dc-559b9478055d.jsonl",
+  "billing": "ChatGPT team account quota; incremental monetary charge not derivable",
+  "subjectModelInvocationsThisRound": 0,
+  "subjectInputOutputCachedTokensThisRound": {
+    "input": 0,
+    "output": 0,
+    "cached": 0
+  },
+  "rootController": {
+    "observedUsageIncrements": 50,
+    "providerRequestCountExact": null,
+    "rawCumulativeUsage": {
+      "input_tokens": 6519970,
+      "cached_input_tokens": 6367104,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 36008,
+      "reasoning_output_tokens": 15242,
+      "total_tokens": 6555978
+    },
+    "uncachedInputTokens": 152866,
+    "elapsedMsToSnapshot": 1186383,
+    "lowerBoundOnly": true,
+    "increments": [
+      {
+        "at": "2026-10-27T09:06:43.607Z",
+        "delta": {
+          "input_tokens": 24316,
+          "cached_input_tokens": 6912,
+          "output_tokens": 238,
+          "total_tokens": 24554
+        }
+      },
+      {
+        "at": "2026-10-27T09:06:51.104Z",
+        "delta": {
+          "input_tokens": 34604,
+          "cached_input_tokens": 24320,
+          "output_tokens": 262,
+          "total_tokens": 34866
+        }
+      },
+      {
+        "at": "2026-10-27T09:07:05.726Z",
+        "delta": {
+          "input_tokens": 46577,
+          "cached_input_tokens": 34688,
+          "output_tokens": 296,
+          "total_tokens": 46873
+        }
+      },
+      {
+        "at": "2026-10-27T09:07:26.434Z",
+        "delta": {
+          "input_tokens": 53966,
+          "cached_input_tokens": 46720,
+          "output_tokens": 419,
+          "total_tokens": 54385
+        }
+      },
+      {
+        "at": "2026-10-27T09:07:45.994Z",
+        "delta": {
+          "input_tokens": 60667,
+          "cached_input_tokens": 54144,
+          "output_tokens": 548,
+          "total_tokens": 61215
+        }
+      },
+      {
+        "at": "2026-10-27T09:07:56.614Z",
+        "delta": {
+          "input_tokens": 71096,
+          "cached_input_tokens": 61056,
+          "output_tokens": 298,
+          "total_tokens": 71394
+        }
+      },
+      {
+        "at": "2026-10-27T09:08:15.638Z",
+        "delta": {
+          "input_tokens": 75308,
+          "cached_input_tokens": 71168,
+          "output_tokens": 517,
+          "total_tokens": 75825
+        }
+      },
+      {
+        "at": "2026-10-27T09:08:21.462Z",
+        "delta": {
+          "input_tokens": 75843,
+          "cached_input_tokens": 75648,
+          "output_tokens": 170,
+          "total_tokens": 76013
+        }
+      },
+      {
+        "at": "2026-10-27T09:08:30.040Z",
+        "delta": {
+          "input_tokens": 81534,
+          "cached_input_tokens": 75776,
+          "output_tokens": 281,
+          "total_tokens": 81815
+        }
+      },
+      {
+        "at": "2026-10-27T09:08:47.422Z",
+        "delta": {
+          "input_tokens": 92898,
+          "cached_input_tokens": 81664,
+          "output_tokens": 541,
+          "total_tokens": 93439
+        }
+      },
+      {
+        "at": "2026-10-27T09:09:09.933Z",
+        "delta": {
+          "input_tokens": 100576,
+          "cached_input_tokens": 93312,
+          "output_tokens": 587,
+          "total_tokens": 101163
+        }
+      },
+      {
+        "at": "2026-10-27T09:09:20.572Z",
+        "delta": {
+          "input_tokens": 101197,
+          "cached_input_tokens": 100992,
+          "output_tokens": 424,
+          "total_tokens": 101621
+        }
+      },
+      {
+        "at": "2026-10-27T09:09:48.914Z",
+        "delta": {
+          "input_tokens": 105739,
+          "cached_input_tokens": 101504,
+          "output_tokens": 882,
+          "total_tokens": 106621
+        }
+      },
+      {
+        "at": "2026-10-27T09:10:10.329Z",
+        "delta": {
+          "input_tokens": 109190,
+          "cached_input_tokens": 106496,
+          "output_tokens": 704,
+          "total_tokens": 109894
+        }
+      },
+      {
+        "at": "2026-10-27T09:10:18.180Z",
+        "delta": {
+          "input_tokens": 117693,
+          "cached_input_tokens": 109696,
+          "output_tokens": 277,
+          "total_tokens": 117970
+        }
+      },
+      {
+        "at": "2026-10-27T09:10:38.182Z",
+        "delta": {
+          "input_tokens": 120747,
+          "cached_input_tokens": 117760,
+          "output_tokens": 610,
+          "total_tokens": 121357
+        }
+      },
+      {
+        "at": "2026-10-27T09:10:47.931Z",
+        "delta": {
+          "input_tokens": 127595,
+          "cached_input_tokens": 121216,
+          "output_tokens": 188,
+          "total_tokens": 127783
+        }
+      },
+      {
+        "at": "2026-10-27T09:10:55.742Z",
+        "delta": {
+          "input_tokens": 129282,
+          "cached_input_tokens": 127616,
+          "output_tokens": 150,
+          "total_tokens": 129432
+        }
+      },
+      {
+        "at": "2026-10-27T09:11:00.602Z",
+        "delta": {
+          "input_tokens": 129632,
+          "cached_input_tokens": 129280,
+          "output_tokens": 79,
+          "total_tokens": 129711
+        }
+      },
+      {
+        "at": "2026-10-27T09:11:06.187Z",
+        "delta": {
+          "input_tokens": 129805,
+          "cached_input_tokens": 129536,
+          "output_tokens": 122,
+          "total_tokens": 129927
+        }
+      },
+      {
+        "at": "2026-10-27T09:11:18.535Z",
+        "delta": {
+          "input_tokens": 131368,
+          "cached_input_tokens": 129792,
+          "output_tokens": 122,
+          "total_tokens": 131490
+        }
+      },
+      {
+        "at": "2026-10-27T09:11:36.682Z",
+        "delta": {
+          "input_tokens": 134072,
+          "cached_input_tokens": 131328,
+          "output_tokens": 539,
+          "total_tokens": 134611
+        }
+      },
+      {
+        "at": "2026-10-27T09:11:55.812Z",
+        "delta": {
+          "input_tokens": 135220,
+          "cached_input_tokens": 134400,
+          "output_tokens": 645,
+          "total_tokens": 135865
+        }
+      },
+      {
+        "at": "2026-10-27T09:12:26.263Z",
+        "delta": {
+          "input_tokens": 136688,
+          "cached_input_tokens": 135680,
+          "output_tokens": 959,
+          "total_tokens": 137647
+        }
+      },
+      {
+        "at": "2026-10-27T09:12:44.621Z",
+        "delta": {
+          "input_tokens": 139107,
+          "cached_input_tokens": 137472,
+          "output_tokens": 593,
+          "total_tokens": 139700
+        }
+      },
+      {
+        "at": "2026-10-27T09:13:26.071Z",
+        "delta": {
+          "input_tokens": 141459,
+          "cached_input_tokens": 139520,
+          "output_tokens": 1792,
+          "total_tokens": 143251
+        }
+      },
+      {
+        "at": "2026-10-27T09:13:35.429Z",
+        "delta": {
+          "input_tokens": 143311,
+          "cached_input_tokens": 143104,
+          "output_tokens": 139,
+          "total_tokens": 143450
+        }
+      },
+      {
+        "at": "2026-10-27T09:13:56.617Z",
+        "delta": {
+          "input_tokens": 143586,
+          "cached_input_tokens": 143360,
+          "output_tokens": 517,
+          "total_tokens": 144103
+        }
+      },
+      {
+        "at": "2026-10-27T09:14:05.689Z",
+        "delta": {
+          "input_tokens": 144401,
+          "cached_input_tokens": 144000,
+          "output_tokens": 384,
+          "total_tokens": 144785
+        }
+      },
+      {
+        "at": "2026-10-27T09:14:41.358Z",
+        "delta": {
+          "input_tokens": 145442,
+          "cached_input_tokens": 144640,
+          "output_tokens": 1384,
+          "total_tokens": 146826
+        }
+      },
+      {
+        "at": "2026-10-27T09:14:56.142Z",
+        "delta": {
+          "input_tokens": 147195,
+          "cached_input_tokens": 146688,
+          "output_tokens": 478,
+          "total_tokens": 147673
+        }
+      },
+      {
+        "at": "2026-10-27T09:15:19.693Z",
+        "delta": {
+          "input_tokens": 148766,
+          "cached_input_tokens": 147584,
+          "output_tokens": 647,
+          "total_tokens": 149413
+        }
+      },
+      {
+        "at": "2026-10-27T09:15:53.767Z",
+        "delta": {
+          "input_tokens": 149832,
+          "cached_input_tokens": 149248,
+          "output_tokens": 1306,
+          "total_tokens": 151138
+        }
+      },
+      {
+        "at": "2026-10-27T09:16:07.913Z",
+        "delta": {
+          "input_tokens": 151197,
+          "cached_input_tokens": 151040,
+          "output_tokens": 438,
+          "total_tokens": 151635
+        }
+      },
+      {
+        "at": "2026-10-27T09:16:25.930Z",
+        "delta": {
+          "input_tokens": 152231,
+          "cached_input_tokens": 151552,
+          "output_tokens": 550,
+          "total_tokens": 152781
+        }
+      },
+      {
+        "at": "2026-10-27T09:17:19.324Z",
+        "delta": {
+          "input_tokens": 154965,
+          "cached_input_tokens": 152704,
+          "output_tokens": 2575,
+          "total_tokens": 157540
+        }
+      },
+      {
+        "at": "2026-10-27T09:17:34.401Z",
+        "delta": {
+          "input_tokens": 157600,
+          "cached_input_tokens": 157440,
+          "output_tokens": 446,
+          "total_tokens": 158046
+        }
+      },
+      {
+        "at": "2026-10-27T09:18:07.598Z",
+        "delta": {
+          "input_tokens": 163957,
+          "cached_input_tokens": 157952,
+          "output_tokens": 690,
+          "total_tokens": 164647
+        }
+      },
+      {
+        "at": "2026-10-27T09:18:23.951Z",
+        "delta": {
+          "input_tokens": 165120,
+          "cached_input_tokens": 164480,
+          "output_tokens": 346,
+          "total_tokens": 165466
+        }
+      },
+      {
+        "at": "2026-10-27T09:19:31.395Z",
+        "delta": {
+          "input_tokens": 165954,
+          "cached_input_tokens": 165376,
+          "output_tokens": 1934,
+          "total_tokens": 167888
+        }
+      },
+      {
+        "at": "2026-10-27T09:20:19.847Z",
+        "delta": {
+          "input_tokens": 168887,
+          "cached_input_tokens": 167680,
+          "output_tokens": 1247,
+          "total_tokens": 170134
+        }
+      },
+      {
+        "at": "2026-10-27T09:20:58.549Z",
+        "delta": {
+          "input_tokens": 170414,
+          "cached_input_tokens": 169984,
+          "output_tokens": 912,
+          "total_tokens": 171326
+        }
+      },
+      {
+        "at": "2026-10-27T09:21:24.798Z",
+        "delta": {
+          "input_tokens": 171957,
+          "cached_input_tokens": 171136,
+          "output_tokens": 668,
+          "total_tokens": 172625
+        }
+      },
+      {
+        "at": "2026-10-27T09:22:13.398Z",
+        "delta": {
+          "input_tokens": 175331,
+          "cached_input_tokens": 172416,
+          "output_tokens": 1076,
+          "total_tokens": 176407
+        }
+      },
+      {
+        "at": "2026-10-27T09:22:26.904Z",
+        "delta": {
+          "input_tokens": 178311,
+          "cached_input_tokens": 176384,
+          "output_tokens": 353,
+          "total_tokens": 178664
+        }
+      },
+      {
+        "at": "2026-10-27T09:22:55.469Z",
+        "delta": {
+          "input_tokens": 180093,
+          "cached_input_tokens": 178560,
+          "output_tokens": 1167,
+          "total_tokens": 181260
+        }
+      },
+      {
+        "at": "2026-10-27T09:24:03.682Z",
+        "delta": {
+          "input_tokens": 181431,
+          "cached_input_tokens": 181248,
+          "output_tokens": 1971,
+          "total_tokens": 183402
+        }
+      },
+      {
+        "at": "2026-10-27T09:24:33.775Z",
+        "delta": {
+          "input_tokens": 183640,
+          "cached_input_tokens": 183296,
+          "output_tokens": 754,
+          "total_tokens": 184394
+        }
+      },
+      {
+        "at": "2026-10-27T09:25:02.293Z",
+        "delta": {
+          "input_tokens": 184589,
+          "cached_input_tokens": 184320,
+          "output_tokens": 753,
+          "total_tokens": 185342
+        }
+      },
+      {
+        "at": "2026-10-27T09:26:14.055Z",
+        "delta": {
+          "input_tokens": 185581,
+          "cached_input_tokens": 185216,
+          "output_tokens": 3030,
+          "total_tokens": 188611
+        }
+      }
+    ]
+  },
+  "cacheAccounting": "cached_input_tokens is part of input_tokens; total=input+output; snapshots are NOT summed",
+  "moneyUsd": null,
+  "creditsPurchased": 0,
+  "newResearchCalls": 0,
+  "newModelRetries": 0,
+  "humanGameplayInputs": 0,
+  "humanDefectHints": 0,
+  "pendingBudgetQuestion": true,
+  "notes": [
+    "Snapshot excludes subsequent finalization and final reply",
+    "Root controller usage is real and not presented as zero-model task cost",
+    "Provider retries not separately exposed remain unknown",
+    "Shared account quota changes are not exclusively attributable to this task"
+  ]
+}

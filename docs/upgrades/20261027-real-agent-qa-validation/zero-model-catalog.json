@@ -1,0 +1,284 @@
+{
+  "schemaVersion": 1,
+  "modelCalls": 0,
+  "initialization": {
+    "id": 1,
+    "result": {
+      "userAgent": "factory-no-model-audit/0.147.0 (Mac OS 26.7.1; arm64) dumb (factory-no-model-audit; 1.0.0)",
+      "codexHome": "/Users/kker/.codex",
+      "platformFamily": "unix",
+      "platformOs": "macos"
+    }
+  },
+  "catalog": {
+    "id": 2,
+    "result": {
+      "data": [
+        {
+          "id": "gpt-reserve",
+          "model": "gpt-reserve",
+          "upgrade": null,
+          "upgradeInfo": null,
+          "availabilityNux": null,
+          "displayName": "GPT-Reserve",
+          "description": "Fast and affordable agentic coding model.",
+          "modelSpecialty": null,
+          "hidden": true,
+          "supportedReasoningEfforts": [
+            {
+              "reasoningEffort": "low",
+              "description": "Fast responses with lighter reasoning"
+            },
+            {
+              "reasoningEffort": "medium",
+              "description": "Balances speed and reasoning depth for everyday tasks"
+            },
+            {
+              "reasoningEffort": "high",
+              "description": "Greater reasoning depth for complex problems"
+            },
+            {
+              "reasoningEffort": "xhigh",
+              "description": "Extra high reasoning depth for complex problems"
+            },
+            {
+              "reasoningEffort": "max",
+              "description": "Maximum reasoning depth for the hardest problems"
+            }
+          ],
+          "defaultReasoningEffort": "medium",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "supportsPersonality": false,
+          "additionalSpeedTiers": [
+            "fast"
+          ],
+          "serviceTiers": [
+            {
+              "id": "priority",
+              "name": "Fast",
+              "description": "1.5x speed, increased usage"
+            }
+          ],
+          "defaultServiceTier": "priority",
+          "isDefault": false
+        },
+        {
+          "id": "gpt-5.6-sol",
+          "model": "gpt-5.6-sol",
+          "upgrade": null,
+          "upgradeInfo": null,
+          "availabilityNux": null,
+          "displayName": "GPT-5.6-Sol",
+          "description": "Older generation workhorse model.",
+          "modelSpecialty": null,
+          "hidden": false,
+          "supportedReasoningEfforts": [
+            {
+              "reasoningEffort": "low",
+              "description": "Fast responses with lighter reasoning"
+            },
+            {
+              "reasoningEffort": "medium",
+              "description": "Balances speed and reasoning depth for everyday tasks"
+            },
+            {
+              "reasoningEffort": "high",
+              "description": "Greater reasoning depth for complex problems"
+            },
+            {
+              "reasoningEffort": "xhigh",
+              "description": "Extra high reasoning depth for complex problems"
+            },
+            {
+              "reasoningEffort": "max",
+              "description": "Maximum reasoning depth for the hardest problems"
+            },
+            {
+              "reasoningEffort": "ultra",
+              "description": "Maximum reasoning with automatic task delegation"
+            }
+          ],
+          "defaultReasoningEffort": "medium",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "supportsPersonality": false,
+          "additionalSpeedTiers": [
+            "fast"
+          ],
+          "serviceTiers": [
+            {
+              "id": "priority",
+              "name": "Fast",
+              "description": "1.5x speed, increased usage"
+            }
+          ],
+          "defaultServiceTier": null,
+          "isDefault": true
+        },
+        {
+          "id": "gpt-5.6-terra",
+          "model": "gpt-5.6-terra",
+          "upgrade": null,
+          "upgradeInfo": null,
+          "availabilityNux": null,
+          "displayName": "GPT-5.6-Terra",
+          "description": "Older balanced model for straightforward work.",
+          "modelSpecialty": null,
+          "hidden": false,
+          "supportedReasoningEfforts": [
+            {
+              "reasoningEffort": "low",
+              "description": "Fast responses with lighter reasoning"
+            },
+            {
+              "reasoningEffort": "medium",
+              "description": "Balances speed and reasoning depth for everyday tasks"
+            },
+            {
+              "reasoningEffort": "high",
+              "description": "Greater reasoning depth for complex problems"
+            },
+            {
+              "reasoningEffort": "xhigh",
+              "description": "Extra high reasoning depth for complex problems"
+            },
+            {
+              "reasoningEffort": "max",
+              "description": "Maximum reasoning depth for the hardest problems"
+            },
+            {
+              "reasoningEffort": "ultra",
+              "description": "Maximum reasoning with automatic task delegation"
+            }
+          ],
+          "defaultReasoningEffort": "medium",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "supportsPersonality": false,
+          "additionalSpeedTiers": [
+            "fast"
+          ],
+          "serviceTiers": [
+            {
+              "id": "priority",
+              "name": "Fast",
+              "description": "1.5x speed, increased usage"
+            }
+          ],
+          "defaultServiceTier": null,
+          "isDefault": false
+        },
+        {
+          "id": "gpt-5.6-luna",
+          "model": "gpt-5.6-luna",
+          "upgrade": null,
+          "upgradeInfo": null,
+          "availabilityNux": null,
+          "displayName": "GPT-5.6-Luna",
+          "description": "Older fast and efficient model.",
+          "modelSpecialty": null,
+          "hidden": false,
+          "supportedReasoningEfforts": [
+            {
+              "reasoningEffort": "low",
+              "description": "Fast responses with lighter reasoning"
+            },
+            {
+              "reasoningEffort": "medium",
+              "description": "Balances speed and reasoning depth for everyday tasks"
+            },
+            {
+              "reasoningEffort": "high",
+              "description": "Greater reasoning depth for complex problems"
+            },
+            {
+              "reasoningEffort": "xhigh",
+              "description": "Extra high reasoning depth for complex problems"
+            },
+            {
+              "reasoningEffort": "max",
+              "description": "Maximum reasoning depth for the hardest problems"
+            }
+          ],
+          "defaultReasoningEffort": "medium",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "supportsPersonality": false,
+          "additionalSpeedTiers": [
+            "fast"
+          ],
+          "serviceTiers": [
+            {
+              "id": "priority",
+              "name": "Fast",
+              "description": "1.5x speed, increased usage"
+            }
+          ],
+          "defaultServiceTier": null,
+          "isDefault": false
+        },
+        {
+          "id": "codex-auto-review",
+          "model": "codex-auto-review",
+          "upgrade": null,
+          "upgradeInfo": null,
+          "availabilityNux": null,
+          "displayName": "Codex Auto Review",
+          "description": "Automatic approval review model for Codex.",
+          "modelSpecialty": null,
+          "hidden": true,
+          "supportedReasoningEfforts": [
+            {
+              "reasoningEffort": "low",
+              "description": "Fast responses with lighter reasoning"
+            },
+            {
+              "reasoningEffort": "medium",
+              "description": "Balances speed and reasoning depth for everyday tasks"
+            },
+            {
+              "reasoningEffort": "high",
+              "description": "Greater reasoning depth for complex problems"
+            },
+            {
+              "reasoningEffort": "xhigh",
+              "description": "Extra high reasoning depth for complex problems"
+            },
+            {
+              "reasoningEffort": "max",
+              "description": "Maximum reasoning depth for the hardest problems"
+            }
+          ],
+          "defaultReasoningEffort": "medium",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "supportsPersonality": false,
+          "additionalSpeedTiers": [
+            "fast"
+          ],
+          "serviceTiers": [
+            {
+              "id": "priority",
+              "name": "Fast",
+              "description": "1.5x speed, increased usage"
+            }
+          ],
+          "defaultServiceTier": "priority",
+          "isDefault": false
+        }
+      ],
+      "nextCursor": null
+    }
+  }
+}

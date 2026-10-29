@@ -1,0 +1,91 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/codex-budget-process.test.ts (26 tests | 2 failed | 24 skipped) 4072ms
+     × reports signal permission failure with usage and no retry (budgeted=true) 2015ms
+     × reports signal permission failure with usage and no retry (budgeted=false) 2056ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/codex-budget-process.test.ts > Codex observed-token stop with real controlled processes > reports signal permission failure with usage and no retry (budgeted=true)
+ FAIL  tests/unit/codex-budget-process.test.ts > Codex observed-token stop with real controlled processes > reports signal permission failure with usage and no retry (budgeted=false)
+AssertionError: expected 'Error: termination failure did not se…' to match /termination-failed.*EPERM/su
+
+- Expected:
+/termination-failed.*EPERM/su
+
++ Received:
+"Error: termination failure did not settle"
+
+ ❯ tests/unit/codex-budget-process.test.ts:52:29
+     50|     try {
+     51|       const error = await Promise.race([pending, new Promise((resolve)…
+     52|       expect(String(error)).toMatch(/termination-failed.*EPERM/su);
+       |                             ^
+     53|       expect(error).toMatchObject({ usage: { totalTokens: 40 }, attemp…
+     54|       expect(f.calls()).toBe(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯
+
+Vitest caught 2 unhandled errors during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+Error: kill EPERM
+ ❯ process.<anonymous> tests/unit/codex-budget-process.test.ts:46:80
+     44|     const originalKill = process.kill.bind(process);
+     45|     const signal = vi.spyOn(process, 'kill').mockImplementation((pid, …
+     46|       if (f.children.some((child) => -child.pid! === pid)) throw Objec…
+       |                                                                                ^
+     47|       return originalKill(pid, name);
+     48|     });
+ ❯ process.kill ../../factory-agent-eval-v4/%E5%A6%96%E6%80%AA%E5%A4%9C%E5%B8%82/node_modules/.pnpm/@vitest+spy@4.1.11/node_modules/@vitest/spy/dist/index.js:332:34
+ ❯ kill src/providers/codex-cli.ts:253:25
+ ❯ terminate src/providers/codex-cli.ts:260:9
+ ❯ inspectLine src/providers/codex-cli.ts:267:28
+ ❯ Socket.<anonymous> src/providers/codex-cli.ts:277:11
+ ❯ Socket.emit node:events:508:28
+ ❯ addChunk node:internal/streams/readable:563:12
+ ❯ readableAddChunkPushByteMode node:internal/streams/readable:514:3
+ ❯ Socket.Readable.push node:internal/streams/readable:394:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'EPERM' }
+This error originated in "tests/unit/codex-budget-process.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "reports signal permission failure with usage and no retry (budgeted=true)". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+Error: kill EPERM
+ ❯ process.<anonymous> tests/unit/codex-budget-process.test.ts:46:80
+     44|     const originalKill = process.kill.bind(process);
+     45|     const signal = vi.spyOn(process, 'kill').mockImplementation((pid, …
+     46|       if (f.children.some((child) => -child.pid! === pid)) throw Objec…
+       |                                                                                ^
+     47|       return originalKill(pid, name);
+     48|     });
+ ❯ process.kill ../../factory-agent-eval-v4/%E5%A6%96%E6%80%AA%E5%A4%9C%E5%B8%82/node_modules/.pnpm/@vitest+spy@4.1.11/node_modules/@vitest/spy/dist/index.js:332:34
+ ❯ kill src/providers/codex-cli.ts:253:25
+ ❯ terminate src/providers/codex-cli.ts:260:9
+ ❯ Timeout._onTimeout src/providers/codex-cli.ts:272:38
+ ❯ listOnTimeout node:internal/timers:605:17
+ ❯ processTimers node:internal/timers:541:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'EPERM' }
+This error originated in "tests/unit/codex-budget-process.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "reports signal permission failure with usage and no retry (budgeted=false)". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 24 skipped (26)
+     Errors  2 errors
+   Start at  15:55:40
+   Duration  5.00s (transform 402ms, setup 0ms, import 819ms, tests 4.07s, environment 0ms)
+

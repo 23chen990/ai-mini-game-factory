@@ -34,14 +34,14 @@ export const ReferenceFrameManifestSchema = z.object({
     evidenceId: Text,
     path: RunRelativePath,
     sha256: Sha256,
-    mediaType: z.enum(['video/mp4', 'video/quicktime']),
+    mediaType: z.enum(['video/mp4', 'video/quicktime', 'image/png-sequence']),
     durationMs: z.number().int().positive(),
     width: z.number().int().positive(),
     height: z.number().int().positive(),
   }).strict(),
   extraction: z.object({
     version: z.literal(2),
-    engine: z.enum(['AVFoundation', 'injected-test-extractor']),
+    engine: z.enum(['AVFoundation', 'injected-test-extractor', 'playwright-screenshot']),
     samplingFps: z.number().positive().max(60),
     maxFrames: z.number().int().positive().max(3_600),
     requestedFrameCount: z.number().int().nonnegative(),
@@ -76,6 +76,26 @@ export const ReferenceFrameManifestSchema = z.object({
   }
 });
 export type ReferenceFrameManifest = z.infer<typeof ReferenceFrameManifestSchema>;
+
+/** Exact bounded visual subset supplied to one real Research invocation.
+ * Unsampled frames remain reference timeline metadata, not observed pixels. */
+export const ReferenceResearchMediaPlanSchema = z.object({
+  schemaVersion: z.literal(1),
+  artifactType: z.literal('reference-research-media-plan'),
+  purpose: z.enum(['reference-intake', 'reference-behavior']),
+  sourceManifestSha256: Sha256.nullable(),
+  /** Source timeline length is metadata, not evidence that all events were observed. */
+  sourceDurationMs: z.number().int().positive().nullable().optional(),
+  selectedContactSheetRanges: z.array(z.object({ id: Text, startMs: z.number().int().nonnegative(), endMs: z.number().int().nonnegative() }).strict()).max(4).optional(),
+  selectedDetailFrameTimes: z.array(z.object({ id: Text, atMs: z.number().int().nonnegative() }).strict()).max(6).optional(),
+  available: z.object({ contactSheets: z.number().int().nonnegative(), frames: z.number().int().nonnegative(), directImages: z.number().int().nonnegative() }).strict(),
+  selectedContactSheetIds: z.array(Text),
+  selectedDetailFrameIds: z.array(Text),
+  media: z.array(EvidenceFile).max(8),
+  coverage: z.literal('BOUNDED_SAMPLE_NOT_FULL_VISUAL_COVERAGE'),
+  omittedVisualFiles: z.number().int().nonnegative(),
+}).strict();
+export type ReferenceResearchMediaPlan = z.infer<typeof ReferenceResearchMediaPlanSchema>;
 
 export const REFERENCE_LEVEL_PHASES = ['ready', 'input', 'interaction', 'aftermath', 'terminal', 'replay'] as const;
 export const ReferenceLevelPhaseSchema = z.enum(REFERENCE_LEVEL_PHASES);

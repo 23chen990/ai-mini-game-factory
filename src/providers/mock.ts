@@ -1,3 +1,4 @@
+import { blockedReferenceIntakeDraft } from '../core/reference-intake.js';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { sha256File, sha256Text } from '../core/files.js';
@@ -7,6 +8,9 @@ import { ReferenceFrameManifestSchema, ReferenceLevelReconstructionSchema, type 
 import type { GameplayIdea, IdeaGeneration, LowCostFilter, PlaytestTournament } from '../schemas/gameplay-experiment.js';
 
 export class MockAgentProvider implements AgentProvider {
+  async draftReference(input: import('../schemas/reference-intake.js').ReferenceIntakeEvidence): Promise<import('./interfaces.js').AgentProviderResult> {
+    return { value: blockedReferenceIntakeDraft(input, 'Mock provider cannot observe a reference game; use codex-account or supply a validated fixture provider.'), metrics: { provider: 'mock', model: 'mock', calls: 0 } };
+  }
   async analyzeReferenceEvidence(pack: ReferenceEvidencePack, context?: AgentExecutionContext): Promise<AgentProviderResult> {
     const source = pack.sourceFiles[0];
     if (!source) return { value: { schemaVersion: 1, targetRunId: pack.targetRunId, behaviorChecks: [], observations: [], inferences: [], unknowns: ['No bound reference source is available for behavior analysis.'], levelReconstruction: null, status: 'BLOCKED' }, metrics: { provider: 'mock', model: 'deterministic', calls: 0 } };
@@ -41,7 +45,10 @@ export class MockAgentProvider implements AgentProvider {
       noCopyBoundary: ['Do not copy third-party names, assets, UI, audio, content, or numeric tuning.'],
     };
     let levelReconstruction = null;
-    if (context?.inputPaths.includes('artifacts/reference-frame-manifest.json')) {
+    // Synthetic orchestration fixtures may read run-local ground truth to
+    // fabricate a known-valid comparison contract. This is MOCK ONLY and is
+    // never evidence that the real Research agent observed unselected frames.
+    if (context?.inputPaths.includes('artifacts/reference-frame-manifest.json') || context?.inputPaths.includes('artifacts/reference-behavior-media-plan.json')) {
       const frameManifestPath = path.join(context.runRoot, 'artifacts/reference-frame-manifest.json');
       const frameManifest = ReferenceFrameManifestSchema.parse(JSON.parse(await readFile(frameManifestPath, 'utf8')));
       const frameManifestSha256 = await sha256File(frameManifestPath);

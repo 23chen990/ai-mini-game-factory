@@ -122,13 +122,28 @@ function runtimeFor(workspace: string, calls: string[], hooks: { afterImportAsse
     async importAssets() { calls.push('importAssets'); await hooks.afterImportAssets?.(); },
     async verifyProject() { calls.push('verifyProject'); return ['contract:passed', 'test:passed']; },
     async startPreview() { throw new Error('not used'); },
-    async buildWeb() { calls.push('buildWeb'); return path.join(workspace, 'dist'); },
+    async buildWeb() { calls.push('buildWeb'); await mkdir(path.join(workspace, 'dist'), { recursive: true }); return path.join(workspace, 'dist'); },
     async buildTarget() { throw new Error('not used'); },
     async stopPreview() {},
   };
 }
 
 describe('Builder reference-level runtime binding', () => {
+  it('does not replace an authored layout with the mock fallback when continuing', async () => {
+    const runRoot = await mkdtemp(path.join(tmpdir(), 'reference-builder-preserve-layout-'));
+    const { workspace } = await writeReferenceArtifacts(runRoot);
+    const layoutPath = path.join(workspace, 'src/generated/reference-level-layout.json');
+    const authored = await readFile(layoutPath, 'utf8');
+    const calls: string[] = [];
+    const provider: CodexProvider = {
+      async build() { return { threadId: 'mock-thread', verificationMode: 'contract', metrics: { provider: 'mock', model: 'mock', calls: 0 } }; },
+      async fix() { throw new Error('not used'); },
+    };
+    await new BuilderAgent(provider, runtimeFor(workspace, calls)).run(workspace, makeBlueprint(), makeStyleLock(), makeAssets(), 'cut-stack-dodge-v1', workspace);
+    expect(await readFile(layoutPath, 'utf8')).toBe(authored);
+    expect(calls).toEqual(['verifyProject', 'buildWeb']);
+  });
+
   it.each(['missing', 'stale', 'foreign-object'] as const)('rejects a %s authored layout before building the recording game', async (mutation) => {
     const runRoot = await mkdtemp(path.join(tmpdir(), 'reference-builder-layout-'));
     const calls: string[] = [];
@@ -176,7 +191,7 @@ describe('Builder reference-level runtime binding', () => {
     });
 
     expect(providerData).toEqual(data);
-    expect(calls).toEqual(['createProject', 'applyBlueprint', 'importAssets', 'provider.build', 'verifyProject', 'buildWeb']);
+    expect(calls).toEqual(['provider.build', 'verifyProject', 'buildWeb']);
   });
 
   it.each([
@@ -229,7 +244,7 @@ describe('Builder reference-level runtime binding', () => {
       logDir: path.join(runRoot, 'logs'),
       inputPaths: [],
     })).rejects.toThrow(/reference-level|runtime data|edited|missing/i);
-    expect(calls).toEqual(['createProject', 'applyBlueprint', 'importAssets', 'provider.build']);
+    expect(calls).toEqual(['provider.build']);
   });
 
   it('rejects symlinked canonical artifacts before createProject', async () => {
@@ -297,6 +312,9 @@ describe('Builder reference-level runtime binding', () => {
     const runRoot = await mkdtemp(path.join(tmpdir(), 'reference-builder-adapter-parent-link-'));
     const calls: string[] = [];
     const { workspace } = await writeReferenceArtifacts(runRoot);
+    // This case exercises fresh initialization, not continuation of the authored layout.
+    await rm(workspace, { recursive: true });
+    await mkdir(workspace);
     const foreignRun = await mkdtemp(path.join(tmpdir(), 'reference-builder-adapter-foreign-'));
     const foreignGenerated = path.join(foreignRun, 'src/generated');
     await mkdir(foreignGenerated, { recursive: true });

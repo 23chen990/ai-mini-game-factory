@@ -1,0 +1,49 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/codex-account-provider.test.ts (18 tests | 1 failed) 48ms
+   × does not send the display-only account-default sentinel as a real model id 5ms
+ ❯ tests/integration/reference-review-loop.test.ts (9 tests | 1 failed) 9468ms
+   × does not send an explicit upstream design finding to Fixer 743ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/integration/reference-review-loop.test.ts > does not send an explicit upstream design finding to Fixer
+AssertionError: expected 1 to be 2 // Object.is equality
+
+- Expected
++ Received
+
+- 2
++ 1
+
+ ❯ tests/integration/reference-review-loop.test.ts:75:28
+     73|  expect(result.error).toBeUndefined();
+     74|  expect(result.fixes).toBe(0);
+     75|  expect(result.blueprints).toBe(2);
+       |                            ^
+     76|  expect(result.state).toMatchObject({stage:'BLUEPRINT',status:'waiting…
+     77|  const report=JSON.parse(await readFile(path.join(result.runRoot,'arti…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/unit/codex-account-provider.test.ts > does not send the display-only account-default sentinel as a real model id
+AssertionError: expected 'account-default' to be undefined
+
+- Expected:
+undefined
+
++ Received:
+"account-default"
+
+ ❯ tests/unit/codex-account-provider.test.ts:413:36
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 25 passed (27)
+   Start at  17:22:42
+   Duration  11.09s (transform 1.34s, setup 0ms, import 2.41s, tests 9.52s, environment 0ms)
+

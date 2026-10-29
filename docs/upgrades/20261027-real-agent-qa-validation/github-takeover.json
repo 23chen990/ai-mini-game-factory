@@ -1,0 +1,157 @@
+{
+  "schemaVersion": 1,
+  "pullRequests": [
+    {
+      "baseRefName": "main",
+      "headRefName": "codex/factory-agent-eval-20261023",
+      "headRefOid": "6acaf36aac3df657287f7a6552b2fdd9840a37ab",
+      "number": 73,
+      "state": "OPEN",
+      "statusCheckRollup": [
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-23T10:09:54Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/23chen990/ai-mini-game-factory/actions/runs/39937115281/job/120359264690",
+          "name": "Release registry integrity",
+          "startedAt": "2026-10-23T10:09:47Z",
+          "status": "COMPLETED",
+          "workflowName": "Factory release gates"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-23T10:40:02Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/23chen990/ai-mini-game-factory/actions/runs/39937115281/job/120359265046",
+          "name": "Factory lint, types and tests",
+          "startedAt": "2026-10-23T10:09:48Z",
+          "status": "COMPLETED",
+          "workflowName": "Factory release gates"
+        }
+      ],
+      "title": "Factory: evidence-preserving handoffs, fail-closed QA and honest Agent Eval",
+      "url": "https://github.com/23chen990/ai-mini-game-factory/pull/73"
+    },
+    {
+      "baseRefName": "codex/factory-agent-eval-20261023",
+      "headRefName": "codex/factory-runtime-budget-guard-20261023",
+      "headRefOid": "3c07762ceafcedfe8ce58241055619ec5e7eee85",
+      "number": 74,
+      "state": "OPEN",
+      "statusCheckRollup": [],
+      "title": "fix: runtime Codex token accounting and budget stop",
+      "url": "https://github.com/23chen990/ai-mini-game-factory/pull/74"
+    },
+    {
+      "baseRefName": "codex/factory-runtime-budget-guard-20261023",
+      "headRefName": "codex/factory-stale-output-guard-20261024",
+      "headRefOid": "00ad4f13d9636a6aaf510ee7a66f696d2c011b65",
+      "number": 75,
+      "state": "OPEN",
+      "statusCheckRollup": [],
+      "title": "Factory: fresh Codex attempt outputs and time-aware QA evidence",
+      "url": "https://github.com/23chen990/ai-mini-game-factory/pull/75"
+    },
+    {
+      "baseRefName": "codex/factory-stale-output-guard-20261024",
+      "headRefName": "codex/factory-real-production-pilot-20261026",
+      "headRefOid": "c583bdf7c34e5d9c895be10fbe6c230ab7ce1b64",
+      "number": 76,
+      "state": "OPEN",
+      "statusCheckRollup": [],
+      "title": "Factory: preserve natural QA video and honor research media limit",
+      "url": "https://github.com/23chen990/ai-mini-game-factory/pull/76"
+    },
+    {
+      "baseRefName": "codex/factory-real-production-pilot-20261026",
+      "headRefName": "codex/factory-research-budgeted-intake-20261027",
+      "headRefOid": "33e5e7cff571dec71e3a947b0496270e37aae791",
+      "number": 77,
+      "state": "OPEN",
+      "statusCheckRollup": [],
+      "title": "Factory P0: bounded visual research in both production paths",
+      "url": "https://github.com/23chen990/ai-mini-game-factory/pull/77"
+    },
+    {
+      "baseRefName": "codex/factory-research-budgeted-intake-20261027",
+      "headRefName": "codex/research-compact-evidence-handoff-20261027",
+      "headRefOid": "38c0fa6acfb80ad143cfe42d79f808dd9cdfecdf",
+      "number": 78,
+      "state": "OPEN",
+      "statusCheckRollup": [
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-27T05:12:10Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/23chen990/ai-mini-game-factory/actions/runs/40453944972/job/122022785437",
+          "name": "Release registry integrity",
+          "startedAt": "2026-10-27T05:12:01Z",
+          "status": "COMPLETED",
+          "workflowName": "Factory release gates"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-27T05:15:50Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/23chen990/ai-mini-game-factory/actions/runs/40453944972/job/122022785625",
+          "name": "Factory lint, types and tests",
+          "startedAt": "2026-10-27T05:12:00Z",
+          "status": "COMPLETED",
+          "workflowName": "Factory release gates"
+        }
+      ],
+      "title": "P0: remove full frame manifest from Research sandbox; preserve timestamped sample",
+      "url": "https://github.com/23chen990/ai-mini-game-factory/pull/78"
+    },
+    {
+      "baseRefName": "codex/research-compact-evidence-handoff-20261027",
+      "headRefName": "codex/qa-browser-preflight-no-spend-20261027",
+      "headRefOid": "b338b1b092c8af46d288d4c5ac883726f20770ab",
+      "number": 79,
+      "state": "OPEN",
+      "statusCheckRollup": [],
+      "title": "P0 QA: verify real browser capability before any blind model spend",
+      "url": "https://github.com/23chen990/ai-mini-game-factory/pull/79"
+    }
+  ],
+  "ancestry": [
+    {
+      "ancestorPr": 73,
+      "descendantPr": 74,
+      "isAncestor": true,
+      "exitCode": 0
+    },
+    {
+      "ancestorPr": 74,
+      "descendantPr": 75,
+      "isAncestor": true,
+      "exitCode": 0
+    },
+    {
+      "ancestorPr": 75,
+      "descendantPr": 76,
+      "isAncestor": true,
+      "exitCode": 0
+    },
+    {
+      "ancestorPr": 76,
+      "descendantPr": 77,
+      "isAncestor": true,
+      "exitCode": 0
+    },
+    {
+      "ancestorPr": 77,
+      "descendantPr": 78,
+      "isAncestor": true,
+      "exitCode": 0
+    },
+    {
+      "ancestorPr": 78,
+      "descendantPr": 79,
+      "isAncestor": true,
+      "exitCode": 0
+    }
+  ],
+  "branchBaseline": "b338b1b092c8af46d288d4c5ac883726f20770ab",
+  "exactBaselineWorkflowDispatch": "https://github.com/23chen990/ai-mini-game-factory/actions/runs/40479380726"
+}

@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "game": "小李飞刀 · 海岸试炼",
+  "runId": "slice-h5-candidate-20261027",
+  "workspace": "/Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市/runs/slice-h5-candidate-20261027/workspace/game",
+  "buildSha256": "0c6ab390752bbe8f6db46104e364ee843cb47595460e38f3e94292793036e9ba",
+  "entry": "index.html → src/main.ts",
+  "runtimeWired": [
+    "src/game-core.ts",
+    "src/three-world-renderer.ts",
+    "src/main.ts",
+    "src/h5-session.ts",
+    "src/level-progress.ts",
+    "src/game-levels.ts"
+  ],
+  "deliveryKind": "H5_DEVELOPMENT_CANDIDATE_NOT_FORMAL_RELEASE",
+  "controllerNotIndependent": true,
+  "coreLoopSessions": [
+    {
+      "target": {
+        "engine": "chromium",
+        "width": 390,
+        "height": 844
+      },
+      "terminal": "关卡完成\n×4\n分数 4\n点击“重玩”按钮 · 重新开始",
+      "secondTerminal": "碰到危险物\n分数 2\n点击“重玩”按钮 · 重新开始",
+      "replay": true,
+      "pauseFrozen": true,
+      "interruptedReload": true,
+      "elapsedMs": 38104,
+      "actions": 52
+    },
+    {
+      "target": {
+        "engine": "chromium",
+        "width": 320,
+        "height": 568
+      },
+      "terminal": "关卡完成\n×4\n分数 0\n点击“重玩”按钮 · 重新开始",
+      "secondTerminal": "碰到危险物\n分数 2\n点击“重玩”按钮 · 重新开始",
+      "replay": true,
+      "pauseFrozen": true,
+      "interruptedReload": true,
+      "elapsedMs": 40440,
+      "actions": 59
+    },
+    {
+      "target": {
+        "engine": "chromium",
+        "width": 844,
+        "height": 390
+      },
+      "terminal": "关卡完成\n×4\n分数 24\n点击“重玩”按钮 · 重新开始",
+      "secondTerminal": "碰到危险物\n分数 2\n点击“重玩”按钮 · 重新开始",
+      "replay": true,
+      "pauseFrozen": true,
+      "interruptedReload": true,
+      "elapsedMs": 44020,
+      "actions": 54
+    },
+    {
+      "target": {
+        "engine": "webkit",
+        "width": 390,
+        "height": 844
+      },
+      "terminal": "关卡完成\n×4\n分数 0\n点击“重玩”按钮 · 重新开始",
+      "secondTerminal": "关卡完成\n×4\n分数 8\n点击“重玩”按钮 · 重新开始",
+      "replay": true,
+      "pauseFrozen": true,
+      "interruptedReload": true,
+      "elapsedMs": 43598,
+      "actions": 64
+    }
+  ],
+  "factoryTests": {
+    "files": 196,
+    "passed": 1262
+  },
+  "gameTests": {
+    "total": 331,
+    "passed": 330,
+    "skipped": 1
+  },
+  "normalInputOnly": true,
+  "stateInjection": false,
+  "readOnlyEngineeringPauseInspection": true,
+  "controllerIterations": 4,
+  "candidateSourcePatchSha256": "5cbc73c6fc42462bc95bbeb4b120eda8c69d2fa5ef734150783c001f5b2f8ad0",
+  "independentAgent": {
+    "newCalls": 0,
+    "discovery": {
+      "success": 0,
+      "validTests": 0
+    },
+    "repair": {
+      "success": 0,
+      "attempts": 0
+    },
+    "reason": "no current-round model-call/time/token authorization; previous receipts untouched"
+  },
+  "IAA": {
+    "SDK": "not installed",
+    "realRewardAdAcceptance": false,
+    "optionalCosmeticPort": true,
+    "persistentIdempotentEntitlement": true,
+    "unavailableCancelledFailedGrantNothing": true
+  },
+  "unresolved": [
+    "independent blind QA/Fixer/retest not authorized or executed",
+    "WebKit failed-terminal branch not observed in final capture",
+    "real mobile background events and persisted BFCache branch unobserved on this host",
+    "fresh reference fidelity and human fun/retention tests not performed",
+    "real SDK, authoritative ad receipts and platform packages unverified",
+    "engineering test API retained in development candidate",
+    "historical reward-before-visible-separation QA issue remains open; no new closure claimed"
+  ],
+  "platforms": {
+    "H5": "playable development candidate",
+    "wechat": "not packaged",
+    "douyin": "not packaged",
+    "taptap": "not packaged"
+  },
+  "products": [
+    {
+      "name": "slice-h5-development.zip",
+      "path": "/Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市/runs/slice-h5-candidate-20261027/delivery/slice-h5-development.zip",
+      "bytes": 1750524,
+      "sha256": "e559fdeb6d626cde2095f964232c0cafd11b004df9c8bf88e175198bf8ea947e"
+    },
+    {
+      "name": "slice-play-evidence.zip",
+      "path": "/Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市/runs/slice-h5-candidate-20261027/delivery/slice-play-evidence.zip",
+      "bytes": 19903468,
+      "sha256": "9a8b190d2e5487a1883a0678b1db0304541ee04b80592b6d09d7036af924ec17"
+    },
+    {
+      "name": "slice-source-development.zip",
+      "path": "/Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市/runs/slice-h5-candidate-20261027/delivery/slice-source-development.zip",
+      "bytes": 2001900,
+      "sha256": "6e4bf8825e17747390495b70e8ad32a499b340c36dbb9a5acc6776762b068be1"
+    }
+  ],
+  "history": {
+    "buildSha256": "0c6ab390752bbe8f6db46104e364ee843cb47595460e38f3e94292793036e9ba",
+    "eventInjection": false,
+    "background": {
+      "hidden": false,
+      "paused": false
+    },
+    "history": {
+      "persisted": "false",
+      "pauseVisible": true
+    },
+    "renewedText": "空中翻转",
+    "realPhone": false,
+    "bfcacheBranch": "UNOBSERVED"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "小李飞刀 · 海岸试炼（独立实验副本）",
+  "workspace": "/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/runs/unified-agent-repair-20261028/workspace/game",
+  "route": "formal-fixer (required; not dispatched because independent discovery is blocked)",
+  "cells": [
+    {
+      "objectType": "visible terminal replay control",
+      "lifecycleState": "won → replay → fresh ready",
+      "renderer": "default index.html → src/main.ts; DOM overlay + Three.js world",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "engine": "chromium",
+      "normalInput": true,
+      "actions": 48,
+      "observation": "After two normal replay taps the terminal controls remain visible. Controller observation only, not an autonomous finding.",
+      "evidence": [
+        "qa-input/first/01-ready.png",
+        "qa-input/first/02-action.png",
+        "qa-input/first/03-outcome.png",
+        "qa-input/first/04-after-control.png",
+        "qa-input/first/05-after-second-control.png"
+      ],
+      "status": "CONTROLLER_REPRODUCED_NOT_INDEPENDENTLY_REVIEWED"
+    },
+    {
+      "objectType": "visible terminal replay control",
+      "lifecycleState": "failed → replay → fresh ready",
+      "renderer": "same default entrypoint",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "engine": "chromium",
+      "status": "UNOBSERVED"
+    },
+    {
+      "objectType": "visible terminal replay control",
+      "lifecycleState": "won/failed → replay",
+      "renderer": "default entrypoint",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "engine": "webkit",
+      "status": "GAME_BRANCH_UNOBSERVED; browser infrastructure preflight only"
+    }
+  ]
+}

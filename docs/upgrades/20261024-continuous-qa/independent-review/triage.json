@@ -1,0 +1,102 @@
+[
+  {
+    "id": "REWARD-EARLY-390",
+    "targetGame": "mobile-slice-adaptation-20260830",
+    "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+    "classification": "confirmed visible feedback-order requirement violation",
+    "scope": "first watermelon cut on default first-level entry; this viewport only",
+    "reproduction": {
+      "session": "390-steady",
+      "normalInput": {
+        "type": "touch",
+        "x": 195,
+        "y": 380,
+        "ordinal": 0,
+        "inputLogElapsedMs": 1421
+      },
+      "videoWindowMs": [
+        0,
+        1500
+      ],
+      "timing": "Video-relative timestamps approximately 40ms resolution; navigation log and video zero are not synchronized. Do not equate the two clocks."
+    },
+    "observation": "At approximately video 0.64s HUD remains 0. At 0.68s local +1, cumulative 1, and reward banner are already visible while the melon silhouette is still whole/rind-covered. A visibly separated red cut face appears by about 0.76s.",
+    "evidenceFrames": [
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0017.png",
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0018.png",
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0020.png"
+    ],
+    "reproductionMatrix": [
+      {
+        "objectType": "first intact watermelon, not later coconut/overlap stack",
+        "lifecycleState": "startup → normal first cut → beginning of separation",
+        "rendererPresentation": "recorded browser world rendering + cumulative HUD + local floating reward; no hidden state",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "observed": true
+      }
+    ],
+    "causalHypothesis": null,
+    "rootCause": "Unknown. No source or hidden state inspected; this is a presentation-order counterexample, not an implementation diagnosis.",
+    "acceptanceCriteria": [
+      "Under normal first-level input, visible completed cut and object separation precede the local reward animation.",
+      "Cumulative HUD synchronization follows the local reward, with a visually distinguishable order in the exact same object/state/viewport."
+    ],
+    "exclusions": [
+      "No claim about all later cuts or platforms.",
+      "No cadence failure is treated as a bug."
+    ]
+  },
+  {
+    "id": "REWARD-EARLY-1100",
+    "targetGame": "mobile-slice-adaptation-20260830",
+    "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+    "classification": "confirmed visible feedback-order requirement violation",
+    "scope": "first watermelon cut on default first-level entry; this viewport only",
+    "reproduction": {
+      "session": "1100-steady",
+      "normalInput": {
+        "type": "mouse",
+        "x": 550,
+        "y": 324,
+        "ordinal": 0,
+        "inputLogElapsedMs": 1280
+      },
+      "videoWindowMs": [
+        0,
+        1500
+      ],
+      "timing": "Video-relative timestamps approximately 40ms resolution; navigation log and video zero are not synchronized. Do not equate the two clocks."
+    },
+    "observation": "At approximately video 0.60s HUD remains 0. At 0.64s local +1, cumulative 1, and reward banner are already visible while melon still appears whole. A clearly separated red cut face is visible by about 0.76s.",
+    "evidenceFrames": [
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0016.png",
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0017.png",
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0020.png"
+    ],
+    "reproductionMatrix": [
+      {
+        "objectType": "first intact watermelon, not later coconut/overlap stack",
+        "lifecycleState": "startup → normal first cut → beginning of separation",
+        "rendererPresentation": "recorded browser world rendering + cumulative HUD + local floating reward; no hidden state",
+        "viewport": {
+          "width": 1100,
+          "height": 720
+        },
+        "observed": true
+      }
+    ],
+    "causalHypothesis": null,
+    "rootCause": "Unknown. No source or hidden state inspected; this is a presentation-order counterexample, not an implementation diagnosis.",
+    "acceptanceCriteria": [
+      "Under normal first-level input, visible completed cut and object separation precede the local reward animation.",
+      "Cumulative HUD synchronization follows the local reward, with a visually distinguishable order in the exact same object/state/viewport."
+    ],
+    "exclusions": [
+      "No claim about all later cuts or platforms.",
+      "No cadence failure is treated as a bug."
+    ]
+  }
+]

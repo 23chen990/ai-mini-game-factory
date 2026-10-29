@@ -1,0 +1,5 @@
+{
+  "schemaVersion": 1,
+  "replacementQaCalls": 1,
+  "basis": "User: 允许一次替补首测; preserve original rejection and cumulative 30-minute / 200,000 observed-token boundaries."
+}

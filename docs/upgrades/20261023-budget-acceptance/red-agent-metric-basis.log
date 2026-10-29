@@ -1,0 +1,421 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市
+
+ ❯ tests/unit/factory-agent-eval.test.ts (23 tests | 17 failed) 23ms
+     × reports exact QA confusion denominators and attribution, including misses 6ms
+     × never manufactures defect rates from incomplete QA gold 1ms
+     × never manufactures defect rates from undeclared QA gold 6ms
+     × keeps absent and blocked observations unverified rather than perfect or false negatives 0ms
+     × does not combine deterministic regressions with actual Agent observations 0ms
+     × keeps Research unmeasured denominators null 0ms
+     × keeps Builder unmeasured denominators null 0ms
+     × keeps Fixer unmeasured denominators null 0ms
+     × keeps Pipeline unmeasured denominators null 0ms
+     × rejects holdout family leakage and exposed holdout labels 1ms
+     × binds the result to content, not just case ids 0ms
+     × verifies every evidence file and rejects tampering or traversal before scoring 3ms
+     × hashes binary evidence as exact bytes rather than UTF-8 replacement text 1ms
+     × does not score blocked semantic self-reports and preserves unknown historical source revisions 0ms
+     × does not call all-deterministic evidence completed Agent ability 0ms
+     × retains blocked repair effort without including it in a successful quality average 0ms
+     × counts forbidden-behavior violations against Builder requirement correctness 0ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 17 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/factory-agent-eval.test.ts > Agent evidence within Factory Eval, never route-only capability claims > reports exact QA confusion denominators and attribution, including misses
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "qaDefectGoldComplete"
+    ],
+    "path": [
+      "cases",
+      0
+    ],
+    "message": "Unrecognized key: \"qaDefectGoldComplete\""
+  }
+]
+ ❯ Module.scoreFactoryAgentEval src/core/factory-eval.ts:380:46
+    378|  * This function does not call an Agent and makes no product-acceptanc…
+    379| export function scoreFactoryAgentEval(corpusValue: unknown, observatio…
+    380|   const corpus = FactoryAgentEvalCasesSchema.parse(corpusValue);
+       |                                              ^
+    381|   const observations = FactoryAgentEvalObservationsSchema.parse(observ…
+    382|   if (corpus.suiteVersion !== FACTORY_EVAL_SUITE_VERSION) throw new Er…
+ ❯ score tests/unit/factory-agent-eval.test.ts:37:22
+ ❯ tests/unit/factory-agent-eval.test.ts:44:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/17]⎯
+
+ FAIL  tests/unit/factory-agent-eval.test.ts > Agent evidence within Factory Eval, never route-only capability claims > never manufactures defect rates from incomplete QA gold
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "qaDefectGoldComplete"
+    ],
+    "path": [
+      "cases",
+      0
+    ],
+    "message": "Unrecognized key: \"qaDefectGoldComplete\""
+  }
+]
+ ❯ Module.scoreFactoryAgentEval src/core/factory-eval.ts:380:46
+    378|  * This function does not call an Agent and makes no product-acceptanc…
+    379| export function scoreFactoryAgentEval(corpusValue: unknown, observatio…
+    380|   const corpus = FactoryAgentEvalCasesSchema.parse(corpusValue);
+       |                                              ^
+    381|   const observations = FactoryAgentEvalObservationsSchema.parse(observ…
+    382|   if (corpus.suiteVersion !== FACTORY_EVAL_SUITE_VERSION) throw new Er…
+ ❯ score tests/unit/factory-agent-eval.test.ts:37:22
+ ❯ tests/unit/factory-agent-eval.test.ts:62:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/17]⎯
+
+ FAIL  tests/unit/factory-agent-eval.test.ts > Agent evidence within Factory Eval, never route-only capability claims > never manufactures defect rates from undeclared QA gold
+AssertionError: expected { numerator: 1, denominator: 2, …(1) } to deeply equal { Object (numerator, denominator, ...) }
+
+- Expected
++ Received
+
+  {
+-   "denominator": 0,
+-   "numerator": 0,
+-   "value": null,
++   "denominator": 2,
++   "numerator": 1,
++   "value": 0.5,
+  }
+
+ ❯ tests/unit/factory-agent-eval.test.ts:63:48
+     61|     else input.corpus.cases[0]!.qaDefectGoldComplete = false;
+     62|     const cohort = score(input).cohorts[0]!;
+     63|     expect(cohort.metrics.defectDetectionRate).toEqual({ numerator: 0,…
+       |                                                ^
+     64|     expect(cohort.metrics.missedDefectRate).toEqual({ numerator: 0, de…
+     65|     expect(cohort.metrics.falsePositiveRate).toEqual({ numerator: 0, d…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/17]⎯
+
+ FAIL  tests/unit/factory-agent-eval.test.ts > Agent evidence within Factory Eval, never route-only capability claims > keeps absent and blocked observations unverified rather than perfect or false negatives
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "qaDefectGoldComplete"
+    ],
+    "path": [
+      "cases",
+      0
+    ],
+    "message": "Unrecognized key: \"qaDefectGoldComplete\""
+  }
+]
+ ❯ Module.scoreFactoryAgentEval src/core/factory-eval.ts:380:46
+    378|  * This function does not call an Agent and makes no product-acceptanc…
+    379| export function scoreFactoryAgentEval(corpusValue: unknown, observatio…
+    380|   const corpus = FactoryAgentEvalCasesSchema.parse(corpusValue);
+       |                                              ^
+    381|   const observations = FactoryAgentEvalObservationsSchema.parse(observ…
+    382|   if (corpus.suiteVersion !== FACTORY_EVAL_SUITE_VERSION) throw new Er…
+ ❯ score tests/unit/factory-agent-eval.test.ts:37:22
+ ❯ tests/unit/factory-agent-eval.test.ts:72:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/17]⎯
+
+ FAIL  tests/unit/factory-agent-eval.test.ts > Agent evidence within Factory Eval, never route-only capability claims > does not combine deterministic regressions with actual Agent observations
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "qaDefectGoldComplete"
+    ],
+    "path": [
+      "cases",
+      0
+    ],
+    "message": "Unrecognized key: \"qaDefectGoldComplete\""
+  },
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "qaDefectGoldComplete"
+    ],
+    "path": [
+      "cases",
+      1
+    ],
+    "message": "Unrecognized key: \"qaDefectGoldComplete\""
+  }
+]
+ ❯ Module.scoreFactoryAgentEval src/core/factory-eval.ts:380:46
+    378|  * This function does not call an Agent and makes no product-acceptanc…
+    379| export function scoreFactoryAgentEval(corpusValue: unknown, observatio…
+    380|   const corpus = FactoryAgentEvalCasesSchema.parse(corpusValue);
+       |                                              ^
+    381|   const observations = FactoryAgentEvalObservationsSchema.parse(observ…
+    382|   if (corpus.suiteVersion !== FACTORY_EVAL_SUITE_VERSION) throw new Er…
+ ❯ score tests/unit/factory-agent-eval.test.ts:37:22
+ ❯ tests/unit/factory-agent-eval.test.ts:82:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/17]⎯
+
+ FAIL  tests/unit/factory-agent-eval.test.ts > Agent evidence within Factory Eval, never route-only capability claims > keeps Research unmeasured denominators null
+ FAIL  tests/unit/factory-agent-eval.test.ts > Agent evidence within Factory Eval, never route-only capability claims > keeps Builder unmeasured denominators null
+ FAIL  tests/unit/factory-agent-eval.test.ts > Agent evidence within Factory Eval, never route-only capability claims > keeps Fixer unmeasured denominators null
+ FAIL  tests/unit/factory-agent-eval.test.ts > Agent evidence within Factory Eval, never route-only capability claims > keeps Pipeline unmeasured denominators null
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "qaDefectGoldComplete"
+    ],
+    "path": [
+      "cases",
+      0
+    ],
+    "message": "Unrecognized key: \"qaDefectGoldComplete\""
+  }
+]
+ ❯ Module.scoreFactoryAgentEval src/core/factory-eval.ts:380:46
+    378|  * This function does not call an Agent and makes no product-acceptanc…
+    379| export function scoreFactoryAgentEval(corpusValue: unknown, observatio…
+    380|   const corpus = FactoryAgentEvalCasesSchema.parse(corpusValue);
+       |                                              ^
+    381|   const observations = FactoryAgentEvalObservationsSchema.parse(observ…
+    382|   if (corpus.suiteVersion !== FACTORY_EVAL_SUITE_VERSION) throw new Er…
+ ❯ score tests/unit/factory-agent-eval.test.ts:37:22
+ ❯ tests/unit/factory-agent-eval.test.ts:87:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/17]⎯
+
+ FAIL  tests/unit/factory-agent-eval.test.ts > Agent evidence within Factory Eval, never route-only capability claims > rejects holdout family leakage and exposed holdout labels
+AssertionError: expected [Function] to throw error matching /family/ but got '[\n  {\n    "code": "unrecognized_key…'
+
+- Expected:
+/family/
+
++ Received:
+"[
+  {
+    \"code\": \"unrecognized_keys\",
+    \"keys\": [
+      \"qaDefectGoldComplete\"
+    ],
+    \"path\": [
+      \"cases\",
+      0
+    ],
+    \"message\": \"Unrecognized key: \\\"qaDefectGoldComplete\\\"\"
+  },
+  {
+    \"code\": \"unrecognized_keys\",
+    \"keys\": [
+      \"qaDefectGoldComplete\"
+    ],
+    \"path\": [
+      \"cases\",
+      1
+    ],
+    \"message\": \"Unrecognized key: \\\"qaDefectGoldComplete\\\"\"
+  }
+]"
+
+ ❯ tests/unit/factory-agent-eval.test.ts:107:32
+    105|     const input = fixture();
+    106|     input.corpus.cases.push({ ...input.corpus.cases[0]!, caseId: 'leak…
+    107|     expect(() => score(input)).toThrow(/family/);
+       |                                ^
+    108|     const exposed = fixture(); exposed.corpus.cases[0]!.dataset = 'hol…
+    109|     expect(() => score(exposed)).toThrow(/holdout/);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/17]⎯
+
+ FAIL  tests/unit/factory-agent-eval.test.ts > Agent evidence within Factory Eval, never route-only capability claims > binds the result to content, not just case ids
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "qaDefectGoldComplete"
+    ],
+    "path": [
+      "cases",
+      0
+    ],
+    "message": "Unrecognized key: \"qaDefectGoldComplete\""
+  }
+]
+ ❯ Module.scoreFactoryAgentEval src/core/factory-eval.ts:380:46
+    378|  * This function does not call an Agent and makes no product-acceptanc…
+    379| export function scoreFactoryAgentEval(corpusValue: unknown, observatio…
+    380|   const corpus = FactoryAgentEvalCasesSchema.parse(corpusValue);
+       |                                              ^
+    381|   const observations = FactoryAgentEvalObservationsSchema.parse(observ…
+    382|   if (corpus.suiteVersion !== FACTORY_EVAL_SUITE_VERSION) throw new Er…
+ ❯ score tests/unit/factory-agent-eval.test.ts:37:22
+ ❯ tests/unit/factory-agent-eval.test.ts:113:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/17]⎯
+
+ FAIL  tests/unit/factory-agent-eval.test.ts > Agent evidence within Factory Eval, never route-only capability claims > verifies every evidence file and rejects tampering or traversal before scoring
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "qaDefectGoldComplete"
+    ],
+    "path": [
+      "cases",
+      0
+    ],
+    "message": "Unrecognized key: \"qaDefectGoldComplete\""
+  }
+]
+ ❯ Module.verifyFactoryAgentEvalEvidence src/core/factory-eval.ts:473:46
+    471|  * Missing, corrupt, changed or symlinked evidence is an error, never …
+    472| export async function verifyFactoryAgentEvalEvidence(root: string, cor…
+    473|   const corpus = FactoryAgentEvalCasesSchema.parse(corpusValue);
+       |                                              ^
+    474|   const observations = FactoryAgentEvalObservationsSchema.parse(observ…
+    475|   const files = [...corpus.cases.flatMap(item => item.sourceEvidence),…
+ ❯ tests/unit/factory-agent-eval.test.ts:124:23
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/17]⎯
+
+ FAIL  tests/unit/factory-agent-eval.test.ts > Agent evidence within Factory Eval, never route-only capability claims > hashes binary evidence as exact bytes rather than UTF-8 replacement text
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "qaDefectGoldComplete"
+    ],
+    "path": [
+      "cases",
+      0
+    ],
+    "message": "Unrecognized key: \"qaDefectGoldComplete\""
+  }
+]
+ ❯ Module.verifyFactoryAgentEvalEvidence src/core/factory-eval.ts:473:46
+    471|  * Missing, corrupt, changed or symlinked evidence is an error, never …
+    472| export async function verifyFactoryAgentEvalEvidence(root: string, cor…
+    473|   const corpus = FactoryAgentEvalCasesSchema.parse(corpusValue);
+       |                                              ^
+    474|   const observations = FactoryAgentEvalObservationsSchema.parse(observ…
+    475|   const files = [...corpus.cases.flatMap(item => item.sourceEvidence),…
+ ❯ tests/unit/factory-agent-eval.test.ts:139:23
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/17]⎯
+
+ FAIL  tests/unit/factory-agent-eval.test.ts > Agent evidence within Factory Eval, never route-only capability claims > does not score blocked semantic self-reports and preserves unknown historical source revisions
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "qaDefectGoldComplete"
+    ],
+    "path": [
+      "cases",
+      0
+    ],
+    "message": "Unrecognized key: \"qaDefectGoldComplete\""
+  }
+]
+ ❯ Module.scoreFactoryAgentEval src/core/factory-eval.ts:380:46
+    378|  * This function does not call an Agent and makes no product-acceptanc…
+    379| export function scoreFactoryAgentEval(corpusValue: unknown, observatio…
+    380|   const corpus = FactoryAgentEvalCasesSchema.parse(corpusValue);
+       |                                              ^
+    381|   const observations = FactoryAgentEvalObservationsSchema.parse(observ…
+    382|   if (corpus.suiteVersion !== FACTORY_EVAL_SUITE_VERSION) throw new Er…
+ ❯ score tests/unit/factory-agent-eval.test.ts:37:22
+ ❯ tests/unit/factory-agent-eval.test.ts:148:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/17]⎯
+
+ FAIL  tests/unit/factory-agent-eval.test.ts > Agent evidence within Factory Eval, never route-only capability claims > does not call all-deterministic evidence completed Agent ability
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "qaDefectGoldComplete"
+    ],
+    "path": [
+      "cases",
+      0
+    ],
+    "message": "Unrecognized key: \"qaDefectGoldComplete\""
+  }
+]
+ ❯ Module.scoreFactoryAgentEval src/core/factory-eval.ts:380:46
+    378|  * This function does not call an Agent and makes no product-acceptanc…
+    379| export function scoreFactoryAgentEval(corpusValue: unknown, observatio…
+    380|   const corpus = FactoryAgentEvalCasesSchema.parse(corpusValue);
+       |                                              ^
+    381|   const observations = FactoryAgentEvalObservationsSchema.parse(observ…
+    382|   if (corpus.suiteVersion !== FACTORY_EVAL_SUITE_VERSION) throw new Er…
+ ❯ score tests/unit/factory-agent-eval.test.ts:37:22
+ ❯ tests/unit/factory-agent-eval.test.ts:155:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/17]⎯
+
+ FAIL  tests/unit/factory-agent-eval.test.ts > Agent evidence within Factory Eval, never route-only capability claims > retains blocked repair effort without including it in a successful quality average
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "qaDefectGoldComplete"
+    ],
+    "path": [
+      "cases",
+      0
+    ],
+    "message": "Unrecognized key: \"qaDefectGoldComplete\""
+  }
+]
+ ❯ Module.scoreFactoryAgentEval src/core/factory-eval.ts:380:46
+    378|  * This function does not call an Agent and makes no product-acceptanc…
+    379| export function scoreFactoryAgentEval(corpusValue: unknown, observatio…
+    380|   const corpus = FactoryAgentEvalCasesSchema.parse(corpusValue);
+       |                                              ^
+    381|   const observations = FactoryAgentEvalObservationsSchema.parse(observ…
+    382|   if (corpus.suiteVersion !== FACTORY_EVAL_SUITE_VERSION) throw new Er…
+ ❯ score tests/unit/factory-agent-eval.test.ts:37:22
+ ❯ tests/unit/factory-agent-eval.test.ts:162:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/17]⎯
+
+ FAIL  tests/unit/factory-agent-eval.test.ts > Agent evidence within Factory Eval, never route-only capability claims > counts forbidden-behavior violations against Builder requirement correctness
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "qaDefectGoldComplete"
+    ],
+    "path": [
+      "cases",
+      0
+    ],
+    "message": "Unrecognized key: \"qaDefectGoldComplete\""
+  }
+]
+ ❯ Module.scoreFactoryAgentEval src/core/factory-eval.ts:380:46
+    378|  * This function does not call an Agent and makes no product-acceptanc…
+    379| export function scoreFactoryAgentEval(corpusValue: unknown, observatio…
+    380|   const corpus = FactoryAgentEvalCasesSchema.parse(corpusValue);
+       |                                              ^
+    381|   const observations = FactoryAgentEvalObservationsSchema.parse(observ…
+    382|   if (corpus.suiteVersion !== FACTORY_EVAL_SUITE_VERSION) throw new Er…
+ ❯ score tests/unit/factory-agent-eval.test.ts:37:22
+ ❯ tests/unit/factory-agent-eval.test.ts:168:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/17]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  17 failed | 6 passed (23)
+   Start at  00:13:11
+   Duration  748ms (transform 385ms, setup 0ms, import 605ms, tests 23ms, environment 0ms)
+

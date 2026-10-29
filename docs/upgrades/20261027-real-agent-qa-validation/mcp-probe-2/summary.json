@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "scope": "CONFIGURED_MCP_TRANSPORT_NO_MODEL",
+  "modelCalls": 0,
+  "configuredExecutable": "/Users/kker/.npm-global/bin/rea",
+  "environmentKeys": [
+    "HOME",
+    "HOPPER_LAUNCHER_PATH",
+    "LANG",
+    "LC_ALL",
+    "LC_CTYPE",
+    "LOGNAME",
+    "NO_COLOR",
+    "PATH",
+    "SHELL",
+    "TERM",
+    "TMPDIR",
+    "USER"
+  ],
+  "tool": "capture_browser_scenario",
+  "fixtureOnly": true,
+  "actualAgentSessionTested": false,
+  "clickedDomVerified": true,
+  "screenshotSha256": "0aaf7225f3c7186fcfbdbd36525660a69b53f47b8dbece955e99e2c61212afac",
+  "responseBytes": 26276
+}

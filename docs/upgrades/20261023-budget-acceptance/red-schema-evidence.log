@@ -1,0 +1,39 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市
+
+ ❯ tests/unit/codex-budget-process.test.ts (11 tests | 1 failed) 1823ms
+   × never overwrites the response schema preserved for an earlier execution 84ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/codex-budget-process.test.ts > never overwrites the response schema preserved for an earlier execution
+AssertionError: expected { type: 'string' } to deeply equal { Object (type, properties) }
+
+- Expected
++ Received
+
+  {
+-   "properties": {
+-     "first": {
+    "type": "string",
+-     },
+-   },
+-   "type": "object",
+  }
+
+ ❯ tests/unit/codex-budget-process.test.ts:135:100
+    133|   await f.provider().execute({ ...f.request, outputSchema: schema });
+    134|   await f.provider().execute({ ...f.request, outputSchema: { type: 'st…
+    135|   expect(JSON.parse(await readFile(path.join(f.request.logDir, 'BLUEPR…
+       |                                                                                                    ^
+    136| });
+    137|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 10 passed (11)
+   Start at  23:26:17
+   Duration  2.53s (transform 385ms, setup 0ms, import 595ms, tests 1.82s, environment 0ms)
+

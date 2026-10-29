@@ -1,0 +1,421 @@
+[
+  {
+    "atMs": 1782,
+    "type": "touchscreen.tap",
+    "x": 195,
+    "y": 422,
+    "reason": "startup cue: 点击任意处起飞",
+    "visibleCue": {
+      "large": true,
+      "cue": "start",
+      "title": "点击任意处起飞",
+      "detail": "起飞后观察下落，接近落点再轻触",
+      "compact": false,
+      "compactText": "轻触起跳；空中再次轻触翻转"
+    }
+  },
+  {
+    "atMs": 2789,
+    "type": "touchscreen.tap",
+    "x": 195,
+    "y": 422,
+    "reason": "follow visible anchored relaunch cue",
+    "visibleCue": {
+      "large": true,
+      "cue": "relaunch",
+      "title": "已稳住：点击继续起飞",
+      "detail": "保持向前，寻找下一块水果",
+      "compact": false,
+      "compactText": "观察下落，接近落点时再轻触"
+    }
+  },
+  {
+    "atMs": 3591,
+    "type": "touchscreen.tap",
+    "x": 195,
+    "y": 422,
+    "reason": "follow visible anchored relaunch cue",
+    "visibleCue": {
+      "large": true,
+      "cue": "relaunch",
+      "title": "已稳住：点击继续起飞",
+      "detail": "保持向前，寻找下一块水果",
+      "compact": false,
+      "compactText": "观察下落，接近落点时再轻触"
+    }
+  },
+  {
+    "atMs": 4477,
+    "type": "touchscreen.tap",
+    "x": 195,
+    "y": 422,
+    "reason": "follow visible anchored relaunch cue",
+    "visibleCue": {
+      "large": true,
+      "cue": "relaunch",
+      "title": "已稳住：点击继续起飞",
+      "detail": "保持向前，寻找下一块水果",
+      "compact": false,
+      "compactText": "观察下落，接近落点时再轻触"
+    }
+  },
+  {
+    "atMs": 5310,
+    "type": "touchscreen.tap",
+    "x": 195,
+    "y": 422,
+    "reason": "follow visible anchored relaunch cue",
+    "visibleCue": {
+      "large": true,
+      "cue": "relaunch",
+      "title": "已稳住：点击继续起飞",
+      "detail": "保持向前，寻找下一块水果",
+      "compact": false,
+      "compactText": "观察彩色阶梯，选择上下路线"
+    }
+  },
+  {
+    "atMs": 6148,
+    "type": "touchscreen.tap",
+    "x": 195,
+    "y": 422,
+    "reason": "follow visible anchored relaunch cue",
+    "visibleCue": {
+      "large": true,
+      "cue": "relaunch",
+      "title": "已稳住：点击继续起飞",
+      "detail": "保持向前，寻找下一块水果",
+      "compact": false,
+      "compactText": "观察彩色阶梯，选择上下路线"
+    }
+  },
+  {
+    "atMs": 7326,
+    "type": "touchscreen.tap",
+    "x": 195,
+    "y": 422,
+    "reason": "follow visible anchored relaunch cue",
+    "visibleCue": {
+      "large": true,
+      "cue": "relaunch",
+      "title": "已稳住：点击继续起飞",
+      "detail": "保持向前，寻找下一块水果",
+      "compact": false,
+      "compactText": "观察彩色阶梯，选择上下路线"
+    }
+  },
+  {
+    "atMs": 8211,
+    "type": "touchscreen.tap",
+    "x": 195,
+    "y": 422,
+    "reason": "follow visible anchored relaunch cue",
+    "visibleCue": {
+      "large": true,
+      "cue": "relaunch",
+      "title": "已稳住：点击继续起飞",
+      "detail": "保持向前，寻找下一块水果",
+      "compact": false,
+      "compactText": "观察彩色阶梯，选择上下路线"
+    }
+  },
+  {
+    "atMs": 9098,
+    "type": "touchscreen.tap",
+    "x": 195,
+    "y": 422,
+    "reason": "follow visible anchored relaunch cue",
+    "visibleCue": {
+      "large": true,
+      "cue": "relaunch",
+      "title": "已稳住：点击继续起飞",
+      "detail": "保持向前，寻找下一块水果",
+      "compact": false,
+      "compactText": "观察彩色阶梯，选择上下路线"
+    }
+  },
+  {
+    "atMs": 10063,
+    "type": "touchscreen.tap",
+    "x": 195,
+    "y": 422,
+    "reason": "follow visible anchored relaunch cue",
+    "visibleCue": {
+      "large": true,
+      "cue": "relaunch",
+      "title": "已稳住：点击继续起飞",
+      "detail": "保持向前，寻找下一块水果",
+      "compact": false,
+      "compactText": "观察彩色阶梯，选择上下路线"
+    }
+  },
+  {
+    "atMs": 10950,
+    "type": "touchscreen.tap",
+    "x": 195,
+    "y": 422,
+    "reason": "follow visible anchored relaunch cue",
+    "visibleCue": {
+      "large": true,
+      "cue": "relaunch",
+      "title": "已稳住：点击继续起飞",
+      "detail": "保持向前，寻找下一块水果",
+      "compact": false,
+      "compactText": "观察彩色阶梯，选择上下路线"
+    }
+  },
+  {
+    "atMs": 11918,
+    "type": "touchscreen.tap",
+    "x": 195,
+    "y": 422,
+    "reason": "follow visible anchored relaunch cue",
+    "visibleCue": {
+      "large": true,
+      "cue": "relaunch",
+      "title": "已稳住：点击继续起飞",
+      "detail": "保持向前，寻找下一块水果",
+      "compact": false,
+      "compactText": "观察彩色阶梯，选择上下路线"
+    }
+  },
+  {
+    "atMs": 12873,
+    "type": "touchscreen.tap",
+    "x": 195,
+    "y": 422,
+    "reason": "follow visible anchored relaunch cue",
+    "visibleCue": {
+      "large": true,
+      "cue": "relaunch",
+      "title": "已稳住：点击继续起飞",
+      "detail": "保持向前，寻找下一块水果",
+      "compact": false,
+      "compactText": "观察彩色阶梯，选择上下路线"
+    }
+  },
+  {
+    "atMs": 15251,
+    "type": "touchscreen.tap",
+    "x": 195,
+    "y": 422,
+    "reason": "follow visible anchored relaunch cue",
+    "visibleCue": {
+      "large": true,
+      "cue": "relaunch",
+      "title": "已稳住：点击继续起飞",
+      "detail": "保持向前，寻找下一块水果",
+      "compact": false,
+      "compactText": "观察彩色阶梯，选择上下路线"
+    }
+  },
+  {
+    "atMs": 16235,
+    "type": "touchscreen.tap",
+    "x": 195,
+    "y": 422,
+    "reason": "follow visible anchored relaunch cue",
+    "visibleCue": {
+      "large": true,
+      "cue": "relaunch",
+      "title": "已稳住：点击继续起飞",
+      "detail": "保持向前，寻找下一块水果",
+      "compact": false,
+      "compactText": "观察彩色阶梯，选择上下路线"
+    }
+  },
+  {
+    "atMs": 17220,
+    "type": "touchscreen.tap",
+    "x": 195,
+    "y": 422,
+    "reason": "follow visible anchored relaunch cue",
+    "visibleCue": {
+      "large": true,
+      "cue": "relaunch",
+      "title": "已稳住：点击继续起飞",
+      "detail": "保持向前，寻找下一块水果",
+      "compact": false,
+      "compactText": "观察彩色阶梯，选择上下路线"
+    }
+  },
+  {
+    "atMs": 18266,
+    "type": "touchscreen.tap",
+    "x": 195,
+    "y": 422,
+    "reason": "follow visible anchored relaunch cue",
+    "visibleCue": {
+      "large": true,
+      "cue": "relaunch",
+      "title": "已稳住：点击继续起飞",
+      "detail": "保持向前，寻找下一块水果",
+      "compact": false,
+      "compactText": "观察彩色阶梯，选择上下路线"
+    }
+  },
+  {
+    "atMs": 19442,
+    "type": "touchscreen.tap",
+    "x": 195,
+    "y": 422,
+    "reason": "follow visible anchored relaunch cue",
+    "visibleCue": {
+      "large": true,
+      "cue": "relaunch",
+      "title": "已稳住：点击继续起飞",
+      "detail": "保持向前，寻找下一块水果",
+      "compact": false,
+      "compactText": "观察彩色阶梯，选择上下路线"
+    }
+  },
+  {
+    "atMs": 20603,
+    "type": "touchscreen.tap",
+    "x": 195,
+    "y": 422,
+    "reason": "follow visible anchored relaunch cue",
+    "visibleCue": {
+      "large": true,
+      "cue": "relaunch",
+      "title": "已稳住：点击继续起飞",
+      "detail": "保持向前，寻找下一块水果",
+      "compact": false,
+      "compactText": "观察彩色阶梯，选择上下路线"
+    }
+  },
+  {
+    "atMs": 23335,
+    "type": "touchscreen.tap",
+    "x": 195,
+    "y": 422,
+    "reason": "follow visible anchored relaunch cue",
+    "visibleCue": {
+      "large": true,
+      "cue": "relaunch",
+      "title": "已稳住：点击继续起飞",
+      "detail": "保持向前，寻找下一块水果",
+      "compact": false,
+      "compactText": "观察彩色阶梯，选择上下路线"
+    }
+  },
+  {
+    "atMs": 24365,
+    "type": "touchscreen.tap",
+    "x": 195,
+    "y": 422,
+    "reason": "follow visible anchored relaunch cue",
+    "visibleCue": {
+      "large": true,
+      "cue": "relaunch",
+      "title": "已稳住：点击继续起飞",
+      "detail": "保持向前，寻找下一块水果",
+      "compact": false,
+      "compactText": "观察彩色阶梯，选择上下路线"
+    }
+  },
+  {
+    "atMs": 25507,
+    "type": "touchscreen.tap",
+    "x": 195,
+    "y": 422,
+    "reason": "follow visible anchored relaunch cue",
+    "visibleCue": {
+      "large": true,
+      "cue": "relaunch",
+      "title": "已稳住：点击继续起飞",
+      "detail": "保持向前，寻找下一块水果",
+      "compact": false,
+      "compactText": "观察彩色阶梯，选择上下路线"
+    }
+  },
+  {
+    "atMs": 26675,
+    "type": "touchscreen.tap",
+    "x": 195,
+    "y": 422,
+    "reason": "follow visible anchored relaunch cue",
+    "visibleCue": {
+      "large": true,
+      "cue": "relaunch",
+      "title": "已稳住：点击继续起飞",
+      "detail": "保持向前，寻找下一块水果",
+      "compact": false,
+      "compactText": "靠近终点，选择倍率或安全落点"
+    }
+  },
+  {
+    "atMs": 27842,
+    "type": "touchscreen.tap",
+    "x": 195,
+    "y": 422,
+    "reason": "follow visible anchored relaunch cue",
+    "visibleCue": {
+      "large": true,
+      "cue": "relaunch",
+      "title": "已稳住：点击继续起飞",
+      "detail": "保持向前，寻找下一块水果",
+      "compact": false,
+      "compactText": "靠近终点，选择倍率或安全落点"
+    }
+  },
+  {
+    "atMs": 28942,
+    "type": "touchscreen.tap",
+    "x": 195,
+    "y": 422,
+    "reason": "follow visible anchored relaunch cue",
+    "visibleCue": {
+      "large": true,
+      "cue": "relaunch",
+      "title": "已稳住：点击继续起飞",
+      "detail": "保持向前，寻找下一块水果",
+      "compact": false,
+      "compactText": "靠近终点，选择倍率或安全落点"
+    }
+  },
+  {
+    "atMs": 29937,
+    "type": "touchscreen.tap",
+    "x": 195,
+    "y": 422,
+    "reason": "follow visible anchored relaunch cue",
+    "visibleCue": {
+      "large": true,
+      "cue": "relaunch",
+      "title": "已稳住：点击继续起飞",
+      "detail": "保持向前，寻找下一块水果",
+      "compact": false,
+      "compactText": "已稳住，轻触继续起飞"
+    }
+  },
+  {
+    "atMs": 34215,
+    "type": "visible button tap",
+    "label": "重玩",
+    "reason": "natural visible replay control",
+    "visibleCue": {
+      "large": false,
+      "cue": "none",
+      "title": "",
+      "detail": "",
+      "compact": true,
+      "compactText": "轻触：起跳或空中翻转；切中可切物得分，碰尖刺或跌落才会失败。"
+    }
+  },
+  {
+    "atMs": 34482,
+    "type": "touchscreen.tap",
+    "x": 195,
+    "y": 422,
+    "reason": "replay startup cue: 点击任意处起飞",
+    "visibleCue": {
+      "large": true,
+      "cue": "start",
+      "title": "点击任意处起飞",
+      "detail": "起飞后观察下落，接近落点再轻触",
+      "compact": false,
+      "compactText": "轻触起跳；空中再次轻触翻转"
+    }
+  }
+]

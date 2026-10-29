@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "mobile-slice-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+  "axes": {
+    "objectTypes": [
+      "launch card + persistent helper"
+    ],
+    "lifecycleStateBranches": [
+      "initial",
+      "post-failure retry"
+    ],
+    "rendererPaths": [
+      "current dist/index.html 8e57060931df63f915b66c15005ab4b27f62f8156bfe8d018e4f8bff01a9502f"
+    ],
+    "viewports": [
+      {
+        "label": "mobile",
+        "width": 390,
+        "height": 844
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "guidance-0",
+      "objectType": "launch card + persistent helper",
+      "lifecycleStateBranch": "initial",
+      "rendererPath": "current dist/index.html 8e57060931df63f915b66c15005ab4b27f62f8156bfe8d018e4f8bff01a9502f",
+      "viewport": {
+        "label": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "status": "REPRODUCED",
+      "expected": "Instruction surfaces remain separately readable.",
+      "observed": "Small launch guidance overlaps the persistent bottom control banner.",
+      "evidence": [
+        {
+          "path": "factory-eval-20261028/blind-player-qa/current-dist/current-390-start.png",
+          "sha256": "800cfab24cd5b020f74de5f0af5185a6d53ae18dfd72ed543621362ff5d67f45",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "guidance-1",
+      "objectType": "launch card + persistent helper",
+      "lifecycleStateBranch": "post-failure retry",
+      "rendererPath": "current dist/index.html 8e57060931df63f915b66c15005ab4b27f62f8156bfe8d018e4f8bff01a9502f",
+      "viewport": {
+        "label": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "status": "REPRODUCED",
+      "expected": "Instruction surfaces remain separately readable.",
+      "observed": "Small launch guidance overlaps the persistent bottom control banner.",
+      "evidence": [
+        {
+          "path": "factory-eval-20261028/blind-player-qa/current-dist/current-390-after-retry.png",
+          "sha256": "bfdf0535d8803ed234d64d9962b4e8b3d2045270b29e60871a5f400498bff71f",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "Mobile guidance overlap only; no source cause accepted."
+  ],
+  "remainingGaps": [
+    "Desktop overlap branch is not adjudicated.",
+    "Core reference comparison remains BLOCKED.",
+    "No game repair attempted."
+  ],
+  "createdAt": "2026-10-28T07:42:14.443Z"
+}

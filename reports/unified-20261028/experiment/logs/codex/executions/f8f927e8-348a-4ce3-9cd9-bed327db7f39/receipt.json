@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "executionId": "f8f927e8-348a-4ce3-9cd9-bed327db7f39",
+  "sequence": 1,
+  "stage": "QA",
+  "model": "account-default",
+  "status": "complete",
+  "usage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "attempts": 1,
+  "maxTotalTokens": 200000,
+  "startedAt": "2026-10-28T09:20:03.489Z",
+  "finishedAt": "2026-10-28T09:20:12.970Z"
+}

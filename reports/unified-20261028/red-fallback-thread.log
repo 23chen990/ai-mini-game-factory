@@ -1,0 +1,27 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/codex-account-provider.test.ts (17 tests | 1 failed) 41ms
+   × starts a workspace-scoped replacement Fixer when no Builder thread exists 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/codex-account-provider.test.ts > starts a workspace-scoped replacement Fixer when no Builder thread exists
+Error: FixerAgent requires the Builder threadId
+ ❯ CodexAccountProvider.fix src/providers/codex-account.ts:349:32
+    347|
+    348|   async fix(input: { workspace: string; threadId?: string; qaReport: Q…
+    349|     if (!input.threadId) throw new Error('FixerAgent requires the Buil…
+       |                                ^
+    350|     const runRoot = path.resolve(input.workspace, '../..'); const logD…
+    351|     const execution = input.context ? safeExecutionContext({ ...input.…
+ ❯ tests/unit/codex-account-provider.test.ts:403:32
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 16 passed (17)
+   Start at  17:17:41
+   Duration  730ms (transform 395ms, setup 0ms, import 604ms, tests 41ms, environment 0ms)
+

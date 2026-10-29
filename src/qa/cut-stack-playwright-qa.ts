@@ -1,5 +1,6 @@
+import { z } from 'zod';
 import { chromium, webkit, type Browser, type Page } from '@playwright/test';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, rename, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import type { RuntimeAdapter } from '../adapters/runtime.js';
 import { evaluateNaturalFlow } from '../core/qa-evidence.js';
@@ -7,6 +8,7 @@ import { QaReportSchema, type QaReport } from '../schemas/index.js';
 
 type RuntimeEvent = { seq?: unknown; tick?: unknown; type?: unknown; objectId?: unknown };
 type RuntimeState = {
+  randomSeed?: unknown;
   phase?: unknown;
   cuts?: unknown;
   attempt?: unknown;
@@ -100,6 +102,7 @@ function check(name: string, passed: boolean, evidence: unknown): QaReport['chec
 export async function runCutStackDodgePlaywrightQa(runtime: RuntimeAdapter, workspace: string, runRoot: string): Promise<QaReport> {
   await Promise.all([
     mkdir(path.join(runRoot, 'screenshots/cut-stack'), { recursive: true }),
+    mkdir(path.join(runRoot, 'videos/cut-stack'), { recursive: true }),
     mkdir(path.join(runRoot, 'logs'), { recursive: true }),
   ]);
   const preview = await runtime.startPreview(workspace);
@@ -108,12 +111,15 @@ export async function runCutStackDodgePlaywrightQa(runtime: RuntimeAdapter, work
   const screenshots: string[] = [];
   const consoleLines: string[] = [];
   const actions: string[] = ['page.goto'];
+  const naturalVideo = 'videos/cut-stack/natural.webm';
+  let naturalVideoRecorded = false;
   const transitions: Array<{ name: string; changed: boolean; evidence: string }> = [];
   let naturalFlow: QaReport['naturalFlow'];
   let browser: Browser | undefined;
   try {
     browser = await chromium.launch({ headless: true });
-    const context = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
+    const context = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true,
+      recordVideo: { dir: path.join(runRoot, 'videos/cut-stack'), size: { width: 390, height: 844 } } });
     const page = await context.newPage();
     page.on('console', (message) => {
       consoleLines.push(`[chromium:${message.type()}] ${message.text()}`);
@@ -215,10 +221,21 @@ export async function runCutStackDodgePlaywrightQa(runtime: RuntimeAdapter, work
       forbiddenOperations,
       screenshots: screenshots.filter((item) => item.includes('/natural-')),
     });
+    naturalFlow = { ...naturalFlow, device: { width: 390, height: 844, label: 'chromium-mobile-emulation' }, seed: z.number().int().parse(initial.randomSeed) };
     checks.push(check('natural-flow-complete', naturalFlow.passed, { blockers: naturalFlow.blockers, actions: naturalFlow.actions, transitions: naturalFlow.transitions }));
 
+    const video = page.video();
+    if (video === null) throw new Error('Playwright natural journey video is missing');
+    await page.close();
+    await rename(await video.path(), path.join(runRoot, naturalVideo));
+    naturalVideoRecorded = true;
+    await context.close();
+
     // Engineering truth is intentionally separate from the pointer journey.
-    const deterministic = await page.evaluate(() => {
+    const engineeringContext = await browser.newContext({ viewport: { width: 390, height: 844 } });
+    const engineeringPage = await engineeringContext.newPage();
+    await engineeringPage.goto(preview.url, { waitUntil: 'networkidle' });
+    const deterministic = await engineeringPage.evaluate(() => {
       const api = (window as unknown as { __GAME_TEST__: {
         resetGame(): unknown;
         setRandomSeed(seed: number): unknown;
@@ -237,7 +254,7 @@ export async function runCutStackDodgePlaywrightQa(runtime: RuntimeAdapter, work
       && deterministic.failureCause === deterministicHazard?.objectId
       && hasEvent(deterministicEvents, 'cut')
       && hasEvent(deterministicEvents, 'drop'), deterministic));
-    await context.close();
+    await engineeringContext.close();
   } catch (error) {
     issues.push({ id: 'cut-stack-preview-runtime', severity: 'error', message: error instanceof Error ? error.message : String(error), evidence: 'Chromium cut-stack journey' });
   } finally {
@@ -279,7 +296,7 @@ export async function runCutStackDodgePlaywrightQa(runtime: RuntimeAdapter, work
     }
   }
   await writeFile(path.join(runRoot, 'logs/console.log'), `${consoleLines.join('\n')}\n`);
-  const naturalArtifacts = naturalFlow?.screenshots ?? [];
+  const naturalArtifacts = [...(naturalFlow?.screenshots ?? []), ...(naturalVideoRecorded ? [naturalVideo] : [])];
   return QaReportSchema.parse({
     schemaVersion: 1,
     passed: Boolean(naturalFlow?.passed) && checks.length >= 7 && checks.every((item) => item.passed) && issues.every((issue) => issue.severity !== 'error'),
@@ -293,6 +310,7 @@ export async function runCutStackDodgePlaywrightQa(runtime: RuntimeAdapter, work
       {
         schemaVersion: 1,
         mode: 'STATE_COVERAGE',
+        device: { width: 390, height: 844, label: 'chromium-mobile-emulation' }, seed: 42,
         actions: ['__GAME_TEST__.resetGame', '__GAME_TEST__.setRandomSeed', '__GAME_TEST__.tap', '__GAME_TEST__.advanceTicks'],
         artifacts: ['artifacts/qa-report.json', 'logs/console.log'],
         forbiddenOperations: ['resetGame', 'setRandomSeed', 'tap', 'advanceTicks'],
@@ -300,6 +318,7 @@ export async function runCutStackDodgePlaywrightQa(runtime: RuntimeAdapter, work
       {
         schemaVersion: 1,
         mode: 'NATURAL_E2E',
+        device: naturalFlow?.device, seed: naturalFlow?.seed,
         actions: naturalFlow?.actions ?? ['natural-flow:missing'],
         artifacts: naturalArtifacts.length > 0 ? naturalArtifacts : ['screenshots/cut-stack:natural-evidence-missing'],
         forbiddenOperations: naturalFlow?.forbiddenOperations ?? [],

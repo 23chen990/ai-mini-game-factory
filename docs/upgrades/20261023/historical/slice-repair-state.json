@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "formal-fixer-repair-state",
+  "targetGame": "mobile-slice-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+  "issueId": "ALL-FOOD-CUT-001",
+  "attempt": 13,
+  "priorAttemptPath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/all-food-melon-20261002-reopen/repair-attempt-12.json",
+  "storedBuilderThreadId": "01a0f2a2-11e1-72c1-9556-6c9cc2f18621",
+  "executorRole": "FixerAgent",
+  "continuity": "Human explicitly asked this current workspace-scoped chat to take over. Continue here without sending unsolicited prompts to another chat; preserve recorded original Builder thread and prior attempt.",
+  "status": "RETEST",
+  "qaReportPath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/all-food-melon-20261002-reopen/qa-report.json",
+  "hypothesis": "Attempt 12 evidence shows the real coconut cavity is present but can be covered by the Level 1 support presentation depth. Reduce only that presentation depth to expose the cavity while preserving authored collision geometry, cut timing, source halves, landing and replay.",
+  "buildBindingPath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/all-food-melon-20261002-reopen/build-binding-attempt13.json",
+  "buildSha256": "c4cc3c427fc52c9f91f6229c9aea0ae7cfe8220341be521df6c807626d101aae"
+}

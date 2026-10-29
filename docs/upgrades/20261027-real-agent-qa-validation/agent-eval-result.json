@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "status": "BLOCKED_AWAITING_ROUND_AUTHORIZATION",
+  "productQuality": "NOT_ACCEPTED",
+  "newIndependentCalls": {
+    "Research": 0,
+    "QA": 0,
+    "Builder": 0,
+    "Fixer": 0,
+    "retestQa": 0
+  },
+  "currentRound": {
+    "autonomousDefectsConfirmed": 0,
+    "validBlindTests": 0,
+    "autonomousRepairsConfirmed": 0,
+    "autonomousRepairAttempts": 0,
+    "falsePositiveClaims": 0,
+    "falseNegatives": null,
+    "unobservedAgentCases": null,
+    "reason": "No new subject Agent invocation; 0/0 is not a zero-percent capability result."
+  },
+  "previousLocalRound": {
+    "qaInvocations": 2,
+    "startupRejected": 1,
+    "actualQaInvocations": 1,
+    "autonomousDefectsConfirmed": 0,
+    "attemptedSubjectViewportCells": 4,
+    "validScorableCells": 0,
+    "unobservedCells": 4,
+    "knownInjectedTargets": 1,
+    "injectedTargetsDetected": 0,
+    "undetectedButBlockedTargets": 1,
+    "productFalsePositiveClaims": 0,
+    "falseNegatives": null,
+    "falsePositiveRate": null,
+    "recall": null,
+    "repairModelAttempts": 0,
+    "durationMs": 33466,
+    "rawUsage": {
+      "input_tokens": 97584,
+      "cached_input_tokens": 79360,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 2493,
+      "reasoning_output_tokens": 1111
+    },
+    "observedTotalTokens": 100077,
+    "observedStopLine": 55000,
+    "receiptStatus": "uncertain",
+    "costUsd": null,
+    "sourceReceipt": "/Users/kker/.codex/worktrees/factory-pr77-production/妖怪夜市/runs/eval-20261027-slice/logs/codex/executions/51d65635-2a16-414f-9641-a52272e9e880/receipt.json"
+  },
+  "controllerReplication": {
+    "sessions": 12,
+    "reachedCompletion": 8,
+    "redReplayBlocked": 4,
+    "repairedReplayRestarts": 4,
+    "failedTerminalNotObserved": 4,
+    "pageErrors": 0,
+    "autonomousSuccessCredit": 0,
+    "modelCalls": 0,
+    "elapsedSessionMs": 313916,
+    "normalInputOnly": true
+  },
+  "historyNotOverwritten": true,
+  "oldCostSnapshotPreserved": {
+    "schemaVersion": 1,
+    "billing": "ChatGPT signed-in team plan; account quota, not separately invoiced API-token usage",
+    "creditsConsumed": null,
+    "verifiedIncrementalMoney": null,
+    "currency": "USD",
+    "purchases": 0,
+    "rootTurnUsageSnapshot": {
+      "input_tokens": 9996368,
+      "cached_input_tokens": 9819008,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 42970,
+      "reasoning_output_tokens": 16334,
+      "total_tokens": 10039338
+    },
+    "rootUsageRecordedAt": "2026-10-27T06:08:43.572Z",
+    "qaObservedCompletedTurnUsage": {
+      "inputTokens": 97584,
+      "cachedInputTokens": 79360,
+      "outputTokens": 2493,
+      "totalTokens": 100077
+    },
+    "snapshotIsLowerBound": true,
+    "note": "Root snapshot excludes subsequent finalization tokens; QA tracked separately, not merged with root. Cached input is a subset of input, never added twice. Quota start used1%/18%, snapshot used22%/21% shared-account; deltas are not exclusive task attribution. hasCredits=false, balance=null means unavailable balance, not zero monetary cost. No Research/Builder/Fixer model invocation after QA budget stop."
+  },
+  "blockers": [
+    "No explicit current-round max Agent calls, cumulative time and observed-token stop line",
+    "Actual QA Agent session MCP grant/use not yet demonstrated; configured transport functionality is demonstrated",
+    "No independent defect discovery; therefore no autonomous Fixer handoff or independent retest",
+    "Natural failed-terminal branch remains unobserved in new controller captures; no full perceptual product acceptance"
+  ],
+  "modelChange": false,
+  "newArchitecture": false,
+  "rootControllerCost": "cost-usage-snapshot.json; separate from subject calls; monetary cost unknown"
+}

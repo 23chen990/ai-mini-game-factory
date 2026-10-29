@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "resultSha256": "b4970549e02b9c443953d48bdc3e38fb2ba626f1a8ae00ae0b0004119fbe6c6a",
+  "rootReviewer": "non-blind independent raw-video/frame check",
+  "primarySubjectOutcomeUnchanged": true,
+  "confirmedUniqueIssueCount": 1,
+  "confirmedViewportCells": 2,
+  "issue": "Local reward and cumulative HUD become visible before first watermelon visibly separates. This is a predeclared product feedback-order requirement, not a claim about missing reward or vendor design.",
+  "rootNativeFramesInspected": {
+    "390-steady-trigger": [
+      17,
+      18,
+      20
+    ],
+    "1100-steady-trigger": [
+      16,
+      17,
+      20
+    ]
+  },
+  "decision": "CONFIRMED_PRESENTATION_ORDER_COUNTEREXAMPLE",
+  "rootCause": "UNKNOWN; no source/hidden state diagnosis performed",
+  "sameIssueAcrossViewports": true,
+  "oldV2AbsenceClaimsRemainRefuted": true,
+  "caseOutcomes": {
+    "PASS": 2,
+    "FAIL": 2,
+    "UNOBSERVED": 8
+  },
+  "acceptedWholeScope": false,
+  "timeLimitHonored": false,
+  "reviewElapsedMs": 1629804,
+  "reviewOverrunMs": 429804,
+  "interpretation": "Independent core outcome is adjudicable and evidentially fails reward order; timed review task and full12-case experience remain BLOCKED. No detection/miss rate without complete gold.",
+  "notBug": [
+    "Fixed cadence fall is not itself a product defect",
+    "Airborne/contact, grounding, whole-stack support-loss, and spike-contact recovery remain unobserved/ambiguous, not automatically passed or failed"
+  ],
+  "repairRoute": "formal-fixer",
+  "repairStatus": "BLOCKED_CANONICAL_RESTORE_MATERIALS",
+  "gameEdits": 0,
+  "newGameBuilds": 0,
+  "newFixerCalls": 0,
+  "nextRequired": "Authentic same-run state/seed/plan/permissions and unresolved-cost reconciliation before existing Fixer continuation; then directed change and same-build independent natural/perceptual retest."
+}

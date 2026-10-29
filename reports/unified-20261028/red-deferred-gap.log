@@ -1,0 +1,21 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/reference-fidelity-qa.test.ts (45 tests | 1 failed) 274ms
+   × cannot close a deferred evidence gap by repairing an unrelated implementation issue 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/reference-fidelity-qa.test.ts > cannot close a deferred evidence gap by repairing an unrelated implementation issue
+AssertionError: expected [ Array(1) ] to include 'fidelity:check-missing:unresolved-sou…'
+ ❯ tests/unit/reference-fidelity-qa.test.ts:287:41
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 44 passed (45)
+   Start at  23:59:23
+   Duration  1.03s (transform 422ms, setup 0ms, import 648ms, tests 274ms, environment 0ms)
+

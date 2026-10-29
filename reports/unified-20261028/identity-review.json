@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "ReferenceMediaIdentityReviewResult",
+  "entry": {
+    "id": "slice-reference",
+    "sourcePath": "/Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市/runs/20261026104326-reference-9094c978/reference-evidence/verified/_2026-09-06-135548-3781e4dcd3d2-3781e4dcd3d2-3781e4dcd3d2.mp4",
+    "storedPath": "reference-evidence/verified/_2026-09-06-135548-3781e4dcd3d2-3781e4dcd3d2-3781e4dcd3d2-3781e4dcd3d2.mp4",
+    "purpose": "gameplay-reference",
+    "sha256": "3781e4dcd3d21094f186cf442b3ee30cddfbb2fbe68d87c5c7470a2c742bf75a",
+    "targetGame": "小李飞刀 · 海岸试炼（独立实验副本）",
+    "workspace": "/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/runs/unified-agent-repair-20261028/workspace/game",
+    "identityStatus": "VERIFIED_TARGET",
+    "reviewStatus": "VERIFIED",
+    "usableAsEvidence": true,
+    "notes": "Identity reviewed by Controller identity review, not QA: Exact historical Slice Master recording hash from mobile-slice-adaptation lineage; contact-000 pixels inspected: jumping blade, fruit/support course. This evidence is a behavioral reference only, not code/assets or proof of hidden inputs."
+  },
+  "review": {
+    "schemaVersion": 1,
+    "artifactType": "evidence-identity-review",
+    "reviewId": "identity-slice-reference",
+    "entryId": "slice-reference",
+    "targetGame": "小李飞刀 · 海岸试炼（独立实验副本）",
+    "workspace": "/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/runs/unified-agent-repair-20261028/workspace/game",
+    "decision": "VERIFIED_TARGET",
+    "expectedSha256": "3781e4dcd3d21094f186cf442b3ee30cddfbb2fbe68d87c5c7470a2c742bf75a",
+    "actualSha256": "3781e4dcd3d21094f186cf442b3ee30cddfbb2fbe68d87c5c7470a2c742bf75a",
+    "priorStoredPath": "reference-evidence/incoming/_2026-09-06-135548-3781e4dcd3d2-3781e4dcd3d2-3781e4dcd3d2-3781e4dcd3d2.mp4",
+    "verifiedStoredPath": "reference-evidence/verified/_2026-09-06-135548-3781e4dcd3d2-3781e4dcd3d2-3781e4dcd3d2-3781e4dcd3d2.mp4",
+    "reviewer": "Controller identity review, not QA",
+    "basis": "Exact historical Slice Master recording hash from mobile-slice-adaptation lineage; contact-000 pixels inspected: jumping blade, fruit/support course. This evidence is a behavioral reference only, not code/assets or proof of hidden inputs.",
+    "reviewedAt": "2026-10-28T09:15:59.223Z"
+  },
+  "reviewPath": "/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/runs/unified-agent-repair-20261028/reference-evidence/reviews/slice-reference.json",
+  "manifestPath": "/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/runs/unified-agent-repair-20261028/reference-evidence/manifest.json"
+}

@@ -11,11 +11,20 @@ export type ExecutionPolicy = ModelPolicy & {
 };
 
 const defaults: Record<ModelTier, { model: string; reasoning: ModelPolicy['reasoning'] }> = {
-  frontier: { model: 'gpt-5.6-luna', reasoning: 'max' },
-  builder: { model: 'gpt-5.6-luna', reasoning: 'max' },
-  reviewer: { model: 'gpt-5.6-luna', reasoning: 'max' },
-  fast: { model: 'gpt-5.6-luna', reasoning: 'max' },
+  frontier: { model: 'account-default', reasoning: 'max' },
+  builder: { model: 'account-default', reasoning: 'max' },
+  reviewer: { model: 'account-default', reasoning: 'max' },
+  fast: { model: 'account-default', reasoning: 'max' },
 };
+
+/** Environment/CLI model IDs are untrusted configuration, not a capability catalogue.
+ * A valid ID can still be rejected by the account; that rejection is terminal. */
+export function normalizeModelId(value: string | undefined): string {
+  if (value === undefined) return 'account-default';
+  const model = value.trim();
+  if (!/^[a-zA-Z0-9][a-zA-Z0-9._-]*$/u.test(model)) throw new Error('Invalid model configuration: expected a model ID or account-default');
+  return model;
+}
 
 function reasoningForTier(tier: ModelTier): ModelPolicy['reasoning'] {
   const value = process.env[`FACTORY_${tier.toUpperCase()}_REASONING`]?.trim().toLowerCase();
@@ -23,11 +32,11 @@ function reasoningForTier(tier: ModelTier): ModelPolicy['reasoning'] {
 }
 
 function tierPolicy(tier: ModelTier): ModelPolicy {
-  const configured = process.env[`FACTORY_${tier.toUpperCase()}_MODEL`];
+  const configured = process.env[`FACTORY_${tier.toUpperCase()}_MODEL`] ?? process.env.CODEX_MODEL;
   const configuredMax = Number(process.env[`FACTORY_${tier.toUpperCase()}_MAX_INPUT_CHARS`]);
   const defaultMax = tier === 'fast' ? 18_000 : tier === 'reviewer' ? 32_000 : 64_000;
   const maxInputChars = Number.isFinite(configuredMax) && configuredMax >= 1_000 ? Math.min(Math.trunc(configuredMax), 100_000) : defaultMax;
-  return { tier, model: configured?.trim() || defaults[tier].model, reasoning: reasoningForTier(tier), maxInputChars, canModifyWorkspace: tier === 'builder' };
+  return { tier, model: normalizeModelId(configured), reasoning: reasoningForTier(tier), maxInputChars, canModifyWorkspace: tier === 'builder' };
 }
 
 const frontierStages = new Set<StageName>(['REFERENCE_DEEP_RESEARCH', 'REFERENCE_MECHANIC_LOCK', 'COMPETITOR_RESEARCH', 'OPEN_SOURCE_RESEARCH', 'PRODUCTION_COST_REVIEW', 'IAA_REVIEW', 'IAA_MONETIZATION_REVIEW', 'GREENLIGHT_GATE', 'BLUEPRINT', 'EXPERIENCE_CONTRACT', 'EXPERIENCE_REVIEW', 'FEEL_REPAIR', 'NARRATIVE_CONTRACT', 'NARRATIVE_REVIEW', 'REPLAY_VALUE_QA', 'SYSTEMS_CONTRACT', 'PROGRESSION_REVIEW', 'PUZZLE_CONTRACT', 'PUZZLE_REVIEW', 'FINAL_PROFILE_QA', 'CORE_SPEC_FROZEN', 'RELEASE']);
@@ -65,8 +74,8 @@ export function getModelPolicy(): Record<string, ModelPolicy> {
 export function modelForStage(stage: StageName): ModelPolicy {
   const tier: ModelTier = frontierStages.has(stage) ? 'frontier' : fastStages.has(stage) ? 'fast' : reviewerStages.has(stage) ? 'reviewer' : builderStages.has(stage) ? 'builder' : 'reviewer';
   const policy = tierPolicy(tier);
-  const stageOverride = process.env[`FACTORY_STAGE_${stage.replaceAll(/[^A-Z0-9]+/giu, '_')}_MODEL`]?.trim();
-  return stageOverride ? { ...policy, model: stageOverride } : policy;
+  const stageOverride = process.env[`FACTORY_STAGE_${stage.replaceAll(/[^A-Z0-9]+/giu, '_')}_MODEL`];
+  return stageOverride === undefined ? policy : { ...policy, model: normalizeModelId(stageOverride) };
 }
 
 export function modelPolicySignature(stages: StageName[] = [...StageNameSchema.options]) {
@@ -75,8 +84,11 @@ export function modelPolicySignature(stages: StageName[] = [...StageNameSchema.o
 
 export function classifyModelFailure(message: string): ModelFailureKind {
   const text = String(message).toLowerCase();
+  if (/qa_browser_unavailable|qa_observations_required|qa_isolation_unavailable|qa observation|qa screenshot/u.test(text)) return 'TOOL_ERROR';
+  // Request/configuration rejections are not evidence that a stronger model is needed.
+  if (/(?:invalid_request_error|model_not_found|model configuration|unexpected argument|the model [^\n]+ does not exist|not supported when using codex)/u.test(text)) return 'SPEC_ERROR';
+  if (/(?:not logged in|authentication|unauthorized|policy|permission|forbidden|license|copyright|unsafe|blocked by|do not have access)/u.test(text)) return 'POLICY_BLOCK';
   if (/(?:timeout|timed out|rate limit|usage limit|quota|try again at|at capacity|429|temporar|econnreset|503|network)/u.test(text)) return 'TRANSIENT';
-  if (/(?:policy|permission|forbidden|license|copyright|unsafe|blocked by)/u.test(text)) return 'POLICY_BLOCK';
   if (/(?:schema|invalid input|spec|acceptance standard|unknown requirement)/u.test(text)) return 'SPEC_ERROR';
   if (/(?:tool|command|enoent|playwright|cannot spawn|file not found)/u.test(text)) return 'TOOL_ERROR';
   return 'CAPABILITY_ERROR';

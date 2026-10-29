@@ -1,0 +1,63 @@
+{
+  "workspace": "/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/runs/unified-agent-repair-20261028/workspace/game",
+  "buildHash": "ede85e168a738465002ccd2b70a22a666f2840d873dbc61edade15c556ba3e5e",
+  "contractHash": "1c21fd6c6abd7f8e9d0fa26f4fc95400ba190897de968b72acf8ea511b1c23b9",
+  "requiredRetests": [],
+  "comparison": {
+    "reference": {
+      "path": "qa-input/retest/reference-capture.json",
+      "sha256": "9574aadbe269ec3248f3c083d2e8e4cd1f4b97c021174bf41ddb064f46cff32e"
+    },
+    "candidate": {
+      "path": "qa-input/retest/candidate-capture.json",
+      "sha256": "98d70e5e14a8453d96eeb8f8cabdf6dc522907413370f12270737789e8cdbb32"
+    }
+  },
+  "qaObservation": {
+    "buildPath": "workspace/game/dist",
+    "buildSha256": "ede85e168a738465002ccd2b70a22a666f2840d873dbc61edade15c556ba3e5e",
+    "tracePath": "qa-input/retest/trace.json",
+    "traceSha256": "10e8c4a28dc8a186fc1a8f40432436b887d0467d90908298bf7e59ea11594da3",
+    "screenshots": [
+      {
+        "path": "qa-input/retest/01-ready.png",
+        "sha256": "85cf37aada004eec3174ab2ed5a369f6cc7fb12a00ff5cdc7f7f1316f732c020"
+      },
+      {
+        "path": "qa-input/retest/02-action.png",
+        "sha256": "c16bfa7bc7578a2c39ace1c2627c3a2cf1f7960834e1db1ebe34206be21a87da"
+      },
+      {
+        "path": "qa-input/retest/03-outcome.png",
+        "sha256": "7f992c532e186269491212b662c3653f487e00e5071247e44d3aa0c94364b699"
+      },
+      {
+        "path": "qa-input/retest/04-after-control.png",
+        "sha256": "c24d9a6fe0fdd45217a9b8f0cb8af08875a0aa7f101346a44607bc6b4ddeaa3c"
+      },
+      {
+        "path": "qa-input/retest/05-new-action.png",
+        "sha256": "596469c6b7388e53d44ba7c5527b10a0cb6aaf9e2a815e9c064bd72c803d191e"
+      }
+    ],
+    "referenceImages": [
+      {
+        "path": "reference-evidence/derived/_2026-09-06-135548-3781e4dcd3d2-3781e4dcd3d2-3781e4dcd3d2/3781e4dcd3d2-8fps-v2/contact-000-00000-00015.jpg",
+        "sha256": "b768d0eaee2a1bd34c550f5c6c58a5cdfabcd3b04b904d815bbead0eb0969437"
+      },
+      {
+        "path": "reference-evidence/derived/_2026-09-06-135548-3781e4dcd3d2-3781e4dcd3d2-3781e4dcd3d2/3781e4dcd3d2-8fps-v2/contact-009-00144-00159.jpg",
+        "sha256": "a5a3f128131763858db6c0b5bf976a75b4bbc84280ddb9ff2c6ecda5ae7ba1f1"
+      },
+      {
+        "path": "reference-evidence/derived/_2026-09-06-135548-3781e4dcd3d2-3781e4dcd3d2-3781e4dcd3d2/3781e4dcd3d2-8fps-v2/contact-018-00288-00291.jpg",
+        "sha256": "4b6272e8cbfbeac1bf0420e3fc133dd8e608bb462b7e3996bd2006d01bfbdd12"
+      }
+    ]
+  },
+  "limitations": [
+    "Source recording has pixels, but no logged input timings. Exact causal source comparisons remain UNKNOWN.",
+    "Only candidate has fresh normal-input capture.",
+    "Screenshots and video are observations, not expected outcomes."
+  ]
+}

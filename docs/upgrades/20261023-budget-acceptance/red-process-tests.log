@@ -1,0 +1,275 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市
+
+ ❯ tests/unit/codex-budget-process.test.ts (8 tests | 8 failed) 2608ms
+     × does not retry a budgeted timeout and exposes/persists its observed lower bound 254ms
+     × retains earlier valid usage when a later usage event is invalid 72ms
+     × returns the sum of all observed attempts on a legacy unbudgeted retry 75ms
+     × does not launch an already cancelled request 4ms
+     × shares historical and new usage across clients/stages and prevents resumed budget reuse 2080ms
+     × rejects a concurrent same-run launch before it can spend the shared remainder 48ms
+     × validates the final unterminated JSONL event before accepting success 37ms
+     × fails closed on truncated trailing JSONL without discarding known usage 37ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/codex-budget-process.test.ts > Codex observed-token stop with real controlled processes > does not retry a budgeted timeout and exposes/persists its observed lower bound
+AssertionError: expected 2 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 2
+
+ ❯ tests/unit/codex-budget-process.test.ts:38:23
+     36|     const f = await fixture([`${turn(40)} setInterval(() => {}, 1000);…
+     37|     const error = await f.provider().execute({ ...f.request, maxTotalT…
+     38|     expect(f.calls()).toBe(1);
+       |                       ^
+     39|     expect(error).toMatchObject({ usage: { inputTokens: 39, outputToke…
+     40|     const receipt = JSON.parse(await readFile(path.join(f.request.logD…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  tests/unit/codex-budget-process.test.ts > Codex observed-token stop with real controlled processes > retains earlier valid usage when a later usage event is invalid
+AssertionError: expected Error: node:internal/modules/cjs/loader:1… to match object { usage: { totalTokens: 40 }, …(1) }
+
+- Expected
++ Received
+
+- {
+-   "attempts": 1,
+-   "usage": {
+-     "totalTokens": 40,
+-   },
++ Error {
++   "message": "node:internal/modules/cjs/loader:1459
++   throw err;
++   ^
++
++ Error: Cannot find module '/private/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/codex-budget-process-yT7yFV/undefined'
++     at Module._resolveFilename (node:internal/modules/cjs/loader:1456:15)
++     at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)
++     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1071:22)
++     at Module._load (node:internal/modules/cjs/loader:1242:25)
++     at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
++     at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
++     at node:internal/main/run_main_module:33:47 {
++   code: 'MODULE_NOT_FOUND',
++   requireStack: []
++ }
++
++ Node.js v24.14.0",
+  }
+
+ ❯ tests/unit/codex-budget-process.test.ts:47:19
+     45|     const f = await fixture([`${turn(40)} process.stdout.write('{"type…
+     46|     const error = await f.provider().execute({ ...f.request, maxTotalT…
+     47|     expect(error).toMatchObject({ usage: { totalTokens: 40 }, attempts…
+       |                   ^
+     48|     expect(f.calls()).toBe(1);
+     49|     expect(JSON.parse(await readFile(path.join(f.request.logDir, 'BLUE…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  tests/unit/codex-budget-process.test.ts > Codex observed-token stop with real controlled processes > returns the sum of all observed attempts on a legacy unbudgeted retry
+AssertionError: expected { inputTokens: 9, …(2) } to deeply equal { inputTokens: 48, …(2) }
+
+- Expected
++ Received
+
+  {
+-   "inputTokens": 48,
+-   "outputTokens": 2,
+-   "totalTokens": 50,
++   "inputTokens": 9,
++   "outputTokens": 1,
++   "totalTokens": 10,
+  }
+
+ ❯ tests/unit/codex-budget-process.test.ts:57:26
+     55|     const result = await f.provider().execute(f.request);
+     56|     expect(result.attempts).toBe(2);
+     57|     expect(result.usage).toEqual({ inputTokens: 48, outputTokens: 2, t…
+       |                          ^
+     58|   });
+     59|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  tests/unit/codex-budget-process.test.ts > Codex observed-token stop with real controlled processes > does not launch an already cancelled request
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ tests/unit/codex-budget-process.test.ts:63:23
+     61|     const f = await fixture([success(10)]);
+     62|     await expect(f.provider().execute({ ...f.request, signal: AbortSig…
+     63|     expect(f.calls()).toBe(0);
+       |                       ^
+     64|   });
+     65|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  tests/unit/codex-budget-process.test.ts > Codex observed-token stop with real controlled processes > shares historical and new usage across clients/stages and prevents resumed budget reuse
+AssertionError: promise resolved "{ events: [ { …(2) } ], …(9) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "attempts": 2,
++   "completed": true,
++   "errors": [],
++   "events": [
++     {
++       "type": "turn.completed",
++       "usage": {
++         "input_tokens": 0,
++         "output_tokens": 1,
++       },
++     },
++   ],
++   "failed": false,
++   "output": "ok",
++   "stderr": "",
++   "stdout": "{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":0,\"output_tokens\":1}}
++ ",
++   "threadId": undefined,
++   "usage": {
++     "inputTokens": 0,
++     "outputTokens": 1,
++     "totalTokens": 1,
++   },
+  }
+
+ ❯ tests/unit/codex-budget-process.test.ts:70:74
+     68|     await cap(f.root, 100, 80);
+     69|     await f.provider().execute(f.request);
+     70|     await expect(f.provider().execute({ ...f.request, label: 'REVIEW' …
+       |                                                                          ^
+     71|     await expect(f.provider().execute({ ...f.request, label: 'RESUME' …
+     72|     expect(f.calls()).toBe(2);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  tests/unit/codex-budget-process.test.ts > Codex observed-token stop with real controlled processes > rejects a concurrent same-run launch before it can spend the shared remainder
+AssertionError: promise resolved "{ events: [ { …(2) } ], …(9) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "attempts": 1,
++   "completed": true,
++   "errors": [],
++   "events": [
++     {
++       "type": "turn.completed",
++       "usage": {
++         "input_tokens": 9,
++         "output_tokens": 1,
++       },
++     },
++   ],
++   "failed": false,
++   "output": "ok",
++   "stderr": "",
++   "stdout": "{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":9,\"output_tokens\":1}}
++ ",
++   "threadId": undefined,
++   "usage": {
++     "inputTokens": 9,
++     "outputTokens": 1,
++     "totalTokens": 10,
++   },
+  }
+
+ ❯ tests/unit/codex-budget-process.test.ts:87:76
+     85|     while (f.calls() === 0) await new Promise((resolve) => setTimeout(…
+     86|     try {
+     87|       await expect(f.provider().execute({ ...f.request, label: 'SECOND…
+       |                                                                            ^
+     88|       expect(f.calls()).toBe(1);
+     89|     } finally { controller.abort(); await first; }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  tests/unit/codex-budget-process.test.ts > Codex observed-token stop with real controlled processes > validates the final unterminated JSONL event before accepting success
+AssertionError: promise resolved "{ events: [ { …(2) } ], …(9) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "attempts": 1,
++   "completed": true,
++   "errors": [],
++   "events": [
++     {
++       "type": "turn.completed",
++       "usage": {
++         "input_tokens": 14,
++         "output_tokens": 1,
++       },
++     },
++   ],
++   "failed": false,
++   "output": "ok",
++   "stderr": "",
++   "stdout": "{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":14,\"output_tokens\":1}}",
++   "threadId": undefined,
++   "usage": {
++     "inputTokens": 14,
++     "outputTokens": 1,
++     "totalTokens": 15,
++   },
+  }
+
+ ❯ tests/unit/codex-budget-process.test.ts:96:77
+     94|   it('validates the final unterminated JSONL event before accepting su…
+     95|     const f = await fixture([`${turn(15, false)} fs.writeFileSync(outp…
+     96|     await expect(f.provider().execute({ ...f.request, maxTotalTokens: …
+       |                                                                             ^
+     97|     expect(f.calls()).toBe(1);
+     98|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
+ FAIL  tests/unit/codex-budget-process.test.ts > Codex observed-token stop with real controlled processes > fails closed on truncated trailing JSONL without discarding known usage
+AssertionError: expected '[object Object]' to match /usage-unavailable/u
+
+- Expected:
+/usage-unavailable/u
+
++ Received:
+"[object Object]"
+
+ ❯ tests/unit/codex-budget-process.test.ts:104:27
+    102|     const error = await f.provider().execute({ ...f.request, maxTotalT…
+    103|     expect(error).toMatchObject({ usage: { totalTokens: 15 } });
+    104|     expect(String(error)).toMatch(/usage-unavailable/u);
+       |                           ^
+    105|     expect(f.calls()).toBe(1);
+    106|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/8]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  8 failed (8)
+   Start at  23:15:26
+   Duration  3.31s (transform 385ms, setup 0ms, import 593ms, tests 2.61s, environment 0ms)
+

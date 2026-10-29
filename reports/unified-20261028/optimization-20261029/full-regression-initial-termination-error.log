@@ -1,0 +1,44 @@
+$ vitest run
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯
+
+Vitest caught 1 unhandled error during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+Error: kill EPERM
+ ❯ process.kill node:internal/process/per_thread:277:13
+ ❯ kill src/providers/codex-cli.ts:253:25
+    251|         // Injected test children have no pid; Windows can terminate o…
+    252|         if (detached && child.pid !== undefined) {
+    253|           try { process.kill(-child.pid, signal); }
+       |                         ^
+    254|           catch (error) { if ((error as NodeJS.ErrnoException).code !=…
+    255|         } else child.kill(signal);
+ ❯ terminate src/providers/codex-cli.ts:260:9
+ ❯ inspectLine src/providers/codex-cli.ts:267:28
+ ❯ Socket.<anonymous> src/providers/codex-cli.ts:277:11
+ ❯ Socket.emit node:events:520:35
+ ❯ addChunk node:internal/streams/readable:563:12
+ ❯ readableAddChunkPushByteMode node:internal/streams/readable:514:3
+ ❯ Socket.Readable.push node:internal/streams/readable:394:5
+ ❯ Pipe.onStreamRead node:internal/stream_base_commons:189:23
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { errno: -1, code: 'EPERM', syscall: 'kill' }
+This error originated in "tests/unit/codex-budget-process.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "preserves recorded native model rejection f8f927e8-348a-4ce3-9cd9-bed327db7f39 through a budgeted process stop". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+
+ Test Files  200 passed (200)
+      Tests  1312 passed (1312)
+     Errors  1 error
+   Start at  15:46:59
+   Duration  155.34s (transform 2.74s, setup 0ms, import 44.39s, tests 247.90s, environment 11ms)
+
+[ELIFECYCLE] Test failed. See above for more details.

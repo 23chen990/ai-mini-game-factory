@@ -1,0 +1,12 @@
+{
+ "schemaVersion":1,"targetGame":"shared Factory; unified-agent-repair-20261028 unchanged sample",
+ "workspace":"/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/runs/unified-agent-repair-20261028/workspace/game",
+ "classification":"QA_HANDOFF_ALL_OR_NOTHING","route":"formal-fixer",
+ "observedCase":"Real QA execution 6b74ddb8 independently discovered replay implementation error with valid build/trace/screenshots, plus an unobserved evidence branch. The full verifier reports danger-recovery and duplicate free-form replay-case branch mismatch; no Fixer handoff is produced.",
+ "expected":"Validate each implementation discovery through the existing strict verifier and send only valid findings to Fixer; keep the complete review, unknown branches and comparison gate BLOCKED.",
+ "evidence":"artifacts/pilot-qa-first.json and pilot-qa-first-validation.json in exact target run",
+ "cause":"Report-wide error handling prevents existing partial issue routing from receiving otherwise valid independent discoveries. No game-code cause is asserted by Controller.",
+ "alternatives":"Keep current: dead-end after valid discovery. Rerun full QA: consumes another unauthorized first call. Small projection of independent implementation discoveries into the existing verifier: zero inference, no new role/stage/schema; retain full BLOCKED report.",
+ "experiment":"Before: saved real review cannot dispatch. After: only its hash-valid implementation discovery can dispatch; stale build, invalid hash or injected trace still rejects. Full review and unobserved gates must remain unchanged. Retain only if those regressions pass.",
+ "acceptance":["One genuine implementation issue reaches existing Fixer","No evidence/research/design/unknown issue reaches Fixer","Original complete review and blockers remain preserved","No new QA first invocation and no lowered acceptance"]
+}

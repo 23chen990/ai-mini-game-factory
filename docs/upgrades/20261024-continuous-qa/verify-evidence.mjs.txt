@@ -1,0 +1,30 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
+import {z} from 'zod';
+const base='docs/upgrades/20261024-continuous-qa/';
+const json=p=>JSON.parse(readFileSync(p,'utf8'));
+const sha=p=>createHash('sha256').update(readFileSync(p)).digest('hex');
+const hash=z.string().regex(/^[0-9a-f]{64}$/);
+const manifest=z.object({schemaVersion:z.literal(1),items:z.array(z.object({sourcePath:z.string(),publicPath:z.string(),sha256:hash,bytes:z.number().int().nonnegative()})),thirdPartyReferenceCopied:z.literal(false),notes:z.string()}).strict().parse(json(base+'publication-manifest.json'));
+for(const item of manifest.items){assert.equal(sha(item.publicPath),item.sha256,item.publicPath);assert.equal(readFileSync(item.publicPath).length,item.bytes);}
+const freeze=json(base+'capture/freeze.json');
+for(const seal of freeze.files){const item=manifest.items.find(i=>i.sourcePath===seal.path);assert.equal(item.sha256,seal.sha256);}
+const packet=json(base+'blind/packet.json'),plan=json(base+'capture/plan.json'),capture=json(base+'capture/capture.json');
+assert.equal(sha(base+'blind/packet.json'),plan.packetSha256);
+assert.equal(sha(base+'capture/plan.json'),capture.planSha256);
+assert.equal(sha(base+'capture/runner.mjs.txt'),capture.runnerSha256);
+assert.equal(capture.candidateSha256,packet.candidate.sha256);
+assert.equal(capture.sessions.length,8);assert.equal(capture.expired,false);assert.ok(capture.durationMs<plan.maxAcquisitionMs);
+const report=z.object({schemaVersion:z.literal(1),packetSha256:hash,planSha256:hash,candidateSha256:hash,cases:z.array(z.object({id:z.string(),outcome:z.enum(['PASS','FAIL','UNOBSERVED'])}).passthrough()).length(12),labelExposure:z.literal(false),cost:z.object({totalTokens:z.null(),costUsd:z.null()})}).passthrough().parse(json(base+'blind/result.json'));
+assert.deepEqual(report.cases.map(c=>c.id).sort(),packet.cases.map(c=>c.id).sort());
+assert.equal(report.packetSha256,plan.packetSha256);assert.equal(report.planSha256,capture.planSha256);assert.equal(report.candidateSha256,packet.candidate.sha256);
+const recovery=json(base+'legacy-recovery.json');assert.equal(recovery.decision,'BLOCKED');assert.equal(recovery.restorationPerformed,false);assert.equal(recovery.newGameBuilds,0);assert.equal(recovery.missing.length,4);
+console.log(`Verified ${manifest.items.length} exact evidence copies, sealed capture inputs, 8 sessions, unchanged 12-case scope, raw subject outcome and blocked restoration.`);
+const independent=z.object({schemaVersion:z.literal(1),status:z.literal('BLOCKED'),candidate:z.object({sha256:hash}).passthrough(),caseResults:z.array(z.object({id:z.string(),status:z.enum(['PASS','FAIL','UNOBSERVED'])}).passthrough()).length(12),confirmedObservations:z.array(z.object({id:z.string(),reproductionMatrix:z.array(z.unknown()).min(1),rootCause:z.string()}).passthrough()).length(2),labelExposure:z.literal(false),elapsedMs:z.number(),administrativeDeadlineMs:z.number()}).passthrough().parse(json(base+'independent-review/result.json'));
+assert.equal(independent.candidate.sha256,packet.candidate.sha256);
+assert.deepEqual(independent.caseResults.map(c=>c.id).sort(),packet.cases.map(c=>c.id).sort());
+assert.deepEqual(['PASS','FAIL','UNOBSERVED'].map(s=>independent.caseResults.filter(c=>c.status===s).length),[2,2,8]);
+assert.ok(independent.elapsedMs>independent.administrativeDeadlineMs);
+const adjudication=json(base+'independent-adjudication.json');assert.equal(adjudication.resultSha256,sha(base+'independent-review/result.json'));assert.equal(adjudication.acceptedWholeScope,false);assert.equal(adjudication.confirmedUniqueIssueCount,1);
+console.log('Independent result/matrix, 2/2/8 decisions, retained overrun and separate one-issue adjudication verified.');

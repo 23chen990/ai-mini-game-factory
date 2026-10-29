@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "executionId": "f8f927e8-348a-4ce3-9cd9-bed327db7f39",
+  "reason": "Explicit invalid_request_error/model_not_found rejected account-default before any completed inference. No token counter or attempt count changed. Original uncertain receipt and frozen inputs preserved.",
+  "rawEventSha256": "57f29e05d1a25e53c018d22ef6ad6e190b6888cf1a1c99207ac0fbb15fb48fb8",
+  "beforeReceiptSha256": "8f3b813791118b854440eeb96c738ce5bf2788ae5392e2a86d8320a500006bb5",
+  "observedTokens": 0,
+  "reportedUsageEvents": 0,
+  "billingAmount": "UNKNOWN (no billing API accessed)",
+  "reviewer": "Controller; user explicitly approved one replacement QA call",
+  "reviewedAt": "2026-10-28T15:40:32.365454+00:00"
+}

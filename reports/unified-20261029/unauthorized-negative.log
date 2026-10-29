@@ -1,0 +1,16 @@
+node:internal/fs/promises:637
+  return new FileHandle(await PromisePrototypeThen(
+                        ^
+
+Error: ENOENT: no such file or directory, open '/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/runs/unified-agent-repair-20261028/human/pilot-authorization-20261029.json'
+    at async open (node:internal/fs/promises:637:25)
+    at async readFile (node:internal/fs/promises:1269:14)
+    at async readJson (/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/tools/unified-agent-repair-pilot.ts:31:75)
+    at async <anonymous> (/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/tools/unified-agent-repair-pilot.ts:113:267) {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/runs/unified-agent-repair-20261028/human/pilot-authorization-20261029.json'
+}
+
+Node.js v24.14.0

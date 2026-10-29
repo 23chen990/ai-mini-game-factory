@@ -1,0 +1,176 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/codex-budget-process.test.ts (24 tests | 5 failed | 19 skipped) 297ms
+     × preserves recorded native model rejection f8f927e8-348a-4ce3-9cd9-bed327db7f39 through a budgeted process stop 50ms
+     × preserves recorded native model rejection 7388c51e-8ba6-44e5-9f35-0bee83820bcb through a budgeted process stop 36ms
+     × does not repeat an unbudgeted non-retryable rejection: model_not_found: configured model is not supported when using Codex with a ChatGPT account 71ms
+     × does not repeat an unbudgeted non-retryable rejection: invalid_request_error: failed to parse request body 68ms
+     × does not repeat an unbudgeted non-retryable rejection: Permission denied by account policy 71ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/codex-budget-process.test.ts > Codex observed-token stop with real controlled processes > preserves recorded native model rejection f8f927e8-348a-4ce3-9cd9-bed327db7f39 through a budgeted process stop
+ FAIL  tests/unit/codex-budget-process.test.ts > Codex observed-token stop with real controlled processes > preserves recorded native model rejection 7388c51e-8ba6-44e5-9f35-0bee83820bcb through a budgeted process stop
+AssertionError: expected [Function] to throw error including 'model_not_found' but got 'codex exec stopped: failed; observed …'
+
+Expected: "model_not_found"
+Received: "codex exec stopped: failed; observed completed-turn tokens 0"
+
+ ❯ tests/unit/codex-budget-process.test.ts:48:117
+     46|     await cap(f.root, 200_000);
+     47|     let message = '';
+     48|     await expect(f.provider().execute(f.request).catch((error: Error) …
+       |                                                                                                                     ^
+     49|       .rejects.toThrow('model_not_found');
+     50|     expect(classifyModelFailure(message)).toBe('SPEC_ERROR');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  tests/unit/codex-budget-process.test.ts > Codex observed-token stop with real controlled processes > does not repeat an unbudgeted non-retryable rejection: model_not_found: configured model is not supported when using Codex with a ChatGPT account
+AssertionError: promise resolved "{ events: [ { …(2) } ], …(12) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "attempts": 2,
++   "completed": true,
++   "errors": [],
++   "events": [
++     {
++       "type": "turn.completed",
++       "usage": {
++         "input_tokens": 9,
++         "output_tokens": 1,
++       },
++     },
++   ],
++   "executionId": "c43013be-7e38-4832-9995-551938e5ff0b",
++   "failed": false,
++   "model": "account-default",
++   "output": "ok",
++   "stderr": "",
++   "stdout": "{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":9,\"output_tokens\":1}}
++ ",
++   "threadId": undefined,
++   "usage": {
++     "inputTokens": 9,
++     "outputTokens": 1,
++     "totalTokens": 10,
++   },
++   "usageIncomplete": false,
+  }
+
+ ❯ tests/unit/codex-budget-process.test.ts:62:50
+     60|     const event = JSON.stringify({ type: 'error', message }) + '\n';
+     61|     const f = await fixture([`process.stdout.write(${JSON.stringify(ev…
+     62|     await expect(f.provider().execute(f.request)).rejects.toThrow(mess…
+       |                                                  ^
+     63|     expect(classifyModelFailure(message)).toBe(kind);
+     64|     expect(f.calls()).toBe(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  tests/unit/codex-budget-process.test.ts > Codex observed-token stop with real controlled processes > does not repeat an unbudgeted non-retryable rejection: invalid_request_error: failed to parse request body
+AssertionError: promise resolved "{ events: [ { …(2) } ], …(12) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "attempts": 2,
++   "completed": true,
++   "errors": [],
++   "events": [
++     {
++       "type": "turn.completed",
++       "usage": {
++         "input_tokens": 9,
++         "output_tokens": 1,
++       },
++     },
++   ],
++   "executionId": "1c0291e2-4352-4877-ada4-7ff7d2279640",
++   "failed": false,
++   "model": "account-default",
++   "output": "ok",
++   "stderr": "",
++   "stdout": "{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":9,\"output_tokens\":1}}
++ ",
++   "threadId": undefined,
++   "usage": {
++     "inputTokens": 9,
++     "outputTokens": 1,
++     "totalTokens": 10,
++   },
++   "usageIncomplete": false,
+  }
+
+ ❯ tests/unit/codex-budget-process.test.ts:62:50
+     60|     const event = JSON.stringify({ type: 'error', message }) + '\n';
+     61|     const f = await fixture([`process.stdout.write(${JSON.stringify(ev…
+     62|     await expect(f.provider().execute(f.request)).rejects.toThrow(mess…
+       |                                                  ^
+     63|     expect(classifyModelFailure(message)).toBe(kind);
+     64|     expect(f.calls()).toBe(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  tests/unit/codex-budget-process.test.ts > Codex observed-token stop with real controlled processes > does not repeat an unbudgeted non-retryable rejection: Permission denied by account policy
+AssertionError: promise resolved "{ events: [ { …(2) } ], …(12) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "attempts": 2,
++   "completed": true,
++   "errors": [],
++   "events": [
++     {
++       "type": "turn.completed",
++       "usage": {
++         "input_tokens": 9,
++         "output_tokens": 1,
++       },
++     },
++   ],
++   "executionId": "ece26806-bc6b-4dc8-a146-cba41dacef4e",
++   "failed": false,
++   "model": "account-default",
++   "output": "ok",
++   "stderr": "",
++   "stdout": "{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":9,\"output_tokens\":1}}
++ ",
++   "threadId": undefined,
++   "usage": {
++     "inputTokens": 9,
++     "outputTokens": 1,
++     "totalTokens": 10,
++   },
++   "usageIncomplete": false,
+  }
+
+ ❯ tests/unit/codex-budget-process.test.ts:62:50
+     60|     const event = JSON.stringify({ type: 'error', message }) + '\n';
+     61|     const f = await fixture([`process.stdout.write(${JSON.stringify(ev…
+     62|     await expect(f.provider().execute(f.request)).rejects.toThrow(mess…
+       |                                                  ^
+     63|     expect(classifyModelFailure(message)).toBe(kind);
+     64|     expect(f.calls()).toBe(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 19 skipped (24)
+   Start at  15:44:43
+   Duration  1.17s (transform 380ms, setup 0ms, import 776ms, tests 297ms, environment 0ms)
+

@@ -6,12 +6,34 @@
   identify and state the exact target game and workspace path. Only modify shared factory code when the change
   is intentionally cross-game.
 - Inspect the existing architecture before modifying it; reuse adapters, schemas, templates, and skills.
+- Before proposing an additional Agent, an additional Gate, a model change, or a workflow adjustment, answer all
+  four questions in the proposal using existing evidence and review channels:
+  1. 现有系统究竟在哪个具体案例里失败了？ Identify the exact case/run, expected versus actual outcome, and
+     reproducible evidence; do not substitute a hypothetical risk for an observed failure.
+  2. 有什么证据证明是这个原因，而不是其他原因？ Separate observations, causal hypotheses, and unknowns;
+     explain which alternative causes were tested or remain unresolved.
+  3. 有没有比当前方案更简单、更低成本的解决方法？ Compare keeping the current system and the smallest local
+     correction with the proposed change, including token, time, maintenance, and coordination costs.
+  4. 改完之后，用什么实验判断它是否真的更好？ Define a before/after comparison on the same case and relevant
+     regressions, with measurable success criteria, cost limits, and a retain/revert decision before implementation.
+  If evidence is insufficient, state the gap and run the smallest discriminating experiment first; do not present
+  added complexity as a proven remedy. This is a proposal discipline, not a new Agent, Gate, stage, or artifact schema.
 - Agents exchange only Zod-validated structured artifacts. They do not free-chat.
 - Only BuilderAgent and FixerAgent may modify a generated game workspace.
 - Use complexity-aware multi-agent routing to control total context cost. Do not delegate every small defect by
   default: a narrow, well-understood fix is usually cheaper and safer when BuilderAgent handles it in the current
   workspace. Delegation is valuable when it reduces repeated context loading or gives a complex task an isolated
   owner; it is not automatically cheaper merely because it uses another agent.
+- Subagent scheduling (applies to `luna_worker` and other custom subagents; prefer `luna_worker` when delegating):
+  1. Prefer multiple parallel `luna_worker` agents for larger, mutually independent subtasks.
+  2. Keep lightweight work that can finish in a few minutes on the main thread; do not spawn a subagent for it.
+  3. Every worker prompt must be self-contained: file scope, task boundary, expected output, and acceptance criteria.
+  4. Read-only tasks may run in parallel. File-writing tasks should use isolated worktrees; if isolation is
+     impossible, run them serially.
+  5. After each worker finishes, the main agent must check results against the acceptance criteria and re-dispatch
+     if unmet. Workers execute; the main agent owns decomposition and acceptance.
+  6. If multiple workers cannot run in parallel, check whether
+     `agents.max_concurrent_threads_per_session` in `~/.codex/config.toml` is set to `1`.
 - For every reported bug or experience complaint, first create a structured triage record with the target game,
   exact workspace, reproduction/evidence, classification, scope, and acceptance criteria. The reporter does not
   need to decide whether the issue is a bug. Treat attached screenshots and documents as evidence unless the user
@@ -38,12 +60,10 @@
   stored thread/attempt count, modify only files causally connected to the validated issue, rebuild once per
   attempt, and require Playwright QA to verify the result. Never declare a fix successful from an agent response
   or unit tests alone.
-- Automatic FIX is bounded by the stricter of the configured per-run `budget.maxRepairLoops` (default: 2),
-  the factory-wide maximum of five automatic repair attempts, and applicable cost/time/token/platform limits.
-  Preserve QA and repair evidence after each failure and increment the attempt exactly once. An automatic retry
-  requires a distinct evidence-backed hypothesis; exhausting any ceiling enters FAILED/BLOCKED rather than RELEASE.
-  Further work needs an explicit new human-reviewed authorization/session. Never rebuild unchanged code repeatedly,
-  bypass a release gate, or weaken acceptance criteria to claim success.
+- Automatic FIX has no fixed repair-attempt ceiling. Preserve the QA and repair evidence after every failed retest,
+  increment the attempt exactly once, and continue only when the next attempt has a distinct evidence-backed repair
+  hypothesis. Stop on an explicit user or configured cost/time/token/platform ceiling, an external hard constraint,
+  or when no viable next hypothesis remains; never rebuild unchanged code repeatedly or weaken acceptance criteria.
 - BuilderAgent and FixerAgent must report which route was selected (`direct-builder` or `formal-fixer`), why it was
   selected, the context intentionally omitted, files changed, tests run, and remaining evidence gaps. A direct
   BuilderAgent repair must not be described as a completed formal FIX stage.

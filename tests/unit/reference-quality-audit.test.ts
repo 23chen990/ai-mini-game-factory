@@ -14,6 +14,7 @@ import { verifyReferenceFidelityReview } from '../../src/core/reference-evidence
 import { ReferenceQualityAuditSchema } from '../../src/schemas/reference-quality-audit.js';
 import { ReferenceFidelityContractSchema } from '../../src/schemas/reference-fidelity.js';
 import { referenceBehaviorChecks } from '../fixtures/reference-behavior.js';
+import { syntheticComparisonChecks, writeSyntheticComparison } from '../fixtures/reference-comparison.js';
 
 const canonicalTargetGame = '逆袭公主';
 
@@ -179,7 +180,7 @@ describe('reference quality audit', () => {
     const workspace = path.join(runRoot, 'workspace/game');
     const source = await writeVerifiedEvidence(runRoot, canonicalTargetGame, workspace);
     await store.writeArtifact(runId, 'permission-manifest.json', buildPermissionManifestBundle());
-    const checks = referenceBehaviorChecks({ path: source.storedPath, sha256: source.sha256 });
+    const checks = syntheticComparisonChecks(referenceBehaviorChecks({ path: source.storedPath, sha256: source.sha256 }));
     await store.writeArtifact(runId, 'reference-behavior-analysis.json', {
       schemaVersion: 1, targetRunId: runId, behaviorChecks: checks, observations: ['observed'], inferences: [], unknowns: [], status: 'READY',
     });
@@ -225,7 +226,8 @@ describe('reference quality audit', () => {
     await writeFile(path.join(runRoot, trace.path), traceBody);
     const fidelityReview = {
       schemaVersion: 1, targetRunId: runId, workspace, contractHash: sha256Text(JSON.stringify(fidelity)), buildHash,
-      reviewer: 'QAAgent', authorIndependent: true,
+      reviewer: 'QAAgent', authorIndependent: true, reviewProtocol:'reference-comparison-v1',
+      comparison: await writeSyntheticComparison(runRoot, fidelity, buildHash, screenshot),
       cases: checks.map((check) => ({ checkId: check.id, objectType: check.objectType, stateBranch: check.stateBranch, viewport: check.viewport, passed: true, perceptualPassed: true, observedStateChange: check.expectedStateChange, observedFeedback: 'target-local feedback', screenshots: [screenshot], trace })),
     };
     await store.writeArtifact(runId, 'reference-fidelity-review.json', fidelityReview);

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "executionId": "f8f927e8-348a-4ce3-9cd9-bed327db7f39",
+  "stage": "QA",
+  "attempt": 1,
+  "observedCompletedTurnUsage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "cumulativeObservedTokens": 0,
+  "maxTotalTokens": 200000,
+  "stopReason": "failed",
+  "lowerBoundOnly": true,
+  "reportedAt": "2026-10-28T09:20:12.966Z"
+}

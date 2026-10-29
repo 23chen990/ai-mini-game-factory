@@ -1,0 +1,25 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/frozen-qa-isolation.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/frozen-qa-isolation.test.ts [ tests/unit/frozen-qa-isolation.test.ts ]
+Error: Cannot find module '../../src/qa/frozen-review.js' imported from /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/tests/unit/frozen-qa-isolation.test.ts
+ ❯ tests/unit/frozen-qa-isolation.test.ts:7:1
+      5| import { tmpdir } from 'node:os';
+      6| import { expect, it } from 'vitest';
+      7| import { frozenQaProfile, frozenQaToolArgs } from '../../src/qa/frozen…
+       | ^
+      8| const exec = promisify(execFile);
+      9| it('removes every filesystem and external tool from the frozen reviewe…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  16:54:31
+   Duration  144ms (transform 17ms, setup 0ms, import 0ms, tests 0ms, environment 0ms)
+

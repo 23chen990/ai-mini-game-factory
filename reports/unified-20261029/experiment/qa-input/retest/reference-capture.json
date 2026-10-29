@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "targetRunId": "unified-agent-repair-20261028",
+  "contractHash": "1c21fd6c6abd7f8e9d0fa26f4fc95400ba190897de968b72acf8ea511b1c23b9",
+  "target": "reference",
+  "artifactHash": "3781e4dcd3d21094f186cf442b3ee30cddfbb2fbe68d87c5c7470a2c742bf75a",
+  "authority": "recording-observation",
+  "startedFromReset": false,
+  "actions": [],
+  "forbiddenOperations": [],
+  "observedAt": "2026-10-29T09:24:02.871Z",
+  "durationMs": 36492,
+  "observations": []
+}

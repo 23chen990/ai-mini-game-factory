@@ -7,6 +7,10 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 
 describe('run readiness', () => {
+  it('never promotes a completed reference preview to a release candidate', () => {
+    expect(deriveRunReadiness({ stage: 'COMPLETED', status: 'completed', readiness: 'RELEASE_READY', stages: { COMPLETED: { status: 'completed', evidence: ['pipeline:replica-preview-complete', 'release:deferred'] } } })).toBe('PREVIEW_ACCEPTED');
+    expect(deriveRunReadiness({ stage: 'COMPLETED', status: 'completed' })).toBe('IMPLEMENTATION_READY');
+  });
   it('distinguishes active, waiting, implementation, candidate and release states', () => {
     expect(deriveRunReadiness({ stage: 'BLUEPRINT', status: 'running' })).toBe('IN_PROGRESS');
     expect(deriveRunReadiness({ stage: 'WAITING_FOR_ART_APPROVAL', status: 'waiting' })).toBe('WAITING');

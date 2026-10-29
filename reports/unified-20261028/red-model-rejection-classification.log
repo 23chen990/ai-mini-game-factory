@@ -1,0 +1,83 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/model-policy.test.ts (14 tests | 5 failed) 14ms
+   × does not capability-escalate an explicit request/configuration rejection: {"type":"invalid_request_error","code":"model_not_found","message":"Configured model is not supported when using Codex with a ChatGPT account."} 4ms
+   × does not capability-escalate an explicit request/configuration rejection: Failed to parse request body: invalid_request_error network 1ms
+   × does not capability-escalate an explicit request/configuration rejection: The model `unavailable-model` does not exist or you do not have access to it. 0ms
+   × does not capability-escalate an explicit request/configuration rejection: You do not have access to model `restricted-model`. 0ms
+   × does not capability-escalate an explicit request/configuration rejection: research permission preflight rejected: research-network-allow-list-missing 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/model-policy.test.ts > does not capability-escalate an explicit request/configuration rejection: {"type":"invalid_request_error","code":"model_not_found","message":"Configured model is not supported when using Codex with a ChatGPT account."}
+ FAIL  tests/unit/model-policy.test.ts > does not capability-escalate an explicit request/configuration rejection: The model `unavailable-model` does not exist or you do not have access to it.
+AssertionError: expected 'CAPABILITY_ERROR' to be 'SPEC_ERROR' // Object.is equality
+
+Expected: "SPEC_ERROR"
+Received: "CAPABILITY_ERROR"
+
+ ❯ tests/unit/model-policy.test.ts:66:56
+     64|  ['research permission preflight rejected: research-network-allow-list…
+     65| ] as const)('does not capability-escalate an explicit request/configur…
+     66|  const kind=classifyModelFailure(message);expect(kind).toBe(expected);
+       |                                                        ^
+     67|  expect(executionPolicyForAttempt('UI_SKELETON',2,kind)).toEqual(execu…
+     68| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  tests/unit/model-policy.test.ts > does not capability-escalate an explicit request/configuration rejection: Failed to parse request body: invalid_request_error network
+AssertionError: expected 'TRANSIENT' to be 'SPEC_ERROR' // Object.is equality
+
+Expected: "SPEC_ERROR"
+Received: "TRANSIENT"
+
+ ❯ tests/unit/model-policy.test.ts:66:56
+     64|  ['research permission preflight rejected: research-network-allow-list…
+     65| ] as const)('does not capability-escalate an explicit request/configur…
+     66|  const kind=classifyModelFailure(message);expect(kind).toBe(expected);
+       |                                                        ^
+     67|  expect(executionPolicyForAttempt('UI_SKELETON',2,kind)).toEqual(execu…
+     68| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  tests/unit/model-policy.test.ts > does not capability-escalate an explicit request/configuration rejection: You do not have access to model `restricted-model`.
+AssertionError: expected 'CAPABILITY_ERROR' to be 'POLICY_BLOCK' // Object.is equality
+
+Expected: "POLICY_BLOCK"
+Received: "CAPABILITY_ERROR"
+
+ ❯ tests/unit/model-policy.test.ts:66:56
+     64|  ['research permission preflight rejected: research-network-allow-list…
+     65| ] as const)('does not capability-escalate an explicit request/configur…
+     66|  const kind=classifyModelFailure(message);expect(kind).toBe(expected);
+       |                                                        ^
+     67|  expect(executionPolicyForAttempt('UI_SKELETON',2,kind)).toEqual(execu…
+     68| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  tests/unit/model-policy.test.ts > does not capability-escalate an explicit request/configuration rejection: research permission preflight rejected: research-network-allow-list-missing
+AssertionError: expected 'TRANSIENT' to be 'POLICY_BLOCK' // Object.is equality
+
+Expected: "POLICY_BLOCK"
+Received: "TRANSIENT"
+
+ ❯ tests/unit/model-policy.test.ts:66:56
+     64|  ['research permission preflight rejected: research-network-allow-list…
+     65| ] as const)('does not capability-escalate an explicit request/configur…
+     66|  const kind=classifyModelFailure(message);expect(kind).toBe(expected);
+       |                                                        ^
+     67|  expect(executionPolicyForAttempt('UI_SKELETON',2,kind)).toEqual(execu…
+     68| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 9 passed (14)
+   Start at  23:45:01
+   Duration  751ms (transform 420ms, setup 0ms, import 629ms, tests 14ms, environment 0ms)
+

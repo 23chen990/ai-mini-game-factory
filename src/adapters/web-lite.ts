@@ -1,10 +1,11 @@
 import { spawn } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
-import { lstat, mkdir, readFile, realpath, rename, rm, symlink, writeFile } from 'node:fs/promises';
+import { lstat, mkdir, readFile, rename, rm, symlink, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import type { RuntimeAdapter } from './runtime.js';
 import type { AssetManifest, GameBlueprint, StyleLock } from '../schemas/index.js';
 import { copyTree, exists, listFiles, writeJsonAtomic } from '../core/files.js';
+import { assertSafeWorkspacePath } from '../core/workspace-path.js';
 
 /** Vite may wrap *parts* of its URL (including the port digits) in ANSI SGR
  * styling. Strip terminal escapes before scanning accumulated output; scans
@@ -79,56 +80,6 @@ function archiveTimestamp() {
   return new Date().toISOString().replace(/[-:]/gu, '').replace(/\.\d{3}Z$/u, 'Z');
 }
 
-function isWithin(parent: string, candidate: string): boolean {
-  const relative = path.relative(path.resolve(parent), path.resolve(candidate));
-  return relative === '' || (!relative.startsWith(`..${path.sep}`) && relative !== '..' && !path.isAbsolute(relative));
-}
-
-/**
- * Validate every existing component of a generated workspace path before any
- * mutation. The nearest run workspace root is the physical ownership anchor;
- * ancestors above it (including platform aliases such as macOS /var) are not
- * writable by this operation. A missing suffix is safe to create inside it.
- */
-async function assertSafeWorkspacePath(workspace: string): Promise<{ workspace: string; parent: string }> {
-  const resolvedWorkspace = path.resolve(workspace);
-  const parent = path.dirname(resolvedWorkspace);
-  const ownerRoot = path.basename(parent) === 'workspace' ? path.dirname(parent) : parent;
-  const root = path.parse(ownerRoot).root;
-  if (ownerRoot === root) throw new Error('web-lite workspace owner must not be a filesystem root');
-  let ownerEntry;
-  try {
-    ownerEntry = await lstat(ownerRoot);
-  } catch (error) {
-    if ((error as NodeJS.ErrnoException).code === 'ENOENT') throw new Error(`web-lite workspace owner is missing: ${ownerRoot}`);
-    throw error;
-  }
-  if (ownerEntry.isSymbolicLink()) throw new Error(`web-lite workspace owner must not be a symlink: ${ownerRoot}`);
-  if (!ownerEntry.isDirectory()) throw new Error(`web-lite workspace owner must be a directory: ${ownerRoot}`);
-  const ownerReal = await realpath(ownerRoot);
-  const relative = path.relative(ownerRoot, resolvedWorkspace);
-  if (!isWithin(ownerRoot, resolvedWorkspace)) throw new Error('web-lite workspace must remain inside its owning run');
-  let current = ownerRoot;
-  for (const component of relative.split(path.sep)) {
-    if (!component || component === '.') continue;
-    current = path.join(current, component);
-    let entry;
-    try {
-      entry = await lstat(current);
-    } catch (error) {
-      if ((error as NodeJS.ErrnoException).code === 'ENOENT') break;
-      throw error;
-    }
-    if (entry.isSymbolicLink()) {
-      throw new Error(`web-lite workspace path must not contain symlink: ${path.relative(ownerRoot, current)}`);
-    }
-    if (!entry.isDirectory()) throw new Error(`web-lite workspace path component must be a directory: ${path.relative(ownerRoot, current)}`);
-    if (!isWithin(ownerReal, await realpath(current))) throw new Error(`web-lite workspace path resolves outside its owner: ${path.relative(ownerRoot, current)}`);
-  }
-  await mkdir(parent, { recursive: true });
-  return { workspace: resolvedWorkspace, parent };
-}
-
 /**
  * Move a prior generated workspace aside atomically. Rename preserves failed
  * partial files and symlinks without traversing or dereferencing them.
@@ -201,7 +152,7 @@ async function packageFinderPlayable(output: string): Promise<void> {
 
 export class WebLiteRuntimeAdapter implements RuntimeAdapter {
   private preview?: { stop: () => Promise<void> };
-  constructor(private readonly repositoryRoot: string) {}
+  constructor(private readonly repositoryRoot: string, private readonly options: {useDeclaredProjectScripts?: boolean} = {}) {}
   // Generated workspaces reuse the factory's node_modules through a symlink.
   // Never run the package manager inside such a workspace: pnpm 11's
   // verify-deps-before-run would reconcile the symlinked tree against the
@@ -237,6 +188,13 @@ export class WebLiteRuntimeAdapter implements RuntimeAdapter {
     await writeFile(configFile, `${JSON.stringify(config, null, 2)}\n`);
   }
   async verifyProject(workspace: string, options: { requireScripts: boolean }) {
+    // Explicitly imported existing games own their test runner and contract.
+    // Never impose idle-shop APIs on them or silently relax new template builds.
+    if (this.options.useDeclaredProjectScripts) {
+      const checks:string[]=[];
+      for (const script of ['lint','typecheck','test']) { await command('npm',['run',script],workspace); checks.push(`${script}:passed`); }
+      return checks;
+    }
     const sourceRoot = path.join(workspace, 'src');
     const sourceFiles = (await listFiles(sourceRoot)).filter((file) => file.endsWith('.ts'));
     const sources = await Promise.all(sourceFiles.map((file) => readFile(path.join(sourceRoot, file), 'utf8')));
@@ -266,6 +224,7 @@ export class WebLiteRuntimeAdapter implements RuntimeAdapter {
     return checks;
   }
   async verifyFormalProject(workspace: string) {
+    if (this.options.useDeclaredProjectScripts) return this.verifyProject(workspace,{requireScripts:true});
     const packageJson = JSON.parse(await readFile(path.join(workspace, 'package.json'), 'utf8')) as { scripts?: Record<string, string> };
     const missingScripts = ['lint', 'typecheck', 'test', 'build'].filter((name) => !packageJson.scripts?.[name]);
     if (missingScripts.length > 0) throw new Error(`Formal prototype verification requires package scripts: lint, typecheck, test, build; missing ${missingScripts.join(', ')}`);
@@ -281,6 +240,11 @@ export class WebLiteRuntimeAdapter implements RuntimeAdapter {
     return ['lint:passed', 'typecheck:passed', 'test:passed', 'formal-test-contract:v1'];
   }
   async buildWeb(workspace: string) {
+    if (this.options.useDeclaredProjectScripts) {
+      await command('npm',['run','build'],workspace);
+      if (!await exists(path.join(workspace,'dist/index.html'))) throw new Error('Declared project build did not produce dist/index.html');
+      return path.join(workspace,'dist');
+    }
     await command(path.join(this.repositoryRoot, 'node_modules/.bin/vite'), ['build'], workspace);
     const output = path.join(workspace, 'dist');
     if (!await exists(path.join(output, 'index.html'))) throw new Error('Vite did not produce dist/index.html');

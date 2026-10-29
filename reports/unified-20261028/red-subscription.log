@@ -1,0 +1,26 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/codex-cli-provider.test.ts (33 tests | 1 failed) 180ms
+   × pins the subscription provider and ChatGPT authentication rather than inheriting a paid project provider 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/codex-cli-provider.test.ts > pins the subscription provider and ChatGPT authentication rather than inheriting a paid project provider
+AssertionError: expected [ 'exec', '--json', '--sandbox', …(6) ] to include 'model_provider="openai"'
+ ❯ tests/unit/codex-cli-provider.test.ts:579:15
+    577| it('pins the subscription provider and ChatGPT authentication rather t…
+    578|  const args = buildCodexExecArgs({cwd:'/tmp/run',sandbox:'read-only',o…
+    579|  expect(args).toContain('model_provider="openai"');
+       |               ^
+    580|  expect(args).toContain('forced_login_method="chatgpt"');
+    581| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 32 passed (33)
+   Start at  17:19:58
+   Duration  951ms (transform 326ms, setup 0ms, import 678ms, tests 180ms, environment 0ms)
+

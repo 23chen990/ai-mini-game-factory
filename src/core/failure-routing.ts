@@ -1,7 +1,19 @@
 import { StageNameSchema, type StageName } from '../schemas/index.js';
+import { QaIssueSchema } from '../schemas/qa-issue.js';
 
 export type FailureRouteClass = 'rights' | 'compliance' | 'core_experience' | 'platform' | 'build' | 'qa' | 'growth' | 'unknown' | 'monetization';
 export type FailureRoute = { stage: StageName; owner: 'ResearchAgent' | 'ProducerAgent' | 'BuilderAgent' | 'FixerAgent' | 'QAAgent' | 'ReleaseAgent' | 'HumanReviewer' | 'FactoryControlPlane'; rationale: string; confidence: number };
+
+/** Explicit QA hypotheses take precedence over symptom keywords. Legacy
+ * engineering reports retain their existing implementation-repair route. */
+export function routeQaIssues(values: unknown[]): FailureRoute {
+  const issues = values.map(value => QaIssueSchema.parse(value)).filter(issue => issue.severity === 'error');
+  if (issues.some(issue=>issue.rootCause==='implementation') && !issues.some(issue=>issue.rootCause==='research' || issue.rootCause==='design')) return {stage:'FIX',owner:'FixerAgent',rationale:'Repair independently reproduced implementation issues; retain unrelated source/unknown gaps for QA.',confidence:0.8};
+  if (issues.some(issue => issue.rootCause === 'evidence' || issue.rootCause === 'research')) return {stage:'REFERENCE_DEEP_RESEARCH',owner:'ResearchAgent',rationale:'Resolve the source evidence or mechanic interpretation before changing the candidate.',confidence:0.8};
+  if (issues.some(issue => issue.rootCause === 'design')) return {stage:'BLUEPRINT',owner:'ProducerAgent',rationale:'Correct the core-slice contract before implementation; do not expand content.',confidence:0.8};
+  if (issues.some(issue => issue.rootCause === 'unknown')) return {stage:'QA',owner:'QAAgent',rationale:'Collect discriminating evidence before choosing a repair owner.',confidence:0.5};
+  return {stage:'FIX',owner:'FixerAgent',rationale:'Repair the reproduced implementation issues, rebuild once and independently retest.',confidence:0.8};
+}
 
 const ROUTES: Record<FailureRouteClass, FailureRoute> = {
   rights: { stage: 'OPEN_SOURCE_RESEARCH', owner: 'ResearchAgent', rationale: 'Source, license and originality evidence must be resolved before implementation.', confidence: 0.9 },

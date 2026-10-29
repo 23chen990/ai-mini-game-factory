@@ -1,0 +1,14 @@
+{
+  "role": "BuilderAgent",
+  "route": "experimental-fixture-construction-not-repair",
+  "workspace": "/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/runs/unified-agent-repair-20261028/workspace/game",
+  "file": "src/main.ts",
+  "before": "replayButton.addEventListener('click', (event) => { event.stopPropagation(); replayLevel(); });",
+  "after": "replayButton.addEventListener('click', (event) => { event.stopPropagation(); });",
+  "knownAnswerDisclosedToQA": false,
+  "acceptance": [
+    "Run normal input to terminal",
+    "Tap visible replay",
+    "Observe no fresh session until independently repaired"
+  ]
+}

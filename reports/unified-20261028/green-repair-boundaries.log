@@ -1,0 +1,32 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/repair-policy.test.ts (7 tests | 1 failed) 12ms
+     × does not admit a sixth repair even with a larger configured budget 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/repair-policy.test.ts > five-attempt production ceiling > does not admit a sixth repair even with a larger configured budget
+AssertionError: expected { allowed: true, …(1) } to deeply equal { allowed: false, …(1) }
+
+- Expected
++ Received
+
+  {
+-   "allowed": false,
+-   "reason": "configured-fix-attempt-ceiling",
++   "allowed": true,
++   "reason": "distinct-evidence-backed-hypothesis",
+  }
+
+ ❯ tests/unit/repair-policy.test.ts:97:113
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 66 passed (67)
+   Start at  17:17:42
+   Duration  859ms (transform 646ms, setup 0ms, import 1.12s, tests 314ms, environment 0ms)
+

@@ -15,6 +15,7 @@ import { discoverRuntimeWiredFiles, resolveRuntimeProductGate, RuntimeProductGat
 import { evaluateInteractionContinuity } from '../qa/interaction-continuity.js';
 import { InteractionContinuityContractSchema, InteractionContinuityObservationSchema, InteractionContinuityReportSchema, type InteractionContinuityReport, type InteractionContinuityContract } from '../schemas/interaction-continuity.js';
 import { verifyBuilderPreflight } from '../core/builder-preflight.js';
+import { assertSafeWorkspacePath } from '../core/workspace-path.js';
 import { buildDeterministicReferenceLevelLayout } from '../core/reference-level-layout.js';
 import { normalizeReferenceBehaviorAnalysis } from '../core/reference-evidence.js';
 import { assertReferenceLevelRuntimeDataWritePath, readReferenceLevelRuntimeData, runtimeForTemplate, verifyReferenceLevelRuntimeDataFile, verifyReferenceLevelLayoutFile } from '../core/reference-level-binding.js';
@@ -189,9 +190,16 @@ export class BuilderAgent {
     const runRoot = context?.runRoot ?? path.resolve(workspace, '../..');
     const referenceRuntimeData = await this.loadReferenceRuntimeData(runRoot, workspace, blueprint, template);
     if (referenceRuntimeData) await assertReferenceLevelRuntimeDataWritePath(workspace, referenceRuntimeData.production.runtime);
-    await this.runtime.createProject(workspace, template);
-    await this.runtime.applyBlueprint(workspace, blueprint, styleLock);
-    await this.runtime.importAssets(workspace, assets, assetSource);
+    // Retry in place: a prior model attempt or human may already have authored
+    // working code. Template initialization must never displace those bytes.
+    await assertSafeWorkspacePath(workspace);
+    await mkdir(workspace, { recursive: true });
+    const workspaceMode = (await readdir(workspace)).length === 0 ? 'initialized' : 'continued';
+    if (workspaceMode === 'initialized') {
+      await this.runtime.createProject(workspace, template);
+      await this.runtime.applyBlueprint(workspace, blueprint, styleLock);
+      await this.runtime.importAssets(workspace, assets, assetSource);
+    }
     if (approved3dAssets) {
       if (!this.runtime.importApproved3dAssets) throw new Error('The selected runtime cannot import approved 3D assets');
       await this.runtime.importApproved3dAssets(workspace, Hybrid3dAssetResearchArtifactSchema.parse(approved3dAssets.research), approved3dAssets.sourceRoot);
@@ -207,8 +215,8 @@ export class BuilderAgent {
       const stagedPath = path.join(workspace, referenceLevelRuntimeDataPath(referenceRuntimeData.production.runtime));
       await writeJsonAtomic(stagedPath, referenceRuntimeData);
     }
-    const codexResult = await this.provider.build({ workspace, blueprint, styleLock, assets, template, gameplayRevision: validatedGameplayRevision, interactionContinuityContract: validatedContinuity, context });
-    if (referenceRuntimeData && codexResult.metrics.provider === 'mock' && template === 'cut-stack-dodge-v1') {
+    const codexResult = await this.provider.build({ workspace, blueprint, styleLock, assets, assetSource, template, gameplayRevision: validatedGameplayRevision, interactionContinuityContract: validatedContinuity, context });
+    if (referenceRuntimeData && workspaceMode === 'initialized' && codexResult.metrics.provider === 'mock' && template === 'cut-stack-dodge-v1') {
       // The mock Builder has no model turn to author numeric layout values.
       // Keep this explicit preview-only fallback inside BuilderAgent so a
       // missing layout cannot be mistaken for a production build.
@@ -219,7 +227,9 @@ export class BuilderAgent {
       await verifyReferenceLevelRuntimeDataFile(workspace, referenceRuntimeData);
       await verifyReferenceLevelLayoutFile(workspace, referenceRuntimeData);
     }
-    return { ...await this.verifyAndReport(workspace, template, codexResult.threadId, codexResult.verificationMode), metrics: codexResult.metrics };
+    const result = await this.verifyAndReport(workspace, template, codexResult.threadId, codexResult.verificationMode);
+    result.report.verification.push(`workspace:${workspaceMode}`);
+    return { ...result, metrics: codexResult.metrics };
   }
   async verifyExisting(workspace: string, template: string, threadId: string, verificationMode: BuilderVerificationMode = 'full', context?: AgentExecutionContext) {
     if (context && !isChildPath(path.join(path.resolve(context.runRoot), 'workspace'), path.resolve(workspace))) throw new Error('Builder workspace must remain inside the current run workspace');
@@ -367,6 +377,13 @@ export class BuilderAgent {
 export class QAAgent {
   constructor(private readonly provider: QAProvider, private readonly runtime: RuntimeAdapter) {}
   async run(workspace: string, runRoot: string, buildPassed = false): Promise<QaReport> {
+    // This artifact is optional, but an unreadable or invalid declaration is
+    // not an undeclared run. Only actual absence permits provider-only legacy QA.
+    const continuityText = await readFile(path.join(runRoot, 'artifacts/interaction-continuity-contract.json'), 'utf8').catch((error: NodeJS.ErrnoException) => {
+      if (error.code === 'ENOENT') return undefined;
+      throw error;
+    });
+    const declaredContinuity = continuityText === undefined ? undefined : InteractionContinuityContractSchema.parse(JSON.parse(continuityText));
     const raw = await this.provider.playtest({ runtime: this.runtime, workspace, runRoot });
     const rawRecord = raw && typeof raw === 'object' && !Array.isArray(raw) ? raw as Record<string, unknown> : undefined;
     const rawEvidence = rawRecord?.evidence;
@@ -403,16 +420,24 @@ export class QAAgent {
     // serialize an empty array.  Treat both forms as missing; an empty array
     // is not usable evidence and must never be persisted as a passing report.
     let interactionContinuity: InteractionContinuityReport | undefined;
-    const continuityContract = rawRecord?.interactionContinuityContract ?? (rawRecord?.interactionContinuity && typeof rawRecord.interactionContinuity === 'object' && !Array.isArray(rawRecord.interactionContinuity) ? (rawRecord.interactionContinuity as Record<string, unknown>).contract : undefined);
+    const continuityContract = declaredContinuity ?? rawRecord?.interactionContinuityContract ?? (rawRecord?.interactionContinuity && typeof rawRecord.interactionContinuity === 'object' && !Array.isArray(rawRecord.interactionContinuity) ? (rawRecord.interactionContinuity as Record<string, unknown>).contract : undefined);
     const continuityObservation = rawRecord?.interactionContinuityObservation ?? (rawRecord?.interactionContinuity && typeof rawRecord.interactionContinuity === 'object' && !Array.isArray(rawRecord.interactionContinuity) ? (rawRecord.interactionContinuity as Record<string, unknown>).observation : undefined);
     if (continuityContract !== undefined || continuityObservation !== undefined) {
-      try {
-        const contract = InteractionContinuityContractSchema.parse(continuityContract);
-        const observation = InteractionContinuityObservationSchema.parse(continuityObservation);
-        interactionContinuity = evaluateInteractionContinuity(contract, observation);
-      } catch (error) {
-        const message = error instanceof Error ? error.message : 'interaction continuity artifact is invalid';
-        interactionContinuity = InteractionContinuityReportSchema.parse({ schemaVersion: 1, contractId: 'invalid-interaction-continuity', passed: false, blockers: [`contract:invalid:${message.slice(0, 240)}`], evidence: ['artifacts/interaction-continuity-report.json'], checkedNodes: 0, checkedScenarios: 0, checkedRepetitions: 0, evaluatedAt: new Date().toISOString() });
+      const contract = InteractionContinuityContractSchema.safeParse(continuityContract);
+      const observation = InteractionContinuityObservationSchema.safeParse(continuityObservation);
+      if (contract.success && observation.success) {
+        interactionContinuity = evaluateInteractionContinuity(contract.data, observation.data);
+      } else {
+        interactionContinuity = InteractionContinuityReportSchema.parse({
+          schemaVersion: 1, contractId: contract.success ? contract.data.contractId : 'invalid-interaction-continuity',
+          passed: false,
+          blockers: [
+            ...(!contract.success ? [`contract:invalid:${contract.error.message.slice(0, 240)}`] : []),
+            ...(!observation.success ? [continuityObservation === undefined ? 'observation:missing' : `observation:invalid:${observation.error.message.slice(0, 240)}`] : []),
+          ],
+          evidence: ['artifacts/interaction-continuity-report.json'],
+          checkedNodes: 0, checkedScenarios: 0, checkedRepetitions: 0, evaluatedAt: new Date().toISOString(),
+        });
       }
     }
     const report = QaReportSchema.parse({
@@ -429,8 +454,15 @@ export class QAAgent {
       } : {}),
     });
     const continuityFailed = interactionContinuity !== undefined && !interactionContinuity.passed;
-    const finalReport = continuityFailed
-      ? QaReportSchema.parse({ ...report, passed: false, issues: [...report.issues, { id: 'interaction-continuity', severity: 'error' as const, message: 'interaction continuity contract failed', evidence: 'artifacts/interaction-continuity-report.json' }] })
+    const naturalFailed = report.naturalFlow?.passed === false;
+    const checksFailed = report.checks.some((check) => !check.passed);
+    const errorsReported = report.issues.some((issue) => issue.severity === 'error');
+    const finalReport = checksFailed || errorsReported || continuityFailed || naturalFailed
+      ? QaReportSchema.parse({ ...report, passed: false, issues: [
+        ...report.issues,
+        ...(continuityFailed ? [{ id: 'interaction-continuity', severity: 'error' as const, message: 'interaction continuity contract failed', evidence: 'artifacts/interaction-continuity-report.json' }] : []),
+        ...(naturalFailed ? [{ id: 'natural-flow', severity: 'error' as const, message: 'natural player-input journey failed; structural success cannot override it', evidence: 'artifacts/qa-report.json' }] : []),
+      ] })
       : report;
     await writeFile(path.join(runRoot, 'artifacts/qa-evidence.json'), `${JSON.stringify(report.evidence, null, 2)}\n`);
     if (interactionContinuity) await writeFile(path.join(runRoot, 'artifacts/interaction-continuity-report.json'), `${JSON.stringify(interactionContinuity, null, 2)}\n`);

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "executionId": "7388c51e-8ba6-44e5-9f35-0bee83820bcb",
+  "reviewer": "Controller; current-round user explicitly authorized bounded subscription experiment",
+  "reason": "Exact native HTTP400 invalid_request_error/model_not_found rejected this single request. Every preceding event is local startup or an error; no reasoning, tool, answer or completed turn exists. This resolves a rejected startup, not an unreported inference.",
+  "nativeRejection": {
+    "type": "error",
+    "status": 400,
+    "error": {
+      "type": "invalid_request_error",
+      "message": "The 'gpt-6.1-sol' model is not supported when using Codex with a ChatGPT account.",
+      "code": "model_not_found"
+    }
+  },
+  "rawEventSha256": "b992f5f7cb92b43624240573257e49cda8f209d8c481e21a57da620a310d1ca8",
+  "beforeReceiptSha256": "d30dc0b664e5ba283763a826f31e638900480567b5eaced18355c8344cb4a089",
+  "observedTokens": 0,
+  "reportedUsageEvents": 0,
+  "accountingChange": {
+    "onlyField": "status",
+    "before": "uncertain",
+    "after": "complete",
+    "attempts": 1,
+    "sequence": 2,
+    "tokenCountersUnchanged": true
+  },
+  "billingAmount": "UNKNOWN; native rejection is not a monetary billing receipt",
+  "reviewedAt": "2026-10-29T09:03:22.791Z"
+}

@@ -1,0 +1,26 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/reference-fidelity-qa.test.ts (44 tests | 1 failed) 251ms
+   × retains known gaps across upstream contract rework, not only Fixer attempts 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/reference-fidelity-qa.test.ts > retains known gaps across upstream contract rework, not only Fixer attempts
+AssertionError: expected [ Array(1) ] to include 'fidelity:check-missing:upstream-gap'
+ ❯ tests/unit/reference-fidelity-qa.test.ts:280:41
+    278|  const dir=path.join(input.runRoot,'history/reference-reviews');await …
+    279|  await writeFile(path.join(dir,`${'a'.repeat(64)}.json`),JSON.stringif…
+    280|  expect((await verify(input)).blockers).toContain('fidelity:check-miss…
+       |                                         ^
+    281| });
+    282|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 43 passed (44)
+   Start at  17:25:55
+   Duration  851ms (transform 336ms, setup 0ms, import 512ms, tests 251ms, environment 0ms)
+

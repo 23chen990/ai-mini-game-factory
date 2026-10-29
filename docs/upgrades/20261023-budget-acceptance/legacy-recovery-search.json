@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "mobile-slice-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+  "searched": [
+    "exact target run",
+    "attached .codex worktrees",
+    "git --all --full-history exact canonical paths"
+  ],
+  "missing": [
+    "state.json",
+    "input/seed.yaml",
+    "artifacts/pipeline-plan.json",
+    "artifacts/permission-manifest.json"
+  ],
+  "completeSameTimepointBackupFound": false,
+  "migrationSeedIsOriginal": false,
+  "migrationSeedPath": "runs/mobile-slice-adaptation-20260830/migration/seed-luna-work-20260909.yaml",
+  "migrationSeedSha256": "974ee21f56d20c78fda65f2584612cb41c48bb3a0e2d7a8803e9bcd2a53d0d32",
+  "restorationPerformed": false,
+  "reason": "Existing audit/recovery commands require canonical run state; FileRunStore.create initializes new history and is not adoption. Alternate attempt10 state belongs to its own workspace and cannot be transplanted."
+}

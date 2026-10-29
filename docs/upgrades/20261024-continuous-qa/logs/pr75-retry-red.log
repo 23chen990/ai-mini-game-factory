@@ -1,0 +1,30 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市
+
+ ❯ tests/unit/codex-cli-provider.test.ts (22 tests | 1 failed | 21 skipped) 29ms
+     × redacts a failed attempt even when the next unbudgeted attempt succeeds 28ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/codex-cli-provider.test.ts > CodexCliProvider > redacts a failed attempt even when the next unbudgeted attempt succeeds
+AssertionError: expected 'partial Authorization: Bearer account…' not to contain 'account-token-123456789'
+
+Expected: "account-token-123456789"
+Received: "partial Authorization: Bearer account-token-123456789"
+
+ ❯ tests/unit/codex-cli-provider.test.ts:184:26
+    182|     const retained = await readFile(path.join(root, 'logs/codex/execut…
+    183|     expect(retained).toContain('partial');
+    184|     expect(retained).not.toContain(secret);
+       |                          ^
+    185|     expect(await readFile(outputPath, 'utf8')).toBe('fresh output');
+    186|     expect(result).toMatchObject({ attempts: 2, usage: { inputTokens: …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 21 skipped (22)
+   Start at  00:58:53
+   Duration  768ms (transform 418ms, setup 0ms, import 637ms, tests 29ms, environment 0ms)
+

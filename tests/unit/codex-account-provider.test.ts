@@ -2,6 +2,7 @@ import { mkdtemp } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
+import { writeResearchManifests, writeResearchReferenceInputs } from '../helpers/research-manifests.js';
 import { CodexAccountProvider, codexOutputSchema, type CodexExecutor } from '../../src/providers/codex-account.js';
 import type { CodexExecRequest, CodexExecResult } from '../../src/providers/codex-cli.js';
 import { ArtDirectionsSchema, GameBlueprintSchema, OpenSourceResearchSchema, type ArtDirections, type GameBlueprint, type StyleLock } from '../../src/schemas/index.js';
@@ -23,6 +24,23 @@ class FakeExecutor implements CodexExecutor {
 }
 
 describe('CodexAccountProvider', () => {
+  it('hands frozen observations to independent QA without resuming the author thread', async () => {
+    const root = await mkdtemp(path.join(tmpdir(), 'codex-independent-qa-'));
+    const client = new FakeExecutor([{}]);
+    const provider = new CodexAccountProvider(client);
+    const qaObservation = { buildPath: 'workspace/game/dist', buildSha256: 'a'.repeat(64), tracePath: 'artifacts/natural.json', traceSha256: 'b'.repeat(64) };
+    await provider.reviewReferenceCandidate({ workspace: path.join(root, 'workspace/game'), buildHash: qaObservation.buildSha256, contractHash: 'c'.repeat(64), requiredRetests: [] }, {
+      runRoot: root, outputPath: path.join(root, 'artifacts/review.json'), logDir: path.join(root, 'logs'),
+      inputPaths: ['artifacts/natural.json'], stage: 'QA', qaObservation,
+    });
+    expect(client.requests[0]).toMatchObject({ sandbox: 'read-only', stage: 'QA', qaObservation });
+    expect(client.requests[0]?.resumeThreadId).toBeUndefined();
+    const schema = JSON.stringify(client.requests[0]?.outputSchema);
+    expect(schema).toContain('comparison');
+    expect(schema).toContain('discoveries');
+    expect(schema).toContain('rootCause');
+  });
+
   it('converts Zod JSON Schema to the strict Codex output subset', () => {
     const schema = codexOutputSchema(GameBlueprintSchema, { preferences: { tone: 'cozy', minutes: 3 } });
     const serialized = JSON.stringify(schema);
@@ -78,6 +96,8 @@ describe('CodexAccountProvider', () => {
 
   it('requires recording-backed reference research to inspect verified frames and emit a level reconstruction', async () => {
     const root = await mkdtemp(path.join(tmpdir(), 'codex-account-reference-frames-'));
+    await writeResearchManifests(root);
+    await writeResearchReferenceInputs(root);
     const client = new FakeExecutor([{}]);
     const provider = new CodexAccountProvider(client);
     await provider.analyzeReferenceEvidence({} as never, {
@@ -136,6 +156,9 @@ describe('CodexAccountProvider', () => {
 
     expect(client.requests[0]).toMatchObject({ label: 'BUILD', cwd: workspace, sandbox: 'workspace-write', timeoutMs: 900_000, maxRetries: 0 });
     expect(client.requests[0]?.prompt).toMatch(/implement.*test/i);
+    expect(client.requests[0]?.prompt).toContain('Inspect the existing source and tests before editing');
+    expect(client.requests[0]?.prompt).toContain('Do not re-scaffold or replace the existing project');
+    expect(client.requests[0]?.prompt).toContain('assetSource');
     expect(client.requests[0]?.prompt).toContain('resetGame');
     expect(client.requests[0]?.prompt).toContain('setRandomSeed');
     expect(client.requests[0]?.prompt).toMatch(/package scripts.*test.*typecheck/i);
@@ -154,6 +177,8 @@ describe('CodexAccountProvider', () => {
     expect(client.requests[0]?.prompt).toMatch(/preload.*atlas/i);
     expect(client.requests[0]?.prompt).toContain('prefers-reduced-motion');
     expect(client.requests[0]?.prompt).toMatch(/different refresh rates/i);
+    expect(client.requests[0]?.prompt).toContain('same entrypoint, level data and complete renderer arguments');
+    expect(client.requests[0]?.prompt).toContain('unaccepted candidate is implementation material');
     expect(result.threadId).toBe('thread-BUILD');
     expect(result.verificationMode).toBe('full');
   });
@@ -370,5 +395,37 @@ describe('CodexAccountProvider', () => {
     expect(result.verificationMode).toBe('full');
     expect(client.requests[0]?.prompt).toMatch(/named checkpoint, object, placement, relation, action, camera, terminal, or replay blocker/i);
     expect(client.requests[0]?.prompt).toMatch(/must not weaken.*recording-level contract/i);
+    expect(client.requests[0]?.prompt).toContain('as FixerAgent');
+    expect(client.requests[0]?.prompt).toContain('Do not migrate current-default guarantees into compatibility fixtures');
+    expect(client.requests[0]?.prompt).toContain('leave the failing check visible');
   });
+});
+
+it('starts a workspace-scoped replacement Fixer when no Builder thread exists', async () => {
+ const root = await mkdtemp(path.join(tmpdir(), 'replacement-fixer-'));
+ const workspace = path.join(root, 'workspace/game');
+ const client = new FakeExecutor(['fixed']); const provider = new CodexAccountProvider(client);
+ const result = await provider.fix({workspace,qaReport:{schemaVersion:1,passed:false,checks:[],issues:[{id:'input',severity:'error',message:'Observed no response',evidence:'logs/trace.json'}],screenshots:[],consoleLog:'logs/console.log',testedAt:new Date().toISOString()}});
+ expect(client.requests[0]).toMatchObject({cwd:workspace,runRoot:root,stage:'FIX',sandbox:'workspace-write'});
+ expect(client.requests[0]?.resumeThreadId).toBeUndefined();
+ expect(result.threadId).toBe('thread-FIX');
+});
+
+it('preserves the default sentinel to the CLI adapter so a provider fallback cannot replace it', async () => {
+ const root = await mkdtemp(path.join(tmpdir(), 'codex-default-model-'));
+ const client = new FakeExecutor([blueprint]);
+ await new CodexAccountProvider(client).generateBlueprint({title:'Test',theme:'Test',runtime:'web-lite',template:'idle-shop-v1',designMode:'prototype_tournament',targetPlatforms:blueprint.targetPlatforms,preferences:{}},{runRoot:root,outputPath:path.join(root,'artifacts/blueprint.json'),logDir:path.join(root,'logs'),inputPaths:[]});
+ expect(client.requests[0]?.model).toBe('account-default');
+});
+
+it('does not smuggle author conclusions or caller summaries into the frozen QA prompt', async () => {
+ const root = await mkdtemp(path.join(tmpdir(), 'qa-neutral-packet-'));
+ const client = new FakeExecutor([{}]);
+ await new CodexAccountProvider(client).reviewReferenceCandidate({workspace:path.join(root,'workspace/game'),buildHash:'a'.repeat(64),contractHash:'b'.repeat(64),requiredRetests:[]}, {
+  runRoot:root,outputPath:path.join(root,'artifacts/review.json'),logDir:path.join(root,'logs'),inputPaths:['artifacts/build-report.json','artifacts/reference-fidelity-contract.json'],stage:'QA',
+  contextPacket:{schemaVersion:1,stage:'QA',summary:'CALLER_KNOWN_ANSWER',inputs:[{path:'artifacts/build-report.json',excerpt:'BUILDER_CONCLUSION',priority:'required'},{path:'artifacts/reference-fidelity-contract.json',excerpt:'NEUTRAL_ACCEPTANCE',priority:'required'}],omitted:[],totalChars:100}
+ });
+ expect(client.requests[0]?.prompt).not.toContain('CALLER_KNOWN_ANSWER');
+ expect(client.requests[0]?.prompt).not.toContain('BUILDER_CONCLUSION');
+ expect(client.requests[0]?.prompt).toContain('NEUTRAL_ACCEPTANCE');
 });

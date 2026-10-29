@@ -9,6 +9,7 @@ import { sha256File, sha256Text } from '../../src/core/files.js';
 import { hashActionFeelCandidateBuild } from '../../src/core/action-feel-evidence.js';
 import type { PerceptualQaReport } from '../../src/schemas/product-experience.js';
 import { createFactory } from '../../src/factory.js';
+import { SyntheticReferenceProvider } from '../fixtures/reference-comparison.js';
 
 const roots: string[] = [];
 
@@ -193,6 +194,7 @@ referenceMechanics:
       root,
       mode: 'mock',
       qaMode: 'stub',
+      agentProvider: new SyntheticReferenceProvider(),
       validationMode: 'fast',
       operatingProfile: { pipelineMode: 'full-validation' },
       enforceOperatingGates: false,
@@ -257,7 +259,7 @@ referenceMechanics:
     originalAudio: true
     originalTuningValues: true
 `);
-    const factory = createFactory({ root, mode: 'mock', qaMode: 'stub', validationMode: 'fast', operatingProfile: { pipelineMode: 'full-validation' }, enforceOperatingGates: false, enforceStageContracts: false, enforceExplicitStageContracts: false, allowSyntheticReferenceAnalysisForTests: true });
+    const factory = createFactory({ root, mode: 'mock', qaMode: 'stub', agentProvider: new SyntheticReferenceProvider(), validationMode: 'fast', operatingProfile: { pipelineMode: 'full-validation' }, enforceOperatingGates: false, enforceStageContracts: false, enforceExplicitStageContracts: false, allowSyntheticReferenceAnalysisForTests: true });
     const runId = await factory.newRun(seed);
     const runRoot = path.join(root, 'runs', runId);
     await writeFile(path.join(runRoot, 'input/reference-report.txt'), 'Observed loop: ready, tap, contact, terminal, replay.\n');
@@ -415,7 +417,7 @@ referenceMechanics:
     originalAudio: true
     originalTuningValues: true
 `);
-    const factory = createFactory({ root, mode: 'mock', qaMode: 'stub', validationMode: 'fast', operatingProfile: { pipelineMode: 'full-validation' }, enforceOperatingGates: false, enforceStageContracts: false, enforceExplicitStageContracts: false, allowSyntheticReferenceAnalysisForTests: true });
+    const factory = createFactory({ root, mode: 'mock', qaMode: 'stub', agentProvider: new SyntheticReferenceProvider(), validationMode: 'fast', operatingProfile: { pipelineMode: 'full-validation' }, enforceOperatingGates: false, enforceStageContracts: false, enforceExplicitStageContracts: false, allowSyntheticReferenceAnalysisForTests: true });
     const runId = await factory.newRun(seed);
     const runRoot = path.join(root, 'runs', runId);
     await writeFile(path.join(runRoot, 'input/reference-report.txt'), 'Observed loop: ready, tap, contact, terminal, replay.\n');

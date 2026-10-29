@@ -1,0 +1,39 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市
+
+ ❯ tests/unit/codex-cli-provider.test.ts (18 tests | 1 failed) 116ms
+     × constructs safe read-only args with JSON, output schema and output file 11ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/codex-cli-provider.test.ts > CodexCliProvider > constructs safe read-only args with JSON, output schema and output file
+AssertionError: expected [ Array(13) ] to deeply equal [ 'exec', '--json', '--sandbox', …(8) ]
+
+- Expected
++ Received
+
+@@ -3,10 +3,12 @@
+    "--json",
+    "--sandbox",
+    "read-only",
+    "--cd",
+    "/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/codex-cli-provider-atzhQF",
++   "--model",
++   "account-default",
+    "--output-schema",
+    "/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/codex-cli-provider-atzhQF/logs/BLUEPRINT.schema.json",
+    "--output-last-message",
+    "/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/codex-cli-provider-atzhQF/game-blueprint.json",
+    "-",
+
+ ❯ tests/unit/codex-cli-provider.test.ts:98:28
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 25 passed (26)
+   Start at  23:18:03
+   Duration  1.18s (transform 727ms, setup 0ms, import 1.14s, tests 620ms, environment 0ms)
+

@@ -1,0 +1,26 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市
+
+ ❯ tests/unit/codex-budget-accounting.test.ts (4 tests | 1 failed) 24ms
+   × sums completed invocation wall time without charging idle time between calls 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/codex-budget-accounting.test.ts > sums completed invocation wall time without charging idle time between calls
+AssertionError: expected { …(5), …(1) } to have property "completedCodexExecutionMs"
+ ❯ tests/unit/codex-budget-accounting.test.ts:47:17
+     45| it('sums completed invocation wall time without charging idle time bet…
+     46|  const budget=await import('../../src/core/codex-budget.js');
+     47|  expect(budget).toHaveProperty('completedCodexExecutionMs');
+       |                 ^
+     48|  expect(budget.completedCodexExecutionMs([{startedAt:'2026-10-28T09:00…
+     49|  expect(()=>budget.completedCodexExecutionMs([{startedAt:'2026-10-28T1…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed (4)
+   Start at  23:42:14
+   Duration  718ms (transform 354ms, setup 0ms, import 583ms, tests 24ms, environment 0ms)
+

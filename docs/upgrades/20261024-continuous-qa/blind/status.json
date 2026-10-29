@@ -1,0 +1,197 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "blind-continuous-planning-status",
+  "status": "partial-stopped",
+  "targetGame": "mobile-slice-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+  "outputDirectory": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/blind-continuous",
+  "planningArtifactsProduced": [],
+  "candidateNavigationOccurred": false,
+  "candidateHTMLRead": false,
+  "candidateInteractionOccurred": false,
+  "labelExposure": false,
+  "referenceReview": {
+    "sourcePath": "runs/mobile-slice-adaptation-20260830/reference-evidence/incoming/_2026-09-06-135548-3781e4dcd3d2.mp4",
+    "expectedSha256": "3781e4dcd3d21094f186cf442b3ee30cddfbb2fbe68d87c5c7470a2c742bf75a",
+    "actualSha256": "3781e4dcd3d21094f186cf442b3ee30cddfbb2fbe68d87c5c7470a2c742bf75a",
+    "durationMs": 36492,
+    "manifestPath": "runs/mobile-slice-adaptation-20260830/artifacts/reference-frame-manifest.json",
+    "manifestSourceSha256": "3781e4dcd3d21094f186cf442b3ee30cddfbb2fbe68d87c5c7470a2c742bf75a",
+    "manifestDurationMs": 36492,
+    "extraction": {
+      "samplingFps": 8,
+      "extractedFrameCount": 292
+    },
+    "contactSheetsViewed": [
+      {
+        "id": "contact-000",
+        "path": "reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-000-00000-00015.jpg",
+        "sha256": "b768d0eaee2a1bd34c550f5c6c58a5cdfabcd3b04b904d815bbead0eb0969437",
+        "manifestHashVerified": true,
+        "viewed": true
+      },
+      {
+        "id": "contact-001",
+        "path": "reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-001-00016-00031.jpg",
+        "sha256": "ae59141735a00669b1ef0f74458746d6da6229b7ff2949c5fdf5cc72fd16c906",
+        "manifestHashVerified": true,
+        "viewed": true
+      },
+      {
+        "id": "contact-002",
+        "path": "reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-002-00032-00047.jpg",
+        "sha256": "cded3e2b8cf27f981027de43cdf896d7bdc7f47e3725c2e22346f3130ba107fd",
+        "manifestHashVerified": true,
+        "viewed": true
+      },
+      {
+        "id": "contact-003",
+        "path": "reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-003-00048-00063.jpg",
+        "sha256": "f4cd160beb3f622ea9be52a37e29f9d84f06da3ede9bffbafd369c92eb6ebaab",
+        "manifestHashVerified": true,
+        "viewed": true
+      },
+      {
+        "id": "contact-004",
+        "path": "reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-004-00064-00079.jpg",
+        "sha256": "1fff876933b7a7f8dba4ddff94fd6713039a72af3015faba66894e26aed52179",
+        "manifestHashVerified": true,
+        "viewed": true
+      },
+      {
+        "id": "contact-005",
+        "path": "reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-005-00080-00095.jpg",
+        "sha256": "2a13e08138373728d6de4d4e868a3f31c6752d0a2d0e677b65a7b535e2bbcc5b",
+        "manifestHashVerified": true,
+        "viewed": true
+      },
+      {
+        "id": "contact-006",
+        "path": "reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-006-00096-00111.jpg",
+        "sha256": "55e02c09985af68f9f96d3401bcb0b784097556a6526a2e1d0898bd38c24fbdc",
+        "manifestHashVerified": true,
+        "viewed": true
+      },
+      {
+        "id": "contact-007",
+        "path": "reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-007-00112-00127.jpg",
+        "sha256": "89c01899c583ed69033608fdeff81b66e67f720fe4a04faade611c47faf23029",
+        "manifestHashVerified": true,
+        "viewed": true
+      },
+      {
+        "id": "contact-008",
+        "path": "reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-008-00128-00143.jpg",
+        "sha256": "fc5ee47d81d88810db5e238c2ca61f7897295268a981e9cc9abb26880ebf7dcb",
+        "manifestHashVerified": true,
+        "viewed": true
+      },
+      {
+        "id": "contact-009",
+        "path": "reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-009-00144-00159.jpg",
+        "sha256": "a5a3f128131763858db6c0b5bf976a75b4bbc84280ddb9ff2c6ecda5ae7ba1f1",
+        "manifestHashVerified": true,
+        "viewed": true
+      },
+      {
+        "id": "contact-010",
+        "path": "reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-010-00160-00175.jpg",
+        "sha256": "f4ab9ff819382a0ac0685c20b1269692700aa37ecedbdecd29c897495ea5cf04",
+        "manifestHashVerified": true,
+        "viewed": true
+      },
+      {
+        "id": "contact-011",
+        "path": "reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-011-00176-00191.jpg",
+        "sha256": "68958d4f086c2ab6090d7b28c7a116bae10f1460b1ee7b729ee1048483b8621e",
+        "manifestHashVerified": true,
+        "viewed": true
+      },
+      {
+        "id": "contact-012",
+        "path": "reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-012-00192-00207.jpg",
+        "sha256": "3e749dca7658c10a04cf6faebcdb5a09c97dbc902e5126214e3fa534b17b4dc5",
+        "manifestHashVerified": true,
+        "viewed": true
+      },
+      {
+        "id": "contact-013",
+        "path": "reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-013-00208-00223.jpg",
+        "sha256": "1be21bd4093bc8c058d7942fa582d6443799ae3cb95eaf691a041ef83c0bab37",
+        "manifestHashVerified": true,
+        "viewed": true
+      },
+      {
+        "id": "contact-014",
+        "path": "reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-014-00224-00239.jpg",
+        "sha256": "93e678b6ecc29950429fb25b8d277977db6be3344d3232805fcac5613069c748",
+        "manifestHashVerified": true,
+        "viewed": true
+      },
+      {
+        "id": "contact-015",
+        "path": "reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-015-00240-00255.jpg",
+        "sha256": "aca2bf186c74226933efe639d4e0269b37a4f7b56fc8367c7595c3ed15705e14",
+        "manifestHashVerified": true,
+        "viewed": true
+      },
+      {
+        "id": "contact-016",
+        "path": "reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-016-00256-00271.jpg",
+        "sha256": "5d2af380e401d970985161f3ba132a3c009db2a2eae4a8bc677adf544fd8b1b0",
+        "manifestHashVerified": true,
+        "viewed": true
+      },
+      {
+        "id": "contact-017",
+        "path": "reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-017-00272-00287.jpg",
+        "sha256": "207a76dceaf9e90e297a3fbd3c54c536b375e8cdf931c43f5ad55a970322318e",
+        "manifestHashVerified": true,
+        "viewed": true
+      },
+      {
+        "id": "contact-018",
+        "path": "reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-018-00288-00291.jpg",
+        "sha256": "4b6272e8cbfbeac1bf0420e3fc133dd8e608bb462b7e3996bd2006d01bfbdd12",
+        "manifestHashVerified": true,
+        "viewed": true
+      }
+    ],
+    "coverage": "All 19 source-bound contact sheets were independently viewed; they contain all 292 manifest samples from t=0 through the final sampled t=36.358s (0.125s requested cadence). Continuous video motion between samples was not played/reviewed.",
+    "continuousMotionReviewed": false
+  },
+  "packageResolution": {
+    "createRequireBase": "/Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市/package.json",
+    "playwrightPackageResolved": "@playwright/test -> /Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市/node_modules/.pnpm/@playwright+test@1.62.1/node_modules/@playwright/test/index.js",
+    "zodResolved": "/Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市/node_modules/.pnpm/zod@4.4.3/node_modules/zod/index.cjs",
+    "blockage": "Initial resolution of package name playwright failed (MODULE_NOT_FOUND); @playwright/test and zod resolved. No runner was produced or executed."
+  },
+  "stoppedBecause": "Parent requested immediate bounded status before any further planning; plan.json and runner.mjs were not produced.",
+  "filesRead": [
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261024/blind-continuous/packet.json",
+    "runs/mobile-slice-adaptation-20260830/artifacts/reference-frame-manifest.json",
+    "runs/mobile-slice-adaptation-20260830/reference-evidence/incoming/_2026-09-06-135548-3781e4dcd3d2.mp4",
+    "runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-000-00000-00015.jpg",
+    "runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-001-00016-00031.jpg",
+    "runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-002-00032-00047.jpg",
+    "runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-003-00048-00063.jpg",
+    "runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-004-00064-00079.jpg",
+    "runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-005-00080-00095.jpg",
+    "runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-006-00096-00111.jpg",
+    "runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-007-00112-00127.jpg",
+    "runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-008-00128-00143.jpg",
+    "runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-009-00144-00159.jpg",
+    "runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-010-00160-00175.jpg",
+    "runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-011-00176-00191.jpg",
+    "runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-012-00192-00207.jpg",
+    "runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-013-00208-00223.jpg",
+    "runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-014-00224-00239.jpg",
+    "runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-015-00240-00255.jpg",
+    "runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-016-00256-00271.jpg",
+    "runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-017-00272-00287.jpg",
+    "runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-018-00288-00291.jpg",
+    "/Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市/package.json",
+    "/Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市/node_modules/.pnpm/zod@4.4.3/node_modules/zod/index.cjs",
+    "runs/mobile-slice-adaptation-20260830/factory-eval-20261024/blind-continuous/status.json"
+  ]
+}

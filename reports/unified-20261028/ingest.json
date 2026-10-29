@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "ReferenceMediaIngest",
+  "destination": "/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/runs/unified-agent-repair-20261028/reference-evidence/incoming/_2026-09-06-135548-3781e4dcd3d2-3781e4dcd3d2-3781e4dcd3d2-3781e4dcd3d2.mp4",
+  "storedPath": "reference-evidence/incoming/_2026-09-06-135548-3781e4dcd3d2-3781e4dcd3d2-3781e4dcd3d2-3781e4dcd3d2.mp4",
+  "manifestPath": "/Users/kker/.codex/worktrees/factory-unified-20261028/妖怪夜市/runs/unified-agent-repair-20261028/reference-evidence/manifest.json",
+  "sha256": "3781e4dcd3d21094f186cf442b3ee30cddfbb2fbe68d87c5c7470a2c742bf75a",
+  "id": "slice-reference",
+  "alreadyRegistered": false
+}

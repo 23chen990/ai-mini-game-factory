@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "status": "SHARED_FACTORY_UPGRADE_NOT_GAME_RELEASE",
+  "repository": "https://github.com/23chen990/ai-mini-game-factory",
+  "baseCommit": "cb0ea67d7ed9ec25a3deed7110cb4b685d598e7b",
+  "branch": "codex/reference-first-factory-upgrade",
+  "verificationStartedAt": "2026-10-19T07:58:37.583Z",
+  "checks": [
+    {
+      "command": "pnpm --config.verify-deps-before-run=false lint",
+      "exitCode": 0,
+      "logSha256": "050c69da23536758722729aeda55a8d0fb9d557495ef6d33d70873a3b64a71c1"
+    },
+    {
+      "command": "pnpm --config.verify-deps-before-run=false typecheck",
+      "exitCode": 0,
+      "logSha256": "8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92"
+    },
+    {
+      "command": "pnpm --config.verify-deps-before-run=false test --reporter=default --reporter=json --outputFile=/tmp/factory-final-vitest.json",
+      "exitCode": 0,
+      "logSha256": "8acbe7ea9387c430cc44883f2d2d2262a2efe301e0750e2d449c40b2838ceab3"
+    },
+    {
+      "command": "pnpm --config.verify-deps-before-run=false factory eval",
+      "exitCode": 0,
+      "logSha256": "dc4588ff0574491f0ae5bb939bbbc77c5a463799aad184244bfa501943262c8d"
+    }
+  ],
+  "tests": {
+    "files": 181,
+    "total": 1079,
+    "passed": 1079,
+    "failed": 0,
+    "pending": 0,
+    "todo": 0,
+    "reportSha256": "bfb61fae3ad43c1c8d0a1a20601f368f8504e691e3fa9de48b1343ca3c67e278"
+  },
+  "evaluation": {
+    "suite": "factory-eval-v3",
+    "cases": 16,
+    "passed": true,
+    "reportSha256": "d7bdbc6baded259e6fd47978ae8e0483f2b4036c21ac55d8835f849e09ec0a57",
+    "meaning": "Factory policy fixtures only; not model execution, gameplay fidelity, or human acceptance."
+  },
+  "demo": {
+    "kind": "first-party-engineering-fixture",
+    "runId": "20261019070953-reference-d225db52",
+    "targetGame": "mooncut-trial",
+    "llmExecuted": false,
+    "humanAccepted": false,
+    "commercialReleaseReady": false,
+    "engineeringPassed": true,
+    "stableResume": true,
+    "stage": "QA",
+    "playable": "workspace/game/dist/index.html",
+    "playableSha256": "7106761415285303c55e01a5edf652820ad7348cd72c966bb047b4c4a7f56527",
+    "transitions": [
+      "cut",
+      "drop",
+      "obstacle-failure",
+      "retry",
+      "finish",
+      "terminal-replay"
+    ],
+    "wiredFiles": [
+      "workspace/game/index.html",
+      "workspace/game/src/main.ts",
+      "workspace/game/src/simulation.ts"
+    ],
+    "screenshots": [
+      "screenshots/cut-stack/natural-start.png",
+      "screenshots/cut-stack/natural-failure.png",
+      "screenshots/cut-stack/natural-finish.png",
+      "screenshots/cut-stack/natural-replay.png",
+      "screenshots/cut-stack/packaged-webkit.png"
+    ],
+    "remainingGaps": [
+      "real-reference-analysis-unvalidated",
+      "independent-fidelity-review-required",
+      "human-experience-playtest-required",
+      "native-sdk-and-platform-qa-required"
+    ],
+    "workspaceRelative": "runs/20261019070953-reference-d225db52/workspace/game",
+    "dimensions": {
+      "codeCorrectness": {
+        "status": "PASS",
+        "evidencePaths": [
+          "artifacts/build-report.json",
+          "artifacts/qa-report.json"
+        ],
+        "blockers": [],
+        "requiredActions": []
+      },
+      "gameplayFidelity": {
+        "status": "BLOCKED",
+        "evidencePaths": [
+          "artifacts/qa-report.json",
+          "artifacts/runtime-product-gates.json",
+          "artifacts/reference-fidelity-gate.json"
+        ],
+        "blockers": [
+          "reference-fidelity-gate-failed"
+        ],
+        "requiredActions": [
+          "Repair failing or stale natural-input evidence and rerun QA on the current build."
+        ]
+      },
+      "experienceQuality": {
+        "status": "NEEDS_HUMAN",
+        "evidencePaths": [
+          "human/playtest-acceptance.json"
+        ],
+        "blockers": [
+          "human-playtest-required"
+        ],
+        "requiredActions": [
+          "Have a human play the current build from a clean reset and record human/playtest-acceptance.json with its exact build hash."
+        ]
+      },
+      "monetizationReadiness": {
+        "status": "NEEDS_HUMAN",
+        "evidencePaths": [
+          "artifacts/build-report.json",
+          "artifacts/release-candidate.json"
+        ],
+        "blockers": [
+          "candidate-unfrozen"
+        ],
+        "requiredActions": [
+          "Freeze the exact tested build before recording platform ad verification."
+        ]
+      },
+      "platformReleaseReadiness": {
+        "status": "NEEDS_HUMAN",
+        "evidencePaths": [
+          "artifacts/build-report.json",
+          "artifacts/release-candidate.json"
+        ],
+        "blockers": [
+          "candidate-unfrozen"
+        ],
+        "requiredActions": [
+          "Freeze the exact tested build before packaging and verifying platform children."
+        ]
+      }
+    }
+  },
+  "existingGame": {
+    "runId": "mobile-slice-adaptation-20260830",
+    "workspaceRelative": "workspace/prototype-a",
+    "gameCodeModified": false,
+    "legacyControlPlaneMigrated": false,
+    "htmlSha256BeforeAndAfter": "c4cc3c427fc52c9f91f6229c9aea0ae7cfe8220341be521df6c807626d101aae",
+    "sourceCapture": {
+      "source": "https://poki.com/zh/g/slice-master",
+      "status": "BLOCKED",
+      "frames": 0,
+      "promoted": false,
+      "gameplayObserved": false,
+      "allowedHosts": [
+        "a.poki-cdn.com",
+        "img.poki-cdn.com"
+      ],
+      "blockers": [
+        "blocked-network-request:game-cdn.poki.com",
+        "blocked-network-request:cmp.inmobi.com",
+        "blocked-network-request:t.poki.io",
+        "blocked-network-request:www.googletagmanager.com",
+        "blocked-network-request:bzrcdn.openai.com",
+        "blocked-network-request:poki-auth.poki.com",
+        "blocked-network-request:games.poki.com"
+      ],
+      "artifactPath": "reference-evidence/incoming/web-capture-factory-audit-20261019-cdn-review/reference-web-capture.json",
+      "artifactSha256": "baeb3d3860e2041d7ed8509789b6732a82db685bda4ad464163e98defc605d3e"
+    }
+  },
+  "rawEvidence": {
+    "location": ".learnings/upgrades/20261019 and the owning runs",
+    "committed": false,
+    "reason": "Local runner output contains machine paths; generated games and source captures stay isolated in their owning runs. Reproduce with the documented commands."
+  },
+  "remainingGaps": [
+    "Real-model reference reconstruction quality is unvalidated.",
+    "The original Slice Master browser capture is blocked by unapproved remote dependencies; no gameplay frames were accepted.",
+    "The existing Three.js Slice Master game and its formal repair history are preserved, not migrated or declared fixed.",
+    "Independent fidelity, perceptual acceptance and real-device human playtesting remain required.",
+    "Real ad SDK, native packages, accounts, commercial metrics and release authorization remain separate gates.",
+    "No measured percentage of token/cost savings is claimed."
+  ]
+}

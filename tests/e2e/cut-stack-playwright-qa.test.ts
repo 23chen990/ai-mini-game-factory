@@ -1,4 +1,4 @@
-import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
@@ -59,6 +59,10 @@ describe('cut-stack-dodge natural runtime QA', () => {
     expect(report.passed, JSON.stringify({ checks: report.checks, issues: report.issues, naturalFlow: report.naturalFlow }, null, 2)).toBe(true);
     expect(report.naturalFlow).toMatchObject({ line: 'cut-stack-dodge', completion: 'terminal', replayObserved: true, forbiddenOperations: [], passed: true });
     expect(report.naturalFlow?.transitions.map(({ name }) => name)).toEqual(expect.arrayContaining(['cut', 'drop', 'obstacle-failure', 'retry', 'finish']));
+    const naturalVideo = report.evidence?.find((item) => item.mode === 'NATURAL_E2E')?.artifacts.find((item) => item.endsWith('.webm'));
+    expect(naturalVideo).toBe('videos/cut-stack/natural.webm');
+    expect((await readFile(path.join(runRoot, 'videos/cut-stack/natural.webm'))).subarray(0, 4)).toEqual(Buffer.from([0x1a, 0x45, 0xdf, 0xa3]));
+    expect(await readdir(path.join(runRoot, 'videos/cut-stack'))).toEqual(['natural.webm']);
     expect(report.checks).toEqual(expect.arrayContaining([
       expect.objectContaining({ name: 'cut-stack-natural-failure', passed: true }),
       expect.objectContaining({ name: 'cut-stack-player-facing-failure-cause', passed: true }),
